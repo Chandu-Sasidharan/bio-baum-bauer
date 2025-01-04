@@ -28,6 +28,7 @@ export default {
         mint: 'var(--mint)',
         aloe: 'var(--aloe)',
         white: 'var(--white)',
+        'golden-red': 'var(--golden-red)',
       },
       fontFamily: {
         chicle: ['Chicle', 'serif'],
