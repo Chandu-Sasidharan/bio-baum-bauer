@@ -4,6 +4,7 @@ import { FaExternalLinkAlt, FaAddressBook } from 'react-icons/fa';
 import { FaYoutube } from 'react-icons/fa6';
 import { BsTwitterX } from 'react-icons/bs';
 import { FaLinkedin } from 'react-icons/fa6';
+import SocialLink from '@/components/elements/social-link';
 
 import logoFooter from '/images/logo/bbb-logo-footer.svg';
 
@@ -33,30 +34,15 @@ export default function Upper() {
             <div className='space-y-3'>
               <p className='text-lg font-bold'>Follow Us</p>
               <div className='flex gap-5 text-base'>
-                <a
-                  className='p-2 text-lg rounded-md bg-gray-light shadow-sm hover:shadow-lg hover:bg-accent hover:text-gray-light duration-300'
-                  href='http://'
-                  target='_blank'
-                  rel='noopener noreferrer'
-                >
+                <SocialLink>
                   <FaLinkedin />
-                </a>
-                <a
-                  className='p-2 text-lg rounded-md bg-gray-light shadow-sm hover:shadow-lg hover:bg-accent hover:text-gray-light duration-300'
-                  href='http://'
-                  target='_blank'
-                  rel='noopener noreferrer'
-                >
+                </SocialLink>
+                <SocialLink>
                   <FaYoutube />
-                </a>
-                <a
-                  className='p-2 text-lg rounded-md bg-gray-light shadow-sm hover:shadow-lg hover:bg-accent hover:text-gray-light duration-300'
-                  href='http://'
-                  target='_blank'
-                  rel='noopener noreferrer'
-                >
+                </SocialLink>
+                <SocialLink>
                   <BsTwitterX />
-                </a>
+                </SocialLink>
               </div>
             </div>
           </div>
