@@ -33,7 +33,7 @@ export default function DesktopNavbar({ isNavbarFixed, setIsNavbarFixed }) {
     <>
       <AuthNavbar />
       <nav
-        className='desktop-nav-z-index-v-10 text-accent bg-primary items-ce top-0 flex h-[60px] items-center justify-center'
+        className='desktop-nav-z-index-v-10 text-accent bg-primary items-ce top-0 flex h-[60px] w-full items-center justify-center'
         style={desktopNavbarStyle}
       >
         {/* DesktopNavbar Links */}
