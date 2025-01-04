@@ -292,7 +292,7 @@ input::placeholder {
   z-index: var(--z-index-v-2);
 }
 
-.desktop-nav {
+.desktop-nav-z-index-v-10 {
   z-index: var(--z-index-v-10);
 }
 

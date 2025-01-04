@@ -22,7 +22,7 @@ export default function Layout() {
   }, []);
 
   const mainStyle = {
-    paddingTop: isNavbarFixed ? '70px' : '0',
+    paddingTop: isNavbarFixed ? '60px' : '0',
   };
 
   return (

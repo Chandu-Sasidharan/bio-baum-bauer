@@ -31,8 +31,8 @@ export default {
         'golden-red': 'var(--golden-red)',
       },
       fontFamily: {
-        chicle: ['Chicle', 'serif'],
         'open-sans': ['Open Sans', 'sans-serif'],
+        chicle: ['Chicle', 'serif'],
       },
     },
   },

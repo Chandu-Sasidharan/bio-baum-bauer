@@ -1,6 +1,6 @@
 {
   "arrowParens": "avoid",
-  "bracketSameLine":false,
+  "bracketSameLine": false,
   "bracketSpacing": true,
   "embeddedLanguageFormatting": "auto",
   "endOfLine": "lf",
@@ -19,5 +19,6 @@
   "tabWidth": 2,
   "trailingComma": "es5",
   "useEditorConfig": true,
-  "useTabs": false
+  "useTabs": false,
+  "plugins": ["prettier-plugin-tailwindcss"]
 }
