@@ -85,7 +85,7 @@ export default function Upper() {
             </div>
             <Link
               href='mailto:hello@biobaumbauer.de'
-              className='flex items-center gap-3 text-gray hover:text-white transition-colors duration-300'
+              className='flex items-center gap-3 text-gray hover:text-golden-red transition-colors duration-300'
             >
               <MdEmail />
               hello@biobaumbauer.de
