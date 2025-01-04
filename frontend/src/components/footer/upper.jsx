@@ -1,5 +1,3 @@
-import { Link } from 'react-router-dom';
-import { FaExternalLinkAlt, FaAddressBook } from 'react-icons/fa';
 import { FaYoutube, FaLocationDot, FaLinkedin } from 'react-icons/fa6';
 import { BsTwitterX } from 'react-icons/bs';
 import { MdEmail } from 'react-icons/md';
@@ -83,13 +81,13 @@ export default function Upper() {
                 Baden-Württemberg, Germany
               </p>
             </div>
-            <Link
+            <a
               href='mailto:hello@biobaumbauer.de'
               className='flex items-center gap-3 text-gray hover:text-golden-red transition-colors duration-300'
             >
               <MdEmail />
               hello@biobaumbauer.de
-            </Link>
+            </a>
           </div>
         </div>
       </div>
