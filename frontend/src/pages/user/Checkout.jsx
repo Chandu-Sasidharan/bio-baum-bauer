@@ -1,8 +1,8 @@
 import React, { useState, useEffect, useContext } from 'react';
 import backgroundImage from '../../assets/images/leaves_background_01.webp';
 import { TextInput, Label } from 'flowbite-react';
-import { CartContext } from '../../store/CartContext';
-import { AuthContext } from '../../contexts/AuthContext';
+import { CartContext } from '@/store/cart-context';
+import { AuthContext } from '@/store/auth-context';
 import { usePatronContext } from '../../store/PatronContext';
 import { Link } from 'react-router-dom';
 import { Breadcrumb } from 'flowbite-react';

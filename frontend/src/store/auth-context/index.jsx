@@ -1,15 +1,12 @@
-/* eslint-disable react/prop-types */
-import { createContext, useEffect, useState, useReducer } from "react";
-import axios from "../utils/axiosInstance";
-import Swal from "sweetalert2";
-import { Link, useNavigate } from "react-router-dom";
-
+import { createContext, useEffect, useState, useReducer } from 'react';
+import axios from '../../utils/axiosInstance';
+import Swal from 'sweetalert2';
 import {
   paymentSessionReducer,
   patronReducer,
   calculateGrandPrice,
   OrderItemsReducer,
-} from "../reducers/reducers";
+} from '../../reducers/reducers';
 
 /*
     create a context for user Info
@@ -18,9 +15,9 @@ export const AuthContext = createContext({});
 
 // our auth context provider
 export const AuthProvider = ({ children }) => {
-  const lsRef = typeof window !== "undefined" ? window.localStorage : null;
+  const lsRef = typeof window !== 'undefined' ? window.localStorage : null;
   // receiving the login information from local storage
-  const loginSession = JSON.parse(lsRef.getItem("login")) || {
+  const loginSession = JSON.parse(lsRef.getItem('login')) || {
     loggedIn: false,
     authUser: {},
     expireTime: null,
@@ -33,7 +30,7 @@ export const AuthProvider = ({ children }) => {
   // it will be called any time that the (loggedIn and authUser) changed
   useEffect(() => {
     lsRef.setItem(
-      "login",
+      'login',
       JSON.stringify({
         loggedIn: loggedIn,
         authUser: authUser,
@@ -44,32 +41,32 @@ export const AuthProvider = ({ children }) => {
 
   const handleLogout = async () => {
     try {
-      await axios.get("/api/users/logout");
+      await axios.get('/api/users/logout');
       setLoggedIn(false);
       setExpiredTime(null);
       setAuthUser({});
       // Display success message
       Swal.fire({
-        icon: "warning",
-        title: "Session Expired!",
-        text: "You need to login again.",
+        icon: 'warning',
+        title: 'Session Expired!',
+        text: 'You need to login again.',
         customClass: {
-          confirmButton: "btn-custom-class",
-          title: "title-class",
+          confirmButton: 'btn-custom-class',
+          title: 'title-class',
         },
         buttonsStyling: false,
       });
     } catch (error) {
-      console.error("Logout failed", error);
+      console.error('Logout failed', error);
       // Display error message
       Swal.fire({
-        icon: "error",
-        title: "Logout Failed",
+        icon: 'error',
+        title: 'Logout Failed',
         text:
-          error.response?.data.message || "An error occurred during logout!",
+          error.response?.data.message || 'An error occurred during logout!',
         customClass: {
-          confirmButton: "btn-custom-class",
-          title: "title-class",
+          confirmButton: 'btn-custom-class',
+          title: 'title-class',
         },
         buttonsStyling: false,
       });
@@ -78,7 +75,7 @@ export const AuthProvider = ({ children }) => {
 
   // checkForInactivity...
   const checkForInactivity = () => {
-    if (JSON.parse(lsRef.getItem("login")).expireTime < Date.now()) {
+    if (JSON.parse(lsRef.getItem('login')).expireTime < Date.now()) {
       handleLogout();
     }
   };
@@ -105,43 +102,43 @@ export const AuthProvider = ({ children }) => {
   // Update Expire Time on the following 4 activities
   useEffect(() => {
     if (loggedIn) {
-      window.addEventListener("click", updateExpireTime);
-      window.addEventListener("keypress", updateExpireTime);
-      window.addEventListener("scroll", updateExpireTime);
-      window.addEventListener("mousemove", updateExpireTime);
+      window.addEventListener('click', updateExpireTime);
+      window.addEventListener('keypress', updateExpireTime);
+      window.addEventListener('scroll', updateExpireTime);
+      window.addEventListener('mousemove', updateExpireTime);
     }
 
     return () => {
-      window.removeEventListener("click", updateExpireTime);
-      window.removeEventListener("keypress", updateExpireTime);
-      window.removeEventListener("scroll", updateExpireTime);
-      window.removeEventListener("mousemove", updateExpireTime);
+      window.removeEventListener('click', updateExpireTime);
+      window.removeEventListener('keypress', updateExpireTime);
+      window.removeEventListener('scroll', updateExpireTime);
+      window.removeEventListener('mousemove', updateExpireTime);
     };
   }, [loggedIn]);
 
   // stripe session id
-  const stripSessionValue = JSON.parse(lsRef.getItem("ssid")) || {};
+  const stripSessionValue = JSON.parse(lsRef.getItem('ssid')) || {};
   const [stripeSession, handleStripeSession] = useReducer(
     paymentSessionReducer,
     {
-      sid: stripSessionValue.stripeSession?.sid || "",
+      sid: stripSessionValue.stripeSession?.sid || '',
     }
   );
   useEffect(() => {
-    lsRef?.setItem("ssid", JSON.stringify({ stripeSession }));
+    lsRef?.setItem('ssid', JSON.stringify({ stripeSession }));
   }, [stripeSession]);
 
   // patron details
-  const patronDataValue = JSON.parse(lsRef.getItem("patron")) || {};
+  const patronDataValue = JSON.parse(lsRef.getItem('patron')) || {};
   const [patron, handlePatronInfo] = useReducer(patronReducer, {
     patronInfo: patronDataValue.patron?.patronInfo || {},
   });
   useEffect(() => {
-    lsRef.setItem("patron", JSON.stringify({ patron }));
+    lsRef.setItem('patron', JSON.stringify({ patron }));
   }, [patron]);
 
   // calculate total grand price
-  const grandValue = JSON.parse(lsRef.getItem("orderGrandPrice")) || {};
+  const grandValue = JSON.parse(lsRef.getItem('orderGrandPrice')) || {};
   const [orderGrandPrice, handleOrderGrandPrice] = useReducer(
     calculateGrandPrice,
     {
@@ -149,16 +146,16 @@ export const AuthProvider = ({ children }) => {
     }
   );
   useEffect(() => {
-    lsRef.setItem("orderGrandPrice", JSON.stringify({ orderGrandPrice }));
+    lsRef.setItem('orderGrandPrice', JSON.stringify({ orderGrandPrice }));
   }, [orderGrandPrice]);
 
   // save payment
-  const orderValue = JSON.parse(lsRef.getItem("items")) || {};
+  const orderValue = JSON.parse(lsRef.getItem('items')) || {};
   const [order, handleOrder] = useReducer(OrderItemsReducer, {
     items: orderValue.order?.items || {},
   });
   useEffect(() => {
-    lsRef.setItem("items", JSON.stringify({ order }));
+    lsRef.setItem('items', JSON.stringify({ order }));
   }, [order]);
 
   return (

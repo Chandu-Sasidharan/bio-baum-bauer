@@ -8,7 +8,7 @@ import {
   Button,
   Spinner,
 } from 'flowbite-react';
-import { AuthContext } from '../../contexts/AuthContext';
+import { AuthContext } from '@/store/auth-context';
 import { HiEye, HiEyeOff, HiHome } from 'react-icons/hi';
 import { MdEmail, MdOutlineKey } from 'react-icons/md';
 import { IoMdPerson } from 'react-icons/io';

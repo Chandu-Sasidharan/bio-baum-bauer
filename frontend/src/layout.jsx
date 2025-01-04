@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { Outlet } from 'react-router-dom';
-import DesktopNavbar from '@/components/DesktopNavbar';
-import MobileNavbar from '@/components/MobileNavbar';
+import DesktopNavbar from '@/components/navbar/desktop';
+import MobileNavbar from '@/components/navbar/mobile';
 import Footer from '@/components/footer';
 import ScrollToTop from '@/components/scroll-to-top';
 

@@ -1,7 +1,6 @@
-/* eslint-disable no-unused-vars */
-import React, { useContext, useState } from 'react';
+import { useContext, useState } from 'react';
 import { Link } from 'react-router-dom';
-import logoImage from '../assets/images/BioBaumBauer_Logo.svg';
+import logoImage from '/images/logo/bbb-logo.svg';
 import { FaCartArrowDown } from 'react-icons/fa6';
 import {
   IoIosArrowDown,
@@ -10,8 +9,8 @@ import {
   IoMdLogOut,
 } from 'react-icons/io';
 import { CgProfile } from 'react-icons/cg';
-import { CartContext } from '../store/CartContext';
-import { AuthContext } from '../contexts/AuthContext';
+import { CartContext } from '@/store/cart-context';
+import { AuthContext } from '@/store/auth-context';
 import { Tooltip } from 'flowbite-react';
 
 const AuthNavbar = () => {

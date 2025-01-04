@@ -10,7 +10,7 @@ import {
 } from 'flowbite-react';
 import { HiHome } from 'react-icons/hi';
 import backgroundImage from '../../assets/images/leaves_background_02.webp';
-import { AuthContext } from '../../contexts/AuthContext';
+import { AuthContext } from '@/store/auth-context';
 import { IoIosArrowForward } from 'react-icons/io';
 import axios from '../../utils/axiosInstance';
 import Swal from 'sweetalert2';

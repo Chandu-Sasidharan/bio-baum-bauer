@@ -5,7 +5,7 @@ import MobileDashboardLinks from '../../components/MobileDashboardLinks';
 import backgroundImage from '../../assets/images/leaves_background_01.webp';
 import { HiHome } from 'react-icons/hi';
 import PageBreadcrumb from '../../components/PageBreadcrumb';
-import { AuthContext } from '../../contexts/AuthContext';
+import { AuthContext } from '@/store/auth-context';
 import axios from '../../utils/axiosInstance';
 import { HiEye, HiEyeOff } from 'react-icons/hi';
 import Swal from 'sweetalert2';

@@ -1,11 +1,10 @@
-/* eslint-disable react/no-unescaped-entities */
 import { useContext, useEffect } from 'react';
 import backgroundImage from '../assets/images/leaves_background_02.webp';
 import { HiHome } from 'react-icons/hi';
 import PageBreadcrumb from '../components/PageBreadcrumb';
 import EachPageHeader from '../components/EachPageHeader';
 import { Link } from 'react-router-dom';
-import { AuthContext } from '../contexts/AuthContext';
+import { AuthContext } from '@/store/auth-context';
 import { LuRepeat2 } from 'react-icons/lu';
 
 const CancelPage = () => {

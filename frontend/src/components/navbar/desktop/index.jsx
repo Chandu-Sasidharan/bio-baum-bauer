@@ -1,6 +1,6 @@
-import { useEffect, useContext } from 'react';
+import { useEffect } from 'react';
 import { NavLink } from 'react-router-dom';
-import AuthNavbar from './AuthNavbar';
+import AuthNavbar from '@/components/navbar/auth';
 
 import {
   FaHome,

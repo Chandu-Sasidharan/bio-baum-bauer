@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { fallDown as Menu } from 'react-burger-menu';
-import AuthNavbar from './AuthNavbar';
-import closeMenu from '../assets/images/close_menu.svg';
-import openMenu from '../assets/images/hamburger_menu.svg';
+import AuthNavbar from '@/components/navbar/auth';
+import closeMenu from '/images/navbar/close-icon.svg';
+import openMenu from '/images/navbar/hamburger-icon.svg';
 
 const MobileNavbar = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);

@@ -9,7 +9,7 @@ import PageBreadcrumb from '../../components/PageBreadcrumb';
 import { FaRegFilePdf } from 'react-icons/fa6';
 import { MdEuroSymbol } from 'react-icons/md';
 import axios from '../../utils/axiosInstance';
-import { AuthContext } from '../../contexts/AuthContext';
+import { AuthContext } from '@/store/auth-context';
 import { Link } from 'react-router-dom';
 import DashboardHeader from './DashboardHeader';
 

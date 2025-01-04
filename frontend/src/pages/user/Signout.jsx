@@ -4,7 +4,7 @@ import axios from '../../utils/axiosInstance';
 import { HiHome } from 'react-icons/hi';
 import backgroundImage from '../../assets/images/leaves_background_01.webp';
 import { Link, useNavigate } from 'react-router-dom';
-import { AuthContext } from '../../contexts/AuthContext';
+import { AuthContext } from '@/store/auth-context';
 import Swal from 'sweetalert2';
 import { LiaSignOutAltSolid } from 'react-icons/lia';
 import treeImage from '../../assets/tree.png';

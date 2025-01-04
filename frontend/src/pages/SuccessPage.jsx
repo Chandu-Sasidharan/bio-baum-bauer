@@ -7,8 +7,8 @@ import EachPageHeader from '../components/EachPageHeader';
 import logoImage from '../assets/images/BioBaumBauer_Logo_ThankYou.svg';
 import { Link } from 'react-router-dom';
 import { useEffect, useContext } from 'react';
-import { AuthContext } from '../contexts/AuthContext';
-import { CartContext } from '../store/CartContext';
+import { AuthContext } from '@/store/auth-context';
+import { CartContext } from '@/store/cart-context';
 import { usePatronContext } from '../store/PatronContext';
 import { RiArrowGoBackLine } from 'react-icons/ri';
 

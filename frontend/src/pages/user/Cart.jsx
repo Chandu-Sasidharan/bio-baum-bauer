@@ -6,7 +6,7 @@ import { BsCartXFill } from 'react-icons/bs';
 import { FaCartArrowDown } from 'react-icons/fa6';
 import { LuPlus, LuMinus } from 'react-icons/lu';
 import { Link } from 'react-router-dom';
-import { CartContext } from '../../store/CartContext';
+import { CartContext } from '@/store/cart-context';
 import { HiHome } from 'react-icons/hi';
 import PageBreadcrumb from '../../components/PageBreadcrumb';
 import { GoSponsorTiers } from 'react-icons/go';

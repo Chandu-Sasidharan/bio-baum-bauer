@@ -1,6 +1,6 @@
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
-import { CartContextProvider } from './store/CartContext';
-import { AuthProvider } from './contexts/AuthContext';
+import { CartContextProvider } from '@/store/cart-context';
+import { AuthProvider } from '@/store/auth-context';
 
 // Importing our pages
 import Home from '@/pages/Home';
