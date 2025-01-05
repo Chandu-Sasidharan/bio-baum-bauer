@@ -183,15 +183,6 @@ input:active {
   animation: slideInDown 0.5s ease-in-out;
 }
 
-/* AuthNavbar Animation */
-.navIcon .ani {
-  transition: 0.5s ease-in-out;
-}
-
-.navIcon:hover .ani {
-  transform: rotate(360deg);
-}
-
 /* placeholder text color */
 input::placeholder {
   color: var(--stone);
@@ -304,7 +295,7 @@ input::placeholder {
   z-index: var(--z-index-v-11);
 }
 
-.auth-nav {
+.auth-nav-z-index-v-12 {
   z-index: var(--z-index-v-12);
 }
 

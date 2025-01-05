@@ -10,58 +10,59 @@ import {
 } from 'react-icons/io';
 import { CgProfile } from 'react-icons/cg';
 import { CartContext } from '@/store/cart-context';
-import { AuthContext } from '@/store/auth-context';
 import { Tooltip } from 'flowbite-react';
+import { useUser } from '@/store/auth-context';
 
-const AuthNavbar = () => {
-  const { loggedIn, authUser, expiredTime } = useContext(AuthContext);
+export default function AuthNavbar() {
+  const { loggedIn, authUser } = useUser();
   const { cartTrees } = useContext(CartContext);
   const [isDropdownOpen, setDropdownOpen] = useState(false);
+
   const toggleDropdown = () => {
     setDropdownOpen(!isDropdownOpen);
   };
+
   return (
-    <nav className='auth-nav relative h-20 w-full font-open-sans bg-accent opacity-90 text-accent text-[1rem] md:text-[1.2rem]'>
-      <div className='container h-full w-full mx-auto flex justify-between items-center ps-4 pr-6'>
-        <div className='flex items-center gap-3 rounded-full'>
+    <nav className='auth-nav-z-index-v-12 bg-accent relative flex h-20 w-full items-center justify-between px-5 shadow-md md:px-8'>
+      <div className='flex grow justify-between'>
+        {/* Left Side */}
+        <Link to='/' className='flex items-center gap-3'>
           <img
             src={logoImage}
-            className='h-12 w-12 md:h-16 md:w-16 shadow-lg rounded-full'
-            alt='Logo'
+            className='h-16 w-16 rounded-full shadow-lg'
+            alt='Bio Baum Bauer logo'
           />
 
-          <p className=' hidden text-white font-chicle text-2xl md:block'>
-            Bio Baum Bauer&nbsp;
+          <p className='font-chicle text-primary-light hidden text-2xl tracking-wider md:block'>
+            Bio Baum Bauer
           </p>
-        </div>
-        <div className='flex space-x-4 items-center'>
+        </Link>
+
+        {/* Right Side */}
+        <div className='flex items-center'>
           {!loggedIn && (
             <Link
               to='/login'
-              className='navIcon flex items-center'
-              aria-label='Login page'
+              aria-label='login page'
+              className='hover:bg-primary hover:text-accent text-primary-light font-chicle border-primary-dark rounded-md border-[1px] px-3 py-2 text-2xl tracking-wider duration-300'
             >
-              <Tooltip content='click here to login'>
-                <div className='flex items-center text-2xl text-bold py-2 px-4 hover:bg-sage text-white hover:text-primary rounded-2xl'>
-                  <IoMdLogIn className='' />
-                  <span>&nbsp;Login</span>
-                </div>
-              </Tooltip>
+              Login
             </Link>
           )}
+
           {loggedIn && (
             <div className='flex items-center gap-3'>
-              <div className='h-auto dropdown'>
+              <div className='dropdown h-auto'>
                 <div
                   id='dropdown-button'
                   onClick={toggleDropdown}
-                  className='w-full select-none h-auto top-10 right-40  border-primary rounded-[10px] px-2 py-4 cursor-pointer flex justify-between items-center text-accent text-lg'
+                  className='border-primary text-accent right-40 top-10 flex h-auto w-full cursor-pointer select-none items-center justify-between rounded-[10px] px-2 py-4 text-lg'
                 >
                   <Link aria-label='user dashboard, link to dashboard'>
-                    <span className='text-lg text-white font-open-sans'>
+                    <span className='font-open-sans text-lg text-white'>
                       Hi, &nbsp;
                     </span>
-                    <span className='text-lg text-white font-open-sans'>
+                    <span className='font-open-sans text-lg text-white'>
                       {authUser.lastName}&nbsp;
                     </span>
                   </Link>
@@ -75,13 +76,13 @@ const AuthNavbar = () => {
                 <div
                   id='dropdown-menu'
                   className={`${
-                    isDropdownOpen ? 'block ' : 'hidden'
-                  } absolute top-[71px] h-auto bg-primary-light right-20 md:right-24 lg:right-64 w-auto rounded-[6px] border-2 border-primary shadow-2xl mt-2 transition-all duration-300 text-stone`}
+                    isDropdownOpen ? 'block' : 'hidden'
+                  } bg-primary-light border-primary text-stone absolute right-20 top-[71px] mt-2 h-auto w-auto rounded-[6px] border-2 shadow-2xl transition-all duration-300 md:right-24 lg:right-64`}
                 >
-                  <div className=' cursor-pointer hover:bg-aloe border-b border-primary rounded-t-[2px] text-lg'>
+                  <div className='hover:bg-aloe border-primary cursor-pointer rounded-t-[2px] border-b text-lg'>
                     <Link
                       to='/dashboard'
-                      className='py-4 px-6 navIcon w-full h-full flex items-center transition-transform duration-75 ease-linear'
+                      className='navIcon flex h-full w-full items-center px-6 py-4 transition-transform duration-75 ease-linear'
                       aria-label='dashboard page'
                     >
                       <div className='flex items-center gap-3'>
@@ -90,10 +91,10 @@ const AuthNavbar = () => {
                       </div>
                     </Link>
                   </div>
-                  <div className=' cursor-pointer hover:bg-aloe border-b border-primary text-lg'>
+                  <div className='hover:bg-aloe border-primary cursor-pointer border-b text-lg'>
                     <Link
                       to='/signout'
-                      className='py-4 px-6 navIcon w-full h-full flex items-center transition-transform duration-75 ease-linear'
+                      className='navIcon flex h-full w-full items-center px-6 py-4 transition-transform duration-75 ease-linear'
                       aria-label='Sign Out page'
                     >
                       <div className='flex items-center transition-transform duration-75 ease-linear'>
@@ -111,11 +112,11 @@ const AuthNavbar = () => {
                 className='navIcon transition-transform duration-75 ease-linear'
                 aria-label='Cart page'
               >
-                <div className='flex items-center justify-center rounded-full bg-white w-[50px] h-[50px] relative'>
+                <div className='relative flex h-[50px] w-[50px] items-center justify-center rounded-full bg-white'>
                   <FaCartArrowDown size='1.9rem' />
                   {cartTrees.length > 0 ? (
                     <div
-                      className='absolute top-[0.2rem] right-[0.2rem] bg-red-500 text-white rounded-full w-6 h-6 flex items-center justify-center text-xs'
+                      className='absolute right-[0.2rem] top-[0.2rem] flex h-6 w-6 items-center justify-center rounded-full bg-red-500 text-xs text-white'
                       style={{ transform: 'translate(50%, -50%)' }}
                     >
                       {cartTrees.length}
@@ -131,6 +132,4 @@ const AuthNavbar = () => {
       </div>
     </nav>
   );
-};
-
-export default AuthNavbar;
+}

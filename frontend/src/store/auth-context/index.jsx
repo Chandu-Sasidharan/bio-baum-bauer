@@ -1,5 +1,10 @@
-import { createContext, useEffect, useState, useReducer } from 'react';
-import axios from '../../utils/axiosInstance';
+import {
+  createContext,
+  useEffect,
+  useState,
+  useReducer,
+  useContext,
+} from 'react';
 import Swal from 'sweetalert2';
 import {
   paymentSessionReducer,
@@ -7,11 +12,13 @@ import {
   calculateGrandPrice,
   OrderItemsReducer,
 } from '../../reducers/reducers';
+import axios from '../../utils/axiosInstance';
 
-/*
-    create a context for user Info
-*/
+// To be refactored step by step
 export const AuthContext = createContext({});
+export const useUser = () => {
+  return useContext(AuthContext);
+};
 
 // our auth context provider
 export const AuthProvider = ({ children }) => {
