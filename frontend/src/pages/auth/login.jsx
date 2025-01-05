@@ -1,26 +1,18 @@
 import { useState, useEffect, useContext } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import {
-  Button,
-  Label,
-  TextInput,
-  Breadcrumb,
-  Tooltip,
-  Spinner,
-} from 'flowbite-react';
+import { Helmet } from 'react-helmet-async';
+import { Button, Label, TextInput, Tooltip, Spinner } from 'flowbite-react';
 import { HiHome } from 'react-icons/hi';
 import backgroundImage from '../../assets/images/leaves_background_02.webp';
 import { AuthContext } from '@/store/auth-context';
-import { IoIosArrowForward } from 'react-icons/io';
 import axios from '../../utils/axiosInstance';
 import Swal from 'sweetalert2';
 import { HiEye, HiEyeOff } from 'react-icons/hi';
 import treeIcon from '../../assets/tree.png';
 import { AiOutlineLogin } from 'react-icons/ai';
-import LoginFooterImage from '../../assets/images/biobaum_about_footer_img.webp';
+import { Breadcrumb, BreadcrumbItem } from '@/components/elements/breadcrumb';
 
-const Login = () => {
-  document.title = 'Login';
+export default function Login() {
   const { loggedIn, setLoggedIn, setAuthUser, setExpiredTime } =
     useContext(AuthContext);
   const navigate = useNavigate();
@@ -32,7 +24,7 @@ const Login = () => {
 
   const [errors, setErrors] = useState([]);
   const [backError, setBackError] = useState('');
-  const [loggingIn, setLoggingIn] = useState(false);
+  const [isProcessing, setIsProcessing] = useState(false);
 
   const [showPassword, setShowPassword] = useState(false);
 
@@ -48,7 +40,7 @@ const Login = () => {
       email: loginData.get('email'),
       password: loginData.get('password'),
     };
-    setLoggingIn(true);
+    setIsProcessing(true);
     try {
       const response = await axios.post('/api/users/login', data);
       setErrors([]);
@@ -57,7 +49,7 @@ const Login = () => {
         setAuthUser(response.data.user);
         setExpiredTime(Date.now() + 3600000);
         setLoggedIn(true);
-        setLoggingIn(false);
+        setIsProcessing(false);
         // Display success message
         Swal.fire({
           icon: 'success',
@@ -73,7 +65,7 @@ const Login = () => {
       } else {
         // Handle other server response statuses
         console.error('Error logging in:', response.data.message);
-        setLoggingIn(false);
+        setIsProcessing(false);
         Swal.fire({
           icon: 'error',
           title: 'Login Failed',
@@ -88,7 +80,7 @@ const Login = () => {
     } catch (error) {
       setErrors([]);
       setBackError('');
-      setLoggingIn(false);
+      setIsProcessing(false);
       // Handle errors that occurred during the POST request
       if (error.response && error.response.status === 400) {
         setErrors(error.response.data.errors);
@@ -129,104 +121,73 @@ const Login = () => {
   };
 
   return (
-    <main>
-      <Breadcrumb
-        aria-label=''
-        className='bg-gray-50 px-5 py-3 dark:bg-gray-800'
-      >
-        <Breadcrumb.Item href='/' icon={HiHome}>
-          Home
-        </Breadcrumb.Item>
-        <Breadcrumb.Item>Sign In</Breadcrumb.Item>
-      </Breadcrumb>
-      <div className='relative w-full mx-auto xs:p-0 p-4 pb-[25px] md:pb-[40px] lg:pb-[100px] xl:pb-[120px] flex flex-col items-center justify-center text-stone'>
+    <>
+      <Helmet>
+        <title>Login | Bio Baum Bauer</title>
+      </Helmet>
+
+      <div className='relative flex flex-col items-center'>
         {/* Overlay with background image and opacity */}
         <div
-          className='absolute top-0 left-0 w-full h-full bg-cover bg-no-repeat bg-top z-[-1]'
-          style={{ backgroundImage: `url(${backgroundImage})`, opacity: 0.4 }}
+          className='absolute left-0 top-0 z-[0] h-full w-full bg-cover bg-top bg-no-repeat'
+          style={{ backgroundImage: `url(${backgroundImage})`, opacity: 0.2 }}
         ></div>
-        {/*       <div className="container mx-auto flex justify-center items-center ">
-          <ul className="bg-white py-4 px-2 rounded-md text-red-700">
-            {errors.map((error, index) => (
-              <li key={error.path + index} className="flex items-center">
-                <IoIosArrowForward /> <span>&nbsp;{error.msg}</span>
-              </li>
-            ))}
-            {backError ? (
-              <li className="flex items-center">
-                <IoIosArrowForward />
-                <span>&nbsp;{backError}</span>
-              </li>
-            ) : (
-              ""
-            )}
-          </ul>
-        </div> */}
-        <div
-          className={`flex flex-col justify-start items-start gap-[2rem] w-full md:w-[80%] lg:w-[45%] xl:w-[40%] rounded-[15px] p-4 sm:p-8 z-9 shadow-lg mt-[10px] md:mt-[20px] lg:mt-[100px] xl:mt-[90px] xs:py-12 py-10 ${
-            loggingIn ? 'bg-gray-light text-gray-400 opacity-80' : 'bg-white '
-          }`}
-        >
-          <div className='flex items-center'>
+
+        {/* Flex Row1 */}
+        <Breadcrumb label='Site navigation' className='self-start px-4 py-2'>
+          <HiHome />
+          <BreadcrumbItem href='/'>Home</BreadcrumbItem>
+          <BreadcrumbItem current>Login</BreadcrumbItem>
+        </Breadcrumb>
+
+        {/* Flex Row2 */}
+        <div className='bg-primary-light static z-[1] mx-auto my-16 flex w-full max-w-[calc(100%-2.5rem)] flex-col gap-5 rounded-md p-6 shadow-md sm:mb-24 sm:max-w-[500px]'>
+          <div className='flex items-baseline'>
             <img
               src={treeIcon}
               alt='Tree Icon'
-              className='w-[30px] h-[30px] mr-2'
+              className='mr-2 h-[30px] w-[30px]'
             />
-            <h3 className='text-3xl text-accent font-chicle tracking-wide border-b-2 border-primary inline-block'>
+            <h3 className='text-accent font-chicle inline-block text-3xl tracking-wide'>
               Login
             </h3>
           </div>
           <div className='flex items-center'>
-            <span>Don't have an account ?&nbsp;&nbsp;</span>
-            <Tooltip content='Click here to navigate to register page'>
-              <Link to='/register' className='text-accent underline font-bold'>
-                signup
+            <span className='mr-2 inline-block'>New to the farm?</span>
+            <Tooltip content='Click here to sign up'>
+              <Link to='/register' className='text-accent font-bold underline'>
+                Register
               </Link>
             </Tooltip>
           </div>
-          <form onSubmit={handleLogin} className='space-y-6 w-full'>
+
+          <form onSubmit={handleLogin} className='w-full space-y-6'>
             <div>
               <Label
                 htmlFor='email'
-                value='Your email'
+                value='Your Email Address'
                 className='visually-hidden'
               />
               <TextInput
                 id='email'
                 type='email'
                 name='email'
-                placeholder='Email Address *'
-                style={{
-                  backgroundColor: 'var(--bg-white)',
-                  borderColor: 'var(--primary)',
-                  outlineColor: 'var(--accent)',
-                  padding: '1.15rem',
-                  color: 'var(--stone)',
-                  fontSize: '1rem',
-                }}
+                placeholder='Your Email Address'
+                className='h-[42px]'
               />
             </div>
             <div style={{ position: 'relative' }}>
               <Label
                 htmlFor='password'
-                value='Your password'
+                value='Your Password'
                 className='visually-hidden'
               />
               <TextInput
                 id='password'
                 type={showPassword ? 'text' : 'password'}
                 name='password'
-                placeholder='Your Password *'
-                style={{
-                  backgroundColor: 'var(--bg-white)',
-                  borderColor: 'var(--primary)',
-                  outlineColor: 'var(--accent)',
-                  padding: '1.15rem',
-                  color: 'var(--stone)',
-                  fontSize: '1rem',
-                  paddingRight: '2.5rem', // Make room for the icon
-                }}
+                placeholder='Your Password'
+                className='h-[42px]'
               />
               <div
                 style={{
@@ -246,34 +207,34 @@ const Login = () => {
               </div>
             </div>
             <div className='flex items-center gap-2'>
-              <span>We will remember you until you logout!</span>
-              <Tooltip content='click here to reset your password'>
-                <Link to='' className='ml-10 text-accent underline'>
+              <Tooltip content='Click here to reset your password'>
+                <Link to='' className='text-accent underline'>
                   Forgot Password?
                 </Link>
               </Tooltip>
             </div>
             <div className='flex flex-row gap-3'>
-              {loggingIn ? (
-                <Button className='custom-button-style'>
-                  <Spinner
-                    aria-label='Alternate spinner button example'
-                    size='sm'
-                  />
-                  <span className='pl-3'>Logging in...</span>
-                </Button>
-              ) : (
-                <Button type='submit' className='custom-button-style'>
-                  <AiOutlineLogin />
+              <Button
+                type='submit'
+                className='bg-accent hover:!bg-accent-light text-primary-light rounded-sm tracking-wider duration-300 focus:ring-0'
+              >
+                {isProcessing ? (
+                  <>
+                    <Spinner
+                      aria-label='Processing'
+                      size='sm'
+                      color='text-primary-light'
+                    />
+                    <span className='pl-3'>Logging in...</span>
+                  </>
+                ) : (
                   <span>&nbsp;Login</span>
-                </Button>
-              )}
+                )}
+              </Button>
             </div>
           </form>
         </div>
       </div>
-    </main>
+    </>
   );
-};
-
-export default Login;
+}

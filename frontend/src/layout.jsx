@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import { Outlet } from 'react-router-dom';
+import { HelmetProvider } from 'react-helmet-async';
 import DesktopNavbar from '@/components/navbar/desktop';
 import MobileNavbar from '@/components/navbar/mobile';
 import Footer from '@/components/footer';
@@ -26,22 +27,24 @@ export default function Layout() {
   };
 
   return (
-    <div className='text-accent'>
-      <header>
-        {isMobileScreen ? (
-          <MobileNavbar />
-        ) : (
-          <DesktopNavbar
-            isNavbarFixed={isNavbarFixed}
-            setIsNavbarFixed={setIsNavbarFixed}
-          />
-        )}
-      </header>
-      <main className='page' style={mainStyle}>
-        <Outlet />
-      </main>
-      <ScrollToTop />
-      <Footer />
-    </div>
+    <HelmetProvider>
+      <div className='text-accent'>
+        <header>
+          {isMobileScreen ? (
+            <MobileNavbar />
+          ) : (
+            <DesktopNavbar
+              isNavbarFixed={isNavbarFixed}
+              setIsNavbarFixed={setIsNavbarFixed}
+            />
+          )}
+        </header>
+        <main className='bg-primary-light' style={mainStyle}>
+          <Outlet />
+        </main>
+        <ScrollToTop />
+        <Footer />
+      </div>
+    </HelmetProvider>
   );
 }

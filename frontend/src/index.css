@@ -7,6 +7,7 @@ Global variables for colors
 */
 :root {
   --accent: #5a6448;
+  --accent-light: #6b7755;
   --primary: #dfdacb;
   --primary-light: #f8f7f4;
   --primary-dark: #b2aea2;
@@ -45,7 +46,7 @@ Global variables for colors
   box-sizing: border-box;
   --z-index-v-1: -1; /* used in Hero.css, .cart-page.bg*/
   --z-index-v-2: 1; /* used in Hero.css */ /* used in FAQ.css */
-  --z-index-v-3: 2;
+  --z-index-v-3: 2; /* used in breadcrumbs */
   --z-index-v-4: 3;
   --z-index-v-5: 4; /* cart */
   --z-index-v-6: 5; /* used in Arrow Up */
@@ -71,10 +72,6 @@ a {
   text-decoration: none;
 }
 
-.page {
-  min-height: calc(100vh - (12rem + 10rem));
-}
-
 /*  */
 .bm-overlay {
   display: none;
@@ -93,8 +90,7 @@ a {
   transform: scale(1);
 }
 
-/* Overwrite the default "flowbite-react" package Styles */
-.custom-button-style {
+/* Overwrite the default 'flowbite-react' package Styles .custom-button-style {
   background-color: var(--sage) !important;
   color: var(--white) !important;
   border: none !important;
@@ -114,7 +110,7 @@ a {
 .custom-button-style:focus {
   outline: none !important;
   box-shadow: none !important;
-}
+} */
 
 /* Target the input fields during autofill */
 input:-webkit-autofill,
@@ -281,6 +277,10 @@ input::placeholder {
 /* z-index stack */
 .dashboard-nav-index {
   z-index: var(--z-index-v-2);
+}
+
+.breadcrumbs-z-index-v-3 {
+  z-index: var(--z-index-v-3);
 }
 
 .desktop-nav-z-index-v-10 {

@@ -12,7 +12,7 @@ import Gallery from './pages/Gallery';
 import Faq from './pages/Faq';
 import Contact from './pages/Contact';
 import Cart from './pages/user/Cart';
-import Login from './pages/user/Login';
+import Login from '@/pages/auth/login';
 import Register from './pages/user/Register';
 import NotFound from './pages/NotFound';
 import Dashboard from './pages/user/Dashboard';
@@ -39,7 +39,7 @@ import SponsorShipDetails from './pages/user/SponsorShipDetails';
 
 function App() {
   return (
-    <div>
+    <>
       <AuthProvider>
         <CartContextProvider>
           <PatronProvider>
@@ -158,7 +158,7 @@ function App() {
           </PatronProvider>
         </CartContextProvider>
       </AuthProvider>
-    </div>
+    </>
   );
 }
 
