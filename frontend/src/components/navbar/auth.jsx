@@ -1,17 +1,11 @@
 import { useContext, useState } from 'react';
 import { Link } from 'react-router-dom';
-import logoImage from '/images/logo/bbb-logo.svg';
-import { FaCartArrowDown } from 'react-icons/fa6';
-import {
-  IoIosArrowDown,
-  IoIosArrowUp,
-  IoMdLogIn,
-  IoMdLogOut,
-} from 'react-icons/io';
 import { CgProfile } from 'react-icons/cg';
+import { FaCartArrowDown } from 'react-icons/fa6';
+import { IoIosArrowDown, IoIosArrowUp, IoMdLogOut } from 'react-icons/io';
 import { CartContext } from '@/store/cart-context';
-import { Tooltip } from 'flowbite-react';
 import { useUser } from '@/store/auth-context';
+import logoImage from '/images/logo/bbb-logo.svg';
 
 export default function AuthNavbar() {
   const { loggedIn, authUser } = useUser();

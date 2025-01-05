@@ -1,55 +1,65 @@
 import { useState, useEffect, useContext } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
+import { useForm } from 'react-hook-form';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { z } from 'zod';
+import Swal from 'sweetalert2';
 import { Helmet } from 'react-helmet-async';
 import { Button, Label, TextInput, Tooltip, Spinner } from 'flowbite-react';
 import { HiHome } from 'react-icons/hi';
-import backgroundImage from '../../assets/images/leaves_background_02.webp';
-import { AuthContext } from '@/store/auth-context';
-import axios from '../../utils/axiosInstance';
-import Swal from 'sweetalert2';
 import { HiEye, HiEyeOff } from 'react-icons/hi';
-import treeIcon from '../../assets/tree.png';
-import { AiOutlineLogin } from 'react-icons/ai';
+import axios from '../../utils/axiosInstance';
+import { AuthContext } from '@/store/auth-context';
 import { Breadcrumb, BreadcrumbItem } from '@/components/elements/breadcrumb';
+import backgroundImage from '/images/background/leaves-background.webp';
+import treeIcon from '/images/misc/tree.png';
+
+// Define schema with zod
+const schema = z.object({
+  email: z.string().email({ message: 'Please enter a valid email address.' }),
+  password: z.string().min(3, { message: 'Please use at least 3 characters.' }),
+});
 
 export default function Login() {
   const { loggedIn, setLoggedIn, setAuthUser, setExpiredTime } =
     useContext(AuthContext);
   const navigate = useNavigate();
+  const [isProcessing, setIsProcessing] = useState(false);
+  const [showPassword, setShowPassword] = useState(false);
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+    reset,
+    trigger,
+    setValue,
+  } = useForm({
+    resolver: zodResolver(schema),
+    mode: 'onTouched',
+    reValidateMode: 'onChange',
+  });
+
   useEffect(() => {
     if (loggedIn) {
       navigate('/dashboard');
     }
   }, [loggedIn, navigate]);
 
-  const [errors, setErrors] = useState([]);
-  const [backError, setBackError] = useState('');
-  const [isProcessing, setIsProcessing] = useState(false);
-
-  const [showPassword, setShowPassword] = useState(false);
-
   const togglePasswordVisibility = () => {
     setShowPassword(!showPassword);
   };
 
-  const handleLogin = async e => {
-    e.preventDefault();
-    const loginData = new FormData(e.target);
-
-    const data = {
-      email: loginData.get('email'),
-      password: loginData.get('password'),
-    };
+  const onSubmit = async formData => {
     setIsProcessing(true);
+
     try {
-      const response = await axios.post('/api/users/login', data);
-      setErrors([]);
-      setBackError('');
-      if (response.status === 200) {
+      const response = await axios.post('/api/users/login', formData);
+
+      if (response.ok) {
         setAuthUser(response.data.user);
         setExpiredTime(Date.now() + 3600000);
         setLoggedIn(true);
-        setIsProcessing(false);
+        reset();
         // Display success message
         Swal.fire({
           icon: 'success',
@@ -78,13 +88,8 @@ export default function Login() {
         });
       }
     } catch (error) {
-      setErrors([]);
-      setBackError('');
-      setIsProcessing(false);
       // Handle errors that occurred during the POST request
       if (error.response && error.response.status === 400) {
-        setErrors(error.response.data.errors);
-
         let errorMessage = '<ul>';
 
         // Loop through error messages and append to the list
@@ -117,6 +122,8 @@ export default function Login() {
           buttonsStyling: false,
         });
       }
+    } finally {
+      setIsProcessing(false);
     }
   };
 
@@ -161,7 +168,7 @@ export default function Login() {
             </Tooltip>
           </div>
 
-          <form onSubmit={handleLogin} className='w-full space-y-6'>
+          <form onSubmit={handleSubmit(onSubmit)} className='w-full space-y-6'>
             <div>
               <Label
                 htmlFor='email'
@@ -169,11 +176,14 @@ export default function Login() {
                 className='visually-hidden'
               />
               <TextInput
-                id='email'
                 type='email'
-                name='email'
+                {...register('email')}
                 placeholder='Your Email Address'
-                className='h-[42px]'
+                className={`border-primary-light h-[46px] rounded-xl border-2 ${
+                  errors.name
+                    ? 'border-red-500 focus:border-red-500'
+                    : 'focus:border-primary'
+                }`}
               />
             </div>
             <div style={{ position: 'relative' }}>
@@ -183,9 +193,8 @@ export default function Login() {
                 className='visually-hidden'
               />
               <TextInput
-                id='password'
                 type={showPassword ? 'text' : 'password'}
-                name='password'
+                {...register('password')}
                 placeholder='Your Password'
                 className='h-[42px]'
               />
