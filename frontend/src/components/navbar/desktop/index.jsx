@@ -5,7 +5,7 @@ import { MdContacts } from 'react-icons/md';
 import { FaHome, FaTree, FaRegNewspaper, FaImages } from 'react-icons/fa';
 import AuthNavbar from '@/components/navbar/auth';
 import NavMenuLink from '@/components/navbar/desktop/nav-menu-link';
-import Divider from '@/components/navbar/divider';
+import Divider from '@/components/navbar/desktop/divider';
 
 export default function DesktopNavbar({ isNavbarFixed, setIsNavbarFixed }) {
   /* Handle DesktopNavbar on Scroll */
