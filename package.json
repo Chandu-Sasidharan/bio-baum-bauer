@@ -5,7 +5,7 @@
   "description": "Bio Baum Bauer Website",
   "scripts": {
     "start": "docker-compose -f docker-compose.yml up -d --build",
-    "stop": "docker-compose -f docker-compose.yml down",
+    "stop": "docker-compose -f docker-compose.yml down && docker volume prune -f && docker container prune -f && docker image prune -f",
     "test": "echo \"No tests specified\"",
     "prepare": "husky"
   },

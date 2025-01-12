@@ -90,67 +90,6 @@ a {
   transform: scale(1);
 }
 
-/* Overwrite the default 'flowbite-react' package Styles .custom-button-style {
-  background-color: var(--sage) !important;
-  color: var(--white) !important;
-  border: none !important;
-  border-radius: 10px !important;
-  padding: 4px 16px !important;
-  transition: all 0.4s linear;
-  outline: none;
-  box-shadow: none !important;
-}
-
-.custom-button-style:hover {
-  background-color: var(--aloe) !important;
-  color: var(--accent) !important;
-  border: none !important;
-}
-
-.custom-button-style:focus {
-  outline: none !important;
-  box-shadow: none !important;
-} */
-
-/* Target the input fields during autofill */
-input:-webkit-autofill,
-input:-webkit-autofill:hover,
-input:-webkit-autofill:focus,
-#password:-webkit-autofill,
-#password:-webkit-autofill:hover,
-#password:-webkit-autofill:focus,
-#email:-webkit-autofill,
-#email:-webkit-autofill:hover,
-#email:-webkit-autofill:focus {
-  -webkit-box-shadow: 0 0 0 1000px #f4f5f3 inset !important;
-  box-shadow: 0 0 0 1000px #f4f5f3 inset !important;
-  -webkit-text-fill-color: var(--stone) !important;
-  caret-color: var(--stone) !important;
-}
-
-/* Override the background color during autofill for Edge */
-input:-ms-input-placeholder {
-  background-color: #f4f5f3 !important;
-}
-
-/* Override the background color during autofill for Firefox */
-@-moz-document url-prefix() {
-  #password,
-  #email,
-  input {
-    background-color: #f4f5f3 !important;
-    color: var(--stone) !important;
-  }
-}
-
-/* overwrite flowbite-react styles */
-input:focus,
-input:active {
-  outline: none !important;
-  border: 2px solid var(--accent) !important;
-  box-shadow: none !important;
-}
-
 /* Hide Label values */
 .visually-hidden {
   position: absolute;
@@ -177,15 +116,6 @@ input:active {
 
 .animate-slideInDown {
   animation: slideInDown 0.5s ease-in-out;
-}
-
-/* placeholder text color */
-input::placeholder {
-  color: var(--stone);
-}
-.input {
-  background-color: white;
-  border-radius: 10px;
 }
 
 /* sweet alert custom button */
