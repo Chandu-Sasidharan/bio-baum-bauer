@@ -9,11 +9,9 @@ import fs from 'fs';
 
 const app = express();
 
-const port = process.env.PORT || 4000;
 app.use(helmet()); //provide basic securites
-allowCors(app);
-// app.use(express.static('public'));
-app.use(express.json());
+allowCors(app); // allow cors
+app.use(express.json()); // parse json
 app.use(cookieParser()); // parse cookies
 
 // log requests to access.log
@@ -22,16 +20,21 @@ const accessLogStream = fs.createWriteStream('./logs/access.log', {
 });
 app.use(morgan('combined', { stream: accessLogStream }));
 
+// log requests to console if in development
 if (app.get('env') === 'development') {
-  app.use(morgan('tiny')); // provide logging to the console
+  app.use(morgan('tiny'));
 }
 
+// Home route for testing
 app.get('/', (_, res) => {
   res.send('<h1>Backend is running!!!</h1>');
 });
+
+// All routes
 app.use('/api', allRoutes);
 
 // Start server
+const port = process.env.PORT || 4000;
 app.listen(port, async () => {
   try {
     await db.connect();
