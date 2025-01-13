@@ -1,6 +1,3 @@
-import dotenv from "dotenv";
-import stripe from "stripe";
-
-dotenv.config();
+import stripe from 'stripe';
 
 export const stripeInstance = stripe(process.env.STRIPE_API_SECRET_KEY);

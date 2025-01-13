@@ -1,3 +1,1 @@
 # baum-bauer-backend
-
-<!-- Todo -->

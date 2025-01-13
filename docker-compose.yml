@@ -11,7 +11,7 @@ services:
       - /app/node_modules
     env_file:
       - ./frontend/.env
-    restart: always
+    restart: unless-stopped
 
   backend:
     build:
@@ -23,4 +23,4 @@ services:
       - /app/node_modules
     env_file:
       - ./backend/.env
-    restart: always
+    restart: unless-stopped
