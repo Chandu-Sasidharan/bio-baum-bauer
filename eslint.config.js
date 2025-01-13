@@ -22,8 +22,6 @@ export default [
       'no-unused-vars': [
         'error',
         {
-          // Prevent unused arguments
-          args: 'after-used',
           // Ignore function arguments prefixed with `_`
           argsIgnorePattern: '^_',
           // Ignore caught errors in `catch` blocks
