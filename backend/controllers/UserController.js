@@ -314,5 +314,5 @@ export const logoutUser = (req, res) => {
     secure: isProduction,
   });
 
-  res.status(StatusCodes.OK).json({ message: 'User logged out successfully' });
+  res.status(StatusCodes.OK).json({ message: 'User logged out' });
 };
