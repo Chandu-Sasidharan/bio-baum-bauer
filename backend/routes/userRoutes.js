@@ -1,38 +1,64 @@
-import express from "express";
+import express from 'express';
 import {
-    createNewUser,
-    getAllUsers,
-    findUserById,
-    findUserByEmail,
-    updateById,
-    findByEmailAndUpdate,
-    deleteUserBasedOnId,
-    login,
-    changePassword,
-    logoutUser
-} from "../controllers/UserController.js";
+  createNewUser,
+  getAllUsers,
+  findUserById,
+  findUserByEmail,
+  updateById,
+  findByEmailAndUpdate,
+  deleteUserBasedOnId,
+  loginUser,
+  changePassword,
+  logoutUser,
+} from '../controllers/userController.js';
 const router = express.Router();
 import {
-    loginUserValidator,
-    allUserFieldValidator,
-    parameterValidator,
-    validateResultUser
-} from "../helpers/userValidation.js";
-import {changePasswordValidator,validateResultPassword} from '../helpers/passwordValidation.js'
+  validateLogin,
+  validateUserFields,
+  validateParams,
+  handleValidationResults,
+} from '../helpers/userValidation.js';
+import {
+  validateChangePassword,
+  handlePasswordValidationResults,
+} from '../helpers/passwordValidation.js';
 
 // route for user
-router.post('/create-user',
-    allUserFieldValidator,
-    validateResultUser, createNewUser);
+router.post(
+  '/create-user',
+  validateUserFields,
+  handleValidationResults,
+  createNewUser
+);
 
 router.get('/get-all-users', getAllUsers);
-router.get('/find-by-id/:uId', parameterValidator, validateResultUser, findUserById);
+router.get(
+  '/find-by-id/:uId',
+  validateParams,
+  handleValidationResults,
+  findUserById
+);
 router.get('/find-by-email', findUserByEmail);
-router.patch('/update-by-id/:uId', parameterValidator, validateResultUser, updateById);
+router.patch(
+  '/update-by-id/:uId',
+  validateParams,
+  handleValidationResults,
+  updateById
+);
 router.patch('/find-by-email-and-update/', findByEmailAndUpdate);
-router.delete('/find-by-id-and-delete/:uId', parameterValidator, validateResultUser, deleteUserBasedOnId);
-router.post('/login', loginUserValidator, validateResultUser, login);
-router.post('/chang-password/:uId', changePasswordValidator,validateResultPassword,changePassword);
-router.get('/logout', logoutUser)
+router.delete(
+  '/find-by-id-and-delete/:uId',
+  validateParams,
+  handleValidationResults,
+  deleteUserBasedOnId
+);
+router.post('/login', validateLogin, handleValidationResults, loginUser);
+router.post(
+  '/change-password/:uId',
+  validateChangePassword,
+  handlePasswordValidationResults,
+  changePassword
+);
+router.get('/logout', logoutUser);
 
 export default router;

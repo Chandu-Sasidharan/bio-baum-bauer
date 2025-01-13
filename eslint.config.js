@@ -19,7 +19,15 @@ export default [
     },
     rules: {
       // override or add your own
-      'no-unused-vars': ['error', { argsIgnorePattern: '^_' }],
+      'no-unused-vars': [
+        'error',
+        {
+          // Ignore function arguments prefixed with `_`
+          argsIgnorePattern: '^_',
+          // Ignore caught errors in `catch` blocks
+          caughtErrors: 'none',
+        },
+      ],
       'no-console': 'warn',
     },
   },

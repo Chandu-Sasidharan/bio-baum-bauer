@@ -1,4 +1,4 @@
-const bcrypt = await import('bcryptjs');
+import bcrypt from 'bcryptjs';
 import { StatusCodes } from 'http-status-codes';
 import { generateJwt } from '../helpers/jwt.js';
 import User from '../models/User.js';
@@ -45,7 +45,7 @@ export const createNewUser = async (req, res) => {
   } catch (error) {
     return res
       .status(StatusCodes.INTERNAL_SERVER_ERROR)
-      .json({ message: error.message });
+      .json({ message: 'Somthing went wrong!' });
   }
 };
 
@@ -65,7 +65,7 @@ export const getAllUsers = async (req, res) => {
   } catch (error) {
     return res
       .status(StatusCodes.INTERNAL_SERVER_ERROR)
-      .json({ message: error.message });
+      .json({ message: 'Somthing went wrong!' });
   }
 };
 
@@ -90,7 +90,7 @@ export const findUserById = async (req, res) => {
   } catch (error) {
     return res
       .status(StatusCodes.INTERNAL_SERVER_ERROR)
-      .json({ message: error.message });
+      .json({ message: 'Somthing went wrong!' });
   }
 };
 
@@ -113,7 +113,7 @@ export const findUserByEmail = async (req, res) => {
   } catch (error) {
     return res
       .status(StatusCodes.INTERNAL_SERVER_ERROR)
-      .json({ message: error.message });
+      .json({ message: 'Somthing went wrong!' });
   }
 };
 
@@ -154,7 +154,7 @@ export const updateById = async (req, res) => {
   } catch (error) {
     return res
       .status(StatusCodes.INTERNAL_SERVER_ERROR)
-      .json({ message: error.message });
+      .json({ message: 'Somthing went wrong!' });
   }
 };
 
@@ -181,7 +181,7 @@ export const findByEmailAndUpdate = async (req, res) => {
   } catch (error) {
     return res
       .status(StatusCodes.INTERNAL_SERVER_ERROR)
-      .json({ message: error.message });
+      .json({ message: 'Somthing went wrong!' });
   }
 };
 
@@ -205,7 +205,7 @@ export const deleteUserBasedOnId = async (req, res) => {
   } catch (error) {
     return res
       .status(StatusCodes.INTERNAL_SERVER_ERROR)
-      .json({ message: error.message });
+      .json({ message: 'Somthing went wrong!' });
   }
 };
 
@@ -214,7 +214,7 @@ export const deleteUserBasedOnId = async (req, res) => {
  * @param {*} req
  * @param {*} res
  */
-export const login = async (req, res) => {
+export const loginUser = async (req, res) => {
   const isProduction = process.env.NODE_ENV === 'production';
   const { email, password } = req.body;
 
@@ -246,7 +246,7 @@ export const login = async (req, res) => {
   } catch (error) {
     return res
       .status(StatusCodes.INTERNAL_SERVER_ERROR)
-      .json({ message: error.message });
+      .json({ message: 'Somthing went wrong!' });
   }
 };
 
@@ -297,7 +297,7 @@ export const changePassword = async (req, res) => {
   } catch (error) {
     return res
       .status(StatusCodes.INTERNAL_SERVER_ERROR)
-      .json({ message: error.message });
+      .json({ message: 'Somthing went wrong!' });
   }
 };
 
@@ -307,9 +307,11 @@ export const changePassword = async (req, res) => {
  * @param {*} res
  */
 export const logoutUser = (req, res) => {
+  const isProduction = process.env.NODE_ENV === 'production';
+
   res.clearCookie('jwt', {
     httpOnly: true,
-    secure: false,
+    secure: isProduction,
   });
 
   res.status(StatusCodes.OK).json({ message: 'User logged out successfully' });

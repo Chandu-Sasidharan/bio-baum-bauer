@@ -1,47 +1,38 @@
-import { body ,validationResult} from "express-validator";
-import { StatusCodes } from "http-status-codes";
+import { body, validationResult } from 'express-validator';
+import { StatusCodes } from 'http-status-codes';
 
-
-
-export const changePasswordValidator = [
-  body("currentPassword")
+export const validateChangePassword = [
+  body('currentPassword')
     .trim()
     .notEmpty()
-    .withMessage("Current Password feild should not be empty..!")
-    .isStrongPassword()
-    .withMessage(
-      "Password needs to contain at least 8 characters, minimum one lower case character, minimum one uppercase character, minimum one number and minimum one symbol."
-    ),body("newPassword")
+    .withMessage('Current Password field should not be empty!'),
+  body('newPassword')
     .trim()
     .notEmpty()
-    .withMessage("New Password field should not be empty..!")
-    .isStrongPassword()
-    .withMessage(
-      "The New Password needs to contain at least 8 characters, minimum one lower case character, minimum one uppercase character, minimum one number and minimum one symbol."
-    ),body("confirmNewPassword")
+    .withMessage('New Password field should not be empty..!')
+    .isLength({ min: 5 })
+    .withMessage('Password should be at least 5 characters'),
+  body('confirmNewPassword')
     .trim()
     .notEmpty()
-    .withMessage("Confirm Password field should not be empty..!")
-    .isStrongPassword()
-   /*  .withMessage(
-      "Password needs to contain at least 8 characters, minimum one lower case character, minimum one uppercase character, minimum one number and minimum one symbol."
-    ) */.custom((value, { req }) => {
-        if (value !== req.body.newPassword) {
-          throw new Error("The New Password Field should match with Confirm Password Field");
-        }
-        return true;
-      })
-
+    .withMessage('Confirm Password field should not be empty!')
+    .custom((value, { req }) => {
+      if (value !== req.body.newPassword) {
+        throw new Error(
+          'Password confirmation does not match the new password'
+        );
+      }
+      return true;
+    }),
 ];
 
-export const validateResultPassword = (req, res, next) => {
-    const errors = validationResult(req);
-    //if there are errors
-    if (!errors.isEmpty()) {
-      //response code 400
-      return res.status(StatusCodes.BAD_REQUEST).json({ errors: errors.array() });
-    }
-    // if there is not any error, should pass the control to next middleware
-    next();
-  };
-  
+export const handlePasswordValidationResults = (req, res, next) => {
+  const errors = validationResult(req);
+  // If there are errors
+  if (!errors.isEmpty()) {
+    // Response code 400
+    return res.status(StatusCodes.BAD_REQUEST).json({ errors: errors.array() });
+  }
+  // If there is no error, pass the control to the next middleware
+  next();
+};

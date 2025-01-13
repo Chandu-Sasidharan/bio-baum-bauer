@@ -72,7 +72,6 @@ export default function Login() {
         navigate('/dashboard');
       } else {
         // Handle other server response statuses
-        console.error('Error: ', response.data.message);
         setIsProcessing(false);
         Swal.fire({
           icon: 'error',
@@ -86,7 +85,6 @@ export default function Login() {
         });
       }
     } catch (error) {
-      console.log('Error: ', error);
       // Handle errors that occurred during the POST request
       if (error.response && error.response.status === 400) {
         let errorMessage = '<ul>';

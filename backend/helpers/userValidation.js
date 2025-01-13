@@ -1,103 +1,95 @@
-import { body, param, validationResult } from "express-validator";
-import { changeToUpperCase } from "./generalSanitizers.js";
-import { StatusCodes } from "http-status-codes";
-import User from "../models/User.js";
-import { ObjectId } from "mongodb";
+import { body, param, validationResult } from 'express-validator';
+import { changeToUpperCase } from './generalSanitizers.js';
+import { StatusCodes } from 'http-status-codes';
+import User from '../models/User.js';
+import { ObjectId } from 'mongodb';
+
 /**
  * Validations for the fields of user
  */
-export const allUserFieldValidator = [
-  body(["firstName", "lastName"])
+export const validateUserFields = [
+  body(['firstName', 'lastName'])
     .trim()
     .notEmpty()
-    .withMessage("FirstName and LastName should not be empty..!")
+    .withMessage('FirstName and LastName should not be empty!')
     .isLength({ min: 3, max: 20 })
     .withMessage(
-      "The length of FirsName and LastName should be between 3 and 20"
+      'The length of FirstName and LastName should be between 3 and 20 characters'
     )
-    .customSanitizer((value) => changeToUpperCase(value)),
-  body("city").trim().notEmpty().withMessage("city is required"),
-  body("zipCode").trim().notEmpty().withMessage("zipCode is required"),
-  body("address1").trim().notEmpty().withMessage("Address Line 1 is required!"),
-  body("email")
+    .customSanitizer(value => changeToUpperCase(value)),
+  body('city').trim().notEmpty().withMessage('Please provide the city name'),
+  body('zipCode').trim().notEmpty().withMessage('Please provide the zip code'),
+  body('address1').trim().notEmpty().withMessage('Please provide the address'),
+  body('email')
     .trim()
     .notEmpty()
-    .withMessage("Email should not be empty...!")
+    .withMessage('Email should not be empty!')
     .isEmail()
-    .withMessage("This field is an email address..!")
-    .custom(async (value) => {
-      const isThisEmailExist = await User.findOne({ email: value });
-      if (isThisEmailExist) {
-        throw new Error(`A user with email address ${value} already exist!`);
+    .withMessage('Please provide a valid email')
+    .custom(async email => {
+      const userExists = await User.findOne({ email });
+      if (userExists) {
+        throw new Error('An account with this email already exists');
       }
     }),
-  body("mobilePhone")
+  body('mobilePhone')
     .trim()
     .notEmpty()
-    .withMessage("Mobile Number Should not be empty..!"),
-  // .isMobilePhone('de-DE')
-  // .withMessage('Only Germany Phone Number is accepted..!'),
-  body("password")
+    .withMessage('Please provide the mobile phone number'),
+  body('password')
     .trim()
     .notEmpty()
-    .withMessage("Password should not be empty..!")
-    .isStrongPassword()
-    .withMessage(
-      "Password needs to contain at least 8 characters, minimum one lower case character, minimum one uppercase character, minimum one number and minimum one symbol."
-    ),
-  body("passwordConfirmation")
+    .withMessage('Password should not be empty!')
+    .isLength({ min: 5 })
+    .withMessage('Password should be at least 5 characters'),
+  body('passwordConfirmation')
     .trim()
     .notEmpty()
-    .withMessage("Password Confirmation should not left empty..!")
+    .withMessage('Password Confirmation should not be left empty!')
     .custom((value, { req }) => {
       if (value !== req.body.password) {
-        throw new Error("password should match with Confirm Password");
+        throw new Error('Password should match with Confirm Password');
       }
       return true;
     }),
 ];
 
 /**
- * this function is used for parameter Validation
+ * This function is used for parameter validation
  * @returns
  */
-export const parameterValidator = [
-  param("uId").custom((value) => {
-    // the parameter need to be only from ObjectId type
+export const validateParams = [
+  param('uId').custom(value => {
+    // The parameter needs to be only of ObjectId type
     if (!ObjectId.isValid(value)) {
-      throw new Error("Parameter can be only of type ObjectId");
+      throw new Error('User ID is not valid');
     }
     return true;
   }),
 ];
 
-
-export const loginUserValidator = [
-    body('email')
-        .trim()
-        .isEmail()
-        .withMessage('provide an email'),
-    body('password')
-        .trim()
-        .isStrongPassword()
-        .withMessage('Password should be strong')
-
+export const validateLogin = [
+  body('email').trim().isEmail().withMessage('Provide a valid email'),
+  body('password')
+    .trim()
+    .notEmpty()
+    .withMessage('Password should not be empty!'),
 ];
 
 /**
- * for validating
+ * For validating the results
  * @param {*} req
  * @param {*} res
  * @param {*} next
  * @returns
  */
-export const validateResultUser = (req, res, next) => {
+export const handleValidationResults = (req, res, next) => {
   const errors = validationResult(req);
-  //if there are errors
+  // If there are errors
   if (!errors.isEmpty()) {
-    //response code 400
+    // Response code 400
     return res.status(StatusCodes.BAD_REQUEST).json({ errors: errors.array() });
   }
-  // if there is not any error, should pass the control to next middleware
+  // If there is no error, pass the control to the next middleware
   next();
 };
