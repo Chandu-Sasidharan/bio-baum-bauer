@@ -13,7 +13,7 @@ import Faq from './pages/Faq';
 import Contact from './pages/Contact';
 import Cart from './pages/user/Cart';
 import Login from '@/pages/auth/login';
-import Register from './pages/user/Register';
+import Signup from './pages/auth/signup';
 import NotFound from './pages/NotFound';
 import Dashboard from './pages/user/Dashboard';
 import UpdateProfile from './pages/user/UpdateProfile';
@@ -83,7 +83,7 @@ function App() {
                     }
                   />
                   <Route path='/login' element={<Login />} />
-                  <Route path='/register' element={<Register />} />
+                  <Route path='/signup' element={<Signup />} />
                   <Route
                     path='/dashboard'
                     element={

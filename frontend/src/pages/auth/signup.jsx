@@ -15,12 +15,22 @@ import treeIcon from '/images/misc/tree.png';
 import showAlert from '@/utils/alert';
 
 // Define schema with zod
-const schema = z.object({
-  email: z.string().email({ message: 'Please enter a valid email address.' }),
-  password: z.string().min(5, { message: 'Please use at least 5 characters.' }),
-});
+const schema = z
+  .object({
+    email: z.string().email({ message: 'Please enter a valid email address.' }),
+    password: z
+      .string()
+      .min(5, { message: 'Please use at least 5 characters.' }),
+    confirmPassword: z
+      .string()
+      .min(5, { message: 'Please use at least 5 characters.' }),
+  })
+  .refine(data => data.password === data.confirmPassword, {
+    message: "Passwords don't match",
+    path: ['confirmPassword'],
+  });
 
-export default function Login() {
+export default function Signup() {
   const { loggedIn, setLoggedIn, setAuthUser, setExpiredTime } =
     useContext(AuthContext);
   const navigate = useNavigate();
@@ -52,9 +62,9 @@ export default function Login() {
     setIsProcessing(true);
 
     try {
-      const response = await axios.post('/api/users/login', formData);
+      const response = await axios.post('/api/users/create-user', formData);
 
-      if (response.status === 200) {
+      if (response.status === 201) {
         setAuthUser(response.data.user);
         setExpiredTime(Date.now() + 3600000);
         setLoggedIn(true);
@@ -62,21 +72,21 @@ export default function Login() {
         // Display success message
         showAlert(
           'success',
-          'Login Successful!',
-          'You have successfully logged in.'
+          'Sign Up Successful!',
+          'You have successfully created your account.'
         );
         navigate('/dashboard');
       } else {
         // Handle other server response statuses
         showAlert(
           'error',
-          'Login Failed',
-          response.data.message || 'An error occurred during login!'
+          'Sign Up Failed',
+          response.data.message || 'An error occurred during sign up!'
         );
       }
     } catch (error) {
       // Handle errors that occurred during the POST request
-      let errorMessage = 'An error occurred during login!';
+      let errorMessage = 'An error occurred during sign up!';
       if (error.response) {
         if (error.response.status === 400) {
           errorMessage = '<ul>';
@@ -90,7 +100,7 @@ export default function Login() {
         }
       }
 
-      showAlert('error', 'Login Failed', null, errorMessage);
+      showAlert('error', 'Sign Up Failed', null, errorMessage);
     } finally {
       setIsProcessing(false);
     }
@@ -99,7 +109,7 @@ export default function Login() {
   return (
     <>
       <Helmet>
-        <title>Login | Bio Baum Bauer</title>
+        <title>Signup | Bio Baum Bauer</title>
       </Helmet>
 
       <div className='relative flex flex-col items-center'>
@@ -113,7 +123,7 @@ export default function Login() {
         <Breadcrumb label='Site navigation' className='self-start px-4 py-2'>
           <HiHome />
           <BreadcrumbItem href='/'>Home</BreadcrumbItem>
-          <BreadcrumbItem current>Login</BreadcrumbItem>
+          <BreadcrumbItem current>Signup</BreadcrumbItem>
         </Breadcrumb>
 
         {/* Flex Row2 */}
@@ -125,14 +135,14 @@ export default function Login() {
               className='mr-2 h-[30px] w-[30px]'
             />
             <h3 className='text-accent font-chicle inline-block text-3xl tracking-wide'>
-              Login
+              Sign Up
             </h3>
           </div>
           <div className='flex items-center'>
-            <span className='mr-2 inline-block'>New to the farm?</span>
+            <span className='mr-2 inline-block'>Already have an account?</span>
             <Tooltip content='Click here to sign up'>
-              <Link to='/signup' className='text-accent font-bold underline'>
-                Sign Up
+              <Link to='/login' className='text-accent font-bold underline'>
+                Login
               </Link>
             </Tooltip>
           </div>
@@ -213,13 +223,50 @@ export default function Login() {
               </div>
             </div>
 
-            {/* Forget Password */}
-            <div className='flex items-center gap-2'>
-              <Tooltip content='Click here to reset your password'>
-                <Link to='' className='text-accent underline'>
-                  Forgot Password?
-                </Link>
-              </Tooltip>
+            {/* Confirm Password Field */}
+            <div className='relative'>
+              <label className='absolute left-3 top-[16px]'>
+                <svg
+                  xmlns='http://www.w3.org/2000/svg'
+                  viewBox='0 0 16 16'
+                  fill='currentColor'
+                  className='h-4 w-4 opacity-70'
+                >
+                  <path
+                    fillRule='evenodd'
+                    d='M14 6a4 4 0 0 1-4.899 3.899l-1.955 1.955a.5.5 0 0 1-.353.146H5v1.5a.5.5 0 0 1-.5.5h-2a.5.5 0 0 1-.5-.5v-2.293a.5.5 0 0 1 .146-.353l3.955-3.955A4 4 0 1 1 14 6Zm-4-2a.75.75 0 0 0 0 1.5.5.5 0 0 1 .5.5.75.75 0 0 0 1.5 0 2 2 0 0 0-2-2Z'
+                    clipRule='evenodd'
+                  />
+                </svg>
+              </label>
+              <input
+                type={showPassword ? 'text' : 'password'}
+                {...register('confirmPassword')}
+                placeholder='Confirm Your Password'
+                className={`input input-bordered w-full pl-10 focus:outline-none lg:flex-1 ${
+                  errors.confirmPassword
+                    ? 'border-red focus:border-red'
+                    : 'focus:border-primary'
+                }`}
+              />
+              <div className='mt-[2px] h-4'>
+                {errors.confirmPassword && (
+                  <p className='text-red text-sm'>
+                    {errors.confirmPassword.message}
+                  </p>
+                )}
+              </div>
+
+              <div
+                className='absolute right-3 top-[13px] cursor-pointer'
+                onClick={togglePasswordVisibility}
+              >
+                {showPassword ? (
+                  <HiEyeOff className='text-2xl' />
+                ) : (
+                  <HiEye className='text-2xl' />
+                )}
+              </div>
             </div>
 
             {/* Submit Button */}
@@ -235,10 +282,10 @@ export default function Login() {
                       size='sm'
                       color='text-primary-light'
                     />
-                    <span className='pl-3'>Logging in...</span>
+                    <span className='pl-3'>Signing up...</span>
                   </>
                 ) : (
-                  <span>&nbsp;Login</span>
+                  <span>&nbsp;Sign Up</span>
                 )}
               </Button>
             </div>
