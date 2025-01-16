@@ -11,38 +11,21 @@ import User from '../models/User.js';
  */
 
 export const createNewUser = async (req, res) => {
-  const {
-    firstName,
-    lastName,
-    email,
-    password,
-    mobilePhone,
-    userType,
-    city,
-    zipCode,
-    address1,
-    address2,
-    state,
-  } = req.body;
+  const { email, password } = req.body;
 
-  const address = { city, zipCode, address1, address2, state };
-  const hashedPassword = await bcrypt.hash(password, 12);
+  const hashedPassword = await bcrypt.hash(password, 10);
 
   try {
     const user = await User.create({
-      firstName,
-      lastName,
-      address,
       email,
       password: hashedPassword,
-      mobilePhone,
-      userType,
     });
 
     return res
       .status(StatusCodes.CREATED)
-      .json({ message: 'User created successfully', user });
+      .json({ message: 'Account created successfully', user });
   } catch (error) {
+    console.log(error);
     return res
       .status(StatusCodes.INTERNAL_SERVER_ERROR)
       .json({ message: 'Somthing went wrong!' });

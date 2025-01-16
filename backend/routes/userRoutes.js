@@ -1,4 +1,5 @@
 import express from 'express';
+const router = express.Router();
 import {
   createNewUser,
   getAllUsers,
@@ -11,10 +12,9 @@ import {
   changePassword,
   logoutUser,
 } from '../controllers/userController.js';
-const router = express.Router();
 import {
   validateLogin,
-  validateUserFields,
+  validateSignup,
   validateParams,
   handleValidationResults,
 } from '../helpers/userValidation.js';
@@ -24,12 +24,7 @@ import {
 } from '../helpers/passwordValidation.js';
 
 // route for user
-router.post(
-  '/create-user',
-  validateUserFields,
-  handleValidationResults,
-  createNewUser
-);
+router.post('/signup', validateSignup, handleValidationResults, createNewUser);
 
 router.get('/get-all-users', getAllUsers);
 router.get(

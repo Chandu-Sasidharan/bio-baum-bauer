@@ -62,7 +62,7 @@ export default function Signup() {
     setIsProcessing(true);
 
     try {
-      const response = await axios.post('/api/users/create-user', formData);
+      const response = await axios.post('/api/users/signup', formData);
 
       if (response.status === 201) {
         setAuthUser(response.data.user);

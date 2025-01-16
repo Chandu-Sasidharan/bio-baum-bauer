@@ -4,9 +4,37 @@ import { StatusCodes } from 'http-status-codes';
 import User from '../models/User.js';
 import { ObjectId } from 'mongodb';
 
-/**
- * Validations for the fields of user
- */
+export const validateSignup = [
+  body('email')
+    .trim()
+    .notEmpty()
+    .withMessage('Email should not be empty.')
+    .isEmail()
+    .withMessage('Please enter a valid email address.')
+    .custom(async value => {
+      const user = await User.findOne({ email: value });
+      if (user) {
+        throw new Error('Email is already in use.');
+      }
+    }),
+  body('password')
+    .trim()
+    .notEmpty()
+    .withMessage('Password should not be empty.')
+    .isLength({ min: 5 })
+    .withMessage('Password should be at least 5 characters long.'),
+  body('confirmPassword')
+    .trim()
+    .notEmpty()
+    .withMessage('Confirm Password should not be empty.')
+    .custom((value, { req }) => {
+      if (value !== req.body.password) {
+        throw new Error('Passwords do not match.');
+      }
+      return true;
+    }),
+];
+
 export const validateUserFields = [
   body(['firstName', 'lastName'])
     .trim()
@@ -54,10 +82,6 @@ export const validateUserFields = [
     }),
 ];
 
-/**
- * This function is used for parameter validation
- * @returns
- */
 export const validateParams = [
   param('uId').custom(value => {
     // The parameter needs to be only of ObjectId type
@@ -76,13 +100,6 @@ export const validateLogin = [
     .withMessage('Password should not be empty!'),
 ];
 
-/**
- * For validating the results
- * @param {*} req
- * @param {*} res
- * @param {*} next
- * @returns
- */
 export const handleValidationResults = (req, res, next) => {
   const errors = validationResult(req);
   // If there are errors
