@@ -35,6 +35,19 @@ export const validateSignup = [
     }),
 ];
 
+export const validateLogin = [
+  body('email')
+    .trim()
+    .notEmpty()
+    .withMessage('Email should not be empty.')
+    .isEmail()
+    .withMessage('Please enter a valid email address.'),
+  body('password')
+    .trim()
+    .notEmpty()
+    .withMessage('Password should not be empty!'),
+];
+
 export const validateUserFields = [
   body(['firstName', 'lastName'])
     .trim()
@@ -90,14 +103,6 @@ export const validateParams = [
     }
     return true;
   }),
-];
-
-export const validateLogin = [
-  body('email').trim().isEmail().withMessage('Provide a valid email'),
-  body('password')
-    .trim()
-    .notEmpty()
-    .withMessage('Password should not be empty!'),
 ];
 
 export const handleValidationResults = (req, res, next) => {

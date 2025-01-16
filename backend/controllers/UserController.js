@@ -25,7 +25,48 @@ export const createNewUser = async (req, res) => {
       .status(StatusCodes.CREATED)
       .json({ message: 'Account created successfully', user });
   } catch (error) {
-    console.log(error);
+    return res
+      .status(StatusCodes.INTERNAL_SERVER_ERROR)
+      .json({ message: 'Somthing went wrong!' });
+  }
+};
+
+/**
+ * for authenticating user..!
+ * @param {*} req
+ * @param {*} res
+ */
+export const loginUser = async (req, res) => {
+  const isProduction = process.env.NODE_ENV === 'production';
+  const { email, password } = req.body;
+
+  try {
+    const user = await User.findOne({ email });
+
+    if (!user) {
+      return res
+        .status(StatusCodes.NOT_FOUND)
+        .json({ message: 'Email or password does not match' });
+    }
+
+    const validPassword = await bcrypt.compare(password, user.password);
+
+    if (validPassword) {
+      const token = generateJwt(user._id);
+
+      return res
+        .cookie('jwt', token, {
+          secure: isProduction,
+          httpOnly: true,
+        })
+        .status(StatusCodes.OK)
+        .json({ user, message: 'Logged in successfully!' });
+    } else {
+      return res
+        .status(StatusCodes.UNAUTHORIZED)
+        .json({ message: 'Email or password does not match' });
+    }
+  } catch (error) {
     return res
       .status(StatusCodes.INTERNAL_SERVER_ERROR)
       .json({ message: 'Somthing went wrong!' });
@@ -185,47 +226,6 @@ export const deleteUserBasedOnId = async (req, res) => {
         .json({ message: 'There is no user with that id' });
     }
     return res.status(StatusCodes.OK).json({ message: 'User deleted!' });
-  } catch (error) {
-    return res
-      .status(StatusCodes.INTERNAL_SERVER_ERROR)
-      .json({ message: 'Somthing went wrong!' });
-  }
-};
-
-/**
- * for authenticating user..!
- * @param {*} req
- * @param {*} res
- */
-export const loginUser = async (req, res) => {
-  const isProduction = process.env.NODE_ENV === 'production';
-  const { email, password } = req.body;
-
-  try {
-    const user = await User.findOne({ email: email, userType: 'SPONSOR' });
-
-    if (!user) {
-      return res
-        .status(StatusCodes.NOT_FOUND)
-        .json({ message: 'Email or password does not match' });
-    }
-
-    const checkPassword = await bcrypt.compare(password, user.password);
-
-    if (checkPassword) {
-      const token = generateJwt(user._id);
-      return res
-        .cookie('jwt', token, {
-          secure: isProduction,
-          httpOnly: true,
-        })
-        .status(StatusCodes.OK)
-        .json({ user, message: 'Logged in successfully!' });
-    } else {
-      return res
-        .status(StatusCodes.UNAUTHORIZED)
-        .json({ message: 'Email or password does not match' });
-    }
   } catch (error) {
     return res
       .status(StatusCodes.INTERNAL_SERVER_ERROR)

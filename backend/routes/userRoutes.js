@@ -26,6 +26,10 @@ import {
 // route for user
 router.post('/signup', validateSignup, handleValidationResults, createNewUser);
 
+router.post('/login', validateLogin, handleValidationResults, loginUser);
+
+router.get('/logout', logoutUser);
+
 router.get('/get-all-users', getAllUsers);
 router.get(
   '/find-by-id/:uId',
@@ -47,13 +51,12 @@ router.delete(
   handleValidationResults,
   deleteUserBasedOnId
 );
-router.post('/login', validateLogin, handleValidationResults, loginUser);
+
 router.post(
   '/change-password/:uId',
   validateChangePassword,
   handlePasswordValidationResults,
   changePassword
 );
-router.get('/logout', logoutUser);
 
 export default router;
