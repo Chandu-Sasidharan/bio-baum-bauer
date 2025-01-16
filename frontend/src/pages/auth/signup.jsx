@@ -7,7 +7,7 @@ import { Helmet } from 'react-helmet-async';
 import { Button, Tooltip, Spinner } from 'flowbite-react';
 import { HiHome } from 'react-icons/hi';
 import { HiEye, HiEyeOff } from 'react-icons/hi';
-import axios from '../../utils/axiosInstance';
+import axios from '@/utils/axiosInstance';
 import { AuthContext } from '@/store/auth-context';
 import { Breadcrumb, BreadcrumbItem } from '@/components/elements/breadcrumb';
 import backgroundImage from '/images/background/leaves-background.webp';

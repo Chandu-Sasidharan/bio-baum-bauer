@@ -32,7 +32,7 @@ import Terms from './pages/TermsConditions';
 import './assets/styles/PrevNext.css';
 import SuccessPage from './pages/SuccessPage';
 import CancelPage from './pages/CancelPage';
-import ProtectedRoute from './pages/user/ProtectedRoute';
+import ProtectedRoute from '@/components/protected-route';
 // import Contributors from "./pages/Contributors";
 import { PatronProvider } from './store/PatronContext';
 import SponsorShipDetails from './pages/user/SponsorShipDetails';

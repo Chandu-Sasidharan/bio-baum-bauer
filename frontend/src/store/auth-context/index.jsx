@@ -5,14 +5,14 @@ import {
   useReducer,
   useContext,
 } from 'react';
-import Swal from 'sweetalert2';
 import {
   paymentSessionReducer,
   patronReducer,
   calculateGrandPrice,
   OrderItemsReducer,
 } from '../../reducers/reducers';
-import axios from '../../utils/axiosInstance';
+import axios from '@/utils/axiosInstance';
+import showAlert from '@/utils/alert';
 
 // To be refactored step by step
 export const AuthContext = createContext({});
@@ -20,7 +20,7 @@ export const useUser = () => {
   return useContext(AuthContext);
 };
 
-// our auth context provider
+// Auth context provider
 export const AuthProvider = ({ children }) => {
   const lsRef = typeof window !== 'undefined' ? window.localStorage : null;
   // receiving the login information from local storage
@@ -53,30 +53,14 @@ export const AuthProvider = ({ children }) => {
       setExpiredTime(null);
       setAuthUser({});
       // Display success message
-      Swal.fire({
-        icon: 'warning',
-        title: 'Session Expired!',
-        text: 'You need to login again.',
-        customClass: {
-          confirmButton: 'btn-custom-class',
-          title: 'title-class',
-        },
-        buttonsStyling: false,
-      });
+      showAlert('success', null, 'You have been logged out!');
     } catch (error) {
-      console.error('Logout failed', error);
       // Display error message
-      Swal.fire({
-        icon: 'error',
-        title: 'Logout Failed',
-        text:
-          error.response?.data.message || 'An error occurred during logout!',
-        customClass: {
-          confirmButton: 'btn-custom-class',
-          title: 'title-class',
-        },
-        buttonsStyling: false,
-      });
+      showAlert(
+        'error',
+        'Logout Failed',
+        error.response?.data.message || 'An error occurred during logout!'
+      );
     }
   };
 
@@ -182,6 +166,7 @@ export const AuthProvider = ({ children }) => {
         handleOrderGrandPrice,
         order,
         handleOrder,
+        handleLogout,
       }}
     >
       {children}

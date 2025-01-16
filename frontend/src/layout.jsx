@@ -22,6 +22,19 @@ export default function Layout() {
     return () => window.removeEventListener('resize', handleResize);
   }, []);
 
+  /* Handle Fix Navbar */
+  useEffect(() => {
+    const handleScroll = () => {
+      setIsNavbarFixed(window.scrollY >= 80);
+    };
+
+    window.addEventListener('scroll', handleScroll);
+
+    return () => {
+      window.removeEventListener('scroll', handleScroll);
+    };
+  }, [setIsNavbarFixed]);
+
   const mainStyle = {
     paddingTop: isNavbarFixed ? '60px' : '0',
   };
@@ -31,12 +44,9 @@ export default function Layout() {
       <div className='text-accent'>
         <header>
           {isMobileScreen ? (
-            <MobileNavbar />
+            <MobileNavbar isNavbarFixed={isNavbarFixed} />
           ) : (
-            <DesktopNavbar
-              isNavbarFixed={isNavbarFixed}
-              setIsNavbarFixed={setIsNavbarFixed}
-            />
+            <DesktopNavbar isNavbarFixed={isNavbarFixed} />
           )}
         </header>
         <main className='bg-primary-light' style={mainStyle}>

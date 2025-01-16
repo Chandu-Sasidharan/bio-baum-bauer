@@ -1,86 +1,62 @@
-import React, { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { fallDown as Menu } from 'react-burger-menu';
-import AuthNavbar from '@/components/navbar/auth';
-import closeMenu from '/images/navbar/close-icon.svg';
-import openMenu from '/images/navbar/hamburger-icon.svg';
+import TopNavBar from '@/components/navbar/topNavbar';
+import closeIcon from '/images/navbar/close-icon.svg';
+import hamburgerIcon from '/images/navbar/hamburger-icon.svg';
 
-const MobileNavbar = () => {
+const MobileNavbar = ({ isNavbarFixed }) => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const [isNavbarVisible, setIsNavbarVisible] = useState(true);
-
-  /* Handle MobileNavbar on Scroll */
-  useEffect(() => {
-    const handleScroll = () => {
-      setIsNavbarVisible(window.scrollY <= 0);
-    };
-
-    window.addEventListener('scroll', handleScroll);
-    return () => {
-      window.removeEventListener('scroll', handleScroll);
-    };
-  }, []);
-
-  const mobileNavbarStyle = {
-    position: isNavbarVisible ? 'sticky' : 'fixed',
-  };
-
-  const toggleMenu = () => {
-    setIsMenuOpen(!isMenuOpen);
-  };
 
   const handleLinkClick = () => {
     setIsMenuOpen(false);
   };
 
+  const mobileNavbarStyle = {
+    position: isNavbarFixed ? 'fixed' : 'static',
+  };
+
   return (
-    <nav id='outer-container'>
-      {isNavbarVisible && <AuthNavbar />}
+    <>
+      <TopNavBar />
       <div
-        className='mobile-nav w-full top-0 h-[60px] bg-primary flex justify-start items-center px-2'
+        className='mobile-nav bg-primary top-0 flex h-[60px] w-full items-center justify-start px-2'
         style={mobileNavbarStyle}
       >
         {/* Open Menu Button */}
         <button
-          onClick={toggleMenu}
-          className='w-[50px] h-[50px]'
-          aria-label='Open menu'
+          onClick={() => setIsMenuOpen(true)}
+          className='h-[50px] w-[50px]'
+          aria-label='Hambuger Menu'
         >
-          <img src={openMenu} alt='Open Menu' />
+          <img src={hamburgerIcon} alt='Hamburger Icon' />
         </button>
       </div>
-
-      {isMenuOpen && (
-        <div
-          className='mobile-menu-bg fixed inset-0 bg-black bg-opacity-50'
-          onClick={toggleMenu}
-        ></div>
-      )}
 
       {/* MobileNavbar Menu with Links */}
       <Menu
         isOpen={isMenuOpen}
-        onStateChange={({ isOpen }) => setIsMenuOpen(isOpen)}
         customBurgerIcon={false}
         customCrossIcon={false}
-        width={'60%'}
+        width={'100%'}
         pageWrapId={'page-wrap'}
-        className='bg-primary fixed top-0 left-0 h-screen overflow-y-auto p-4 '
+        className='bg-primary fixed left-0 top-0 h-screen overflow-y-auto p-4'
       >
         {/* Close Menu Button */}
-        <div className='absolute top-6 right-6'>
+        <div className='absolute right-6 top-6'>
           <button
-            onClick={toggleMenu}
-            className='w-[25px] h-[25px]'
+            onClick={() => setIsMenuOpen(false)}
+            className='h-[25px] w-[25px]'
             aria-label='Close menu'
           >
-            <img src={closeMenu} alt='Close Menu' />
+            <img src={closeIcon} alt='Close Menu' />
           </button>
         </div>
+
         {/* Links */}
         <Link
           to='/'
-          className='menu-item border-b border-white text-stone scale-origin-left transition-transform duration-400 ease-linear hover:text-gray-dark pt-[100px]'
+          className='menu-item text-stone scale-origin-left duration-400 border-b border-white pt-16 transition-transform ease-linear'
           onClick={handleLinkClick}
           aria-label='Home page'
         >
@@ -88,7 +64,7 @@ const MobileNavbar = () => {
         </Link>
         <Link
           to='/trees'
-          className='menu-item pt-4 border-b border-white text-stone scale-origin-left transition-transform duration-400 ease-linear hover:text-gray-dark'
+          className='menu-item text-stone scale-origin-left duration-400 border-b border-white pt-4 transition-transform ease-linear'
           onClick={handleLinkClick}
           aria-label='Sponsor page'
         >
@@ -96,7 +72,7 @@ const MobileNavbar = () => {
         </Link>
         <Link
           to='/news'
-          className='menu-item pt-4 border-b border-white text-stone scale-origin-left transition-transform duration-400 ease-linear hover:text-gray-dark'
+          className='menu-item text-stone scale-origin-left duration-400 border-b border-white pt-4 transition-transform ease-linear'
           onClick={handleLinkClick}
           aria-label='News page'
         >
@@ -104,7 +80,7 @@ const MobileNavbar = () => {
         </Link>
         <Link
           to='/about'
-          className='menu-item pt-4 border-b border-white text-stone scale-origin-left transition-transform duration-400 ease-linear hover:text-gray-dark'
+          className='menu-item text-stone scale-origin-left duration-400 border-b border-white pt-4 transition-transform ease-linear'
           onClick={handleLinkClick}
           aria-label='About page'
         >
@@ -112,7 +88,7 @@ const MobileNavbar = () => {
         </Link>
         <Link
           to='/gallery'
-          className='menu-item pt-4 border-b border-white text-stone scale-origin-left transition-transform duration-400 ease-linear hover:text-gray-dark'
+          className='menu-item text-stone scale-origin-left duration-400 border-b border-white pt-4 transition-transform ease-linear'
           onClick={handleLinkClick}
           aria-label='Gallery page'
         >
@@ -120,7 +96,7 @@ const MobileNavbar = () => {
         </Link>
         <Link
           to='/faq'
-          className='menu-item pt-4 border-b border-white text-stone scale-origin-left transition-transform duration-400 ease-linear hover:text-gray-dark'
+          className='menu-item text-stone scale-origin-left duration-400 border-b border-white pt-4 transition-transform ease-linear'
           onClick={handleLinkClick}
           aria-label='FAQ page'
         >
@@ -128,14 +104,14 @@ const MobileNavbar = () => {
         </Link>
         <Link
           to='/contact'
-          className='menu-item pt-4 border-b border-white text-stone scale-origin-left transition-transform duration-400 ease-linear hover:text-gray-dark'
+          className='menu-item text-stone scale-origin-left duration-400 border-b border-white pt-4 transition-transform ease-linear'
           onClick={handleLinkClick}
           aria-label='Contact page'
         >
           Contact
         </Link>
       </Menu>
-    </nav>
+    </>
   );
 };
 
