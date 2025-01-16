@@ -3,7 +3,6 @@ import { Link, useNavigate } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
-import Swal from 'sweetalert2';
 import { Helmet } from 'react-helmet-async';
 import { Button, Tooltip, Spinner } from 'flowbite-react';
 import { HiHome } from 'react-icons/hi';
@@ -13,6 +12,7 @@ import { AuthContext } from '@/store/auth-context';
 import { Breadcrumb, BreadcrumbItem } from '@/components/elements/breadcrumb';
 import backgroundImage from '/images/background/leaves-background.webp';
 import treeIcon from '/images/misc/tree.png';
+import showAlert from '@/utils/alert';
 
 // Define schema with zod
 const schema = z.object({
@@ -47,76 +47,50 @@ export default function Login() {
     setShowPassword(!showPassword);
   };
 
+  // Submit form data
   const onSubmit = async formData => {
     setIsProcessing(true);
 
     try {
       const response = await axios.post('/api/users/login', formData);
 
-      if (response.ok) {
+      if (response.status === 200) {
         setAuthUser(response.data.user);
         setExpiredTime(Date.now() + 3600000);
         setLoggedIn(true);
         reset();
         // Display success message
-        Swal.fire({
-          icon: 'success',
-          title: 'Login Successful!',
-          text: 'You have successfully logged in.',
-          customClass: {
-            confirmButton: 'btn-custom-class',
-            title: 'title-class',
-          },
-          buttonsStyling: false,
-        });
+        showAlert(
+          'success',
+          'Login Successful!',
+          'You have successfully logged in.'
+        );
         navigate('/dashboard');
       } else {
         // Handle other server response statuses
-        setIsProcessing(false);
-        Swal.fire({
-          icon: 'error',
-          title: 'Login Failed',
-          text: response.data.message || 'An error occurred during login!',
-          customClass: {
-            confirmButton: 'btn-custom-class',
-            title: 'title-class',
-          },
-          buttonsStyling: false,
-        });
+        showAlert(
+          'error',
+          'Login Failed',
+          response.data.message || 'An error occurred during login!'
+        );
       }
     } catch (error) {
       // Handle errors that occurred during the POST request
-      if (error.response && error.response.status === 400) {
-        let errorMessage = '<ul>';
-        // Loop through error messages and append to the list
-        error.response.data.errors.forEach(error => {
-          errorMessage += `<li>${error.msg}</li>`;
-        });
-        errorMessage += '</ul>';
-
-        Swal.fire({
-          icon: 'error',
-          title: 'Login Failed',
-          html: errorMessage,
-          customClass: {
-            confirmButton: 'btn-custom-class',
-            title: 'title-class',
-          },
-          buttonsStyling: false,
-        });
-      } else {
-        Swal.fire({
-          icon: 'error',
-          title: 'Login Failed',
-          text:
-            error.response?.data.message || 'An error occurred during login!',
-          customClass: {
-            confirmButton: 'btn-custom-class',
-            title: 'title-class',
-          },
-          buttonsStyling: false,
-        });
+      let errorMessage = 'An error occurred during login!';
+      if (error.response) {
+        if (error.response.status === 400) {
+          errorMessage = '<ul>';
+          // Loop through error messages and append to the list
+          error.response.data.errors.forEach(err => {
+            errorMessage += `<li>${err.msg}</li>`;
+          });
+          errorMessage += '</ul>';
+        } else {
+          errorMessage = error.response.data.message || errorMessage;
+        }
       }
+
+      showAlert('error', 'Login Failed', null, errorMessage);
     } finally {
       setIsProcessing(false);
     }
@@ -157,8 +131,8 @@ export default function Login() {
           <div className='flex items-center'>
             <span className='mr-2 inline-block'>New to the farm?</span>
             <Tooltip content='Click here to sign up'>
-              <Link to='/register' className='text-accent font-bold underline'>
-                Register
+              <Link to='/signup' className='text-accent font-bold underline'>
+                Sign Up
               </Link>
             </Tooltip>
           </div>
