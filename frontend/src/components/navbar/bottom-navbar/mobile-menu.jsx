@@ -1,36 +1,24 @@
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
-import { fallDown as Menu } from 'react-burger-menu';
-import TopNavBar from '@/components/navbar/topNavbar';
+import classNames from 'classnames';
+import { fallDown as FalldownMenu } from 'react-burger-menu';
 import closeIcon from '/images/navbar/close-icon.svg';
 import hamburgerIcon from '/images/navbar/hamburger-icon.svg';
 
-export default function MobileNavbar({
-  isNavbarFixed,
-  isTopNavDropdownOpen,
-  setTopNavDropdownOpen,
-}) {
+export default function MobileMenu() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 
   const handleLinkClick = () => {
     setIsMenuOpen(false);
   };
 
-  const mobileNavbarStyle = {
-    position: isNavbarFixed ? 'fixed' : 'static',
-  };
+  const linkStyles = classNames({
+    'text-stone border-b border-primary-light pt-4': true,
+  });
 
   return (
-    <>
-      <TopNavBar
-        isNavbarFixed={isNavbarFixed}
-        isTopNavDropdownOpen={isTopNavDropdownOpen}
-        setTopNavDropdownOpen={setTopNavDropdownOpen}
-      />
-      <div
-        className='mobile-nav bg-primary top-0 flex h-[60px] w-full items-center justify-start px-2'
-        style={mobileNavbarStyle}
-      >
+    <div className='w-full md:hidden'>
+      <div className='mobile-nav bg-primary top-0 flex h-[60px] w-full items-center justify-start px-2'>
         {/* Open Menu Button */}
         <button
           onClick={() => setIsMenuOpen(true)}
@@ -42,13 +30,12 @@ export default function MobileNavbar({
       </div>
 
       {/* MobileNavbar Menu with Links */}
-      <Menu
+      <FalldownMenu
         isOpen={isMenuOpen}
         customBurgerIcon={false}
         customCrossIcon={false}
         width={'100%'}
-        pageWrapId={'page-wrap'}
-        className='bg-primary fixed left-0 top-0 h-screen overflow-y-auto p-4'
+        className='bg-primary fixed left-0 top-0 h-screen overflow-y-auto p-4 pt-10'
       >
         {/* Close Menu Button */}
         <div className='absolute right-6 top-6'>
@@ -64,7 +51,7 @@ export default function MobileNavbar({
         {/* Links */}
         <Link
           to='/'
-          className='menu-item text-stone scale-origin-left duration-400 border-b border-white pt-16 transition-transform ease-linear'
+          className={linkStyles}
           onClick={handleLinkClick}
           aria-label='Home page'
         >
@@ -72,7 +59,7 @@ export default function MobileNavbar({
         </Link>
         <Link
           to='/trees'
-          className='menu-item text-stone scale-origin-left duration-400 border-b border-white pt-4 transition-transform ease-linear'
+          className={linkStyles}
           onClick={handleLinkClick}
           aria-label='Sponsor page'
         >
@@ -80,7 +67,7 @@ export default function MobileNavbar({
         </Link>
         <Link
           to='/news'
-          className='menu-item text-stone scale-origin-left duration-400 border-b border-white pt-4 transition-transform ease-linear'
+          className={linkStyles}
           onClick={handleLinkClick}
           aria-label='News page'
         >
@@ -88,7 +75,7 @@ export default function MobileNavbar({
         </Link>
         <Link
           to='/about'
-          className='menu-item text-stone scale-origin-left duration-400 border-b border-white pt-4 transition-transform ease-linear'
+          className={linkStyles}
           onClick={handleLinkClick}
           aria-label='About page'
         >
@@ -96,7 +83,7 @@ export default function MobileNavbar({
         </Link>
         <Link
           to='/gallery'
-          className='menu-item text-stone scale-origin-left duration-400 border-b border-white pt-4 transition-transform ease-linear'
+          className={linkStyles}
           onClick={handleLinkClick}
           aria-label='Gallery page'
         >
@@ -104,7 +91,7 @@ export default function MobileNavbar({
         </Link>
         <Link
           to='/faq'
-          className='menu-item text-stone scale-origin-left duration-400 border-b border-white pt-4 transition-transform ease-linear'
+          className={linkStyles}
           onClick={handleLinkClick}
           aria-label='FAQ page'
         >
@@ -112,13 +99,13 @@ export default function MobileNavbar({
         </Link>
         <Link
           to='/contact'
-          className='menu-item text-stone scale-origin-left duration-400 border-b border-white pt-4 transition-transform ease-linear'
+          className={linkStyles}
           onClick={handleLinkClick}
           aria-label='Contact page'
         >
           Contact
         </Link>
-      </Menu>
-    </>
+      </FalldownMenu>
+    </div>
   );
 }

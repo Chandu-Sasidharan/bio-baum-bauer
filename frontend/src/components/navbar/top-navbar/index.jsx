@@ -1,5 +1,5 @@
 import { useContext, useEffect } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { CgProfile } from 'react-icons/cg';
 import { PiShoppingCartSimpleFill } from 'react-icons/pi';
 import { IoIosArrowDown, IoIosArrowUp, IoMdLogOut } from 'react-icons/io';
@@ -14,6 +14,7 @@ export default function TopNavBar({
 }) {
   const { loggedIn, authUser, handleLogout } = useUser();
   const { cartTrees } = useContext(CartContext);
+  const navigate = useNavigate();
 
   useEffect(() => {
     if (isNavbarFixed) {
@@ -25,9 +26,15 @@ export default function TopNavBar({
     setTopNavDropdownOpen(!isTopNavDropdownOpen);
   };
 
-  const logout = () => {
-    handleLogout();
+  // Handle Dropdown Click
+  const handleClick = type => {
     setTopNavDropdownOpen(false);
+
+    if (type === 'profile') {
+      navigate('/profile');
+    } else if (type === 'logout') {
+      handleLogout();
+    }
   };
 
   return (
@@ -88,35 +95,30 @@ export default function TopNavBar({
               </div>
 
               {/* Dropdown Menu */}
-              <div
+              <ul
                 className={`${
                   isTopNavDropdownOpen ? 'block' : 'hidden'
                 } bg-primary-light text-stone absolute top-full overflow-hidden rounded-b-md shadow-md transition-all duration-300`}
               >
-                <div className='hover:bg-aloe border-primary cursor-pointer border-b text-lg'>
-                  <Link
-                    to='/dashboard'
-                    className='flex items-center px-5 py-4 transition-transform duration-75 ease-linear'
-                    aria-label='dashboard page'
-                  >
-                    <div className='flex items-center gap-3'>
-                      <CgProfile className='text-accent text-xl' />
-                      <span className='text-nowrap'>My Profile</span>
-                    </div>
-                  </Link>
-                </div>
-                <div className='hover:bg-aloe border-primary cursor-pointer text-lg'>
-                  <div className='flex items-center px-5 py-4 transition-transform duration-75 ease-linear'>
-                    <div
-                      className='flex items-center justify-start gap-3'
-                      onClick={logout}
-                    >
-                      <IoMdLogOut className='text-accent text-xl' />
-                      <span>Logout</span>
-                    </div>
-                  </div>
-                </div>
-              </div>
+                <li
+                  className='hover:bg-aloe border-primary cursor-pointer border-b text-lg'
+                  onClick={() => handleClick('profile')}
+                >
+                  <span className='flex items-center gap-3 px-5 py-4 transition-transform duration-75 ease-linear'>
+                    <CgProfile className='text-accent text-xl' />
+                    <span className='text-nowrap'>My Profile</span>
+                  </span>
+                </li>
+                <li
+                  className='hover:bg-aloe border-primary cursor-pointer text-lg'
+                  onClick={() => handleClick('logout')}
+                >
+                  <span className='flex items-center justify-start gap-3 px-5 py-4 transition-transform duration-75 ease-linear'>
+                    <IoMdLogOut className='text-accent text-xl' />
+                    <span>Logout</span>
+                  </span>
+                </li>
+              </ul>
             </div>
 
             {/* Shopping Cart */}

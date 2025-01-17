@@ -1,6 +1,6 @@
 import { NavLink } from 'react-router-dom';
 
-export default function NavMenuLink({ to = '/', pageName, icon }) {
+export default function DesktopMenuLink({ to = '/', pageName, icon }) {
   return (
     <NavLink
       className={({ isActive }) =>
