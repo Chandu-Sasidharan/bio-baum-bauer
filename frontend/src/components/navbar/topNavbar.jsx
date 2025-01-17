@@ -16,6 +16,12 @@ export default function TopNavBar() {
     setDropdownOpen(!isDropdownOpen);
   };
 
+  const logout = () => {
+    handleLogout();
+    setDropdownOpen(false);
+  };
+
+  console.log('debug', isDropdownOpen);
   return (
     <nav className='auth-nav-z-index-v-12 bg-accent relative flex h-20 w-full items-center justify-between px-5 shadow-md md:px-8'>
       <div className='flex h-full grow justify-between'>
@@ -85,17 +91,17 @@ export default function TopNavBar() {
                     className='flex items-center px-5 py-4 transition-transform duration-75 ease-linear'
                     aria-label='dashboard page'
                   >
-                    <div className='flex w-full items-center gap-3'>
+                    <div className='flex items-center gap-3'>
                       <CgProfile className='text-accent text-xl' />
-                      <span>My Profile</span>
+                      <span className='text-nowrap'>My Profile</span>
                     </div>
                   </Link>
                 </div>
                 <div className='hover:bg-aloe border-primary cursor-pointer text-lg'>
                   <div className='flex items-center px-5 py-4 transition-transform duration-75 ease-linear'>
                     <div
-                      className='flex w-full items-center justify-start gap-3'
-                      onClick={handleLogout}
+                      className='flex items-center justify-start gap-3'
+                      onClick={logout}
                     >
                       <IoMdLogOut className='text-accent text-xl' />
                       <span>Logout</span>
