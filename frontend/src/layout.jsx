@@ -23,9 +23,14 @@ export default function Layout() {
     };
   }, [setIsNavbarFixed]);
 
-  const mainClass = classNames({
+  const mainClasses = classNames({
     'bg-primary-light': true,
     'pt-[60px]': isNavbarFixed,
+    'blur-sm transition duration-300': isTopNavDropdownOpen,
+    'pointer-events-none': isTopNavDropdownOpen,
+  });
+
+  const footerClasses = classNames({
     'blur-sm transition duration-300': isTopNavDropdownOpen,
     'pointer-events-none': isTopNavDropdownOpen,
   });
@@ -40,11 +45,13 @@ export default function Layout() {
             setTopNavDropdownOpen={setTopNavDropdownOpen}
           />
         </header>
-        <main className={mainClass}>
+        <main className={mainClasses}>
           <Outlet />
         </main>
+        <footer className={footerClasses}>
+          <Footer />
+        </footer>
         <ScrollToTop />
-        <Footer />
       </div>
     </HelmetProvider>
   );
