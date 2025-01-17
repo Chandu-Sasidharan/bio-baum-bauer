@@ -27,6 +27,7 @@ export default function Layout() {
     'bg-primary-light': true,
     'pt-[60px]': isNavbarFixed,
     'blur-sm transition duration-300': isTopNavDropdownOpen,
+    'pointer-events-none': isTopNavDropdownOpen,
   });
 
   return (
