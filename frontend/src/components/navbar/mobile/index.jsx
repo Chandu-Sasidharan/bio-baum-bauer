@@ -5,7 +5,11 @@ import TopNavBar from '@/components/navbar/topNavbar';
 import closeIcon from '/images/navbar/close-icon.svg';
 import hamburgerIcon from '/images/navbar/hamburger-icon.svg';
 
-const MobileNavbar = ({ isNavbarFixed }) => {
+export default function MobileNavbar({
+  isNavbarFixed,
+  isTopNavDropdownOpen,
+  setTopNavDropdownOpen,
+}) {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 
   const handleLinkClick = () => {
@@ -18,7 +22,11 @@ const MobileNavbar = ({ isNavbarFixed }) => {
 
   return (
     <>
-      <TopNavBar />
+      <TopNavBar
+        isNavbarFixed={isNavbarFixed}
+        isTopNavDropdownOpen={isTopNavDropdownOpen}
+        setTopNavDropdownOpen={setTopNavDropdownOpen}
+      />
       <div
         className='mobile-nav bg-primary top-0 flex h-[60px] w-full items-center justify-start px-2'
         style={mobileNavbarStyle}
@@ -113,6 +121,4 @@ const MobileNavbar = ({ isNavbarFixed }) => {
       </Menu>
     </>
   );
-};
-
-export default MobileNavbar;
+}

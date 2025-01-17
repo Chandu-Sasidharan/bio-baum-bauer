@@ -6,14 +6,22 @@ import TopNavBar from '@/components/navbar/topNavbar';
 import NavMenuLink from '@/components/navbar/desktop/nav-menu-link';
 import Divider from '@/components/navbar/desktop/divider';
 
-export default function DesktopNavbar({ isNavbarFixed }) {
+export default function DesktopNavbar({
+  isNavbarFixed,
+  isTopNavDropdownOpen,
+  setTopNavDropdownOpen,
+}) {
   const desktopNavbarStyle = {
     position: isNavbarFixed ? 'fixed' : 'static',
   };
 
   return (
     <>
-      <TopNavBar />
+      <TopNavBar
+        isNavbarFixed={isNavbarFixed}
+        isTopNavDropdownOpen={isTopNavDropdownOpen}
+        setTopNavDropdownOpen={setTopNavDropdownOpen}
+      />
       <nav
         className='text-accent bg-primary items-ce top-0 z-30 flex h-[60px] w-full items-center justify-center'
         style={desktopNavbarStyle}

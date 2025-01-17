@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import { Outlet } from 'react-router-dom';
+import classNames from 'classnames';
 import { HelmetProvider } from 'react-helmet-async';
 import DesktopNavbar from '@/components/navbar/desktop';
 import MobileNavbar from '@/components/navbar/mobile';
@@ -9,6 +10,7 @@ import ScrollToTop from '@/components/scroll-to-top';
 export default function Layout() {
   const [isMobileScreen, setIsMobileScreen] = useState(window.innerWidth < 768);
   const [isNavbarFixed, setIsNavbarFixed] = useState(false);
+  const [isTopNavDropdownOpen, setTopNavDropdownOpen] = useState(false);
 
   useEffect(() => {
     const handleResize = () => {
@@ -35,21 +37,31 @@ export default function Layout() {
     };
   }, [setIsNavbarFixed]);
 
-  const mainStyle = {
-    paddingTop: isNavbarFixed ? '60px' : '0',
-  };
+  const mainClass = classNames({
+    'bg-primary-light': true,
+    'pt-[60px]': isNavbarFixed,
+    'blur-sm transition duration-300': isTopNavDropdownOpen,
+  });
 
   return (
     <HelmetProvider>
       <div className='text-accent'>
         <header>
           {isMobileScreen ? (
-            <MobileNavbar isNavbarFixed={isNavbarFixed} />
+            <MobileNavbar
+              isNavbarFixed={isNavbarFixed}
+              isTopNavDropdownOpen={isTopNavDropdownOpen}
+              setTopNavDropdownOpen={setTopNavDropdownOpen}
+            />
           ) : (
-            <DesktopNavbar isNavbarFixed={isNavbarFixed} />
+            <DesktopNavbar
+              isNavbarFixed={isNavbarFixed}
+              isTopNavDropdownOpen={isTopNavDropdownOpen}
+              setTopNavDropdownOpen={setTopNavDropdownOpen}
+            />
           )}
         </header>
-        <main className='bg-primary-light' style={mainStyle}>
+        <main className={mainClass}>
           <Outlet />
         </main>
         <ScrollToTop />

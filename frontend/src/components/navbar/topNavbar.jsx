@@ -1,4 +1,4 @@
-import { useContext, useState } from 'react';
+import { useContext, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { CgProfile } from 'react-icons/cg';
 import { PiShoppingCartSimpleFill } from 'react-icons/pi';
@@ -7,21 +7,29 @@ import { CartContext } from '@/store/cart-context';
 import { useUser } from '@/store/auth-context';
 import logoImage from '/images/logo/bbb-logo.svg';
 
-export default function TopNavBar() {
+export default function TopNavBar({
+  isNavbarFixed,
+  isTopNavDropdownOpen,
+  setTopNavDropdownOpen,
+}) {
   const { loggedIn, authUser, handleLogout } = useUser();
   const { cartTrees } = useContext(CartContext);
-  const [isDropdownOpen, setDropdownOpen] = useState(false);
+
+  useEffect(() => {
+    if (isNavbarFixed) {
+      setTopNavDropdownOpen(false);
+    }
+  }, [isNavbarFixed]);
 
   const toggleDropdown = () => {
-    setDropdownOpen(!isDropdownOpen);
+    setTopNavDropdownOpen(!isTopNavDropdownOpen);
   };
 
   const logout = () => {
     handleLogout();
-    setDropdownOpen(false);
+    setTopNavDropdownOpen(false);
   };
 
-  console.log('debug', isDropdownOpen);
   return (
     <nav className='auth-nav-z-index-v-12 bg-accent relative flex h-20 w-full items-center justify-between px-5 shadow-md md:px-8'>
       <div className='flex h-full grow justify-between'>
@@ -72,7 +80,7 @@ export default function TopNavBar() {
                   </span>
                 )}
 
-                {isDropdownOpen ? (
+                {isTopNavDropdownOpen ? (
                   <IoIosArrowUp className='text-primary-light text-xl' />
                 ) : (
                   <IoIosArrowDown className='text-primary-light text-xl' />
@@ -82,7 +90,7 @@ export default function TopNavBar() {
               {/* Dropdown Menu */}
               <div
                 className={`${
-                  isDropdownOpen ? 'block' : 'hidden'
+                  isTopNavDropdownOpen ? 'block' : 'hidden'
                 } bg-primary-light text-stone absolute top-full overflow-hidden rounded-b-md shadow-md transition-all duration-300`}
               >
                 <div className='hover:bg-aloe border-primary cursor-pointer border-b text-lg'>
