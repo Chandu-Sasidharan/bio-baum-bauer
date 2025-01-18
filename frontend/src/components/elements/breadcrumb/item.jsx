@@ -1,4 +1,4 @@
-// Simple ChevronRight icon
+// ChevronRight icon
 const ChevronRight = () => (
   <svg
     className='text-accent mx-1 h-3 w-3 rtl:rotate-180'

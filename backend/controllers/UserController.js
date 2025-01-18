@@ -73,6 +73,43 @@ export const loginUser = async (req, res) => {
   }
 };
 
+// Refresh token
+export const refreshToken = async (req, res) => {
+  const isProduction = process.env.NODE_ENV === 'production';
+  const token = req.cookies.jwt;
+
+  if (!token) {
+    return res
+      .status(StatusCodes.UNAUTHORIZED)
+      .json({ message: 'No token provided' });
+  }
+
+  try {
+    const decoded = jwt.verify(token, process.env.JWT_SECRET_KEY);
+    const user = await User.findById(decoded.id);
+
+    if (!user) {
+      return res
+        .status(StatusCodes.UNAUTHORIZED)
+        .json({ message: 'Invalid token' });
+    }
+
+    const newToken = generateJwt(user._id);
+
+    return res
+      .cookie('jwt', newToken, {
+        secure: isProduction,
+        httpOnly: true,
+      })
+      .status(StatusCodes.OK)
+      .json({ message: 'Token refreshed successfully!' });
+  } catch (error) {
+    return res
+      .status(StatusCodes.INTERNAL_SERVER_ERROR)
+      .json({ message: 'Somthing went wrong!' });
+  }
+};
+
 /**
  * The function name getAllUsers returns all users
  * @param {*} req ()

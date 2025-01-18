@@ -1,5 +1,5 @@
-import { useState, useEffect, useContext } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { useState } from 'react';
+import { Link, useNavigate, Navigate } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
@@ -8,11 +8,11 @@ import { Button, Tooltip, Spinner } from 'flowbite-react';
 import { HiHome } from 'react-icons/hi';
 import { HiEye, HiEyeOff } from 'react-icons/hi';
 import axios from '@/utils/axiosInstance';
-import { AuthContext } from '@/store/auth-context';
 import { Breadcrumb, BreadcrumbItem } from '@/components/elements/breadcrumb';
 import backgroundImage from '/images/background/leaves-background.webp';
 import treeIcon from '/images/misc/tree.png';
 import showAlert from '@/utils/alert';
+import { useUser } from '@/store/auth-context';
 
 // Define schema with zod
 const schema = z.object({
@@ -21,9 +21,8 @@ const schema = z.object({
 });
 
 export default function Login() {
-  const { loggedIn, setLoggedIn, setAuthUser, setExpiredTime } =
-    useContext(AuthContext);
   const navigate = useNavigate();
+  const { isAuthenticated, setAuthUser } = useUser();
   const [isProcessing, setIsProcessing] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
   const {
@@ -37,12 +36,6 @@ export default function Login() {
     reValidateMode: 'onChange',
   });
 
-  useEffect(() => {
-    if (loggedIn) {
-      navigate('/dashboard');
-    }
-  }, [loggedIn, navigate]);
-
   const togglePasswordVisibility = () => {
     setShowPassword(!showPassword);
   };
@@ -54,10 +47,10 @@ export default function Login() {
     try {
       const response = await axios.post('/api/users/login', formData);
 
+      console.log('status', typeof response.status);
+
       if (response.status === 200) {
         setAuthUser(response.data.user);
-        setExpiredTime(Date.now() + 3600000);
-        setLoggedIn(true);
         reset();
         // Display success message
         showAlert(
@@ -65,7 +58,7 @@ export default function Login() {
           'Login Successful!',
           'You have successfully logged in.'
         );
-        navigate('/dashboard');
+        navigate('/account-details');
       } else {
         // Handle other server response statuses
         showAlert(
@@ -95,6 +88,10 @@ export default function Login() {
       setIsProcessing(false);
     }
   };
+
+  if (isAuthenticated) {
+    return <Navigate to='/account-details' />;
+  }
 
   return (
     <>

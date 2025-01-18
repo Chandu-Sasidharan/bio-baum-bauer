@@ -1,5 +1,5 @@
-import { useState, useEffect, useContext } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { useState, useEffect } from 'react';
+import { Link, useNavigate, Navigate } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
@@ -8,11 +8,11 @@ import { Button, Tooltip, Spinner } from 'flowbite-react';
 import { HiHome } from 'react-icons/hi';
 import { HiEye, HiEyeOff } from 'react-icons/hi';
 import axios from '@/utils/axiosInstance';
-import { AuthContext } from '@/store/auth-context';
 import { Breadcrumb, BreadcrumbItem } from '@/components/elements/breadcrumb';
 import backgroundImage from '/images/background/leaves-background.webp';
 import treeIcon from '/images/misc/tree.png';
 import showAlert from '@/utils/alert';
+import { useUser } from '@/store/auth-context';
 
 // Define schema with zod
 const schema = z
@@ -31,8 +31,7 @@ const schema = z
   });
 
 export default function Signup() {
-  const { loggedIn, setLoggedIn, setAuthUser, setExpiredTime } =
-    useContext(AuthContext);
+  const { isAuthenticated, setAuthUser } = useUser();
   const navigate = useNavigate();
   const [isProcessing, setIsProcessing] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
@@ -47,12 +46,6 @@ export default function Signup() {
     reValidateMode: 'onChange',
   });
 
-  useEffect(() => {
-    if (loggedIn) {
-      navigate('/dashboard');
-    }
-  }, [loggedIn, navigate]);
-
   const togglePasswordVisibility = () => {
     setShowPassword(!showPassword);
   };
@@ -66,8 +59,6 @@ export default function Signup() {
 
       if (response.status === 201) {
         setAuthUser(response.data.user);
-        setExpiredTime(Date.now() + 3600000);
-        setLoggedIn(true);
         reset();
         // Display success message
         showAlert(
@@ -75,7 +66,7 @@ export default function Signup() {
           'Sign Up Successful!',
           'You have successfully created your account.'
         );
-        navigate('/dashboard');
+        navigate('/account-details');
       } else {
         // Handle other server response statuses
         showAlert(
@@ -105,6 +96,10 @@ export default function Signup() {
       setIsProcessing(false);
     }
   };
+
+  if (isAuthenticated) {
+    return <Navigate to='/account-details' />;
+  }
 
   return (
     <>

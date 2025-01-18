@@ -12,7 +12,7 @@ export default function TopNavBar({
   isTopNavDropdownOpen,
   setTopNavDropdownOpen,
 }) {
-  const { loggedIn, authUser, handleLogout } = useUser();
+  const { isAuthenticated, authUser, handleLogout } = useUser();
   const { cartTrees } = useContext(CartContext);
   const navigate = useNavigate();
 
@@ -30,8 +30,8 @@ export default function TopNavBar({
   const handleClick = type => {
     setTopNavDropdownOpen(false);
 
-    if (type === 'profile') {
-      navigate('/profile');
+    if (type === 'account') {
+      navigate('/account-details');
     } else if (type === 'logout') {
       handleLogout();
     }
@@ -55,7 +55,7 @@ export default function TopNavBar({
 
         {/* Right Side */}
         <div className='flex items-center'>
-          {!loggedIn && (
+          {!isAuthenticated && (
             <Link
               to='/login'
               aria-label='login page'
@@ -66,7 +66,7 @@ export default function TopNavBar({
           )}
         </div>
 
-        {loggedIn && (
+        {isAuthenticated && (
           <div className='relative flex items-center gap-3 md:gap-6'>
             {/* Profile Dropdown */}
             <div>
@@ -83,7 +83,7 @@ export default function TopNavBar({
                   </div>
                 ) : (
                   <span className='font-open-sans text-primary-light mr-2 inline-block text-lg'>
-                    Account
+                    More
                   </span>
                 )}
 
@@ -98,15 +98,15 @@ export default function TopNavBar({
               <ul
                 className={`${
                   isTopNavDropdownOpen ? 'block' : 'hidden'
-                } bg-primary-light text-stone absolute top-full overflow-hidden rounded-b-md shadow-md transition-all duration-300`}
+                } bg-primary-light text-stone absolute right-0 top-full overflow-hidden rounded-b-md shadow-md transition-all duration-300`}
               >
                 <li
                   className='hover:bg-aloe border-primary cursor-pointer border-b text-lg'
-                  onClick={() => handleClick('profile')}
+                  onClick={() => handleClick('account')}
                 >
                   <span className='flex items-center gap-3 px-5 py-4 transition-transform duration-75 ease-linear'>
                     <CgProfile className='text-accent text-xl' />
-                    <span className='text-nowrap'>My Profile</span>
+                    <span className='text-nowrap'>My Account</span>
                   </span>
                 </li>
                 <li

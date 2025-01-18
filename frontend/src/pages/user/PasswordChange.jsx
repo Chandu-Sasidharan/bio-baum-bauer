@@ -16,7 +16,7 @@ import treePng from '../../assets/tree.png';
 const PasswordChange = () => {
   document.title = 'Changing Password';
   // State to manage password values
-  const { loggedIn, authUser, setAuthUser } = useContext(AuthContext);
+  const { authUser, setAuthUser } = useContext(AuthContext);
   const [passwords, setPasswords] = useState({
     currentPassword: '',
     newPassword: '',
@@ -105,33 +105,33 @@ const PasswordChange = () => {
   return (
     <div>
       <PageBreadcrumb activeLinks={aLinkValues} deActiveLink={daLinkValues} />
-      <div className='cart-page-container relative w-full bg-gray-light mx-auto p-4 pb-[25px] md:pb-[40px] lg:pb-[100px] xl:pb-[120px] flex items-center justify-center'>
+      <div className='cart-page-container bg-gray-light relative mx-auto flex w-full items-center justify-center p-4 pb-[25px] md:pb-[40px] lg:pb-[100px] xl:pb-[120px]'>
         {/* Overlay with background image and opacity */}
         <div
-          className='cart-page-bg hidden lg:block absolute top-0 left-0 w-full h-full bg-contain bg-no-repeat bg-top'
+          className='cart-page-bg absolute left-0 top-0 hidden h-full w-full bg-contain bg-top bg-no-repeat lg:block'
           style={{ backgroundImage: `url(${backgroundImage})`, opacity: 0.6 }}
         ></div>
 
-        <div className='w-[100%] lg:w-[90%] xl:w-[80%] bg-white rounded-[15px] p-6 xs:p-2 md:p-4 lg:p-8 shadow-lg lg:mt-[100px] xl:mt-[120px]'>
+        <div className='xs:p-2 w-[100%] rounded-[15px] bg-white p-6 shadow-lg md:p-4 lg:mt-[100px] lg:w-[90%] lg:p-8 xl:mt-[120px] xl:w-[80%]'>
           <DashboardHeader subtitle={`changing password`} />
           <MobileDashboardLinks />
-          <div className='flex flex-col md:flex-row mt-4 gap-[1rem] md:gap-[2rem]'>
+          <div className='mt-4 flex flex-col gap-[1rem] md:flex-row md:gap-[2rem]'>
             {/* Dashboard Links */}
             <DashboardLinks />
             <div className='w-full md:w-[75%]'>
-              <div className='flex items-center mb-4'>
+              <div className='mb-4 flex items-center'>
                 <img
                   src={treePng}
                   alt='Tree Icon'
-                  className='w-[30px] h-[30px] mr-2'
+                  className='mr-2 h-[30px] w-[30px]'
                 />{' '}
-                <h3 className='text-3xl text-accent font-chicle tracking-wide border-b-2 border-primary inline-block'>
+                <h3 className='text-accent font-chicle border-primary inline-block border-b-2 text-3xl tracking-wide'>
                   Change Password
                 </h3>
               </div>
               {/* change password form */}
               <form onSubmit={handlePasswordChange}>
-                <div className='grid grid-cols-1 gap:2 lg:gap-4 mt-10'>
+                <div className='gap:2 mt-10 grid grid-cols-1 lg:gap-4'>
                   <div className='mb-4' style={{ position: 'relative' }}>
                     <Label
                       htmlFor='currentPassword'
@@ -172,9 +172,9 @@ const PasswordChange = () => {
                       onClick={toggleCurrentPasswordVisibility}
                     >
                       {showCurrentPassword ? (
-                        <HiEyeOff className='text-2xl text-stone' />
+                        <HiEyeOff className='text-stone text-2xl' />
                       ) : (
-                        <HiEye className='text-2xl text-stone' />
+                        <HiEye className='text-stone text-2xl' />
                       )}
                     </div>
                   </div>
@@ -215,9 +215,9 @@ const PasswordChange = () => {
                       onClick={toggleNewPasswordVisibility}
                     >
                       {showNewPassword ? (
-                        <HiEyeOff className='text-2xl text-stone' />
+                        <HiEyeOff className='text-stone text-2xl' />
                       ) : (
-                        <HiEye className='text-2xl text-stone' />
+                        <HiEye className='text-stone text-2xl' />
                       )}
                     </div>
                   </div>
@@ -261,9 +261,9 @@ const PasswordChange = () => {
                       onClick={toggleConfirmNewPasswordVisibility}
                     >
                       {showConfirmNewPassword ? (
-                        <HiEyeOff className='text-2xl text-stone' />
+                        <HiEyeOff className='text-stone text-2xl' />
                       ) : (
-                        <HiEye className='text-2xl text-stone' />
+                        <HiEye className='text-stone text-2xl' />
                       )}
                     </div>
                   </div>
@@ -276,7 +276,7 @@ const PasswordChange = () => {
                   <p>At least one special symbol</p>
                 </div>
                 {/* Change Password Button */}
-                <div className='text-center flex justify-center mb-6 mt-6'>
+                <div className='mb-6 mt-6 flex justify-center text-center'>
                   <Button
                     className='custom-button-style'
                     type='submit'

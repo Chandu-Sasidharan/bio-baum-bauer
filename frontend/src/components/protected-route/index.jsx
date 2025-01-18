@@ -2,9 +2,9 @@ import { Navigate } from 'react-router-dom';
 import { useUser } from '@/store/auth-context';
 
 export default function ProtectedRoute({ children }) {
-  const { loggedIn } = useUser();
+  const { isAuthenticated } = useUser();
 
-  if (!loggedIn) {
+  if (!isAuthenticated) {
     return <Navigate to='/' />;
   }
 

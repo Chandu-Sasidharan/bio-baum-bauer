@@ -14,7 +14,7 @@ import { BsSave } from 'react-icons/bs';
 import treePng from '../../assets/tree.png';
 
 const UpdateProfile = () => {
-  const { loggedIn, authUser, setAuthUser } = useContext(AuthContext);
+  const { isAuthenticated, authUser, setAuthUser } = useContext(AuthContext);
   const aLinkValues = [{ linkTo: '/', linkIcon: HiHome, linkText: 'Home' }];
   const daLinkValues = { linkText: 'Update Profile' };
 
@@ -129,34 +129,34 @@ const UpdateProfile = () => {
   return (
     <main>
       <PageBreadcrumb activeLinks={aLinkValues} deActiveLink={daLinkValues} />
-      <div className='cart-page-container bg-gray-light relative w-full mx-auto p-4 pb-[25px] md:pb-[40px] lg:pb-[100px] xl:pb-[120px] flex items-center justify-center'>
+      <div className='cart-page-container bg-gray-light relative mx-auto flex w-full items-center justify-center p-4 pb-[25px] md:pb-[40px] lg:pb-[100px] xl:pb-[120px]'>
         {/* Overlay with background image and opacity */}
         <div
-          className='cart-page-bg hidden lg:block absolute top-0 left-0 w-full h-full bg-contain bg-no-repeat bg-top'
+          className='cart-page-bg absolute left-0 top-0 hidden h-full w-full bg-contain bg-top bg-no-repeat lg:block'
           style={{ backgroundImage: `url(${backgroundImage})`, opacity: 0.6 }}
         ></div>
 
-        <div className='w-[100%] lg:w-[90%] xl:w-[80%] bg-white rounded-[15px] p-6 xs:p-2 md:p-4 lg:p-8 shadow-lg lg:mt-[100px] xl:mt-[120px]'>
+        <div className='xs:p-2 w-[100%] rounded-[15px] bg-white p-6 shadow-lg md:p-4 lg:mt-[100px] lg:w-[90%] lg:p-8 xl:mt-[120px] xl:w-[80%]'>
           <DashboardHeader subtitle={`update profile`} />
           <MobileDashboardLinks />
-          <div className='flex flex-col md:flex-row mt-4 gap-[1rem] md:gap-[2rem]'>
+          <div className='mt-4 flex flex-col gap-[1rem] md:flex-row md:gap-[2rem]'>
             {/* Dashboard Links */}
             <DashboardLinks />
             {/* Form */}{' '}
-            {loggedIn && (
+            {isAuthenticated && (
               <div className='w-[100%] md:w-[75%]'>
-                <div className='flex items-center mb-4'>
+                <div className='mb-4 flex items-center'>
                   <img
                     src={treePng}
                     alt='Tree Icon'
-                    className='w-[30px] h-[30px] mr-2'
+                    className='mr-2 h-[30px] w-[30px]'
                   />{' '}
-                  <h3 className='text-3xl text-accent font-chicle tracking-wide border-b-2 border-primary inline-block'>
+                  <h3 className='text-accent font-chicle border-primary inline-block border-b-2 text-3xl tracking-wide'>
                     Edit Your Profile
                   </h3>
                 </div>
                 {/* Form Fields */}
-                <div className='grid grid-cols-1 md:grid-cols-2 gap-2 lg:gap-4 mt-10'>
+                <div className='mt-10 grid grid-cols-1 gap-2 md:grid-cols-2 lg:gap-4'>
                   {/* First Row */}
                   <div className='mb-4'>
                     <Label htmlFor='firstName' className=''>
@@ -430,9 +430,9 @@ const UpdateProfile = () => {
                   </div>
                 </div>
                 {/* Update Button */}
-                <div className='flex justify-center items-center  mb-6'>
+                <div className='mb-6 flex items-center justify-center'>
                   <Button
-                    className=' custom-button-style'
+                    className='custom-button-style'
                     onClick={handleswal}
                     aria-label='Update Profile'
                   >

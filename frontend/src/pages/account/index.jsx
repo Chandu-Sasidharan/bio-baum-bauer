@@ -1,17 +1,17 @@
 import { useContext, useEffect, useState } from 'react';
-import DashboardLinks from '../../components/DashboardLinks';
-import MobileDashboardLinks from '../../components/MobileDashboardLinks';
-import backgroundImage from '../../assets/images/leaves_background_01.webp';
 import { Link } from 'react-router-dom';
+import { Helmet } from 'react-helmet-async';
 import { HiHome } from 'react-icons/hi';
-import PageBreadcrumb from '../../components/PageBreadcrumb';
+import axios from '@/utils/axiosInstance';
+import DashboardLinks from '@/components/DashboardLinks';
+import MobileDashboardLinks from '@/components/MobileDashboardLinks';
+import PageBreadcrumb from '@/components/PageBreadcrumb';
 import { AuthContext } from '@/store/auth-context';
-import axios from '../../utils/axiosInstance';
-import DashboardHeader from './DashboardHeader';
-import treePng from '../../assets/tree.png';
+import DashboardHeader from '@/pages/account/header';
+import backgroundImage from '/images/background/leaves-background.webp';
+import treeIcon from '/images/misc/tree.png';
 
-const DashboardContent = () => {
-  document.title = 'Dashboard - User';
+export default function AccountDetails() {
   const { authUser, isAuthenticated } = useContext(AuthContext);
   const [sponsorshipsCount, setSponsorshipCount] = useState(0);
   const [error, setError] = useState('');
@@ -44,8 +44,13 @@ const DashboardContent = () => {
     return <div>Loading...</div>;
   }
 
+  console.log('user', authUser);
+
   return (
-    <div>
+    <>
+      <Helmet>
+        <title>Login | Bio Baum Bauer</title>
+      </Helmet>
       <PageBreadcrumb activeLinks={aLinkValues} deActiveLink={daLinkValues} />
       <div className='cart-page-container bg-gray-light text-stone relative mx-auto flex w-full items-center justify-center p-4 pb-[25px] md:pb-[40px] lg:pb-[100px] xl:pb-[120px]'>
         {/* Overlay with background image and opacity */}
@@ -66,9 +71,9 @@ const DashboardContent = () => {
                 <span>Hi,</span>
                 <span className='text-gray-dark'>
                   <span className='inline-block md:hidden lg:inline-block'>
-                    &nbsp;{authUser.firstName}
+                    &nbsp;{authUser?.firstName}
                   </span>
-                  &nbsp;{authUser.lastName}
+                  &nbsp;{authUser?.lastName}
                 </span>
               </h3>
               <div className='bg-gray-light mt-4 flex flex-col items-center justify-center gap-[2rem] rounded-md p-4'>
@@ -86,7 +91,7 @@ const DashboardContent = () => {
                   className='duration-400 hover:text-gray-dark underline transition-transform ease-linear hover:scale-110'
                 >
                   <img
-                    src={treePng}
+                    src={treeIcon}
                     alt='Tree Icon'
                     className='mx-auto block h-[30px] w-[30px]'
                   />
@@ -102,47 +107,45 @@ const DashboardContent = () => {
               <div className='bg-gray-light mt-4 flex flex-col items-start justify-center gap-[0.4rem] break-all rounded-md p-4'>
                 <p className='text-stone'>
                   <span className='font-semibold'>Full Name:</span>&nbsp;
-                  {authUser.firstName}&nbsp;{authUser.lastName}
+                  {authUser?.firstName}&nbsp;{authUser?.lastName}
                 </p>{' '}
                 <p className='text-stone'>
                   <span className='font-semibold'>Email:</span>
-                  &nbsp;{authUser.email}
+                  &nbsp;{authUser?.email}
                 </p>{' '}
                 <p className='text-stone'>
                   <span className='font-semibold'>Phone Number:</span>&nbsp;
-                  {authUser.mobilePhone}
+                  {authUser?.mobilePhone}
                 </p>{' '}
                 <p className='text-stone'>
                   <span className='font-semibold'>Address Line 1:</span>&nbsp;
-                  {authUser.address.address1}
+                  {authUser?.address?.address1}
                 </p>{' '}
                 <p className='text-stone'>
                   <span className='font-semibold'>Address Line 2:</span>&nbsp;
-                  {authUser.address.address2}
+                  {authUser?.address?.address2}
                 </p>{' '}
                 <p className='text-stone'>
                   <span className='font-semibold'>City:</span>&nbsp;
-                  {authUser.address.city}
+                  {authUser?.address?.city}
                 </p>{' '}
                 <p className='text-stone'>
                   <span className='font-semibold'>Postcode:</span>&nbsp;
-                  {authUser.address.zipCode}
+                  {authUser?.address?.zipCode}
                 </p>{' '}
                 <p className='text-stone'>
                   <span className='font-semibold'>State:</span>&nbsp;
-                  {authUser.address.state}
+                  {authUser?.address?.state}
                 </p>{' '}
                 <p className='text-stone'>
                   <span className='font-semibold'>Country:</span>&nbsp;
-                  {authUser.address.country}
+                  {authUser?.address?.country}
                 </p>
               </div>
             </div>
           </div>
         </div>
       </div>
-    </div>
+    </>
   );
-};
-
-export default DashboardContent;
+}

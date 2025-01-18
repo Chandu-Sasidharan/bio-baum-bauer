@@ -11,6 +11,7 @@ import {
   loginUser,
   changePassword,
   logoutUser,
+  refreshToken,
 } from '../controllers/userController.js';
 import {
   validateLogin,
@@ -29,6 +30,8 @@ router.post('/signup', validateSignup, handleValidationResults, createNewUser);
 router.post('/login', validateLogin, handleValidationResults, loginUser);
 
 router.get('/logout', logoutUser);
+
+router.get('/refresh-token', refreshToken);
 
 router.get('/get-all-users', getAllUsers);
 router.get(

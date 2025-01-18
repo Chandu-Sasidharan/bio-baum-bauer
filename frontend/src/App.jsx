@@ -2,7 +2,6 @@ import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import { CartContextProvider } from '@/store/cart-context';
 import { AuthProvider } from '@/store/auth-context';
 
-// Importing our pages
 import Home from '@/pages/Home';
 import Trees from './pages/Trees';
 import Layout from '@/layout';
@@ -15,11 +14,10 @@ import Cart from './pages/user/Cart';
 import Login from '@/pages/auth/login';
 import Signup from './pages/auth/signup';
 import NotFound from './pages/NotFound';
-import Dashboard from './pages/user/Dashboard';
+import AccountDetails from '@/pages/account';
 import UpdateProfile from './pages/user/UpdateProfile';
 import UserSponsorships from './pages/user/UserSponsorships';
 import PasswordChange from './pages/user/PasswordChange';
-import Signout from './pages/user/Signout';
 import SingleTreePage from './pages/SingleTreePage';
 import NewsArticle from './pages/NewsArticle';
 import Checkout from './pages/user/Checkout';
@@ -33,7 +31,6 @@ import './assets/styles/PrevNext.css';
 import SuccessPage from './pages/SuccessPage';
 import CancelPage from './pages/CancelPage';
 import ProtectedRoute from '@/components/protected-route';
-// import Contributors from "./pages/Contributors";
 import { PatronProvider } from './store/PatronContext';
 import SponsorShipDetails from './pages/user/SponsorShipDetails';
 
@@ -85,10 +82,10 @@ function App() {
                   <Route path='/login' element={<Login />} />
                   <Route path='/signup' element={<Signup />} />
                   <Route
-                    path='/profile'
+                    path='/account-details'
                     element={
                       <ProtectedRoute>
-                        <Dashboard />
+                        <AccountDetails />
                       </ProtectedRoute>
                     }
                   />
@@ -113,14 +110,6 @@ function App() {
                     element={
                       <ProtectedRoute>
                         <PasswordChange />
-                      </ProtectedRoute>
-                    }
-                  />
-                  <Route
-                    path='/signout'
-                    element={
-                      <ProtectedRoute>
-                        <Signout />
                       </ProtectedRoute>
                     }
                   />
