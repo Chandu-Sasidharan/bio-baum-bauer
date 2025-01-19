@@ -1,10 +1,9 @@
 import mongoose from 'mongoose';
 
+const dbUrl = process.env.MONGODB_URI;
+
 const connect = async () => {
-  await mongoose.connect(process.env.MONGODB_URI, {
-    useNewUrlParser: true,
-    useUnifiedTopology: true,
-  });
+  await mongoose.connect(dbUrl);
   // eslint-disable-next-line no-console
   console.log('Connected to MongoDB!');
 };
