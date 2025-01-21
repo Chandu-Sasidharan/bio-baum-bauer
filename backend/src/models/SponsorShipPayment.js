@@ -1,5 +1,5 @@
 import { Schema, model } from 'mongoose';
-import User from './User.js';
+import User from './user.js';
 
 const SponsorShipPaymentSchema = new Schema(
   {

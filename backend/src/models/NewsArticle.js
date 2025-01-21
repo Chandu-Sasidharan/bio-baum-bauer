@@ -1,6 +1,6 @@
 // NewsArticle.js
 import mongoose from 'mongoose';
-import User from './User.js';
+import User from './user.js';
 
 const newsArticleSchema = new mongoose.Schema({
   dateCreated: { type: Date, default: Date.now },

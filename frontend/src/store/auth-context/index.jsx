@@ -5,7 +5,7 @@ import {
   useReducer,
   useContext,
 } from 'react';
-import { jwtDecode } from 'jwt-decode';
+import { omit } from 'lodash-es';
 import {
   paymentSessionReducer,
   patronReducer,
@@ -33,17 +33,15 @@ export const AuthProvider = ({ children }) => {
   // Load login session from local storage
   if (lsRef) {
     try {
-      const storedSession = lsRef.getItem('login');
+      const storedSession = lsRef.getItem('userSession');
       if (storedSession) {
-        const parsedSession = JSON.parse(storedSession);
-        const decodedToken = jwtDecode(parsedSession.token);
-        const currentTime = Date.now() / 1000;
+        const session = JSON.parse(storedSession);
 
-        if (decodedToken.exp > currentTime) {
-          initialUserState = parsedSession;
+        if (session.expiresAt > Date.now()) {
+          initialUserState = omit(session, ['expiresAt']);
         } else {
           // Token is expired, clear the session
-          lsRef.removeItem('login');
+          lsRef.removeItem('userSession');
         }
       }
     } catch (error) {
@@ -56,7 +54,13 @@ export const AuthProvider = ({ children }) => {
 
   // Save user to local storage
   useEffect(() => {
-    if (authUser) lsRef.setItem('login', JSON.stringify(authUser));
+    if (authUser) {
+      const updatedAuthUser = {
+        ...authUser,
+        expiresAt: Date.now() + 3600000, // 1 hour from now
+      };
+      lsRef.setItem('userSession', JSON.stringify(updatedAuthUser));
+    }
   }, [authUser]);
 
   // Inactivity logout
@@ -117,11 +121,11 @@ export const AuthProvider = ({ children }) => {
   // Handle logout
   const handleLogout = async () => {
     try {
-      await axios.get('/api/users/logout');
+      await axios.get('/api/auth/logout');
       setAuthUser(null);
       // Clear user data from local storage
       if (typeof window !== 'undefined') {
-        window.localStorage.removeItem('login');
+        window.localStorage.removeItem('userSession');
       }
       // Display success message
       showAlert('success', null, 'You have been logged out!');

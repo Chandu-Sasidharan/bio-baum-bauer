@@ -3,23 +3,23 @@ import fs from 'fs';
 import morgan from 'morgan';
 import helmet from 'helmet';
 import cookieParser from 'cookie-parser';
-import allowCors from '#src/middlewares/cors.js';
-import allRoutes from '#src/routes/allRoutes.js';
+import allowCors from '#src/middlewares/allow-cors.js';
+import allRoutes from '#src/routes/all-routes.js';
 
 const app = express();
 
-app.use(helmet()); //provide basic securites
+app.use(helmet()); //provide basic security
 allowCors(app); // allow cors
 app.use(express.json()); // parse json
 app.use(cookieParser()); // parse cookies
 
-// log requests to access.log
+// Log requests to access.log
 const accessLogStream = fs.createWriteStream('./logs/access.log', {
   flags: 'a',
 });
 app.use(morgan('combined', { stream: accessLogStream }));
 
-// log requests to console if in development
+// Log requests to console if in development
 if (app.get('env') === 'development') {
   app.use(morgan('tiny'));
 }
@@ -31,5 +31,21 @@ app.get('/', (_, res) => {
 
 // All routes
 app.use('/api', allRoutes);
+
+// Handle exceptions
+app.use((error, _req, res, _next) => {
+  const statusCode = error.statusCode || 500;
+  const isProduction = process.env.NODE_ENV === 'production';
+  const message = isProduction
+    ? 'Something went wrong!'
+    : error.message || 'Something went wrong!';
+
+  res.status(statusCode).json({
+    success: false,
+    statusCode,
+    message,
+    ...(isProduction ? {} : { stack: error.stack }),
+  });
+});
 
 export default app;

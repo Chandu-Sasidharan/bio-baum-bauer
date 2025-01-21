@@ -45,9 +45,7 @@ export default function Login() {
     setIsProcessing(true);
 
     try {
-      const response = await axios.post('/api/users/login', formData);
-
-      console.log('status', typeof response.status);
+      const response = await axios.post('/api/auth/login', formData);
 
       if (response.status === 200) {
         setAuthUser(response.data.user);

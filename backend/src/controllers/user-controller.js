@@ -1,110 +1,10 @@
 import bcrypt from 'bcryptjs';
+// import { pick } from 'lodash-es';
 import { StatusCodes } from 'http-status-codes';
-import createJwt from '#src/utils/createJwt.js';
-import User from '#src/models/User.js';
-import _ from 'lodash';
-
-// Create a new user
-export const createNewUser = async (req, res) => {
-  const { email, password } = req.body;
-
-  // Generate a salt and hash the password
-  const salt = await bcrypt.genSalt(10);
-  const hashedPassword = await bcrypt.hash(password, salt);
-
-  try {
-    const user = await User.create({
-      email,
-      password: hashedPassword,
-    });
-
-    // Pick only the id and email fields to send back to the client
-    const userResponse = _.pick(user, ['_id', 'email']);
-
-    return res
-      .status(StatusCodes.CREATED)
-      .json({ message: 'Account created successfully', user: userResponse });
-  } catch (error) {
-    return res
-      .status(StatusCodes.INTERNAL_SERVER_ERROR)
-      .json({ message: 'Something went wrong!' });
-  }
-};
-
-// Login user
-export const loginUser = async (req, res) => {
-  const isProduction = process.env.NODE_ENV === 'production';
-  const { email, password } = req.body;
-
-  try {
-    const user = await User.findOne({ email });
-
-    if (!user) {
-      return res
-        .status(StatusCodes.NOT_FOUND)
-        .json({ message: 'Email or password does not match' });
-    }
-
-    const validPassword = await bcrypt.compare(password, user.password);
-
-    if (validPassword) {
-      const token = createJwt(user._id);
-
-      return res
-        .cookie('jwt', token, {
-          secure: isProduction,
-          httpOnly: true,
-        })
-        .status(StatusCodes.OK)
-        .json({ user, message: 'Logged in successfully!' });
-    } else {
-      return res
-        .status(StatusCodes.UNAUTHORIZED)
-        .json({ message: 'Email or password does not match' });
-    }
-  } catch (error) {
-    return res
-      .status(StatusCodes.INTERNAL_SERVER_ERROR)
-      .json({ message: 'Somthing went wrong!' });
-  }
-};
-
-// Refresh token
-export const refreshToken = async (req, res) => {
-  const isProduction = process.env.NODE_ENV === 'production';
-  const token = req.cookies.jwt;
-
-  if (!token) {
-    return res
-      .status(StatusCodes.UNAUTHORIZED)
-      .json({ message: 'No token provided' });
-  }
-
-  try {
-    const decoded = jwt.verify(token, process.env.JWT_SECRET_KEY);
-    const user = await User.findById(decoded.id);
-
-    if (!user) {
-      return res
-        .status(StatusCodes.UNAUTHORIZED)
-        .json({ message: 'Invalid token' });
-    }
-
-    const newToken = generateJwt(user._id);
-
-    return res
-      .cookie('jwt', newToken, {
-        secure: isProduction,
-        httpOnly: true,
-      })
-      .status(StatusCodes.OK)
-      .json({ message: 'Token refreshed successfully!' });
-  } catch (error) {
-    return res
-      .status(StatusCodes.INTERNAL_SERVER_ERROR)
-      .json({ message: 'Somthing went wrong!' });
-  }
-};
+// import createJwt from '#src/utils/create-jwt.js';
+// import formatZodError from '#src/utils/format-zod-error.js';
+// import pickUserPayload from '#src/utils/pick-user-payload.js';
+import User from '#src/models/user.js';
 
 /**
  * The function name getAllUsers returns all users
@@ -315,20 +215,4 @@ export const changePassword = async (req, res) => {
       .status(StatusCodes.INTERNAL_SERVER_ERROR)
       .json({ message: 'Somthing went wrong!' });
   }
-};
-
-/**
- * for logging out the user
- * @param {*} req
- * @param {*} res
- */
-export const logoutUser = (req, res) => {
-  const isProduction = process.env.NODE_ENV === 'production';
-
-  res.clearCookie('jwt', {
-    httpOnly: true,
-    secure: isProduction,
-  });
-
-  res.status(StatusCodes.OK).json({ message: 'User logged out!' });
 };

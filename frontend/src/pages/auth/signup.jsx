@@ -55,7 +55,7 @@ export default function Signup() {
     setIsProcessing(true);
 
     try {
-      const response = await axios.post('/api/users/signup', formData);
+      const response = await axios.post('/api/auth/signup', formData);
 
       if (response.status === 201) {
         setAuthUser(response.data.user);
@@ -63,10 +63,10 @@ export default function Signup() {
         // Display success message
         showAlert(
           'success',
-          'Sign Up Successful!',
-          'You have successfully created your account.'
+          'Almost there!',
+          'Please check your email to confirm your account.'
         );
-        navigate('/account-details');
+        navigate('/');
       } else {
         // Handle other server response statuses
         showAlert(

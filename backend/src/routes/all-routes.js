@@ -1,5 +1,5 @@
 import express from 'express';
-import userRoute from '#src/routes/userRoute.js';
+// import userRoute from '#src/routes/user-route.js';
 import feedbackRoute from '#src/routes/feedbackRoute.js';
 // import sponsorShipRoute from '#src/routes/sponsorShipRoute.js';
 import contactRoute from '#src/routes/contactRoute.js';
@@ -8,10 +8,12 @@ import farmRoute from '#src/routes/farmRoute.js';
 import galleryRoute from '#src/routes/galleryRoute.js';
 import treeRoute from '#src/routes/treeRoute.js';
 import paymentRoute from '#src/routes/paymentRoute.js';
+import authRoute from '#src/routes/auth-route.js';
 
 const router = express.Router();
 
-router.use('/users', userRoute);
+router.use('/auth', authRoute);
+// router.use('/users', userRoute);
 router.use('/feedbacks', feedbackRoute);
 // router.use('/sponsorships', sponsorShipRoute);
 router.use('/contact', contactRoute);

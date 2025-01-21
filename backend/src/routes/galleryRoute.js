@@ -9,9 +9,9 @@ import {
   deleteGalleryItemById,
   validateGallery,
   showValidateResult,
-} from '../controllers/galleryController.js';
+} from '#src/controllers/galleryController.js';
 import { storage } from '#root/config/cloudstorage.js';
-import { authorize } from '#src/middlewares/authorization.js';
+// import { authorize } from '#src/middlewares/authorization.js';
 
 const router = express.Router();
 /*
@@ -50,7 +50,6 @@ const upload = multer({
 
 router.post(
   '/create',
-  authorize,
   upload.single('image'),
   validateGallery,
   showValidateResult,

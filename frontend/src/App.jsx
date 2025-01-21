@@ -13,6 +13,7 @@ import Contact from './pages/Contact';
 import Cart from './pages/user/Cart';
 import Login from '@/pages/auth/login';
 import Signup from './pages/auth/signup';
+import ConfirmAccount from '@/pages/auth/confirm-account';
 import NotFound from './pages/NotFound';
 import AccountDetails from '@/pages/account';
 import UpdateProfile from './pages/user/UpdateProfile';
@@ -81,6 +82,7 @@ function App() {
                   />
                   <Route path='/login' element={<Login />} />
                   <Route path='/signup' element={<Signup />} />
+                  <Route path='/confirm-account' element={<ConfirmAccount />} />
                   <Route
                     path='/account-details'
                     element={
