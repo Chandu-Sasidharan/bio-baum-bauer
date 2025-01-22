@@ -1,4 +1,5 @@
 import bcrypt from 'bcryptjs';
+import jwt from 'jsonwebtoken';
 import { pick } from 'lodash-es';
 import { StatusCodes } from 'http-status-codes';
 import createJwt from '#src/utils/create-jwt.js';
@@ -38,7 +39,8 @@ export const signUp = async (req, res) => {
     // Generate a verification token
     const verificationToken = createVerificationToken();
 
-    // If the user exists but is soft deleted, update the user
+    // If the user exists but is soft deleted
+    // update the user, and wait for the verification
     if (existingUser && existingUser.deletedAt !== null) {
       await User.updateOne(
         { email },
@@ -46,7 +48,6 @@ export const signUp = async (req, res) => {
           password: hashedPassword,
           verificationToken,
           verificationTokenExpiresAt: Date.now() + 3600000, // 1 hour
-          deletedAt: null,
           isVerified: false,
         }
       );
@@ -95,7 +96,9 @@ export const confirmAccount = async (req, res) => {
       });
     }
 
-    // If the user is soft deleted, hard delete the user to wipe the previous data
+    // If the user is soft deleted,
+    // hard delete the user to wipe the previous data,
+    // this allows the user to sign up again with the same email
     if (user.deletedAt !== null) {
       await User.deleteOne({ verificationToken: token });
     }
@@ -119,7 +122,7 @@ export const confirmAccount = async (req, res) => {
       .cookie('jwt', jwtToken, {
         secure: isProduction,
         httpOnly: true,
-        maxAge: 3600000, // 1 hour
+        maxAge: 1200000, // 20 minutes
       })
       .status(StatusCodes.OK)
       .json({ message: 'Account Confirmed!', user: userPayload });
@@ -159,6 +162,7 @@ export const loginUser = async (req, res) => {
       .cookie('jwt', jwtToken, {
         secure: isProduction,
         httpOnly: true,
+        maxAge: 1200000, // 20 minutes
       })
       .status(StatusCodes.OK)
       .json({ message: 'Logged in successfully!', user: userPayload });
@@ -195,11 +199,21 @@ export const refreshToken = async (req, res) => {
       .cookie('jwt', newJwtToken, {
         secure: isProduction,
         httpOnly: true,
+        maxAge: 1200000, // 20 minutes
       })
       .status(StatusCodes.OK)
       .json({ message: 'Token refreshed successfully!' });
   } catch (error) {
-    throw error;
+    const isProduction = process.env.NODE_ENV === 'production';
+
+    // If the token is invalid, clear the cookie
+    return res
+      .clearCookie('jwt', {
+        httpOnly: true,
+        secure: isProduction,
+      })
+      .status(StatusCodes.UNAUTHORIZED)
+      .json({ message: 'Invalid or expired token' });
   }
 };
 

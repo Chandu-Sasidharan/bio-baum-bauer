@@ -32,7 +32,7 @@ app.get('/', (_, res) => {
 // All routes
 app.use('/api', allRoutes);
 
-// Handle exceptions
+// Handle thrown errors
 app.use((error, _req, res, _next) => {
   const statusCode = error.statusCode || 500;
   const isProduction = process.env.NODE_ENV === 'production';

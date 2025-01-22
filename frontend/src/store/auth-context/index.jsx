@@ -57,7 +57,7 @@ export const AuthProvider = ({ children }) => {
     if (authUser) {
       const updatedAuthUser = {
         ...authUser,
-        expiresAt: Date.now() + 3600000, // 1 hour from now
+        expiresAt: Date.now() + 20 * 60 * 1000, // 20 minutes
       };
       lsRef.setItem('userSession', JSON.stringify(updatedAuthUser));
     }
@@ -99,7 +99,7 @@ export const AuthProvider = ({ children }) => {
     const refreshToken = async () => {
       if (isAuthenticated) {
         try {
-          await axios.get('/api/users/refresh-token');
+          await axios.get('/api/auth/refresh-token');
         } catch (error) {
           // Do nothing
         }

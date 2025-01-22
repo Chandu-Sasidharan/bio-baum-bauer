@@ -1,6 +1,6 @@
 const allowCors = app => {
-  const frontendUrl = process.env.FRONTEND_URL || 'http://localhost:3000';
-  const adminPanelUrl = process.env.ADMIN_PANEL_URL || 'http://localhost:3001';
+  const frontendUrl = process.env.FRONTEND_URL;
+  const adminPanelUrl = process.env.ADMIN_PANEL_URL;
 
   app.use((req, res, next) => {
     const allowedOrigins = [frontendUrl, adminPanelUrl];
