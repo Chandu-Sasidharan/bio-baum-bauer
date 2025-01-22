@@ -50,6 +50,7 @@ export const AuthProvider = ({ children }) => {
   }
 
   const [authUser, setAuthUser] = useState(initialUserState);
+  const [isUserLoading, setIsUserLoading] = useState(false);
   const isAuthenticated = !!authUser;
 
   // Save user to local storage
@@ -117,6 +118,95 @@ export const AuthProvider = ({ children }) => {
       }
     };
   }, [isAuthenticated, authUser]);
+
+  // SingnUp user
+  const signUpUser = async formData => {
+    setIsUserLoading(true);
+    let isError = false;
+
+    try {
+      const response = await axios.post('/api/auth/signup', formData);
+
+      if (response.status === 201) {
+        setAuthUser(response.data.user);
+        // Display success message
+        showAlert(
+          'success',
+          'Almost there!',
+          'Please check your email to confirm your account.'
+        );
+      } else {
+        // Handle other server response statuses
+        showAlert(
+          'error',
+          'Sign Up Failed',
+          response.data.message || 'An error occurred during sign up!'
+        );
+
+        isError = true;
+      }
+    } catch (error) {
+      // Handle errors that occurred during the POST request
+      let errorMessage = 'An error occurred during sign up!';
+      if (error.response) {
+        if (error.response.status === 400) {
+          errorMessage = '<ul>';
+          // Loop through error messages and append to the list
+          error.response.data.errors.forEach(err => {
+            errorMessage += `<li>${err.msg}</li>`;
+          });
+          errorMessage += '</ul>';
+        } else {
+          errorMessage = error.response.data.message || errorMessage;
+        }
+      }
+
+      showAlert('error', 'Sign Up Failed', null, errorMessage);
+      isError = true;
+    }
+
+    setIsUserLoading(false);
+    return isError;
+  };
+
+  // Login user
+  const loginUser = async formData => {
+    setIsUserLoading(true);
+
+    try {
+      const response = await axios.post('/api/auth/login', formData);
+
+      if (response.status === 200) {
+        setAuthUser(response.data.user);
+      } else {
+        // Handle other server response statuses
+        showAlert(
+          'error',
+          'Login Failed',
+          response.data.message || 'An error occurred during login!'
+        );
+      }
+    } catch (error) {
+      // Handle errors that occurred during the POST request
+      let errorMessage = 'An error occurred during login!';
+      if (error.response) {
+        if (error.response.status === 400) {
+          errorMessage = '<ul>';
+          // Loop through error messages and append to the list
+          error.response.data.errors.forEach(err => {
+            errorMessage += `<li>${err.msg}</li>`;
+          });
+          errorMessage += '</ul>';
+        } else {
+          errorMessage = error.response.data.message || errorMessage;
+        }
+      }
+
+      showAlert('error', 'Login Failed', null, errorMessage);
+    }
+
+    setIsUserLoading(false);
+  };
 
   // Handle logout
   const handleLogout = async () => {
@@ -190,6 +280,9 @@ export const AuthProvider = ({ children }) => {
       value={{
         authUser,
         setAuthUser,
+        loginUser,
+        signUpUser,
+        isUserLoading,
         isAuthenticated,
         stripeSession,
         handleStripeSession,

@@ -7,11 +7,9 @@ import { Helmet } from 'react-helmet-async';
 import { Button, Tooltip, Spinner } from 'flowbite-react';
 import { HiHome } from 'react-icons/hi';
 import { HiEye, HiEyeOff } from 'react-icons/hi';
-import axios from '@/utils/axiosInstance';
 import { Breadcrumb, BreadcrumbItem } from '@/components/elements/breadcrumb';
 import backgroundImage from '/images/background/leaves-background.webp';
 import treeIcon from '/images/misc/tree.png';
-import showAlert from '@/utils/alert';
 import { useUser } from '@/store/auth-context';
 
 // Define schema with zod
@@ -21,15 +19,12 @@ const schema = z.object({
 });
 
 export default function Login() {
-  const navigate = useNavigate();
-  const { isAuthenticated, setAuthUser } = useUser();
-  const [isProcessing, setIsProcessing] = useState(false);
+  const { isAuthenticated, loginUser, isUserLoading } = useUser();
   const [showPassword, setShowPassword] = useState(false);
   const {
     register,
     handleSubmit,
     formState: { errors },
-    reset,
   } = useForm({
     resolver: zodResolver(schema),
     mode: 'onTouched',
@@ -42,49 +37,7 @@ export default function Login() {
 
   // Submit form data
   const onSubmit = async formData => {
-    setIsProcessing(true);
-
-    try {
-      const response = await axios.post('/api/auth/login', formData);
-
-      if (response.status === 200) {
-        setAuthUser(response.data.user);
-        reset();
-        // Display success message
-        showAlert(
-          'success',
-          'Login Successful!',
-          'You have successfully logged in.'
-        );
-        navigate('/account-details');
-      } else {
-        // Handle other server response statuses
-        showAlert(
-          'error',
-          'Login Failed',
-          response.data.message || 'An error occurred during login!'
-        );
-      }
-    } catch (error) {
-      // Handle errors that occurred during the POST request
-      let errorMessage = 'An error occurred during login!';
-      if (error.response) {
-        if (error.response.status === 400) {
-          errorMessage = '<ul>';
-          // Loop through error messages and append to the list
-          error.response.data.errors.forEach(err => {
-            errorMessage += `<li>${err.msg}</li>`;
-          });
-          errorMessage += '</ul>';
-        } else {
-          errorMessage = error.response.data.message || errorMessage;
-        }
-      }
-
-      showAlert('error', 'Login Failed', null, errorMessage);
-    } finally {
-      setIsProcessing(false);
-    }
+    await loginUser(formData);
   };
 
   if (isAuthenticated) {
@@ -223,7 +176,7 @@ export default function Login() {
                 type='submit'
                 className='bg-accent hover:!bg-accent-light text-primary-light rounded-sm tracking-wider duration-300 focus:ring-0'
               >
-                {isProcessing ? (
+                {isUserLoading ? (
                   <>
                     <Spinner
                       aria-label='Processing'

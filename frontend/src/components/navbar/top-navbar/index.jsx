@@ -61,7 +61,7 @@ export default function TopNavBar({
               aria-label='login page'
               className='hover:bg-primary hover:text-accent text-primary-light font-chicle border-primary-dark rounded-md border-[1px] px-3 py-2 text-2xl tracking-wider duration-300'
             >
-              Login
+              Sponsor a Tree
             </Link>
           )}
         </div>

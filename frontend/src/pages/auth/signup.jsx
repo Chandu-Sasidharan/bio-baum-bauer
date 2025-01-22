@@ -7,11 +7,9 @@ import { Helmet } from 'react-helmet-async';
 import { Button, Tooltip, Spinner } from 'flowbite-react';
 import { HiHome } from 'react-icons/hi';
 import { HiEye, HiEyeOff } from 'react-icons/hi';
-import axios from '@/utils/axiosInstance';
 import { Breadcrumb, BreadcrumbItem } from '@/components/elements/breadcrumb';
 import backgroundImage from '/images/background/leaves-background.webp';
 import treeIcon from '/images/misc/tree.png';
-import showAlert from '@/utils/alert';
 import { useUser } from '@/store/auth-context';
 
 // Define schema with zod
@@ -31,15 +29,13 @@ const schema = z
   });
 
 export default function Signup() {
-  const { isAuthenticated, setAuthUser } = useUser();
+  const { isAuthenticated, signUpUser, isUserLoading } = useUser();
   const navigate = useNavigate();
-  const [isProcessing, setIsProcessing] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
   const {
     register,
     handleSubmit,
     formState: { errors },
-    reset,
   } = useForm({
     resolver: zodResolver(schema),
     mode: 'onTouched',
@@ -52,48 +48,10 @@ export default function Signup() {
 
   // Submit form data
   const onSubmit = async formData => {
-    setIsProcessing(true);
+    const error = await signUpUser(formData);
 
-    try {
-      const response = await axios.post('/api/auth/signup', formData);
-
-      if (response.status === 201) {
-        setAuthUser(response.data.user);
-        reset();
-        // Display success message
-        showAlert(
-          'success',
-          'Almost there!',
-          'Please check your email to confirm your account.'
-        );
-        navigate('/');
-      } else {
-        // Handle other server response statuses
-        showAlert(
-          'error',
-          'Sign Up Failed',
-          response.data.message || 'An error occurred during sign up!'
-        );
-      }
-    } catch (error) {
-      // Handle errors that occurred during the POST request
-      let errorMessage = 'An error occurred during sign up!';
-      if (error.response) {
-        if (error.response.status === 400) {
-          errorMessage = '<ul>';
-          // Loop through error messages and append to the list
-          error.response.data.errors.forEach(err => {
-            errorMessage += `<li>${err.msg}</li>`;
-          });
-          errorMessage += '</ul>';
-        } else {
-          errorMessage = error.response.data.message || errorMessage;
-        }
-      }
-
-      showAlert('error', 'Sign Up Failed', null, errorMessage);
-    } finally {
-      setIsProcessing(false);
+    if (!error) {
+      navigate('/');
     }
   };
 
@@ -270,7 +228,7 @@ export default function Signup() {
                 type='submit'
                 className='bg-accent hover:!bg-accent-light text-primary-light rounded-sm tracking-wider duration-300 focus:ring-0'
               >
-                {isProcessing ? (
+                {isUserLoading ? (
                   <>
                     <Spinner
                       aria-label='Processing'
