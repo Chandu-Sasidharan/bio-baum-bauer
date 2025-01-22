@@ -204,16 +204,24 @@ export const refreshToken = async (req, res) => {
       .status(StatusCodes.OK)
       .json({ message: 'Token refreshed successfully!' });
   } catch (error) {
-    const isProduction = process.env.NODE_ENV === 'production';
-
     // If the token is invalid, clear the cookie
-    return res
-      .clearCookie('jwt', {
-        httpOnly: true,
-        secure: isProduction,
-      })
-      .status(StatusCodes.UNAUTHORIZED)
-      .json({ message: 'Invalid or expired token' });
+    if (
+      error.name === 'JsonWebTokenError' ||
+      error.name === 'TokenExpiredError'
+    ) {
+      const isProduction = process.env.NODE_ENV === 'production';
+
+      return res
+        .clearCookie('jwt', {
+          httpOnly: true,
+          secure: isProduction,
+        })
+        .status(StatusCodes.UNAUTHORIZED)
+        .json({ message: 'Invalid or expired token' });
+    }
+
+    // else throw the error
+    throw error;
   }
 };
 
