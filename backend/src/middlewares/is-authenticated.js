@@ -7,7 +7,7 @@ const isAuthenticated = (req, res, next) => {
   if (!token) {
     return res
       .status(StatusCodes.UNAUTHORIZED)
-      .json({ message: 'Access denied: No token provided' });
+      .json({ message: 'Unauthorized: No token provided' });
   }
 
   try {
@@ -17,7 +17,7 @@ const isAuthenticated = (req, res, next) => {
   } catch (error) {
     return res
       .status(StatusCodes.UNAUTHORIZED)
-      .json({ message: 'Access denied: No token provided' });
+      .json({ message: 'Unauthorized: Invalid token' });
   }
 };
 
