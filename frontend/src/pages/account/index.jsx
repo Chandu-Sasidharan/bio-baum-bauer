@@ -15,6 +15,7 @@ export default function AccountLayout() {
       <main className='flex-1'>
         <Breadcrumbs />
 
+        {/* Children */}
         <Outlet />
       </main>
     </div>
