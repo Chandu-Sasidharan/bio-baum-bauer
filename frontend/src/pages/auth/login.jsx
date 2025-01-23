@@ -1,13 +1,12 @@
 import { useState } from 'react';
-import { Link, useNavigate, Navigate } from 'react-router-dom';
+import { Link, Navigate } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
 import { Helmet } from 'react-helmet-async';
 import { Button, Tooltip, Spinner } from 'flowbite-react';
-import { HiHome } from 'react-icons/hi';
 import { HiEye, HiEyeOff } from 'react-icons/hi';
-import { Breadcrumb, BreadcrumbItem } from '@/components/elements/breadcrumb';
+import Breadcrumbs from '@/components/elements/breadcrumbs';
 import backgroundImage from '/images/background/leaves-background.webp';
 import treeIcon from '/images/misc/tree.png';
 import { useUser } from '@/store/auth-context';
@@ -41,7 +40,7 @@ export default function Login() {
   };
 
   if (isAuthenticated) {
-    return <Navigate to='/account-details' />;
+    return <Navigate to='/account' />;
   }
 
   return (
@@ -58,11 +57,9 @@ export default function Login() {
         ></div>
 
         {/* Flex Row1 */}
-        <Breadcrumb label='Site navigation' className='self-start px-4 py-2'>
-          <HiHome />
-          <BreadcrumbItem href='/'>Home</BreadcrumbItem>
-          <BreadcrumbItem current>Login</BreadcrumbItem>
-        </Breadcrumb>
+        <div className='z-[1] w-full px-5'>
+          <Breadcrumbs />
+        </div>
 
         {/* Flex Row2 */}
         <div className='bg-primary-light static z-[1] mx-auto my-16 flex w-full max-w-[calc(100%-2.5rem)] flex-col gap-5 rounded-md p-6 shadow-md sm:mb-24 sm:max-w-[500px]'>

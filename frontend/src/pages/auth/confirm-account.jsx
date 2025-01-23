@@ -23,7 +23,7 @@ export default function ConfirmAccount() {
       const response = await axios.post('/api/auth/confirm-account', { token });
       if (response.status === 200) {
         setAuthUser(response.data.user);
-        navigate('/');
+        navigate('/account');
       }
       setIsProcessing(false);
     } catch (error) {

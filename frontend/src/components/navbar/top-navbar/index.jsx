@@ -31,7 +31,7 @@ export default function TopNavBar({
     setTopNavDropdownOpen(false);
 
     if (type === 'account') {
-      navigate('/account-details');
+      navigate('/account');
     } else if (type === 'logout') {
       handleLogout();
     }

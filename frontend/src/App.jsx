@@ -1,7 +1,6 @@
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import { CartContextProvider } from '@/store/cart-context';
 import { AuthProvider } from '@/store/auth-context';
-
 import Home from '@/pages/Home';
 import Trees from './pages/Trees';
 import Layout from '@/layout';
@@ -15,17 +14,10 @@ import Login from '@/pages/auth/login';
 import Signup from './pages/auth/signup';
 import ConfirmAccount from '@/pages/auth/confirm-account';
 import NotFound from './pages/NotFound';
-import AccountDetails from '@/pages/account';
-import UpdateProfile from './pages/user/UpdateProfile';
-import UserSponsorships from './pages/user/UserSponsorships';
-import PasswordChange from './pages/user/PasswordChange';
 import SingleTreePage from './pages/SingleTreePage';
 import NewsArticle from './pages/NewsArticle';
 import Checkout from './pages/user/Checkout';
 import Order from './pages/user/Order';
-// import AddToGallery from "./pages/AddToGallery";
-// import AddToNewArticle from "./pages/AddToNewsArticle";
-// import AddNewTree from "./pages/AddNewTree";
 import Privacy from './pages/Privacy';
 import Terms from './pages/TermsConditions';
 import './assets/styles/PrevNext.css';
@@ -34,6 +26,9 @@ import CancelPage from './pages/CancelPage';
 import ProtectedRoute from '@/components/protected-route';
 import { PatronProvider } from './store/PatronContext';
 import SponsorShipDetails from './pages/user/SponsorShipDetails';
+import AccountLayout from '@/pages/account';
+import Profile from '@/pages/account/profile';
+import Sponsorship from '@/pages/account/sponsorship';
 
 function App() {
   return (
@@ -84,40 +79,17 @@ function App() {
                   <Route path='/signup' element={<Signup />} />
                   <Route path='/confirm-account' element={<ConfirmAccount />} />
                   <Route
-                    path='/account-details'
+                    path='/account'
                     element={
                       <ProtectedRoute>
-                        <AccountDetails />
+                        <AccountLayout />
                       </ProtectedRoute>
                     }
-                  />
-                  <Route
-                    path='/update_profile'
-                    element={
-                      <ProtectedRoute>
-                        <UpdateProfile />
-                      </ProtectedRoute>
-                    }
-                  />
-                  <Route
-                    path='/user_sponsorships'
-                    element={
-                      <ProtectedRoute>
-                        <UserSponsorships />
-                      </ProtectedRoute>
-                    }
-                  />
-                  <Route
-                    path='/password_change'
-                    element={
-                      <ProtectedRoute>
-                        <PasswordChange />
-                      </ProtectedRoute>
-                    }
-                  />
-                  {/*     <Route path="/addImageToGallery" element={<AddToGallery />} />
-                <Route path="/addToNewArticle" element={<AddToNewArticle />} />
-                <Route path="/addNewTree" element={<AddNewTree />} /> */}
+                  >
+                    <Route index element={<Profile />} />
+                    <Route path='sponsorships' element={<Sponsorship />} />
+                  </Route>
+
                   <Route
                     path='/success'
                     element={
@@ -126,6 +98,7 @@ function App() {
                       </ProtectedRoute>
                     }
                   />
+
                   <Route
                     path='/cancel'
                     element={
