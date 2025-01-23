@@ -25,8 +25,12 @@ export const signUp = async (req, res) => {
     const { email, password } = formData;
     const existingUser = await User.findOne({ email });
 
-    // Check if the user exists
-    if (existingUser && existingUser.deletedAt === null) {
+    // Check if the user exists and is not soft deleted
+    if (
+      existingUser &&
+      existingUser.deletedAt === null &&
+      existingUser.isVerified
+    ) {
       return res
         .status(StatusCodes.CONFLICT)
         .json({ message: 'Email already exists' });
@@ -97,10 +101,26 @@ export const confirmAccount = async (req, res) => {
     }
 
     // If the user is soft deleted,
-    // hard delete the user to wipe the previous data,
-    // this allows the user to sign up again with the same email
+    // allow them to sign up again with the same email
+    // Retain only the email and password
+    // Set other properties to null
     if (user.deletedAt !== null) {
-      await User.deleteOne({ verificationToken: token });
+      await User.updateOne(
+        { verificationToken: token },
+        {
+          deletedAt: null,
+          isVerified: true,
+          verificationToken: null,
+          verificationTokenExpiresAt: null,
+          firstName: null,
+          lastName: null,
+          address: null,
+          phoneNumber: null,
+          avatarUrl: 'dummy',
+          passwordResetToken: null,
+          passwordResetTokenExpiresAt: null,
+        }
+      );
     }
 
     // Update the user
@@ -135,7 +155,7 @@ export const confirmAccount = async (req, res) => {
 export const loginUser = async (req, res) => {
   try {
     const { email, password } = req.body;
-    const user = await User.findOne({ email });
+    const user = await User.findOne({ email, isVerified: true });
 
     if (!user) {
       return res
