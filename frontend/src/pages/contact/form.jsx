@@ -37,7 +37,7 @@ export default function Form() {
       const response = await axios.post('/api/contact/create', formData);
 
       if (response.status === 201) {
-        showAlert('success', 'Thank you!', 'We have recieved your message.');
+        showAlert('success', 'Thank you!', response.data.message);
         // Clear the form
         reset();
       } else {
@@ -72,7 +72,7 @@ export default function Form() {
           name='userName'
           placeholder='Your name'
           {...register('userName')}
-          className={`input !text-stone input-bordered w-full cursor-pointer focus:outline-none lg:flex-1 ${
+          className={`input text-stone input-bordered w-full cursor-pointer focus:outline-none lg:flex-1 ${
             errors.userName
               ? 'border-red focus:border-red'
               : 'focus:border-primary'
