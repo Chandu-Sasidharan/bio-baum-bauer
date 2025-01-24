@@ -13,7 +13,6 @@ import Cart from './pages/user/Cart';
 import Login from '@/pages/auth/login';
 import Signup from './pages/auth/signup';
 import ConfirmAccount from '@/pages/auth/confirm-account';
-import NotFound from './pages/NotFound';
 import SingleTreePage from './pages/SingleTreePage';
 import NewsArticle from './pages/NewsArticle';
 import Checkout from './pages/user/Checkout';
@@ -29,6 +28,7 @@ import SponsorShipDetails from './pages/user/SponsorShipDetails';
 import AccountLayout from '@/pages/account';
 import Profile from '@/pages/account/profile';
 import Sponsorship from '@/pages/account/sponsorship';
+import NotFound from '@/pages/not-found';
 
 function App() {
   return (
