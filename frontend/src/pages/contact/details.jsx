@@ -10,7 +10,7 @@ export default function Details() {
     <div className='flex w-full flex-col gap-4'>
       <div className='-ml-1 mb-3 flex items-center gap-3'>
         <img src={treeIcon} alt='Tree Icon' className='h-[40px] w-[40px]' />
-        <h1 className='text-accent font-chicle border-primary border-b-2 text-4xl tracking-wide'>
+        <h1 className='text-accent font-chicle border-primary border-b-2 text-4xl tracking-wider'>
           GET IN TOUCH
         </h1>
       </div>

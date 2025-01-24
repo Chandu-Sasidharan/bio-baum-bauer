@@ -1,14 +1,17 @@
 import { model, Schema } from 'mongoose';
+import validateContactFormData from '#src/validations/contact-form-validation.js';
 
-const contactSchema = new Schema(
+const contactFormSchema = new Schema(
   {
-    firstName: { type: String, required: true },
-    lastName: { type: String, required: true },
-    emailAddress: { type: String, required: true },
+    userName: { type: String, required: true },
+    email: { type: String, required: true },
     message: { type: String, required: true },
+    agreeToPolicies: { type: Boolean, required: true },
   },
   { timestamps: true }
 );
 
-const Contact = model('contact', contactSchema);
+const Contact = model('Contact', contactFormSchema);
+Object.assign(Contact, { validateFormData: validateContactFormData });
+
 export default Contact;

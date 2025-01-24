@@ -4,23 +4,19 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
 import axios from '@/utils/axios';
 import Button from '@/components/elements/button';
+import showAlert from '@/utils/alert';
+import formatError from '@/utils/format-error';
 
 // Define schema with zod
 const schema = z.object({
-  firstName: z
+  userName: z
     .string()
-    .min(3, { message: 'First name should have a minimum length of 3' })
-    .max(50, { message: 'First name should have a maximum length of 50' }),
-  lastName: z
-    .string()
-    .min(3, { message: 'Last name should have a minimum length of 3' })
-    .max(50, { message: 'Last name should have a maximum length of 50' }),
-  emailAddress: z
-    .string()
-    .email({ message: 'Please enter a valid email address.' }),
+    .min(3, { message: 'Name should have a minimum length of 3' })
+    .max(50, { message: 'Name should have a maximum length of 50' }),
+  email: z.string().email({ message: 'Please enter a valid email address.' }),
   message: z.string().min(1, { message: 'Message is required' }),
   agreeToPolicies: z.boolean().refine(val => val === true, {
-    message: 'You must agree to the terms and conditions',
+    message: 'please agree to the terms and conditions',
   }),
 });
 
@@ -29,6 +25,7 @@ export default function Form() {
     register,
     handleSubmit,
     formState: { errors },
+    reset,
   } = useForm({
     resolver: zodResolver(schema),
     mode: 'onTouched',
@@ -37,10 +34,23 @@ export default function Form() {
 
   const onSubmit = async formData => {
     try {
-      await axios.post('/api/contact', formData);
-      // Handle success
+      const response = await axios.post('/api/contact/create', formData);
+
+      if (response.status === 201) {
+        showAlert('success', 'Thank you!', 'We have recieved your message.');
+        // Clear the form
+        reset();
+      } else {
+        // Handle other server response statuses
+        showAlert(
+          'error',
+          'Message Failed',
+          response.data.message || 'Something went wrong!'
+        );
+      }
     } catch (error) {
-      // Handle error
+      const errorMessage = formatError(error);
+      showAlert('error', 'Sign Up Failed', null, errorMessage);
     }
   };
 
@@ -49,54 +59,28 @@ export default function Form() {
       className='flex w-full flex-col gap-1'
       onSubmit={handleSubmit(onSubmit)}
     >
-      {/* First Name */}
+      {/* Name */}
       <div>
         <label
-          htmlFor='firstName'
+          htmlFor='userName'
           className='text-primary-dark mb-1 ml-1 block text-sm'
         >
-          First Name *
+          Name *
         </label>
         <input
-          name='firstName'
           type='text'
-          placeholder='Your first name'
-          {...register('firstName')}
-          className={`input input-bordered w-full cursor-pointer focus:outline-none lg:flex-1 ${
-            errors.firstName
+          name='userName'
+          placeholder='Your name'
+          {...register('userName')}
+          className={`input !text-stone input-bordered w-full cursor-pointer focus:outline-none lg:flex-1 ${
+            errors.userName
               ? 'border-red focus:border-red'
               : 'focus:border-primary'
           }`}
         />
         <div className='mt-[3px] h-4'>
-          {errors.firstName && (
-            <p className='text-red text-xs'>{errors.firstName.message}</p>
-          )}
-        </div>
-      </div>
-
-      {/* Last Name */}
-      <div>
-        <label
-          htmlFor='lastName'
-          className='text-primary-dark mb-1 ml-1 block text-sm'
-        >
-          Last Name *
-        </label>
-        <input
-          type='text'
-          name='lastName'
-          placeholder='Your last name'
-          {...register('lastName')}
-          className={`input input-bordered w-full cursor-pointer focus:outline-none lg:flex-1 ${
-            errors.lastName
-              ? 'border-red focus:border-red'
-              : 'focus:border-primary'
-          }`}
-        />
-        <div className='mt-[3px] h-4'>
-          {errors.lastName && (
-            <p className='text-red text-xs'>{errors.lastName.message}</p>
+          {errors.userName && (
+            <p className='text-red text-xs'>{errors.userName.message}</p>
           )}
         </div>
       </div>
@@ -111,18 +95,18 @@ export default function Form() {
         </label>
         <input
           type='email'
-          name='emailAddress'
+          name='email'
           placeholder='email@example.com'
-          {...register('emailAddress')}
-          className={`input input-bordered w-full cursor-pointer focus:outline-none lg:flex-1 ${
-            errors.emailAddress
+          {...register('email')}
+          className={`input text-stone input-bordered w-full cursor-pointer focus:outline-none lg:flex-1 ${
+            errors.email
               ? 'border-red focus:border-red'
               : 'focus:border-primary'
           }`}
         />
         <div className='mt-[3px] h-4'>
-          {errors.emailAddress && (
-            <p className='text-red text-xs'>{errors.emailAddress.message}</p>
+          {errors.email && (
+            <p className='text-red text-xs'>{errors.email.message}</p>
           )}
         </div>
       </div>
@@ -142,7 +126,7 @@ export default function Form() {
           rows='4'
           name='message'
           {...register('message')}
-          className={`textarea textarea-bordered text-gray-dark w-full cursor-pointer p-2 pl-3 text-base placeholder:text-base focus:outline-none ${
+          className={`textarea textarea-bordered text-stone w-full cursor-pointer p-2 pl-3 text-base placeholder:text-base focus:outline-none ${
             errors.message
               ? 'border-red-500 focus:border-red-500'
               : 'focus:border-primary'
