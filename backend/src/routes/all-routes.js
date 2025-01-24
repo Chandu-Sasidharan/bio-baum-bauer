@@ -1,5 +1,5 @@
 import express from 'express';
-// import userRoute from '#src/routes/user-route.js';
+import userRoute from '#src/routes/user-route.js';
 import feedbackRoute from '#src/routes/feedbackRoute.js';
 // import sponsorShipRoute from '#src/routes/sponsorShipRoute.js';
 import contactRoute from '#src/routes/contactRoute.js';
@@ -13,7 +13,7 @@ import authRoute from '#src/routes/auth-route.js';
 const router = express.Router();
 
 router.use('/auth', authRoute);
-// router.use('/users', userRoute);
+router.use('/user', userRoute);
 router.use('/feedbacks', feedbackRoute);
 // router.use('/sponsorships', sponsorShipRoute);
 router.use('/contact', contactRoute);

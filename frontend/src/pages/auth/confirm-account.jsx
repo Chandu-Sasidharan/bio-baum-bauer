@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useEffect } from 'react';
 import { useSearchParams, useNavigate } from 'react-router-dom';
 import axios from '@/utils/axiosInstance';
 import { useUser } from '@/store/auth-context';
@@ -8,8 +8,7 @@ export default function ConfirmAccount() {
   const [searchParams] = useSearchParams();
   const token = searchParams.get('token');
   const navigate = useNavigate();
-  const { setAuthUser } = useUser();
-  const [isProcessing, setIsProcessing] = useState(true);
+  const { setAuthUser, isUserLoading, setIsUserLoading } = useUser();
 
   useEffect(() => {
     if (token) {
@@ -19,19 +18,34 @@ export default function ConfirmAccount() {
 
   const confirmAccount = async token => {
     try {
+      setIsUserLoading(true);
       // Send the token to the backend for verification
       const response = await axios.post('/api/auth/confirm-account', { token });
       if (response.status === 200) {
         setAuthUser(response.data.user);
+        setIsProcessing(false);
         navigate('/account');
+      } else {
+        showAlert(
+          'error',
+          'Sign up failed',
+          response.data.message || 'Something went wrong!'
+        );
+        setIsProcessing(false);
+        navigate('/');
       }
-      setIsProcessing(false);
     } catch (error) {
+      showAlert(
+        'error',
+        'Sign up failed',
+        error.response.data.message || 'Something went wrong!'
+      );
       setIsProcessing(false);
+      navigate('/');
     }
   };
 
-  if (isProcessing) {
+  if (isUserLoading) {
     return <Spinner />;
   }
 

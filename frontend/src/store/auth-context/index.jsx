@@ -153,7 +153,7 @@ export const AuthProvider = ({ children }) => {
           errorMessage = '<ul>';
           // Loop through error messages and append to the list
           error.response.data.errors.forEach(err => {
-            errorMessage += `<li>${err.msg}</li>`;
+            errorMessage += `<li>${err.message}</li>`;
           });
           errorMessage += '</ul>';
         } else {
@@ -194,7 +194,7 @@ export const AuthProvider = ({ children }) => {
           errorMessage = '<ul>';
           // Loop through error messages and append to the list
           error.response.data.errors.forEach(err => {
-            errorMessage += `<li>${err.msg}</li>`;
+            errorMessage += `<li>${err.message}</li>`;
           });
           errorMessage += '</ul>';
         } else {
@@ -203,6 +203,47 @@ export const AuthProvider = ({ children }) => {
       }
 
       showAlert('error', 'Login Failed', null, errorMessage);
+    }
+
+    setIsUserLoading(false);
+  };
+
+  // Update user
+  const updateUser = async formData => {
+    setIsUserLoading(true);
+
+    try {
+      const response = await axios.put('/api/user/update', formData);
+
+      if (response.status === 200) {
+        setAuthUser(response.data.user);
+        // Display success message
+        showAlert('success', null, 'Your account has been updated!');
+      } else {
+        // Handle other server response statuses
+        showAlert(
+          'error',
+          'Update Failed',
+          response.data.message || 'An error occurred during update!'
+        );
+      }
+    } catch (error) {
+      // Handle errors that occurred during the PUT request
+      let errorMessage = 'An error occurred during update!';
+      if (error.response) {
+        if (error.response.status === 400) {
+          errorMessage = '<ul>';
+          // Loop through error messages and append to the list
+          error.response.data.errors.forEach(err => {
+            errorMessage += `<li>${err.message}</li>`;
+          });
+          errorMessage += '</ul>';
+        } else {
+          errorMessage = error.response.data.message || errorMessage;
+        }
+      }
+
+      showAlert('error', 'Update Failed', null, errorMessage);
     }
 
     setIsUserLoading(false);
@@ -282,7 +323,9 @@ export const AuthProvider = ({ children }) => {
         setAuthUser,
         loginUser,
         signUpUser,
+        updateUser,
         isUserLoading,
+        setIsUserLoading,
         isAuthenticated,
         stripeSession,
         handleStripeSession,

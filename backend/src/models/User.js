@@ -1,6 +1,7 @@
 import { model, Schema } from 'mongoose';
 import validateUser from '#src/validations/user-validation.js';
 import validateSignupFormData from '#src/validations/signup-form-validation.js';
+import validateUpdateFormData from '#src/validations/update-form-validation.js';
 
 // Mongoose schema
 const userSchema = new Schema(
@@ -65,6 +66,10 @@ const userSchema = new Schema(
 );
 
 const User = model('User', userSchema);
-Object.assign(User, { validateUser, validateSignupFormData });
+Object.assign(User, {
+  validateUser,
+  validateSignupFormData,
+  validateUpdateFormData,
+});
 
 export default User;

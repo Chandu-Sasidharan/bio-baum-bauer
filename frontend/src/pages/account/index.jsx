@@ -5,7 +5,7 @@ import Sidebar from '@/pages/account/sidebar';
 export default function AccountLayout() {
   return (
     <div
-      className='mx-auto flex max-w-7xl gap-4 p-5 py-10'
+      className='mx-auto flex max-w-6xl gap-8 p-5 py-10'
       style={{ minHeight: 'calc(100vh - 140px' }}
     >
       {/* Sidebar */}

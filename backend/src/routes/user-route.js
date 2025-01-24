@@ -1,16 +1,10 @@
 import express from 'express';
+import { updateUser } from '#src/controllers/user-controller.js';
+import isAuthenticated from '#src/middlewares/is-authenticated.js';
+
 const router = express.Router();
-import {
-  signUp,
-  loginUser,
-  logoutUser,
-  refreshToken,
-} from '#src/controllers/auth-controller.js';
 
 // User Routes
-router.post('/signup', signUp);
-router.post('/login', loginUser);
-router.get('/logout', logoutUser);
-router.get('/refresh-token', refreshToken);
+router.put('/update', isAuthenticated, updateUser);
 
 export default router;
