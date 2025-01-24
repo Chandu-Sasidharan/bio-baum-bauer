@@ -8,7 +8,7 @@ import News from './pages/News';
 import About from './pages/About';
 import Gallery from './pages/Gallery';
 import Faq from './pages/Faq';
-import Contact from './pages/Contact';
+import Contact from '@/pages/contact';
 import Cart from './pages/user/Cart';
 import Login from '@/pages/auth/login';
 import Signup from './pages/auth/signup';
