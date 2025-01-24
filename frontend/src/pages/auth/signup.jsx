@@ -4,9 +4,9 @@ import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
 import { Helmet } from 'react-helmet-async';
-import { Button, Tooltip, Spinner } from 'flowbite-react';
 import { HiEye, HiEyeOff } from 'react-icons/hi';
 import Breadcrumbs from '@/components/elements/breadcrumbs';
+import Button from '@/components/elements/button';
 import backgroundImage from '/images/background/leaves-background.webp';
 import treeIcon from '/images/misc/tree.png';
 import { useUser } from '@/context/auth-context';
@@ -91,11 +91,9 @@ export default function Signup() {
           </div>
           <div className='flex items-center'>
             <span className='mr-2 inline-block'>Already have an account?</span>
-            <Tooltip content='Click here to sign up'>
-              <Link to='/login' className='text-accent font-bold underline'>
-                Login
-              </Link>
-            </Tooltip>
+            <Link to='/login' className='text-accent font-bold underline'>
+              Login
+            </Link>
           </div>
 
           <form onSubmit={handleSubmit(onSubmit)} className='w-full space-y-3'>
@@ -221,25 +219,16 @@ export default function Signup() {
             </div>
 
             {/* Submit Button */}
-            <div className='flex flex-row gap-3'>
-              <Button
-                type='submit'
-                className='bg-accent hover:!bg-accent-light text-primary-light rounded-sm tracking-wider duration-300 focus:ring-0'
-              >
-                {isUserLoading ? (
-                  <>
-                    <Spinner
-                      aria-label='Processing'
-                      size='sm'
-                      color='text-primary-light'
-                    />
-                    <span className='pl-3'>Signing up...</span>
-                  </>
-                ) : (
-                  <span>&nbsp;Sign Up</span>
-                )}
-              </Button>
-            </div>
+            <Button
+              type='submit'
+              classnames={isUserLoading ? 'btn-disabled' : ''}
+            >
+              {isUserLoading ? (
+                <span className='loading loading-spinner'>Signup..</span>
+              ) : (
+                <span>Sign Up</span>
+              )}
+            </Button>
           </form>
         </div>
       </div>
