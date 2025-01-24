@@ -4,7 +4,7 @@ import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
 import { Helmet } from 'react-helmet-async';
-import { Button, Tooltip, Spinner } from 'flowbite-react';
+import Button from '@/components/elements/button';
 import { HiEye, HiEyeOff } from 'react-icons/hi';
 import Breadcrumbs from '@/components/elements/breadcrumbs';
 import backgroundImage from '/images/background/leaves-background.webp';
@@ -75,11 +75,9 @@ export default function Login() {
           </div>
           <div className='flex items-center'>
             <span className='mr-2 inline-block'>New to the farm?</span>
-            <Tooltip content='Click here to sign up'>
-              <Link to='/signup' className='text-accent font-bold underline'>
-                Sign Up
-              </Link>
-            </Tooltip>
+            <Link to='/signup' className='text-accent font-bold underline'>
+              Sign Up
+            </Link>
           </div>
 
           <form onSubmit={handleSubmit(onSubmit)} className='w-full space-y-3'>
@@ -160,33 +158,22 @@ export default function Login() {
 
             {/* Forget Password */}
             <div className='flex items-center gap-2'>
-              <Tooltip content='Click here to reset your password'>
-                <Link to='' className='text-accent underline'>
-                  Forgot Password?
-                </Link>
-              </Tooltip>
+              <Link to='' className='text-accent underline'>
+                Forgot Password?
+              </Link>
             </div>
 
             {/* Submit Button */}
-            <div className='flex flex-row gap-3'>
-              <Button
-                type='submit'
-                className='bg-accent hover:!bg-accent-light text-primary-light rounded-sm tracking-wider duration-300 focus:ring-0'
-              >
-                {isUserLoading ? (
-                  <>
-                    <Spinner
-                      aria-label='Processing'
-                      size='sm'
-                      color='text-primary-light'
-                    />
-                    <span className='pl-3'>Logging in...</span>
-                  </>
-                ) : (
-                  <span>&nbsp;Login</span>
-                )}
-              </Button>
-            </div>
+            <Button
+              type='submit'
+              classnames={isUserLoading ? 'btn-disabled' : ''}
+            >
+              {isUserLoading ? (
+                <span className='loading loading-spinner'>Login..</span>
+              ) : (
+                <span>Login</span>
+              )}
+            </Button>
           </form>
         </div>
       </div>
