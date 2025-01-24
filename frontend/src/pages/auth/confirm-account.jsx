@@ -1,7 +1,7 @@
 import { useEffect } from 'react';
 import { useSearchParams, useNavigate } from 'react-router-dom';
-import axios from '@/utils/axiosInstance';
-import { useUser } from '@/store/auth-context';
+import axios from '@/utils/axios';
+import { useUser } from '@/context/auth-context';
 import Spinner from '@/components/elements/spinner';
 
 export default function ConfirmAccount() {

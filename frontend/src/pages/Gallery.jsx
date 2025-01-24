@@ -5,7 +5,7 @@ import { Fade } from 'react-awesome-reveal';
 import { HiHome } from 'react-icons/hi';
 import PageBreadcrumb from '../components/PageBreadcrumb';
 import DefaultLoader from '../components/DefaultLoader';
-import axios from '../utils/axiosInstance';
+import axios from '@/utils/axios';
 
 const Gallery = () => {
   document.title = 'Gallery';
@@ -74,7 +74,7 @@ const Gallery = () => {
 
   if (isLoading) {
     return (
-      <div className='h-96 flex justify-center items-center'>
+      <div className='flex h-96 items-center justify-center'>
         <DefaultLoader errorMsg={error} />
       </div>
     );
@@ -83,18 +83,18 @@ const Gallery = () => {
   return (
     <div className='bg-gray-light text-stone'>
       <PageBreadcrumb activeLinks={aLinkValues} deActiveLink={daLinkValues} />
-      <div className='relative w-full mx-auto p-4 pb-[25px] md:pb-[40px] lg:pb-[100px] xl:pb-[120px] flex'>
+      <div className='relative mx-auto flex w-full p-4 pb-[25px] md:pb-[40px] lg:pb-[100px] xl:pb-[120px]'>
         {/* Overlay with background image and opacity */}
         <div
-          className='absolute top-0 left-0 w-full h-full bg-contain bg-no-repeat bg-top'
+          className='absolute left-0 top-0 h-full w-full bg-contain bg-top bg-no-repeat'
           style={{ backgroundImage: `url(${backgroundImage})`, opacity: 0.1 }}
         ></div>
-        <div className='relative z-9'>
-          <h2 className='text-5xl md:text-7xl mt-[38px] md:mt-[68px] lg:mt-[88px] xl:mt-[108px] mb-[15px] text-center font-chicle tracking-wide text-[#5A6448]'>
+        <div className='z-9 relative'>
+          <h2 className='font-chicle mb-[15px] mt-[38px] text-center text-5xl tracking-wide text-[#5A6448] md:mt-[68px] md:text-7xl lg:mt-[88px] xl:mt-[108px]'>
             Gallery
           </h2>
           {/* Gallery Page Description */}
-          <p className='text-center w-[90%] sm:w-[90%] md:w-[80%] lg:w-[70%] xl:w-[60%] mx-auto text-stone text-md lg:text-xl xl:text-2xl mb-[25px] md:mb-[40px] lg:mb-[50px] xl:mb-[60px]'>
+          <p className='text-stone text-md mx-auto mb-[25px] w-[90%] text-center sm:w-[90%] md:mb-[40px] md:w-[80%] lg:mb-[50px] lg:w-[70%] lg:text-xl xl:mb-[60px] xl:w-[60%] xl:text-2xl'>
             Welcome to our gallery, where each tree tells a story of growth,
             resilience, and the enduring bond between nature and us. This
             collection of images captures the heart of our tree sponsorship
@@ -105,11 +105,11 @@ const Gallery = () => {
           </p>
           {/* Image content */}
           <Fade delay={100} cascade damping={0.1} duration={3000}>
-            <div className='grid grid-cols-1  md:grid-cols-2 lg:grid-cols-4 gap-4 md:px-10 lg:px-20 xl:px-40'>
+            <div className='grid grid-cols-1 gap-4 md:grid-cols-2 md:px-10 lg:grid-cols-4 lg:px-20 xl:px-40'>
               {filteredGallery.map((image, index) => (
                 <div
                   key={index}
-                  className='aspect-square relative cursor-pointer border border-primary overflow-hidden'
+                  className='border-primary relative aspect-square cursor-pointer overflow-hidden border'
                   onClick={() => openImage(image)}
                   style={{
                     backgroundImage: `url(${image.image})`,
@@ -122,14 +122,14 @@ const Gallery = () => {
                   <img
                     src={image.image}
                     alt={`Image ${image.image}`}
-                    className='w-full h-full object-cover transition-all duration-300'
+                    className='h-full w-full object-cover transition-all duration-300'
                   />
                   <div
-                    className={`absolute inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 transition-transform duration-300 ${
+                    className={`absolute inset-0 flex items-center justify-center bg-black bg-opacity-50 p-4 transition-transform duration-300 ${
                       selectedIndex === index ? 'scale-100' : 'scale-0'
                     }`}
                   >
-                    <p className='text-white text-center text-xl md:text-base lg:text-lg whitespace-normal'>
+                    <p className='whitespace-normal text-center text-xl text-white md:text-base lg:text-lg'>
                       {image.title}
                     </p>
                   </div>
@@ -140,7 +140,7 @@ const Gallery = () => {
           {/* Toggle Button for Show All/Fewer Images */}
           <button
             onClick={toggleShowAllImages}
-            className='block lg:hidden mx-auto px-8 py-2 mt-4 bg-primary text-stone rounded-[10px]   hover:bg-primary-light transition duration-4000 ease-linear'
+            className='bg-primary text-stone hover:bg-primary-light duration-4000 mx-auto mt-4 block rounded-[10px] px-8 py-2 transition ease-linear lg:hidden'
             aria-label='Show All/Fewer Images'
           >
             {showAllImages ? 'Show Fewer Photos' : 'Show All Images'}
@@ -149,19 +149,19 @@ const Gallery = () => {
         {/* Modal for Selected Image */}
         {selectedImg && (
           <div
-            className='fixed top-0 left-0 right-0 bottom-0 bg-black bg-opacity-50 flex items-center justify-center z-[99]'
+            className='fixed bottom-0 left-0 right-0 top-0 z-[99] flex items-center justify-center bg-black bg-opacity-50'
             onClick={closeImage}
           >
             <Fade delay={100} cascade damping={0.1} duration={1000}>
               <div
-                className='bg-white p-2 relative'
+                className='relative bg-white p-2'
                 onClick={e => e.stopPropagation()}
               >
-                <div className='flex justify-end p-2 mb-2'>
+                <div className='mb-2 flex justify-end p-2'>
                   {/* Close Menu Button */}
                   <button
                     onClick={closeImage}
-                    className='text-lg font-bold w-[25px] h-[25px]'
+                    className='h-[25px] w-[25px] text-lg font-bold'
                     aria-label='Close modal'
                   >
                     <img src={closeMenu} alt='Close Menu' />
@@ -170,12 +170,12 @@ const Gallery = () => {
                 <img
                   src={selectedImg.image}
                   alt={`Selected Image ${selectedImg.title}`}
-                  className='w-full h-[400px] sm:h-[500px] md:h-[700px] lg:h-[600px] xl:h-[700px] 2xl:h-[800px]'
+                  className='h-[400px] w-full sm:h-[500px] md:h-[700px] lg:h-[600px] xl:h-[700px] 2xl:h-[800px]'
                   onDoubleClick={closeImage}
                 />
                 {/* Image Title */}
-                <div className='text-center p-2 absolute bottom-0 left-0 right-0'>
-                  <p className='bg-white bg-opacity-80 p-4 text-gray-dark text-xl'>
+                <div className='absolute bottom-0 left-0 right-0 p-2 text-center'>
+                  <p className='text-gray-dark bg-white bg-opacity-80 p-4 text-xl'>
                     {selectedImg.title}
                   </p>
                 </div>

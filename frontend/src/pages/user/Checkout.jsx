@@ -1,9 +1,9 @@
 import React, { useState, useEffect, useContext } from 'react';
 import backgroundImage from '../../assets/images/leaves_background_01.webp';
 import { TextInput, Label } from 'flowbite-react';
-import { CartContext } from '@/store/cart-context';
-import { AuthContext } from '@/store/auth-context';
-import { usePatronContext } from '../../store/PatronContext';
+import { CartContext } from '@/context/cart-context';
+import { AuthContext } from '@/context/auth-context';
+import { usePatronContext } from '@/context/PatronContext';
 import { Link } from 'react-router-dom';
 import { Breadcrumb } from 'flowbite-react';
 import { HiHome } from 'react-icons/hi';
@@ -83,7 +83,7 @@ const Checkout = () => {
   return (
     <div>
       {cartProducts && (
-        <div className='mt-0 mb-0'>
+        <div className='mb-0 mt-0'>
           <Breadcrumb
             aria-label='This is Breadcrumb showing the location of current page'
             className='bg-gray-50 px-5 py-3 dark:bg-gray-800'
@@ -96,22 +96,22 @@ const Checkout = () => {
           </Breadcrumb>
         </div>
       )}
-      <div className='cart-page-container relative w-full mx-auto flex items-center justify-center p-4 bg-gray-light pb-[25px] md:pb-[40px] lg:pb-[100px] xl:pb-[120px]  text-stone'>
+      <div className='cart-page-container bg-gray-light text-stone relative mx-auto flex w-full items-center justify-center p-4 pb-[25px] md:pb-[40px] lg:pb-[100px] xl:pb-[120px]'>
         {/* Overlay with background image and opacity */}
         <div
-          className='cart-page-bg hidden lg:block absolute top-0 left-0 w-full h-full bg-contain bg-no-repeat bg-top'
+          className='cart-page-bg absolute left-0 top-0 hidden h-full w-full bg-contain bg-top bg-no-repeat lg:block'
           style={{ backgroundImage: `url(${backgroundImage})`, opacity: 0.2 }}
         ></div>
 
-        <div className='w-full xl:w-[90%] 2xl:w-[80%] bg-white rounded-lg p-3 lg:p-8 shadow-lg lg:mt-[100px] xl:mt-[120px]'>
-          <div className='flex flex-col-reverse lg:flex-row gap-[2rem] md:gap-[1rem]'>
-            <div className='w-full flex flex-col items-center lg:w-[50%] bg-white gap-[2rem] rounded-md px-2 '>
+        <div className='w-full rounded-lg bg-white p-3 shadow-lg lg:mt-[100px] lg:p-8 xl:mt-[120px] xl:w-[90%] 2xl:w-[80%]'>
+          <div className='flex flex-col-reverse gap-[2rem] md:gap-[1rem] lg:flex-row'>
+            <div className='flex w-full flex-col items-center gap-[2rem] rounded-md bg-white px-2 lg:w-[50%]'>
               {/* Form Fields */}
-              <form className='w-full grid grid-cols-1 gap-2 lg:gap-4 mt-3'>
+              <form className='mt-3 grid w-full grid-cols-1 gap-2 lg:gap-4'>
                 {/* User Details */}
-                <div className='flex items-center justify-start gap-2 mb-4'>
+                <div className='mb-4 flex items-center justify-start gap-2'>
                   <RiUserReceived2Fill size='1.9rem' />
-                  <h3 className='text-3xl text-accent font-chicle tracking-wide border-b-2 border-primary inline-block'>
+                  <h3 className='text-accent font-chicle border-primary inline-block border-b-2 text-3xl tracking-wide'>
                     Patron Details
                   </h3>
                 </div>
@@ -205,9 +205,9 @@ const Checkout = () => {
                 </div>
 
                 {/* Delivery Address Info */}
-                <div className='flex items-center mb-4 mt-6 gap-2'>
+                <div className='mb-4 mt-6 flex items-center gap-2'>
                   <ImAddressBook size='1.7rem' />
-                  <h3 className='text-3xl text-accent font-chicle tracking-wide border-b-2 border-primary inline-block'>
+                  <h3 className='text-accent font-chicle border-primary inline-block border-b-2 text-3xl tracking-wide'>
                     Patron Address
                   </h3>
                 </div>
@@ -404,10 +404,10 @@ const Checkout = () => {
               </form>
             </div>
             {/* Sponsorship Summary */}
-            <div className='w-full flex flex-col items-center lg:w-[50%] bg-white gap-[2rem] rounded-[10px] self-start h-auto mt-2'>
-              <div className='flex flex-row items-center mx-auto gap-2 w-full py-2 text-accent '>
+            <div className='mt-2 flex h-auto w-full flex-col items-center gap-[2rem] self-start rounded-[10px] bg-white lg:w-[50%]'>
+              <div className='text-accent mx-auto flex w-full flex-row items-center gap-2 py-2'>
                 <MdOutlineSummarize size='1.9rem' />
-                <h3 className='text-3xl font-chicle'>Sponsorship Summary</h3>
+                <h3 className='font-chicle text-3xl'>Sponsorship Summary</h3>
               </div>
               <SponsorList
                 cartProducts={cartProducts}
@@ -416,12 +416,12 @@ const Checkout = () => {
               />
 
               {/* Horizontal Line */}
-              <hr className='w-[70%] mx-auto border-t-2 border-primary my-1' />
+              <hr className='border-primary mx-auto my-1 w-[70%] border-t-2' />
 
               {/* Complete Sponsorship */}
               <Link
                 to='/order/place_order'
-                className='flex items-center gap-1 text-2xl justify-center w-full px-4 py-5 bg-sage text-white rounded-md hover:bg-aloe hover:text-accent transition duration-4000 ease-linear'
+                className='bg-sage hover:bg-aloe hover:text-accent duration-4000 flex w-full items-center justify-center gap-1 rounded-md px-4 py-5 text-2xl text-white transition ease-linear'
                 aria-label='Complete Sponsorship page/Payment'
               >
                 <MdFileDownloadDone size='1.6rem' />
@@ -431,7 +431,7 @@ const Checkout = () => {
               {/* Back to Cart */}
               <Link
                 to='/cart'
-                className='flex items-center justify-center gap-2 w-full px-4 py-2 bg-primary border-2 text-stone rounded-md hover:bg-primary-light transition duration-4000 ease-linear sm:mt-0'
+                className='bg-primary text-stone hover:bg-primary-light duration-4000 flex w-full items-center justify-center gap-2 rounded-md border-2 px-4 py-2 transition ease-linear sm:mt-0'
                 aria-label='Sponsor Tree page'
               >
                 <RiArrowGoBackLine />

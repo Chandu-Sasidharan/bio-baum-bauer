@@ -6,7 +6,7 @@ import { BsCartXFill } from 'react-icons/bs';
 import { FaCartArrowDown } from 'react-icons/fa6';
 import { LuPlus, LuMinus } from 'react-icons/lu';
 import { Link } from 'react-router-dom';
-import { CartContext } from '@/store/cart-context';
+import { CartContext } from '@/context/cart-context';
 import { HiHome } from 'react-icons/hi';
 import PageBreadcrumb from '../../components/PageBreadcrumb';
 import { GoSponsorTiers } from 'react-icons/go';
@@ -33,20 +33,20 @@ const Cart = () => {
   return (
     <div>
       <PageBreadcrumb activeLinks={aLinkValues} deActiveLink={daLinkValues} />
-      <div className='cart-page-container relative flex mx-auto items-center justify-center w-full bg-gray-light lg:bg-none p-4 md:p-6 pb-[25px] md:pb-[40px] lg:pb-[100px] xl:pb-[120px] text-stone'>
+      <div className='cart-page-container bg-gray-light text-stone relative mx-auto flex w-full items-center justify-center p-4 pb-[25px] md:p-6 md:pb-[40px] lg:bg-none lg:pb-[100px] xl:pb-[120px]'>
         {/* Overlay with background image and opacity */}
         <div
-          className='cart-page-bg hidden lg:block absolute top-0 left-0 w-full h-full bg-contain bg-no-repeat bg-top '
+          className='cart-page-bg absolute left-0 top-0 hidden h-full w-full bg-contain bg-top bg-no-repeat lg:block'
           style={{ backgroundImage: `url(${backgroundImage})`, opacity: 0.2 }}
         ></div>
 
-        <div className='lg:relative w-full lg:w-11/12 xl:w-[90%] 2xl:w-[80%] p-3 xs:p-2 md:p-4 lg:p-8 bg-white rounded-lg lg:z-0 shadow-lg mt-[2px] lg:mt-[100px] xl:mt-[120px]'>
-          <div className='flex justify-between items-center'>
-            <div className='flex flex-row mx-auto items-center text-sage rounded-[15px] w-full py-4 sm:items-start justify-start'>
-              <div className='rounded-full flex items-center justify-center bg-white w-[40px] h-[40px] mr-[10px]'>
+        <div className='xs:p-2 mt-[2px] w-full rounded-lg bg-white p-3 shadow-lg md:p-4 lg:relative lg:z-0 lg:mt-[100px] lg:w-11/12 lg:p-8 xl:mt-[120px] xl:w-[90%] 2xl:w-[80%]'>
+          <div className='flex items-center justify-between'>
+            <div className='text-sage mx-auto flex w-full flex-row items-center justify-start rounded-[15px] py-4 sm:items-start'>
+              <div className='mr-[10px] flex h-[40px] w-[40px] items-center justify-center rounded-full bg-white'>
                 <FaCartArrowDown size='2rem' />
               </div>
-              <h3 className='text-3xl font-chicle hidden md:block'>
+              <h3 className='font-chicle hidden text-3xl md:block'>
                 {' '}
                 Sponsorship Cart
               </h3>
@@ -54,7 +54,7 @@ const Cart = () => {
             {cartProducts.length > 0 && (
               <Link
                 to='/checkout'
-                className='flex items-center justify-center h-max gap-1 text-[1.2rem] md:text-[1.4rem] lg:text-[1.7rem] bg-sage text-white px-5 py-2 lg:px-8 rounded-full hover:bg-aloe hover:text-accent transition duration-4000 ease-linear'
+                className='bg-sage hover:bg-aloe hover:text-accent duration-4000 flex h-max items-center justify-center gap-1 rounded-full px-5 py-2 text-[1.2rem] text-white transition ease-linear md:text-[1.4rem] lg:px-8 lg:text-[1.7rem]'
               >
                 <MdOutlineShoppingCartCheckout /> <span>Checkout</span>
               </Link>
@@ -62,18 +62,18 @@ const Cart = () => {
           </div>
 
           {/* Sponsor Cart */}
-          <div className='flex flex-col items-start justify-start lg:flex-row mt-0 sm:mt-10 gap-[1rem] sm:gap-[2rem]'>
+          <div className='mt-0 flex flex-col items-start justify-start gap-[1rem] sm:mt-10 sm:gap-[2rem] lg:flex-row'>
             {/* Payment Information */}
             {cartProducts.length > 0 && (
               <div className='w-[100%] lg:w-[30%]'>
-                <div className='flex flex-col gap-[0.4rem] bg-gray-light lg:bg-none rounded-md mt-4 xs:p-2 p-4'>
+                <div className='bg-gray-light xs:p-2 mt-4 flex flex-col gap-[0.4rem] rounded-md p-4 lg:bg-none'>
                   {/* Total Price */}
                   <div className='flex flex-col'>
                     <div className='flex flex-row justify-between'>
-                      <div className='felx text-xl font-chicle text-accent tracking-wide'>
+                      <div className='felx font-chicle text-accent text-xl tracking-wide'>
                         Total Price:
                       </div>
-                      <div className='flex text-md text-gray-dark'>
+                      <div className='text-md text-gray-dark flex'>
                         € {calculateTotalPrice().toFixed(2)}
                       </div>
                     </div>
@@ -82,10 +82,10 @@ const Cart = () => {
                   {/* Tax */}
                   <div className='flex flex-col'>
                     <div className='flex flex-row justify-between'>
-                      <div className='felx text-xl font-chicle text-accent tracking-wide'>
+                      <div className='felx font-chicle text-accent text-xl tracking-wide'>
                         Tax:
                       </div>
-                      <div className='flex text-md text-gray-dark'>
+                      <div className='text-md text-gray-dark flex'>
                         € {(calculateTotalPrice() * TAX_RATE).toFixed(2)}
                       </div>
                     </div>
@@ -94,22 +94,22 @@ const Cart = () => {
                   {/* Grand Total */}
                   <div className='flex flex-col'>
                     <div className='flex flex-row justify-between'>
-                      <div className='felx text-xl font-chicle text-accent tracking-wide'>
+                      <div className='felx font-chicle text-accent text-xl tracking-wide'>
                         Grand Total:
                       </div>
-                      <div className='flex text-md text-gray-dark price px-4 py-1 rounded-3xl font-bold'>
+                      <div className='text-md text-gray-dark price flex rounded-3xl px-4 py-1 font-bold'>
                         € {calculateGrandTotal().toFixed(2)}
                       </div>
                     </div>
                   </div>
 
                   {/* Horizontal Line */}
-                  <hr className='w-[70%] mx-auto border-t-2 border-primary my-2' />
+                  <hr className='border-primary mx-auto my-2 w-[70%] border-t-2' />
 
                   {/* Checkout Link */}
                   <Link
                     to='/checkout'
-                    className='flex items-center justify-center gap-1 text-center w-full my-2 px-4 py-2 bg-sage text-white rounded-[10px] hover:bg-aloe hover:text-accent transition duration-4000 ease-linear'
+                    className='bg-sage hover:bg-aloe hover:text-accent duration-4000 my-2 flex w-full items-center justify-center gap-1 rounded-[10px] px-4 py-2 text-center text-white transition ease-linear'
                     aria-label='Checkout page'
                   >
                     <MdOutlineShoppingCartCheckout size='1.3rem' />
@@ -119,7 +119,7 @@ const Cart = () => {
                   {/* Sponsor Tree Link */}
                   <Link
                     to='/trees'
-                    className='flex items-center justify-center gap-1 text-center w-full my-2 px-4 py-2 bg-primary text-stone rounded-[10px] border-2 hover:bg-primary-light hover:border-2 transition duration-4000 ease-linear'
+                    className='bg-primary text-stone hover:bg-primary-light duration-4000 my-2 flex w-full items-center justify-center gap-1 rounded-[10px] border-2 px-4 py-2 text-center transition ease-linear hover:border-2'
                     aria-label='Sponsor Tree page'
                   >
                     <MdAddShoppingCart size='1.3rem' />
@@ -130,31 +130,31 @@ const Cart = () => {
             )}
             {/* Tree Image with Name, Qty, Price, Remove Tree Button */}
             {cartProducts.length > 0 && (
-              <div className='w-full lg:w-[70%] flex flex-col items-center justify-start gap-9 rounded-md mt-6 lg:mt-4 py-3 md:px-2 lg:border-l-4'>
+              <div className='mt-6 flex w-full flex-col items-center justify-start gap-9 rounded-md py-3 md:px-2 lg:mt-4 lg:w-[70%] lg:border-l-4'>
                 {cartProducts.map(product => (
                   <div
                     key={product._id}
-                    className='flex flex-col bg-gray-light py-4 md:px-4 md:py-6 sm:flex-row justify-between items-center gap-[0.5rem] rounded-md sm:gap-[2rem] pt-5 w-full'
+                    className='bg-gray-light flex w-full flex-col items-center justify-between gap-[0.5rem] rounded-md py-4 pt-5 sm:flex-row sm:gap-[2rem] md:px-4 md:py-6'
                   >
                     {/* Tree Photo and Name */}
-                    <div className='w-full sm:w-[25%] flex flex-col items-center sm:items-start'>
-                      <div className='hidden sm:flex flex-row items-center text-xl font-chicle text-accent tracking-wide pb-2'>
+                    <div className='flex w-full flex-col items-center sm:w-[25%] sm:items-start'>
+                      <div className='font-chicle text-accent hidden flex-row items-center pb-2 text-xl tracking-wide sm:flex'>
                         <img
                           src={treeIcon}
                           alt='Tree Icon'
-                          className='w-[30px] h-[30px] mr-2'
+                          className='mr-2 h-[30px] w-[30px]'
                         />
                         Tree
                       </div>
                       <Link to={`/trees/${product._id}`}>
-                        <div className='flex items-center flex-col-reverse sm:flex-row'>
+                        <div className='flex flex-col-reverse items-center sm:flex-row'>
                           <img
                             src={product.image}
                             alt={product.name}
-                            className='w-full h-[200px] md:w-[80px] md:h-[80px] object-cover mr-0 sm:mr-2 rounded-[10px] mt-2 mb-6 sm:mb-0'
+                            className='mb-6 mr-0 mt-2 h-[200px] w-full rounded-[10px] object-cover sm:mb-0 sm:mr-2 md:h-[80px] md:w-[80px]'
                           />
                           <div
-                            className={`text-2xl sm:text-[1rem] font-chicle sm:font-open-sans text-accent sm:text-gray-dark text-center sm:text-start font-bold`}
+                            className={`font-chicle sm:font-open-sans text-accent sm:text-gray-dark text-center text-2xl font-bold sm:text-start sm:text-[1rem]`}
                           >
                             {product.name}
                           </div>
@@ -163,13 +163,13 @@ const Cart = () => {
                     </div>
 
                     {/* Tree Qty */}
-                    <div className='w-full sm:w-[25%] flex flex-col justify-start items-start'>
-                      <div className='hidden sm:flex-1 sm:block flex-row justify-start items-start text-xl font-chicle text-accent tracking-wide pb-2'>
+                    <div className='flex w-full flex-col items-start justify-start sm:w-[25%]'>
+                      <div className='font-chicle text-accent hidden flex-row items-start justify-start pb-2 text-xl tracking-wide sm:block sm:flex-1'>
                         Qty
                       </div>
-                      <div className='flex flex-row items-center justify-center border border-primary rounded-[10px] mx-auto sm:mx-0 p-[4px]'>
+                      <div className='border-primary mx-auto flex flex-row items-center justify-center rounded-[10px] border p-[4px] sm:mx-0'>
                         <button
-                          className='bg-transparent text-lg text-gray-dark p-2'
+                          className='text-gray-dark bg-transparent p-2 text-lg'
                           aria-label='Remove Tree'
                           onClick={() => removeTree(product._id)}
                         >
@@ -179,7 +179,7 @@ const Cart = () => {
                           {getTreeQuantity(product._id)}
                         </span>
                         <button
-                          className='bg-transparent text-lg text-gray-dark p-2'
+                          className='text-gray-dark bg-transparent p-2 text-lg'
                           aria-label='Add Tree'
                           onClick={() => handleAddTree(product)}
                         >
@@ -189,11 +189,11 @@ const Cart = () => {
                     </div>
 
                     {/* Tree Price */}
-                    <div className='w-full sm:w-[25%] flex flex-col items-start pt-0'>
-                      <div className='hidden sm:flex text-xl font-chicle text-accent tracking-wide pb-2'>
+                    <div className='flex w-full flex-col items-start pt-0 sm:w-[25%]'>
+                      <div className='font-chicle text-accent hidden pb-2 text-xl tracking-wide sm:flex'>
                         Price
                       </div>
-                      <div className='flex flex-col mx-auto sm:mx-0 text-center sm:text-left'>
+                      <div className='mx-auto flex flex-col text-center sm:mx-0 sm:text-left'>
                         <div className='text-gray-dark text-lg'>
                           € {getItemTotalPrice(product).toFixed(2)}
                         </div>
@@ -209,9 +209,9 @@ const Cart = () => {
                     </div>
 
                     {/* Remove Tree */}
-                    <div className='w-full sm:w-[25%] flex flex-col items-center mt-auto mb-12 sm:mb-auto'>
+                    <div className='mb-12 mt-auto flex w-full flex-col items-center sm:mb-auto sm:w-[25%]'>
                       <button
-                        className='my-auto px-8 border-2 py-2 bg-red text-white rounded-[10px] hover:bg-white hover:text-red transition duration-4000 ease-linear ml-0 sm:ml-auto'
+                        className='bg-red hover:text-red duration-4000 my-auto ml-0 rounded-[10px] border-2 px-8 py-2 text-white transition ease-linear hover:bg-white sm:ml-auto'
                         aria-label='Remove Tree'
                         onClick={() => removeButton(product._id)}
                       >
@@ -220,9 +220,9 @@ const Cart = () => {
                     </div>
                   </div>
                 ))}
-                <div className='flex w-full mx-auto'>
+                <div className='mx-auto flex w-full'>
                   <button
-                    className='flex items-center justify-center gap-1 text-center w-full my-2 px-4 py-2 bg-aloe text-accent rounded-[10px] hover:bg-sage hover:text-white transition duration-4000 ease-linear mb-6 sm:mb-0'
+                    className='bg-aloe text-accent hover:bg-sage duration-4000 my-2 mb-6 flex w-full items-center justify-center gap-1 rounded-[10px] px-4 py-2 text-center transition ease-linear hover:text-white sm:mb-0'
                     aria-label='Clear Cart'
                     onClick={() => clearCart()}
                   >
@@ -235,20 +235,20 @@ const Cart = () => {
 
             {/* Empty Cart Message and Link */}
             {cartProducts.length === 0 && (
-              <div className='flex flex-col mx-auto text-center my-8'>
-                <div className='flex items-center mb-4'>
+              <div className='mx-auto my-8 flex flex-col text-center'>
+                <div className='mb-4 flex items-center'>
                   <img
                     src={treeIcon}
                     alt='Tree Icon'
-                    className='w-[30px] h-[30px] mr-2'
+                    className='mr-2 h-[30px] w-[30px]'
                   />
-                  <h3 className='text-3xl text-accent font-chicle tracking-wide border-b-2 border-primary inline-block'>
+                  <h3 className='text-accent font-chicle border-primary inline-block border-b-2 text-3xl tracking-wide'>
                     Your cart is empty.
                   </h3>
                 </div>
                 <Link
                   to='/trees'
-                  className='flex items-center gap-1 justify-center border-2 w-full my-2 px-4 py-2 bg-primary text-stone rounded-[10px] hover:bg-primary-light transition duration-4000 ease-linear'
+                  className='bg-primary text-stone hover:bg-primary-light duration-4000 my-2 flex w-full items-center justify-center gap-1 rounded-[10px] border-2 px-4 py-2 transition ease-linear'
                   aria-label='Sponsor Tree page'
                 >
                   {' '}

@@ -8,8 +8,8 @@ import { IoIosMore } from 'react-icons/io';
 import PageBreadcrumb from '../../components/PageBreadcrumb';
 import { FaRegFilePdf } from 'react-icons/fa6';
 import { MdEuroSymbol } from 'react-icons/md';
-import axios from '../../utils/axiosInstance';
-import { AuthContext } from '@/store/auth-context';
+import axios from '@/utils/axios';
+import { AuthContext } from '@/context/auth-context';
 import { Link } from 'react-router-dom';
 import DashboardHeader from './DashboardHeader';
 
@@ -46,65 +46,65 @@ const UserSponsorships = () => {
   return (
     <main>
       <PageBreadcrumb activeLinks={aLinkValues} deActiveLink={daLinkValues} />
-      <div className='cart-page-container relative bg-gray-light w-full mx-auto p-4 pb-[25px] md:pb-[40px] lg:pb-[100px] xl:pb-[120px] flex items-center justify-center'>
+      <div className='cart-page-container bg-gray-light relative mx-auto flex w-full items-center justify-center p-4 pb-[25px] md:pb-[40px] lg:pb-[100px] xl:pb-[120px]'>
         {/* Overlay with background image and opacity */}
         <div
-          className='cart-page-bg hidden lg:block absolute top-0 left-0 w-full h-full bg-contain bg-no-repeat bg-top'
+          className='cart-page-bg absolute left-0 top-0 hidden h-full w-full bg-contain bg-top bg-no-repeat lg:block'
           style={{ backgroundImage: `url(${backgroundImage})`, opacity: 0.6 }}
         ></div>
 
-        <div className='w-[100%] lg:w-[90%] xl:w-[80%] bg-white rounded-[15px] p-6 md:p-4 lg:p-8 shadow-lg lg:mt-[100px] xl:mt-[120px]'>
+        <div className='w-[100%] rounded-[15px] bg-white p-6 shadow-lg md:p-4 lg:mt-[100px] lg:w-[90%] lg:p-8 xl:mt-[120px] xl:w-[80%]'>
           <DashboardHeader subtitle={`sponsorships`} />
           <MobileDashboardLinks />
-          <div className='flex flex-col md:flex-row mt-4 gap-[1rem] md:gap-[2rem]'>
+          <div className='mt-4 flex flex-col gap-[1rem] md:flex-row md:gap-[2rem]'>
             {/* Dashboard Links */}
             <DashboardLinks />
 
             {/* Sponsorships */}
             <div className='w-full md:w-[75%]'>
-              <div className='flex items-center mb-4'>
+              <div className='mb-4 flex items-center'>
                 <img
                   src={logoIcon}
                   alt='Tree Icon'
-                  className='w-[30px] h-[30px] mr-2'
+                  className='mr-2 h-[30px] w-[30px]'
                 />
-                <h3 className='text-3xl text-accent font-chicle tracking-wide border-b-2 border-primary inline-block'>
+                <h3 className='text-accent font-chicle border-primary inline-block border-b-2 text-3xl tracking-wide'>
                   Your Sponsorships
                 </h3>
               </div>
-              <div className='w-full min-h-screen items-center justify-center bg-white'>
+              <div className='min-h-screen w-full items-center justify-center bg-white'>
                 <div className='w-full overflow-x-auto'>
                   {error ? (
-                    <div className=' text-red-500'>{error}</div>
+                    <div className='text-red-500'>{error}</div>
                   ) : (
                     <div></div>
                   )}
 
-                  <table className='w-[100%] min-w-max table-auto text-left border border-white rounded-tl-lg rounded-br-md shadow-md'>
-                    <thead className='pb-10 space-y-4 h-10 lg:h-20'>
-                      <tr className='bg-primary h-30 flex justify-between w-full'>
-                        <th className='space-y-4 border-blue-gray-100 bg-blue-gray-50/50 p-4 g-3 h-30'>
-                          <p className='block text-xs lg:text-md xl:text-xl antialiased font-sans text-accent font-normal leading-none opacity-70'>
+                  <table className='w-[100%] min-w-max table-auto rounded-br-md rounded-tl-lg border border-white text-left shadow-md'>
+                    <thead className='h-10 space-y-4 pb-10 lg:h-20'>
+                      <tr className='bg-primary h-30 flex w-full justify-between'>
+                        <th className='border-blue-gray-100 bg-blue-gray-50/50 g-3 h-30 space-y-4 p-4'>
+                          <p className='lg:text-md text-accent block font-sans text-xs font-normal leading-none antialiased opacity-70 xl:text-xl'>
                             Certification No.
                           </p>
                         </th>
-                        <th className='hidden md:inline border-blue-gray-100 bg-blue-gray-50/50 p-4'>
-                          <p className='block antialiased font-sans text-xs lg:text-md xl:text-xl text-accent font-normal leading-none opacity-70'>
+                        <th className='border-blue-gray-100 bg-blue-gray-50/50 hidden p-4 md:inline'>
+                          <p className='lg:text-md text-accent block font-sans text-xs font-normal leading-none antialiased opacity-70 xl:text-xl'>
                             Amount
                           </p>
                         </th>
-                        <th className='hidden lg:inline border-blue-gray-100 bg-blue-gray-50/50 p-4'>
-                          <p className='block antialiased font-sans text-xs lg:text-md xl:text-xl text-accent font-normal leading-none opacity-70'>
+                        <th className='border-blue-gray-100 bg-blue-gray-50/50 hidden p-4 lg:inline'>
+                          <p className='lg:text-md text-accent block font-sans text-xs font-normal leading-none antialiased opacity-70 xl:text-xl'>
                             Date
                           </p>
                         </th>
-                        <th className='hidden lg:inline border-blue-gray-100 bg-blue-gray-50/50 p-4'>
-                          <p className='block antialiased font-sans text-xs lg:text-md xl:text-xl text-accent font-normal leading-none opacity-70'>
+                        <th className='border-blue-gray-100 bg-blue-gray-50/50 hidden p-4 lg:inline'>
+                          <p className='lg:text-md text-accent block font-sans text-xs font-normal leading-none antialiased opacity-70 xl:text-xl'>
                             Certificate
                           </p>
                         </th>
-                        <th className=' border-blue-gray-100 bg-blue-gray-100 p-4'>
-                          <p className='block antialiased font-sans text-xs lg:text-md xl:text-xl text-accent font-normal leading-none opacity-70'>
+                        <th className='border-blue-gray-100 bg-blue-gray-100 p-4'>
+                          <p className='lg:text-md text-accent block font-sans text-xs font-normal leading-none antialiased opacity-70 xl:text-xl'>
                             details
                           </p>
                         </th>
@@ -115,23 +115,23 @@ const UserSponsorships = () => {
                         return (
                           <tr
                             key={key}
-                            className='flex justify-between rounded h-20 lg:h-40 hover:bg-primary-light active:bg-bg-primary-light focus:bg-bg-primary-light'
+                            className='hover:bg-primary-light active:bg-bg-primary-light focus:bg-bg-primary-light flex h-20 justify-between rounded lg:h-40'
                           >
-                            <td className='p-4 border-b border-blue-gray-10'>
-                              <p className='block antialiased font-sans text-xs lg:text-md xl:text-xl text-accent leading-normal  '>
+                            <td className='border-blue-gray-10 border-b p-4'>
+                              <p className='lg:text-md text-accent block font-sans text-xs leading-normal antialiased xl:text-xl'>
                                 {e.certificationNo}
                               </p>
                             </td>
-                            <td className='hidden md:inline p-4 border-b border-blue-gray-10'>
-                              <p className='flex items-center justify-left antialiased font-sans text-xs lg:text-md xl:text-xl leading-normal text-accent font-normal'>
+                            <td className='border-blue-gray-10 hidden border-b p-4 md:inline'>
+                              <p className='justify-left lg:text-md text-accent flex items-center font-sans text-xs font-normal leading-normal antialiased xl:text-xl'>
                                 <span>{e.amount.$numberDecimal}</span>
                                 <MdEuroSymbol />
                               </p>
                             </td>
-                            <td className='hidden lg:inline p-4 border-b border-blue-gray-10'>
+                            <td className='border-blue-gray-10 hidden border-b p-4 lg:inline'>
                               <div className='w-max'>
                                 <div
-                                  className='relative grid items-center font-sans text-accent text-xs lg:text-md xl:text-xl uppercase whitespace-nowrap select-none  px-2  rounded-md'
+                                  className='text-accent lg:text-md relative grid select-none items-center whitespace-nowrap rounded-md px-2 font-sans text-xs uppercase xl:text-xl'
                                   style={{ opacity: 1 }}
                                 >
                                   <p className='text-accent'>
@@ -140,25 +140,25 @@ const UserSponsorships = () => {
                                 </div>
                               </div>
                             </td>
-                            <td className='hidden lg:inline p-4 border-b border-blue-gray-50'>
+                            <td className='border-blue-gray-50 hidden border-b p-4 lg:inline'>
                               <div className='flex items-center gap-3'>
-                                <FaRegFilePdf className='text-2xl text-accent' />
+                                <FaRegFilePdf className='text-accent text-2xl' />
                                 <div className='flex flex-col'>
-                                  <p className='block antialiased font-sans text-sm leading-normal text-blue-gray-900 font-normal capitalize'></p>
-                                  <p className='block antialiased font-sans text-xs lg:text-md xl:text-xl text-accent leading-normal text-blue-gray-900 font-normal opacity-70'>
+                                  <p className='text-blue-gray-900 block font-sans text-sm font-normal capitalize leading-normal antialiased'></p>
+                                  <p className='lg:text-md text-accent text-blue-gray-900 block font-sans text-xs font-normal leading-normal antialiased opacity-70 xl:text-xl'>
                                     Download
                                   </p>
                                 </div>
                               </div>
                             </td>
-                            <td className='p-4 border-b border-blue-gray-50'>
+                            <td className='border-blue-gray-50 border-b p-4'>
                               <Link
                                 to={`/sponsorship-details/${e._id}`}
-                                className='relative align-middle select-none font-sans font-medium text-center uppercase transition-all disabled:opacity-50 disabled:shadow-none disabled:pointer-events-none w-10 max-w-[40px] h-10 max-h-[40px] rounded-lg text-xs text-gray-900 hover:bg-gray-900/10 active:bg-gray-900/20'
+                                className='relative h-10 max-h-[40px] w-10 max-w-[40px] select-none rounded-lg text-center align-middle font-sans text-xs font-medium uppercase text-gray-900 transition-all hover:bg-gray-900/10 active:bg-gray-900/20 disabled:pointer-events-none disabled:opacity-50 disabled:shadow-none'
                                 type='button'
                               >
-                                <span className='absolute top-1/2 left-1/2 transform -translate-y-1/2 -translate-x-1/2'>
-                                  <IoIosMore className='text-2xl text-accent' />
+                                <span className='absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 transform'>
+                                  <IoIosMore className='text-accent text-2xl' />
                                 </span>
                               </Link>
                             </td>
@@ -167,7 +167,7 @@ const UserSponsorships = () => {
                       })}
                     </tbody>
                   </table>
-                  <div className='w-full pt-5 px-4 mb-8 mx-auto '></div>
+                  <div className='mx-auto mb-8 w-full px-4 pt-5'></div>
                 </div>
               </div>
             </div>

@@ -1,4 +1,4 @@
-import axios from "../utils/axiosInstance";
+import axios from '@/utils/axios';
 
 export const TreeData = async (limit, skip) => {
   try {
@@ -9,7 +9,7 @@ export const TreeData = async (limit, skip) => {
       return response.data;
     }
   } catch (error) {
-    console.error("Error fetching Trees:", error.message);
+    console.error('Error fetching Trees:', error.message);
     throw error;
   }
 };
@@ -21,7 +21,7 @@ export const FeaturedTreeData = async () => {
       return featuredTree.data;
     }
   } catch (error) {
-    console.error("Error fetching Trees:", error.message);
+    console.error('Error fetching Trees:', error.message);
     throw error;
   }
 };

@@ -10,7 +10,7 @@ import { FaPhoneSquareAlt, FaLinkedin, FaTiktok } from 'react-icons/fa';
 import { IoLogoWhatsapp } from 'react-icons/io';
 import { BsTwitterX } from 'react-icons/bs';
 import backgroundImage from '../assets/images/gallery_images/leaves_background_03.png';
-import axios from '../utils/axiosInstance';
+import axios from '@/utils/axios';
 import EachPageHeader from '../components/EachPageHeader';
 import PageBreadcrumb from '../components/PageBreadcrumb';
 import treeicon from '../assets/tree.png';
@@ -95,10 +95,10 @@ const Contact = () => {
   return (
     <div className='text-stone'>
       <PageBreadcrumb activeLinks={aLinkValues} deActiveLink={daLinkValues} />
-      <div className='relative w-full mx-auto p-4  flex justify-center flex-col items-center'>
+      <div className='relative mx-auto flex w-full flex-col items-center justify-center p-4'>
         {/* Overlay with background image and opacity */}
         <div
-          className='absolute top-0 left-0 w-full h-full bg-cover bg-no-repeat bg-bottom z-[-1]  opacity-20 lg:opacity-75'
+          className='absolute left-0 top-0 z-[-1] h-full w-full bg-cover bg-bottom bg-no-repeat opacity-20 lg:opacity-75'
           style={{
             backgroundImage: `url(${backgroundImage})`,
           }}
@@ -117,20 +117,20 @@ const Contact = () => {
           ))}
         </ul>
       </div>
-      <div className='flex flex-col justify-start items-start gap-[2rem] w-[95%] sm:w-[90%] lg:w-[80%] xl:w-[80%] bg-primary-light rounded-[15px] p-2 sm:p-8 z-9 shadow-lg  py-4 mx-auto'>
-        <div className=' flex flex-col lg:flex-row my-4 gap-[3rem] justify-center items-center w-[100%] xl:w-[90%] mx-auto'>
-          <section className='flex flex-col items-start gap-3 px-3 w-full lg:w-[50%]'>
-            <div className='flex items-center mb-4'>
+      <div className='bg-primary-light z-9 mx-auto flex w-[95%] flex-col items-start justify-start gap-[2rem] rounded-[15px] p-2 py-4 shadow-lg sm:w-[90%] sm:p-8 lg:w-[80%] xl:w-[80%]'>
+        <div className='mx-auto my-4 flex w-[100%] flex-col items-center justify-center gap-[3rem] lg:flex-row xl:w-[90%]'>
+          <section className='flex w-full flex-col items-start gap-3 px-3 lg:w-[50%]'>
+            <div className='mb-4 flex items-center'>
               <img
                 src={treeicon}
                 alt='Tree Icon'
-                className='w-[40px] h-[40px] mr-2'
+                className='mr-2 h-[40px] w-[40px]'
               />{' '}
-              <h3 className='text-3xl text-accent font-chicle tracking-wide border-b-2 border-primary inline-block'>
+              <h3 className='text-accent font-chicle border-primary inline-block border-b-2 text-3xl tracking-wide'>
                 GET IN TOUCH
               </h3>
             </div>
-            <p className='flex flex-row w-full items-center bg-white shadow-md hover:shadow-lg hover:rounded-lg p-3 rounded-md gap-2'>
+            <p className='flex w-full flex-row items-center gap-2 rounded-md bg-white p-3 shadow-md hover:rounded-lg hover:shadow-lg'>
               <span className='text-lg'>
                 <FaLocationDot />
               </span>
@@ -139,7 +139,7 @@ const Contact = () => {
                 Germany
               </span>
             </p>
-            <p className='flex flex-row w-full items-center bg-white shadow-md hover:shadow-lg hover:rounded-lg p-3 rounded-md gap-1'>
+            <p className='flex w-full flex-row items-center gap-1 rounded-md bg-white p-3 shadow-md hover:rounded-lg hover:shadow-lg'>
               <span className='text-lg'>
                 <AiTwotoneMail />
               </span>
@@ -156,7 +156,7 @@ const Contact = () => {
             {0 === 0 ? (
               <span></span>
             ) : (
-              <p className='flex flex-row w-full items-center bg-white shadow-md hover:shadow-lg hover:rounded-lg p-3 rounded-md gap-1'>
+              <p className='flex w-full flex-row items-center gap-1 rounded-md bg-white p-3 shadow-md hover:rounded-lg hover:shadow-lg'>
                 <span className='text-lg'>
                   <FaPhoneSquareAlt />
                 </span>
@@ -164,10 +164,10 @@ const Contact = () => {
               </p>
             )}
 
-            <p className='flex flex-row w-full justify-center items-center bg-white shadow-md rounded-md p-4 hover:shadow-lg hover:rounded-lg gap-2 sm:gap-5'>
+            <p className='flex w-full flex-row items-center justify-center gap-2 rounded-md bg-white p-4 shadow-md hover:rounded-lg hover:shadow-lg sm:gap-5'>
               <a
                 href='http://'
-                className='rounded-full p-2 border-2 border-stone text-stone bg-white hover:bg-stone hover:text-white transition duration-5000 ease-linear'
+                className='border-stone text-stone hover:bg-stone duration-5000 rounded-full border-2 bg-white p-2 transition ease-linear hover:text-white'
                 target='_blank'
                 rel='noopener noreferrer'
               >
@@ -175,7 +175,7 @@ const Contact = () => {
               </a>
               <a
                 href='http://'
-                className='rounded-full p-2 border-2 border-stone text-stone bg-white hover:bg-stone hover:text-white transition duration-5000 ease-linear'
+                className='border-stone text-stone hover:bg-stone duration-5000 rounded-full border-2 bg-white p-2 transition ease-linear hover:text-white'
                 target='_blank'
                 rel='noopener noreferrer'
               >
@@ -186,7 +186,7 @@ const Contact = () => {
               ) : (
                 <a
                   href='http://'
-                  className='rounded-full p-2 border-2 border-stone text-stone bg-white hover:bg-stone hover:text-white transition duration-5000 ease-linear'
+                  className='border-stone text-stone hover:bg-stone duration-5000 rounded-full border-2 bg-white p-2 transition ease-linear hover:text-white'
                   target='_blank'
                   rel='noopener noreferrer'
                 >
@@ -196,7 +196,7 @@ const Contact = () => {
 
               <a
                 href='http://'
-                className='rounded-full p-2 border-2 border-stone text-stone bg-white hover:bg-stone hover:text-white transition duration-5000 ease-linear'
+                className='border-stone text-stone hover:bg-stone duration-5000 rounded-full border-2 bg-white p-2 transition ease-linear hover:text-white'
                 target='_blank'
                 rel='noopener noreferrer'
               >
@@ -204,7 +204,7 @@ const Contact = () => {
               </a>
               <a
                 href='http://'
-                className='rounded-full p-2 border-2 border-stone bg-white text-stone hover:bg-stone hover:text-white transition duration-5000 ease-linear'
+                className='border-stone text-stone hover:bg-stone duration-5000 rounded-full border-2 bg-white p-2 transition ease-linear hover:text-white'
                 target='_blank'
                 rel='noopener noreferrer'
               >
@@ -212,9 +212,9 @@ const Contact = () => {
               </a>
             </p>
           </section>
-          <section className=' flex flex-row justify-center items-center w-full lg:w-[50%]'>
+          <section className='flex w-full flex-row items-center justify-center lg:w-[50%]'>
             <form
-              className='w-full flex flex-col gap-4'
+              className='flex w-full flex-col gap-4'
               onSubmit={handleSubmit}
             >
               <div>
@@ -264,7 +264,7 @@ const Contact = () => {
                   helperText={
                     <span>
                       Full Name should look like,&nbsp;
-                      <span className='bg-white px-2 py-1 rounded-md'>
+                      <span className='rounded-md bg-white px-2 py-1'>
                         Mice Polocy
                       </span>
                     </span>
@@ -324,7 +324,7 @@ const Contact = () => {
                   name='message'
                   rows={4}
                   ref={messageRef}
-                  className='input focus:border-transparent dark:focus:border-transparent focus:ring-transparent dark:focus:ring-transparent !important'
+                  className='input !important focus:border-transparent focus:ring-transparent dark:focus:border-transparent dark:focus:ring-transparent'
                   style={{
                     borderColor: 'var(--primary)',
                     outlineColor: 'var(--accent)',
@@ -335,13 +335,13 @@ const Contact = () => {
                   }}
                 />
               </div>
-              <div className='flex items-center gap-2 '>
+              <div className='flex items-center gap-2'>
                 <Checkbox
                   id='agree'
                   name='agreeToPolicies'
                   ref={checkboxRef}
                   onChange={handleCheckboxChange}
-                  className=' border-stone checked:border-none checked:outline-none checked:bg-accent focus:ring-transparent dark:ring-offset-transparent !important cursor-pointer'
+                  className='border-stone checked:bg-accent !important cursor-pointer checked:border-none checked:outline-none focus:ring-transparent dark:ring-offset-transparent'
                 />
                 <Label htmlFor='agree'>
                   <span className='text-stone'>I agree with the&nbsp;</span>
@@ -372,7 +372,7 @@ const Contact = () => {
       <div className=''>
         <iframe
           src='https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2613.430292021205!2d9.1054661!3d49.078463!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x47982a23427504e1%3A0xe8756bb1ba92dd7!2sSolawi%20Zaberg%C3%A4u!5e0!3m2!1sen!2sde!4v1709384848796!5m2!1sen!2sde'
-          className='w-full h-[650px] border-0 rounded-sm'
+          className='h-[650px] w-full rounded-sm border-0'
           allowFullScreen={true}
           loading='lazy'
           aria-label='Here is the map will find the route to the address!'

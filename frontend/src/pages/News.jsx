@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import axios from '../utils/axiosInstance';
+import axios from '@/utils/axios';
 import { Link } from 'react-router-dom';
 import { IoIosArrowForward } from 'react-icons/io';
 import { GrNext, GrPrevious } from 'react-icons/gr';
@@ -95,7 +95,7 @@ const News = () => {
 
   if (isLoading) {
     return (
-      <div className='h-96 flex justify-center items-center'>
+      <div className='flex h-96 items-center justify-center'>
         <DefaultLoader errorMsg={error} />
       </div>
     );
@@ -106,14 +106,14 @@ const News = () => {
       <PageBreadcrumb activeLinks={aLinkValues} deActiveLink={daLinkValues} />
       {/* Overlay with background image and opacity */}
       <div
-        className='absolute left-0 w-full h-[50%] bg-cover bg-no-repeat bg-center bg-primary'
+        className='bg-primary absolute left-0 h-[50%] w-full bg-cover bg-center bg-no-repeat'
         style={{
           backgroundImage: `url(${backgroundImage})`,
           opacity: 0.1,
         }}
       ></div>
       <EachPageHeader title={titles[0]} subtitle={titles[1]} />
-      <div className='container flex justify-center mx-auto text-2xl lg:text-3xl pl-4'>
+      <div className='container mx-auto flex justify-center pl-4 text-2xl lg:text-3xl'>
         <h2>
           Showing {skip + 1} to {Math.min(skip + limit, totalNews)} of{' '}
           {totalNews} News Articles
@@ -122,30 +122,30 @@ const News = () => {
       </div>
       <div className='container mx-auto px-4 py-4 md:py-6 lg:py-8'>
         <Fade delay={100} cascade damping={0.1} duration={3000}>
-          <div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-10'>
+          <div className='grid grid-cols-1 gap-10 md:grid-cols-2 lg:grid-cols-4'>
             {newsItems.map(item => (
               <div
                 key={item._id}
-                className='flex flex-col justify-between bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700 hover:shadow-lg hover:rounded-lg overflow-hidden'
+                className='flex flex-col justify-between overflow-hidden rounded-lg border border-gray-200 bg-white shadow hover:rounded-lg hover:shadow-lg dark:border-gray-700 dark:bg-gray-800'
               >
                 <Link to={`/news/${item._id}`}>
                   <img
-                    className='w-full h-48 object-cover' // Fixed height for all news thumbnail images
+                    className='h-48 w-full object-cover' // Fixed height for all news thumbnail images
                     src={item.imageUrl}
                     alt={item.title}
                   />
                 </Link>
-                <div className='flex flex-col justify-between p-5 h-full'>
+                <div className='flex h-full flex-col justify-between p-5'>
                   <div>
                     <Link to={`/news/${item._id}`}>
                       <h5 className='mb-2 text-xl font-bold tracking-tight text-gray-900 dark:text-white'>
                         {item.title}
                       </h5>
                     </Link>
-                    <p className='text-s text-lg font-bold py-2 text-gray-400 pt-1'>
+                    <p className='text-s py-2 pt-1 text-lg font-bold text-gray-400'>
                       {humanReadableDate(item.dateCreated)}
                     </p>
-                    <p className='hidden lg:flex mb-3 font-normal text-gray-700 dark:text-gray-400'>
+                    <p className='mb-3 hidden font-normal text-gray-700 lg:flex dark:text-gray-400'>
                       {item.description.length > 100
                         ? `${item.description.slice(0, 100)}...`
                         : item.description}
@@ -153,7 +153,7 @@ const News = () => {
                   </div>
                   <Link
                     to={`/news/${item._id}`}
-                    className='inline-flex items-center py-1 text-s font-medium text-center text-accent hover:underline mt-4'
+                    className='text-s text-accent mt-4 inline-flex items-center py-1 text-center font-medium hover:underline'
                   >
                     Continue Reading <IoIosArrowForward />
                   </Link>
@@ -164,7 +164,7 @@ const News = () => {
         </Fade>
       </div>
       {/* pagination buttons */}
-      <div className='text-2xl md:text-2xl flex justify-center m-4 text-stone gap-10'>
+      <div className='text-stone m-4 flex justify-center gap-10 text-2xl md:text-2xl'>
         <button
           onClick={handlePrev}
           disabled={skip === 0}
@@ -182,7 +182,7 @@ const News = () => {
       </div>
       {/* Footer Image */}
       <img
-        className='bg-gray-light w-full '
+        className='bg-gray-light w-full'
         src={newSFooterImg}
         alt='News Footer Image'
       />

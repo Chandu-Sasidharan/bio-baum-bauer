@@ -1,5 +1,5 @@
 import { createContext, useEffect, useState } from 'react';
-import axios from '../../utils/axiosInstance';
+import axios from '@/utils/axios';
 import Swal from 'sweetalert2';
 
 export const CartContext = createContext({});

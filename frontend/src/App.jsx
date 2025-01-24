@@ -1,6 +1,6 @@
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
-import { CartContextProvider } from '@/store/cart-context';
-import { AuthProvider } from '@/store/auth-context';
+import { CartContextProvider } from '@/context/cart-context';
+import { AuthProvider } from '@/context/auth-context';
 import Home from '@/pages/Home';
 import Trees from './pages/Trees';
 import Layout from '@/layout';
@@ -23,7 +23,7 @@ import './assets/styles/PrevNext.css';
 import SuccessPage from './pages/SuccessPage';
 import CancelPage from './pages/CancelPage';
 import ProtectedRoute from '@/components/protected-route';
-import { PatronProvider } from './store/PatronContext';
+import { PatronProvider } from '@/context/PatronContext';
 import SponsorShipDetails from './pages/user/SponsorShipDetails';
 import AccountLayout from '@/pages/account';
 import Profile from '@/pages/account/profile';

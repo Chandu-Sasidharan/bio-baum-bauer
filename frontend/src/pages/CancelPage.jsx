@@ -4,7 +4,7 @@ import { HiHome } from 'react-icons/hi';
 import PageBreadcrumb from '../components/PageBreadcrumb';
 import EachPageHeader from '../components/EachPageHeader';
 import { Link } from 'react-router-dom';
-import { AuthContext } from '@/store/auth-context';
+import { AuthContext } from '@/context/auth-context';
 import { LuRepeat2 } from 'react-icons/lu';
 
 const CancelPage = () => {
@@ -27,16 +27,16 @@ const CancelPage = () => {
   const daLinkValues = { linkText: 'Payment Unsuccessful' };
 
   return (
-    <main className='relative text-stone'>
+    <main className='text-stone relative'>
       <PageBreadcrumb activeLinks={aLinkValues} deActiveLink={daLinkValues} />
       {/* Payment Unsuccessful title, positioned absolutely */}
-      <h2 className='absolute top-0 left-1/2 transform -translate-x-1/2 py-10 text-center'>
+      <h2 className='absolute left-1/2 top-0 -translate-x-1/2 transform py-10 text-center'>
         <EachPageHeader title={titles[0]} subtitle={titles[1]} />
       </h2>
       <section className='cart-page-container relative flex flex-col items-center justify-center pt-[100px] md:pt-[160px] lg:pt-[180px] xl:pt-[220px]'>
         {/* Overlay with background image and opacity */}
         <div
-          className='cart-page-bg absolute top-0 left-0 w-full h-full bg-cover bg-no-repeat bg-center'
+          className='cart-page-bg absolute left-0 top-0 h-full w-full bg-cover bg-center bg-no-repeat'
           style={{
             backgroundImage: `url(${backgroundImage})`,
             opacity: 0.2,
@@ -45,8 +45,8 @@ const CancelPage = () => {
 
         {/*  Payment Unsuccessful Message Content */}
 
-        <div className='max-w-6xl mx-auto px-4 py-8 md:p-8 bg-white rounded-xl shadow-lg my-10 md:mt-20'>
-          <div className='text-center mt-6'>
+        <div className='mx-auto my-10 max-w-6xl rounded-xl bg-white px-4 py-8 shadow-lg md:mt-20 md:p-8'>
+          <div className='mt-6 text-center'>
             {/* <h2 className="text-2xl md:text-3xl font-semibold mb-10">
               Payment Unsuccessful
             </h2> */}
@@ -56,7 +56,7 @@ const CancelPage = () => {
               or an interruption during the transaction. We encourage you to try
               again or check with your bank if the problem persists.
             </p>
-            <p className='text-md md:text-lg mt-4'>
+            <p className='text-md mt-4 md:text-lg'>
               We appreciate your intention to support our mission. Your
               contribution is important to us, and we're here to help if you
               encounter any further issues. Please don't hesitate to{' '}
@@ -65,10 +65,10 @@ const CancelPage = () => {
               </Link>{' '}
               for assistance.
             </p>
-            <div className='flex justify-center mt-10'>
+            <div className='mt-10 flex justify-center'>
               <Link
                 to='/'
-                className='flex items-center w-max px-4 py-2 justify-center gap-2 text-md bg-primary border-2 md:text-lg text-accent font-bold rounded-md hover:bg-primary-light transition duration-4000 ease-linear'
+                className='text-md bg-primary text-accent hover:bg-primary-light duration-4000 flex w-max items-center justify-center gap-2 rounded-md border-2 px-4 py-2 font-bold transition ease-linear md:text-lg'
               >
                 <LuRepeat2 size='1.4rem' />
                 <span>Try again</span>

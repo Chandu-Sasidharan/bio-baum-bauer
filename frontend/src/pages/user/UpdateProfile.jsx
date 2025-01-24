@@ -6,10 +6,10 @@ import MobileDashboardLinks from '../../components/MobileDashboardLinks';
 import backgroundImage from '../../assets/images/leaves_background_01.webp';
 import { HiHome } from 'react-icons/hi';
 import PageBreadcrumb from '../../components/PageBreadcrumb';
-import { AuthContext } from '@/store/auth-context';
+import { AuthContext } from '@/context/auth-context';
 import DashboardHeader from './DashboardHeader';
 import Swal from 'sweetalert2';
-import axios from '../../utils/axiosInstance';
+import axios from '@/utils/axios';
 import { BsSave } from 'react-icons/bs';
 import treePng from '../../assets/tree.png';
 

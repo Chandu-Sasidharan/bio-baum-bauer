@@ -10,16 +10,16 @@ const Home = () => {
     <>
       {/* Hero Section */}
       <HeroSection />
-      <section className='container mx-auto flex flex-col items-center justify-center w-full pb-8 pt-8'>
-        <div className='border-b-4 border-solid border-gray-400 w-24 rounded-3xl'></div>
+      <section className='container mx-auto flex w-full flex-col items-center justify-center pb-8 pt-8'>
+        <div className='w-24 rounded-3xl border-b-4 border-solid border-gray-400'></div>
         <Mission />
-        <hr className='w-48 visible-none' />
+        <hr className='visible-none w-48' />
         <AboutSolawi />
-        <hr className='w-48 visible-none' />
+        <hr className='visible-none w-48' />
       </section>
       <section className='container-fluid bg-gray-light mx-auto'>
         <FeaturedTrees />
-        <hr className='w-48 visible-none' />
+        <hr className='visible-none w-48' />
       </section>
       <section className='container-fluid'>
         <AdditionalLinks />

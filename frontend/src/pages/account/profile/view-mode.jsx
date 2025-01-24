@@ -1,4 +1,4 @@
-import { useUser } from '@/store/auth-context';
+import { useUser } from '@/context/auth-context';
 
 export default function ViewMode() {
   const { authUser } = useUser();

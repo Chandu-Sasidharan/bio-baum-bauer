@@ -2,14 +2,14 @@ import { useContext } from 'react';
 import backgroundImage from '../../assets/images/leaves_background_01.webp';
 import { RiArrowGoBackLine } from 'react-icons/ri';
 import { Link } from 'react-router-dom';
-import { CartContext } from '@/store/cart-context';
+import { CartContext } from '@/context/cart-context';
 import { Breadcrumb } from 'flowbite-react';
 import { HiHome } from 'react-icons/hi';
 import { MdLabelImportant } from 'react-icons/md';
-import axios from '../../utils/axiosInstance';
+import axios from '@/utils/axios';
 import { loadStripe } from '@stripe/stripe-js';
-import { AuthContext } from '@/store/auth-context';
-import { usePatronContext } from '../../store/PatronContext';
+import { AuthContext } from '@/context/auth-context';
+import { usePatronContext } from '@/context/PatronContext';
 import { BiSolidUserDetail } from 'react-icons/bi';
 import treeIcon from '../../assets/tree.png';
 import { FaAmazonPay } from 'react-icons/fa';
@@ -69,7 +69,7 @@ const Order = () => {
   return (
     <div>
       {cartProducts && (
-        <div className='mt-0 mb-0'>
+        <div className='mb-0 mt-0'>
           <Breadcrumb
             aria-label='This is Breadcrumb showing the location of current page'
             className='bg-gray-50 px-5 py-3 dark:bg-gray-800'
@@ -83,31 +83,31 @@ const Order = () => {
           </Breadcrumb>
         </div>
       )}
-      <div className='cart-page-container relative w-full bg-gray-light mx-auto p-4 pb-[25px] md:pb-[40px] lg:pb-[100px] xl:pb-[120px] flex items-center justify-center text-stone'>
+      <div className='cart-page-container bg-gray-light text-stone relative mx-auto flex w-full items-center justify-center p-4 pb-[25px] md:pb-[40px] lg:pb-[100px] xl:pb-[120px]'>
         {/* Overlay with background image and opacity */}
         <div
-          className='cart-page-bg hidden lg:block absolute top-0 left-0 w-full h-full bg-contain bg-no-repeat bg-top'
+          className='cart-page-bg absolute left-0 top-0 hidden h-full w-full bg-contain bg-top bg-no-repeat lg:block'
           style={{ backgroundImage: `url(${backgroundImage})`, opacity: 0.2 }}
         ></div>
 
-        <div className='w-full xl:w-[90%] 2xl:w-[80%] bg-white rounded-base p-3 lg:p-8 shadow-lg rounded-md lg:mt-[100px] xl:mt-[120px]'>
+        <div className='rounded-base w-full rounded-md bg-white p-3 shadow-lg lg:mt-[100px] lg:p-8 xl:mt-[120px] xl:w-[90%] 2xl:w-[80%]'>
           {/* Sponsor Cart */}
-          <div className='flex flex-col-reverse items-start justify-start lg:flex-row md:gap-[1rem] gap-[2rem]'>
+          <div className='flex flex-col-reverse items-start justify-start gap-[2rem] md:gap-[1rem] lg:flex-row'>
             {/* Tree Image with Name, Qty, Price, Remove Tree Button */}
             {cartProducts.length > 0 ? (
-              <div className='w-full lg:w-[60%] flex flex-col items-start justify-start sm:gap-[2rem] bg-white rounded-md p-4 '>
+              <div className='flex w-full flex-col items-start justify-start rounded-md bg-white p-4 sm:gap-[2rem] lg:w-[60%]'>
                 {' '}
-                <div className='flex flex-col text-gray-dark'>
-                  <div className='flex items-center gap-2 mb-4'>
+                <div className='text-gray-dark flex flex-col'>
+                  <div className='mb-4 flex items-center gap-2'>
                     <BiSolidUserDetail size='2.1rem' />
-                    <h3 className='text-3xl text-accent font-chicle tracking-wide border-b-2 border-primary inline-block'>
+                    <h3 className='text-accent font-chicle border-primary inline-block border-b-2 text-3xl tracking-wide'>
                       Patron Details
                     </h3>
                   </div>{' '}
                   <div className='flex flex-col'>
                     {' '}
-                    <p className='text-gray-dark '>
-                      <span className='font-semibold text-lg text-gray-dark'>
+                    <p className='text-gray-dark'>
+                      <span className='text-gray-dark text-lg font-semibold'>
                         Full Name:
                       </span>
                       <span>
@@ -115,51 +115,51 @@ const Order = () => {
                         {newPatron.lastName}
                       </span>
                     </p>
-                    <p className='text-gray-dark '>
-                      <span className='font-semibold text-lg text-gray-dark'>
+                    <p className='text-gray-dark'>
+                      <span className='text-gray-dark text-lg font-semibold'>
                         Email:
                       </span>
                       <span>&nbsp;&nbsp;{newPatron.email}</span>
                     </p>
-                    <p className='text-gray-dark '>
-                      <span className='font-semibold text-lg text-gray-dark'>
+                    <p className='text-gray-dark'>
+                      <span className='text-gray-dark text-lg font-semibold'>
                         Mobile Phone:
                       </span>
                       <span>&nbsp;&nbsp;{newPatron.mobilePhone}</span>
                     </p>
                     {/* Display address details */}
-                    <p className='text-gray-dark '>
-                      <span className='font-semibold text-lg text-gray-dark'>
+                    <p className='text-gray-dark'>
+                      <span className='text-gray-dark text-lg font-semibold'>
                         Address Line 1:
                       </span>
                       <span>&nbsp;&nbsp;{newPatron.address.address1}</span>
                     </p>
-                    <p className='text-gray-dark '>
-                      <span className='font-semibold text-lg text-gray-dark'>
+                    <p className='text-gray-dark'>
+                      <span className='text-gray-dark text-lg font-semibold'>
                         Additional Address Details:
                       </span>
                       <span>&nbsp;&nbsp;{newPatron.address.address2}</span>
                     </p>
-                    <p className='text-gray-dark '>
-                      <span className='font-semibold text-lg text-gray-dark'>
+                    <p className='text-gray-dark'>
+                      <span className='text-gray-dark text-lg font-semibold'>
                         City:
                       </span>
                       <span>&nbsp;&nbsp;{newPatron.address.city}</span>
                     </p>
-                    <p className='text-gray-dark '>
-                      <span className='font-semibold text-lg text-gray-dark'>
+                    <p className='text-gray-dark'>
+                      <span className='text-gray-dark text-lg font-semibold'>
                         Postcode:
                       </span>
                       <span>&nbsp;&nbsp;{newPatron.address.zipCode}</span>
                     </p>
-                    <p className='text-gray-dark '>
-                      <span className='font-semibold text-lg text-gray-dark'>
+                    <p className='text-gray-dark'>
+                      <span className='text-gray-dark text-lg font-semibold'>
                         State/Country:
                       </span>
                       <span>&nbsp;&nbsp;{newPatron.address.state}</span>
                     </p>
-                    <p className='text-gray-dark '>
-                      <span className='font-semibold text-lg text-gray-dark'>
+                    <p className='text-gray-dark'>
+                      <span className='text-gray-dark text-lg font-semibold'>
                         Country:
                       </span>
                       <span>&nbsp;&nbsp;{newPatron.address.country}</span>
@@ -167,7 +167,7 @@ const Order = () => {
                   </div>
                 </div>
                 {/* Horizontal Line */}
-                <hr className='w-[100%] mx-auto border-t-2 border-primary my-2' />
+                <hr className='border-primary mx-auto my-2 w-[100%] border-t-2' />
                 <SponsorList
                   cartProducts={cartProducts}
                   getTreeQuantity={getTreeQuantity}
@@ -179,15 +179,15 @@ const Order = () => {
             )}
 
             {/* Payment Information */}
-            <div className='w-full lg:w-2/5 '>
-              <div className='flex flex-col lg:border-l-4 lg:border-aloe gap-[0.4rem] bg-gray-light rounded-md py-4 px-3'>
+            <div className='w-full lg:w-2/5'>
+              <div className='lg:border-aloe bg-gray-light flex flex-col gap-[0.4rem] rounded-md px-3 py-4 lg:border-l-4'>
                 {/* Total Price */}
                 <div className='flex flex-col'>
                   <div className='flex flex-row justify-between'>
-                    <div className='felx text-xl font-chicle text-accent tracking-wide'>
+                    <div className='felx font-chicle text-accent text-xl tracking-wide'>
                       Total Price:
                     </div>
-                    <div className='flex text-md text-gray-dark'>
+                    <div className='text-md text-gray-dark flex'>
                       € {calculateTotalPrice().toFixed(2)}
                     </div>
                   </div>
@@ -196,10 +196,10 @@ const Order = () => {
                 {/* Tax */}
                 <div className='flex flex-col'>
                   <div className='flex flex-row justify-between'>
-                    <div className='felx text-xl font-chicle text-accent tracking-wide'>
+                    <div className='felx font-chicle text-accent text-xl tracking-wide'>
                       Tax:
                     </div>
-                    <div className='flex text-md text-gray-dark'>
+                    <div className='text-md text-gray-dark flex'>
                       € {(calculateTotalPrice() * TAX_RATE).toFixed(2)}
                     </div>
                   </div>
@@ -208,16 +208,16 @@ const Order = () => {
                 {/* Grand Total */}
                 <div className='flex flex-col'>
                   <div className='flex flex-row justify-between'>
-                    <div className='felx text-xl font-chicle text-accent tracking-wide'>
+                    <div className='felx font-chicle text-accent text-xl tracking-wide'>
                       Grand Total:
                     </div>
-                    <div className='flex text-md text-gray-dark price px-4 py-1 rounded-3xl font-bold'>
+                    <div className='text-md text-gray-dark price flex rounded-3xl px-4 py-1 font-bold'>
                       € {calculateGrandTotal().toFixed(2)}
                     </div>
                   </div>
                 </div>
                 <span
-                  className='flex items-center text-left text-lg w-[100%] mx-auto my-2 px-4 py-2 bg-[#f4f5f3] text-accent rounded-[10px]'
+                  className='text-accent mx-auto my-2 flex w-[100%] items-center rounded-[10px] bg-[#f4f5f3] px-4 py-2 text-left text-lg'
                   aria-label='Powered by Stripe'
                 >
                   <MdLabelImportant className='hidden md:block' />
@@ -227,12 +227,12 @@ const Order = () => {
                   </span>
                 </span>
                 {/* Horizontal Line */}
-                <hr className='w-[40%] mx-auto border-t-2 border-primary my-4' />
+                <hr className='border-primary mx-auto my-4 w-[40%] border-t-2' />
 
                 {/* Pay Now */}
                 <button
                   onClick={paymentProcess}
-                  className='flex items-center justify-center gap-1 text-2xl w-full px-4 py-5 bg-sage text-white rounded-md hover:bg-aloe hover:text-accent transition duration-4000 ease-linear'
+                  className='bg-sage hover:bg-aloe hover:text-accent duration-4000 flex w-full items-center justify-center gap-1 rounded-md px-4 py-5 text-2xl text-white transition ease-linear'
                   aria-label='Pay Now'
                 >
                   <FaAmazonPay size='1.9rem' />
@@ -241,7 +241,7 @@ const Order = () => {
                 {/* Back to  Checkout */}
                 <Link
                   to='/checkout'
-                  className='flex items-center justify-center gap-2 w-full px-4 py-2 bg-primary border-2 text-stone rounded-md hover:bg-primary-light transition duration-4000 ease-linear mt-4'
+                  className='bg-primary text-stone hover:bg-primary-light duration-4000 mt-4 flex w-full items-center justify-center gap-2 rounded-md border-2 px-4 py-2 transition ease-linear'
                   aria-label='Sponsor Tree page'
                 >
                   <RiArrowGoBackLine />

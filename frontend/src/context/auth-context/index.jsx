@@ -12,7 +12,7 @@ import {
   calculateGrandPrice,
   OrderItemsReducer,
 } from '../../reducers/reducers';
-import axios from '@/utils/axiosInstance';
+import axios from '@/utils/axios';
 import showAlert from '@/utils/alert';
 import formatError from '@/utils/format-error';
 
@@ -163,6 +163,7 @@ export const AuthProvider = ({ children }) => {
 
     try {
       const response = await axios.post('/api/auth/login', formData);
+      console.log('res', response);
 
       if (response.status === 200) {
         setAuthUser(response.data.user);
@@ -175,6 +176,7 @@ export const AuthProvider = ({ children }) => {
         );
       }
     } catch (error) {
+      console.log('ee', error);
       const errorMessage = formatError(error);
       showAlert('error', 'Login Failed', null, errorMessage);
     }

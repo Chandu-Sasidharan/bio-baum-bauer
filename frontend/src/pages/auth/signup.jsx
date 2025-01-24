@@ -9,7 +9,7 @@ import { HiEye, HiEyeOff } from 'react-icons/hi';
 import Breadcrumbs from '@/components/elements/breadcrumbs';
 import backgroundImage from '/images/background/leaves-background.webp';
 import treeIcon from '/images/misc/tree.png';
-import { useUser } from '@/store/auth-context';
+import { useUser } from '@/context/auth-context';
 
 // Define schema with zod
 const schema = z

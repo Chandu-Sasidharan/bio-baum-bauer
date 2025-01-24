@@ -8,7 +8,7 @@ import { FaRegUser } from 'react-icons/fa';
 import { MdOutlineDateRange } from 'react-icons/md';
 import { BiTagAlt } from 'react-icons/bi';
 import { IoMdArrowBack } from 'react-icons/io';
-import axios from '../utils/axiosInstance';
+import axios from '@/utils/axios';
 import DOMPurify from 'dompurify';
 import EachPageHeader from '../components/EachPageHeader';
 import { Breadcrumb } from 'flowbite-react';
@@ -46,17 +46,17 @@ const NewsArticle = () => {
 
   if (isLoading)
     return (
-      <div className='text-center text-lg font-semibold mt-10'>Loading...</div>
+      <div className='mt-10 text-center text-lg font-semibold'>Loading...</div>
     );
   if (error)
     return (
-      <div className='text-red-600 text-center text-lg font-semibold mt-10'>
+      <div className='mt-10 text-center text-lg font-semibold text-red-600'>
         {error}
       </div>
     );
   if (!article)
     return (
-      <div className='text-gray-500 text-center text-lg font-semibold mt-10'>
+      <div className='mt-10 text-center text-lg font-semibold text-gray-500'>
         No article found.
       </div>
     );
@@ -71,7 +71,7 @@ const NewsArticle = () => {
   return (
     <div className='bg-gray-light'>
       {article && (
-        <div className='mt-0 mb-0'>
+        <div className='mb-0 mt-0'>
           <Breadcrumb
             aria-label='This is Breadcrumb showing the location of current page'
             className='bg-gray-50 px-5 py-3 dark:bg-gray-800'
@@ -90,29 +90,29 @@ const NewsArticle = () => {
         <EachPageHeader title={article.title} />
       </div> */}
       <div className='container mx-auto p-3'>
-        <div className='bg-white mt-2 rounded-lg py-3 px-5'>
+        <div className='mt-2 rounded-lg bg-white px-5 py-3'>
           <Link
             to='/news'
-            className='flex items-center w-max border-2 justify-center gap-1 px-8 h-max py-1  bg-primary text-stone rounded-[10px] hover:bg-primary-light transition duration-4000 ease-linear'
+            className='bg-primary text-stone hover:bg-primary-light duration-4000 flex h-max w-max items-center justify-center gap-1 rounded-[10px] border-2 px-8 py-1 transition ease-linear'
             aria-label='Tree page'
           >
             <MdKeyboardDoubleArrowLeft size='1rem' />
-            <span className=' text-base'>back</span>
+            <span className='text-base'>back</span>
           </Link>
         </div>
       </div>
       <div className='container mx-auto px-3'>
         {' '}
-        <div className='bg-white rounded-lg shadow-lg p-2'>
+        <div className='rounded-lg bg-white p-2 shadow-lg'>
           {article && (
             <div className='flex flex-col lg:flex-row'>
-              <div className='w-full lg:w-1/4 p-4'>
-                <h1 className='text-2xl font-bold text-gray-900 mb-2'>
+              <div className='w-full p-4 lg:w-1/4'>
+                <h1 className='mb-2 text-2xl font-bold text-gray-900'>
                   {article.title}
                 </h1>
                 <hr className='mb-2' />
-                <p className='flex items-center text-lg text-gray-600 mb-4 ml-3'>
-                  <span className='flex items-center font-semibold gap-1'>
+                <p className='mb-4 ml-3 flex items-center text-lg text-gray-600'>
+                  <span className='flex items-center gap-1 font-semibold'>
                     <FaRegUser size='1.1rem' />
                     {article.writer ? (
                       <span>
@@ -124,29 +124,29 @@ const NewsArticle = () => {
                     )}
                   </span>
                 </p>
-                <p className='flex items-center text-lg text-gray-600 mb-4 ml-3'>
-                  <span className='flex items-center font-semibold gap-1'>
+                <p className='mb-4 ml-3 flex items-center text-lg text-gray-600'>
+                  <span className='flex items-center gap-1 font-semibold'>
                     <MdOutlineDateRange size='1.3rem' />
                     <span>{new Date(article.dateCreated).toDateString()}</span>
                   </span>
                 </p>
                 <hr className='mb-2' />
                 <div
-                  className='prose px-4 lg:prose-lg mb-6'
+                  className='prose lg:prose-lg mb-6 px-4'
                   dangerouslySetInnerHTML={{
                     __html: DOMPurify.sanitize(article.content),
                   }}
                 />
                 <Link
                   to='/news'
-                  className='flex items-center w-max border-2 justify-center gap-1 px-3 h-max py-1  bg-primary text-stone rounded-[10px] hover:bg-primary-light transition duration-4000 ease-linear'
+                  className='bg-primary text-stone hover:bg-primary-light duration-4000 flex h-max w-max items-center justify-center gap-1 rounded-[10px] border-2 px-3 py-1 transition ease-linear'
                 >
                   <IoMdArrowBack className='text-2xl' />
                   <span>&nbsp;Go Back</span>
                 </Link>
               </div>
               <img
-                className='w-full lg:w-3/4 h-auto object-cover rounded-r-lg'
+                className='h-auto w-full rounded-r-lg object-cover lg:w-3/4'
                 src={article.imageUrl}
                 alt={article.title}
               />

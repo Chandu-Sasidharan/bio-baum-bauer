@@ -5,8 +5,8 @@ import backgroundImage from '../../assets/images/leaves_background_01.webp';
 import { Link } from 'react-router-dom';
 import { HiHome } from 'react-icons/hi';
 import PageBreadcrumb from '../../components/PageBreadcrumb';
-import { AuthContext } from '@/store/auth-context';
-import axios from '../../utils/axiosInstance';
+import { AuthContext } from '@/context/auth-context';
+import axios from '@/utils/axios';
 import DashboardHeader from './DashboardHeader';
 import treePng from '../../assets/tree.png';
 

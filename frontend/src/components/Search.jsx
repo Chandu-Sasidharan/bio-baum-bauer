@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { IoIosSearch } from 'react-icons/io';
-import axios from '../utils/axiosInstance';
+import axios from '@/utils/axios';
 
 // eslint-disable-next-line react/prop-types
 export default function Search({ updateTree, limit, skip }) {
@@ -29,16 +29,16 @@ export default function Search({ updateTree, limit, skip }) {
   return (
     <>
       <div className='backdrop-search'></div>
-      <div className='py-10 h-20 bg-primary-light px-2'>
-        <div className='max-w-auto mx-auto rounded-lg overflow-hidden md:max-w-xl md:max-h-m sm:max-w-xs'>
+      <div className='bg-primary-light h-20 px-2 py-10'>
+        <div className='max-w-auto md:max-h-m mx-auto overflow-hidden rounded-lg sm:max-w-xs md:max-w-xl'>
           <div className='md:flex'>
             <div className='w-full p-3'>
-              <div className='relative md:max-h-m'>
-                <i className='absolute fa fa-search text-gray-100 top-5 left-4'></i>
+              <div className='md:max-h-m relative'>
+                <i className='fa fa-search absolute left-4 top-5 text-gray-100'></i>
                 <input
                   type='text'
                   placeholder='Search...'
-                  className='bg-white h-14 w-full px-12 rounded-lg border-primary-dark input hover:cursor-pointer text-xl italic !important'
+                  className='border-primary-dark input !important h-14 w-full rounded-lg bg-white px-12 text-xl italic hover:cursor-pointer'
                   name=''
                   defaultValue={searchParam}
                   onChange={event => {
@@ -47,7 +47,7 @@ export default function Search({ updateTree, limit, skip }) {
                   }}
                 ></input>
                 <button
-                  className='absolute top-4 right-5 border-l pl-4 cursor-pointer'
+                  className='absolute right-5 top-4 cursor-pointer border-l pl-4'
                   onClick={searchHandler}
                 >
                   <IoIosSearch className='iconsearch text-primary-dark' />

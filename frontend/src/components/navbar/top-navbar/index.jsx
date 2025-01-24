@@ -3,8 +3,8 @@ import { Link, useNavigate } from 'react-router-dom';
 import { CgProfile } from 'react-icons/cg';
 import { PiShoppingCartSimpleFill } from 'react-icons/pi';
 import { IoIosArrowDown, IoIosArrowUp, IoMdLogOut } from 'react-icons/io';
-import { CartContext } from '@/store/cart-context';
-import { useUser } from '@/store/auth-context';
+import { CartContext } from '@/context/cart-context';
+import { useUser } from '@/context/auth-context';
 import logoImage from '/images/logo/bbb-logo.svg';
 
 export default function TopNavBar({

@@ -7,9 +7,9 @@ import EachPageHeader from '../components/EachPageHeader';
 import logoImage from '../assets/images/BioBaumBauer_Logo_ThankYou.svg';
 import { Link } from 'react-router-dom';
 import { useEffect, useContext } from 'react';
-import { AuthContext } from '@/store/auth-context';
-import { CartContext } from '@/store/cart-context';
-import { usePatronContext } from '../store/PatronContext';
+import { AuthContext } from '@/context/auth-context';
+import { CartContext } from '@/context/cart-context';
+import { usePatronContext } from '@/context/PatronContext';
 import { RiArrowGoBackLine } from 'react-icons/ri';
 
 const SuccessPage = () => {
@@ -93,16 +93,16 @@ const SuccessPage = () => {
   }, []);
 
   return (
-    <main className='relative text-stone'>
+    <main className='text-stone relative'>
       <PageBreadcrumb activeLinks={aLinkValues} deActiveLink={daLinkValues} />
       {/* Success title, positioned absolutely */}
-      <h2 className='absolute top-0 left-1/2 transform -translate-x-1/2 py-10 text-center mb-4'>
+      <h2 className='absolute left-1/2 top-0 mb-4 -translate-x-1/2 transform py-10 text-center'>
         <EachPageHeader title={titles[0]} subtitle={titles[1]} />
       </h2>
       <section className='cart-page-container relative flex flex-col items-center justify-center pt-[100px] md:pt-[160px] lg:pt-[180px] xl:pt-[220px]'>
         {/* Overlay with background image and opacity */}
         <div
-          className='cart-page-bg absolute top-0 left-0 w-full h-full bg-cover bg-no-repeat bg-center'
+          className='cart-page-bg absolute left-0 top-0 h-full w-full bg-cover bg-center bg-no-repeat'
           style={{
             backgroundImage: `url(${backgroundImage})`,
             opacity: 0.2,
@@ -111,16 +111,16 @@ const SuccessPage = () => {
 
         {/* Success Message Content */}
 
-        <div className='max-w-6xl mx-auto px-4 py-8 md:p-8 bg-white rounded-xl shadow-lg my-10 mt-9 md:mt-20'>
-          <p className='flex justify-center items-center gap-2 mb-16'>
+        <div className='mx-auto my-10 mt-9 max-w-6xl rounded-xl bg-white px-4 py-8 shadow-lg md:mt-20 md:p-8'>
+          <p className='mb-16 flex items-center justify-center gap-2'>
             <img
               src={logoImage}
               className='w-80 rounded-full'
               alt='BioBaumBauer Thank You Logo'
             />
           </p>
-          <div className='text-center mt-6'>
-            <h2 className='text-2xl md:text-3xl font-semibold mb-10'>
+          <div className='mt-6 text-center'>
+            <h2 className='mb-10 text-2xl font-semibold md:text-3xl'>
               Thank You for Your Support!
             </h2>
             <p className='text-md md:text-lg'>
@@ -129,16 +129,16 @@ const SuccessPage = () => {
               sustainable future. Your tree will not only beautify our landscape
               but also help combat climate change and support local ecosystems.
             </p>
-            <p className='text-md md:text-lg mt-4'>
+            <p className='text-md mt-4 md:text-lg'>
               We are thrilled to have you as part of our community. Together, we
               are making a real difference. Stay tuned for updates on your tree
               and our collective impact.
             </p>
             {/* Link going back to Home page */}
-            <div className='flex justify-center mt-10'>
+            <div className='mt-10 flex justify-center'>
               <Link
                 to='/'
-                className='flex items-center w-max px-4 py-2 justify-center gap-2 text-md bg-primary border-2 md:text-lg text-accent font-bold rounded-md hover:bg-primary-light transition duration-4000 ease-linear'
+                className='text-md bg-primary text-accent hover:bg-primary-light duration-4000 flex w-max items-center justify-center gap-2 rounded-md border-2 px-4 py-2 font-bold transition ease-linear md:text-lg'
               >
                 <RiArrowGoBackLine />
                 <span>Return to Home Page</span>

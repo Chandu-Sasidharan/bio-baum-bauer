@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { useUser } from '@/store/auth-context';
+import { useUser } from '@/context/auth-context';
 import Button from '@/components/elements/button';
 
 export default function EditMode({ setIsEditing }) {
