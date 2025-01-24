@@ -14,6 +14,7 @@ import {
 } from '../../reducers/reducers';
 import axios from '@/utils/axiosInstance';
 import showAlert from '@/utils/alert';
+import formatError from '@/utils/format-error';
 
 const INACTIVITY_TIMEOUT = 15 * 60 * 1000; // 15 minutes
 const TOKEN_REFRESH_INTERVAL = 5 * 60 * 1000; // 5 minutes
@@ -146,21 +147,7 @@ export const AuthProvider = ({ children }) => {
         isError = true;
       }
     } catch (error) {
-      // Handle errors that occurred during the POST request
-      let errorMessage = 'An error occurred during sign up!';
-      if (error.response) {
-        if (error.response.status === 400) {
-          errorMessage = '<ul>';
-          // Loop through error messages and append to the list
-          error.response.data.errors.forEach(err => {
-            errorMessage += `<li>${err.message}</li>`;
-          });
-          errorMessage += '</ul>';
-        } else {
-          errorMessage = error.response.data.message || errorMessage;
-        }
-      }
-
+      const errorMessage = formatError(error);
       showAlert('error', 'Sign Up Failed', null, errorMessage);
       isError = true;
     }
@@ -187,21 +174,7 @@ export const AuthProvider = ({ children }) => {
         );
       }
     } catch (error) {
-      // Handle errors that occurred during the POST request
-      let errorMessage = 'An error occurred during login!';
-      if (error.response) {
-        if (error.response.status === 400) {
-          errorMessage = '<ul>';
-          // Loop through error messages and append to the list
-          error.response.data.errors.forEach(err => {
-            errorMessage += `<li>${err.message}</li>`;
-          });
-          errorMessage += '</ul>';
-        } else {
-          errorMessage = error.response.data.message || errorMessage;
-        }
-      }
-
+      const errorMessage = formatError(error);
       showAlert('error', 'Login Failed', null, errorMessage);
     }
 
@@ -228,21 +201,7 @@ export const AuthProvider = ({ children }) => {
         );
       }
     } catch (error) {
-      // Handle errors that occurred during the PUT request
-      let errorMessage = 'An error occurred during update!';
-      if (error.response) {
-        if (error.response.status === 400) {
-          errorMessage = '<ul>';
-          // Loop through error messages and append to the list
-          error.response.data.errors.forEach(err => {
-            errorMessage += `<li>${err.message}</li>`;
-          });
-          errorMessage += '</ul>';
-        } else {
-          errorMessage = error.response.data.message || errorMessage;
-        }
-      }
-
+      const errorMessage = formatError(error);
       showAlert('error', 'Update Failed', null, errorMessage);
     }
 
@@ -261,12 +220,8 @@ export const AuthProvider = ({ children }) => {
       // Display success message
       showAlert('success', null, 'You have been logged out!');
     } catch (error) {
-      // Display error message
-      showAlert(
-        'error',
-        'Logout Failed',
-        error.response?.data.message || 'An error occurred during logout!'
-      );
+      const errorMessage = formatError(error);
+      showAlert('error', 'Logout Failed', null, errorMessage);
     }
   };
 
