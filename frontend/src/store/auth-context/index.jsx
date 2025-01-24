@@ -16,7 +16,7 @@ import axios from '@/utils/axiosInstance';
 import showAlert from '@/utils/alert';
 import formatError from '@/utils/format-error';
 
-const INACTIVITY_TIMEOUT = 15 * 60 * 1000; // 15 minutes
+const INACTIVITY_TIMEOUT_INTERVAL = 15 * 60 * 1000; // 15 minutes
 const TOKEN_REFRESH_INTERVAL = 5 * 60 * 1000; // 5 minutes
 
 // To be refactored step by step
@@ -59,7 +59,7 @@ export const AuthProvider = ({ children }) => {
     if (authUser) {
       const updatedAuthUser = {
         ...authUser,
-        expiresAt: Date.now() + 20 * 60 * 1000, // 20 minutes
+        expiresAt: Date.now() + 6 * 60 * 1000, // 6 minutes
       };
       lsRef.setItem('userSession', JSON.stringify(updatedAuthUser));
     }
@@ -73,9 +73,10 @@ export const AuthProvider = ({ children }) => {
       if (inactivityTimeout) {
         clearTimeout(inactivityTimeout);
       }
+
       inactivityTimeout = setTimeout(() => {
         handleLogout();
-      }, INACTIVITY_TIMEOUT);
+      }, INACTIVITY_TIMEOUT_INTERVAL);
     };
 
     if (isAuthenticated) {
