@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
@@ -21,6 +22,7 @@ const schema = z.object({
 });
 
 export default function Form() {
+  const [isProcessing, setIsProcessing] = useState(false);
   const {
     register,
     handleSubmit,
@@ -33,6 +35,7 @@ export default function Form() {
   });
 
   const onSubmit = async formData => {
+    setIsProcessing(true);
     try {
       const response = await axios.post('/api/contact/create', formData);
 
@@ -51,6 +54,8 @@ export default function Form() {
     } catch (error) {
       const errorMessage = formatError(error);
       showAlert('error', 'Sign Up Failed', null, errorMessage);
+    } finally {
+      setIsProcessing(false);
     }
   };
 
@@ -163,7 +168,9 @@ export default function Form() {
       </div>
 
       {/* Submit Button */}
-      <Button type='submit'>send your message</Button>
+      <Button type='submit' disabled={isProcessing}>
+        {isProcessing ? 'Processing...' : 'Send your message'}
+      </Button>
     </form>
   );
 }
