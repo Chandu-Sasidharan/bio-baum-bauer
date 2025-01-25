@@ -1,7 +1,7 @@
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import { CartContextProvider } from '@/context/cart-context';
 import { AuthProvider } from '@/context/auth-context';
-import Home from '@/pages/Home';
+import Home from '@/pages/home';
 import Trees from './pages/Trees';
 import Layout from '@/layout';
 import News from './pages/News';

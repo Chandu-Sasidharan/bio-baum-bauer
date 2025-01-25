@@ -26,7 +26,7 @@ export default function Upper() {
               </p>
             </div>
             <p className='mt-3 font-sans text-lg'>
-              Sponsor a tree with BioBaumBauer and nurture hope today.
+              Sponsor a tree with BioBaumBauer and nurture hope.
             </p>
             <div className='space-y-3'>
               <p className='text-lg font-bold'>Follow Us</p>
