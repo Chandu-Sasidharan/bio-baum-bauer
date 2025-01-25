@@ -156,13 +156,11 @@ export default function EditMode({ setIsEditing }) {
       </div>
       <Button
         type='submit'
+        size='sm'
         className='bg-primary mt-4 rounded-md px-4 py-2 text-white'
+        isProcessing={isProcessing}
       >
-        {isProcessing ? (
-          <span className='loading loading-spinner loading-xs'></span>
-        ) : (
-          'Save'
-        )}
+        Save
       </Button>
     </form>
   );

@@ -164,15 +164,8 @@ export default function Login() {
             </div>
 
             {/* Submit Button */}
-            <Button
-              type='submit'
-              classnames={isUserLoading ? 'btn-disabled' : ''}
-            >
-              {isUserLoading ? (
-                <span className='loading loading-spinner'>Login..</span>
-              ) : (
-                <span>Login</span>
-              )}
+            <Button type='submit' isProcessing={isUserLoading}>
+              Login
             </Button>
           </form>
         </div>

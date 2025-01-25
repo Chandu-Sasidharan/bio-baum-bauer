@@ -17,7 +17,11 @@ export default function AccountDetails() {
         <div className='flex items-center justify-between'>
           <h2 className='my-4 text-2xl font-bold'>My Profile</h2>
           <div className='flex gap-2'>
-            <Button onClick={() => setIsEditing(!isEditing)} primary={true}>
+            <Button
+              onClick={() => setIsEditing(!isEditing)}
+              primary={true}
+              size='sm'
+            >
               {isEditing ? 'Cancel' : 'Edit'}
             </Button>
           </div>

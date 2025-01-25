@@ -168,7 +168,7 @@ export default function Form() {
       </div>
 
       {/* Submit Button */}
-      <Button type='submit' disabled={isProcessing}>
+      <Button type='submit' isProcessing={isProcessing}>
         {isProcessing ? 'Processing...' : 'Send your message'}
       </Button>
     </form>
