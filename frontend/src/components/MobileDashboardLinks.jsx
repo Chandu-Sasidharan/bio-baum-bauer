@@ -20,14 +20,14 @@ const MobileDashboardLinks = () => {
   }, [location.pathname]);
 
   return (
-    <div className='flex md:hidden p-4 relative'>
+    <div className='relative flex p-4 md:hidden'>
       <button
         onClick={handleToggleMobile}
-        className='flex justify-center items-center w-8 h-8 rounded-lg absolute top-[-5px] left-0 z-20 '
+        className='absolute left-0 top-[-5px] z-20 flex h-8 w-8 items-center justify-center rounded-lg'
       >
         <FaGear
           className={
-            isMobile ? `text-[3rem] text-accent` : `text-[1.8rem] text-sage `
+            isMobile ? `text-accent text-[3rem]` : `text-sage text-[1.8rem]`
           }
         />
       </button>
@@ -35,15 +35,15 @@ const MobileDashboardLinks = () => {
       {/* Mobile dropdown menu */}
       {isMobile && (
         <>
-          <div className='w-[50%] absolute top-[40px] xs:left-0 left-0 bg-white rounded-md border border-primary dashboard-nav-index'>
-            <div className='flex flex-col w-full'>
+          <div className='xs:left-0 border-primary absolute left-0 top-[40px] z-[1] w-[50%] rounded-md border bg-white'>
+            <div className='flex w-full flex-col'>
               <NavLink
                 aria-label='Dashboard'
                 to='/dashboard'
                 activeClassName='bg-aloe'
-                className={`text-stone block border-b rounded-t-md border-primary py-4 text-start pl-4 hover:bg-gray-light ${
+                className={`text-stone border-primary hover:bg-gray-light block rounded-t-md border-b py-4 pl-4 text-start ${
                   activeLink === '/dashboard'
-                    ? 'border-l-4 border-l-sage bg-aloe'
+                    ? 'border-l-sage bg-aloe border-l-4'
                     : ''
                 }`}
               >
@@ -53,9 +53,9 @@ const MobileDashboardLinks = () => {
                 aria-label='Update Profile'
                 to='/update_profile'
                 activeClassName='bg-primary'
-                className={`text-stone block border-b  border-primary py-4 text-start pl-4 hover:bg-gray-light ${
+                className={`text-stone border-primary hover:bg-gray-light block border-b py-4 pl-4 text-start ${
                   activeLink === '/update_profile'
-                    ? 'border-l-4 border-l-sage bg-aloe'
+                    ? 'border-l-sage bg-aloe border-l-4'
                     : ''
                 }`}
               >
@@ -65,9 +65,9 @@ const MobileDashboardLinks = () => {
                 aria-label='Sponsorships'
                 to='/user_sponsorships'
                 activeClassName='bg-primary'
-                className={`text-stone block border-b  border-primary py-4 text-start pl-4 hover:bg-gray-light ${
+                className={`text-stone border-primary hover:bg-gray-light block border-b py-4 pl-4 text-start ${
                   activeLink === '/user_sponsorships'
-                    ? 'border-l-4 border-l-sage bg-aloe'
+                    ? 'border-l-sage bg-aloe border-l-4'
                     : ''
                 }`}
               >
@@ -77,9 +77,9 @@ const MobileDashboardLinks = () => {
                 aria-label='Change Password'
                 to='/password_change'
                 activeClassName='bg-primary'
-                className={`text-stone block border-b border-primary py-4 text-start pl-4 hover:bg-gray-light ${
+                className={`text-stone border-primary hover:bg-gray-light block border-b py-4 pl-4 text-start ${
                   activeLink === '/password_change'
-                    ? 'border-l-4 border-l-sage bg-aloe'
+                    ? 'border-l-sage bg-aloe border-l-4'
                     : ''
                 }`}
               >
@@ -89,9 +89,9 @@ const MobileDashboardLinks = () => {
                 aria-label='Sign Out'
                 to='/signout'
                 activeClassName='bg-primary'
-                className={`text-stone py-4 text-start pl-4 rounded-b-md hover:bg-gray-light ${
+                className={`text-stone hover:bg-gray-light rounded-b-md py-4 pl-4 text-start ${
                   activeLink === '/signout'
-                    ? 'border-l-4 border-l-sage bg-aloe'
+                    ? 'border-l-sage bg-aloe border-l-4'
                     : ''
                 }`}
               >

@@ -20,10 +20,9 @@ export const createContact = async (req, res) => {
     // Create a new contact form entry
     await Contact.create(formData);
 
-    // Send feedback email
-    await sendContactFeedback(formData.email, formData.message);
-    // Send contact form to team
-    await sendContactToTeam(formData.email, formData.message);
+    const { email, userName, message } = formData;
+    await sendContactFeedback(email, message);
+    await sendContactToTeam(email, userName, message);
 
     return res
       .status(StatusCodes.CREATED)

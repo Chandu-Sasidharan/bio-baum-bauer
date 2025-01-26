@@ -14,16 +14,16 @@ const Terms = () => {
   const daLinkValues = { linkText: 'Terms and Conditions' };
 
   return (
-    <div className='relative text-stone'>
+    <div className='text-stone relative'>
       <PageBreadcrumb activeLinks={aLinkValues} deActiveLink={daLinkValues} />
       {/* Terms and Conditions title, positioned absolutely */}
-      <h2 className='absolute top-0 left-1/2 transform -translate-x-1/2 py-10 text-center'>
+      <h2 className='absolute left-1/2 top-0 -translate-x-1/2 transform py-10 text-center'>
         <EachPageHeader title={titles[0]} subtitle={titles[1]} />
       </h2>
       <section className='relative flex flex-col items-center justify-center pt-[100px] md:pt-[160px] lg:pt-[180px] xl:pt-[220px]'>
         {/* Overlay with background image and opacity */}
         <div
-          className='cart-page-bg absolute top-0 left-0 w-full h-[25%] bg-cover bg-no-repeat bg-center'
+          className='absolute left-0 top-0 z-[-1] h-[25%] w-full bg-cover bg-center bg-no-repeat'
           style={{
             backgroundImage: `url(${backgroundImage})`,
             opacity: 0.2,
@@ -31,8 +31,8 @@ const Terms = () => {
         ></div>
 
         {/* Terms and Conditions Content */}
-        <div className='max-w-6xl mx-auto px-4 py-8 md:p-8 bg-white rounded-xl shadow-lg my-10'>
-          <h2 className='text-5xl font-semibold mt-6 mb-16 flex justify-center my-5'>
+        <div className='mx-auto my-10 max-w-6xl rounded-xl bg-white px-4 py-8 shadow-lg md:p-8'>
+          <h2 className='my-5 mb-16 mt-6 flex justify-center text-5xl font-semibold'>
             Welcome to Bio Baum Bauer!
           </h2>
 
@@ -66,7 +66,7 @@ const Terms = () => {
             same.
           </p>
 
-          <h2 className='text-3xl font-semibold mt-6'>
+          <h2 className='mt-6 text-3xl font-semibold'>
             <strong>Cookies</strong>
           </h2>
 
@@ -84,7 +84,7 @@ const Terms = () => {
             also use cookies.
           </p>
 
-          <h2 className='text-3xl font-semibold mt-6'>
+          <h2 className='mt-6 text-3xl font-semibold'>
             <strong>License</strong>
           </h2>
 
@@ -97,7 +97,7 @@ const Terms = () => {
           </p>
 
           <p>You must not:</p>
-          <ul className='list-disc pl-5 space-y-2'>
+          <ul className='list-disc space-y-2 pl-5'>
             <li>Republish material from Bio Baum Bauer</li>
             <li>Sell, rent or sub-license material from Bio Baum Bauer</li>
             <li>Reproduce, duplicate or copy material from Bio Baum Bauer</li>
@@ -135,7 +135,7 @@ const Terms = () => {
 
           <p>You warrant and represent that:</p>
 
-          <ul className='list-disc pl-5 space-y-2'>
+          <ul className='list-disc space-y-2 pl-5'>
             <li>
               You are entitled to post the Comments on our website and have all
               necessary licenses and consents to do so;
@@ -162,7 +162,7 @@ const Terms = () => {
             of your Comments in any and all forms, formats or media.
           </p>
 
-          <h2 className='text-3xl font-semibold mt-6'>
+          <h2 className='mt-6 text-3xl font-semibold'>
             <strong>Hyperlinking to our Content</strong>
           </h2>
 
@@ -171,7 +171,7 @@ const Terms = () => {
             written approval:
           </p>
 
-          <ul className='list-disc pl-5 space-y-2'>
+          <ul className='list-disc space-y-2 pl-5'>
             <li>Government agencies;</li>
             <li>Search engines;</li>
             <li>News organizations;</li>
@@ -200,7 +200,7 @@ const Terms = () => {
             types of organizations:
           </p>
 
-          <ul className='list-disc pl-5 space-y-2'>
+          <ul className='list-disc space-y-2 pl-5'>
             <li>
               commonly-known consumer and/or business information sources;
             </li>
@@ -242,7 +242,7 @@ const Terms = () => {
 
           <p>Approved organizations may hyperlink to our Website as follows:</p>
 
-          <ul className='list-disc pl-5 space-y-2'>
+          <ul className='list-disc space-y-2 pl-5'>
             <li>By use of our corporate name; or</li>
             <li>By use of the uniform resource locator being linked to; or</li>
             <li>
@@ -257,7 +257,7 @@ const Terms = () => {
             for linking absent a trademark license agreement.
           </p>
 
-          <h2 className='text-3xl font-semibold mt-6'>
+          <h2 className='mt-6 text-3xl font-semibold'>
             <strong>iFrames</strong>
           </h2>
 
@@ -267,7 +267,7 @@ const Terms = () => {
             presentation or appearance of our Website.
           </p>
 
-          <h2 className='text-3xl font-semibold mt-6'>
+          <h2 className='mt-6 text-3xl font-semibold'>
             <strong>Content Liability</strong>
           </h2>
 
@@ -280,7 +280,7 @@ const Terms = () => {
             or other violation of, any third party rights.
           </p>
 
-          <h2 className='text-3xl font-semibold mt-6'>
+          <h2 className='mt-6 text-3xl font-semibold'>
             <strong>Reservation of Rights</strong>
           </h2>
 
@@ -293,7 +293,7 @@ const Terms = () => {
             follow these linking terms and conditions.
           </p>
 
-          <h2 className='text-3xl font-semibold mt-6'>
+          <h2 className='mt-6 text-3xl font-semibold'>
             <strong>Removal of links from our website</strong>
           </h2>
 
@@ -311,7 +311,7 @@ const Terms = () => {
             the website is kept up to date.
           </p>
 
-          <h2 className='text-3xl font-semibold mt-6'>
+          <h2 className='mt-6 text-3xl font-semibold'>
             <strong>Disclaimer</strong>
           </h2>
 
@@ -321,7 +321,7 @@ const Terms = () => {
             and the use of this website. Nothing in this disclaimer will:
           </p>
 
-          <ul className='list-disc pl-5 space-y-2'>
+          <ul className='list-disc space-y-2 pl-5'>
             <li>
               limit or exclude our or your liability for death or personal
               injury;
@@ -355,10 +355,10 @@ const Terms = () => {
           </p>
 
           {/* Link going back to Home page */}
-          <div className='flex justify-center mt-10'>
+          <div className='mt-10 flex justify-center'>
             <Link
               to='/'
-              className='flex items-center w-max px-4 py-2 justify-center gap-2 text-md bg-primary border-2 md:text-lg text-accent font-bold rounded-md hover:bg-primary-light transition duration-4000 ease-linear'
+              className='text-md bg-primary text-accent hover:bg-primary-light duration-4000 flex w-max items-center justify-center gap-2 rounded-md border-2 px-4 py-2 font-bold transition ease-linear md:text-lg'
             >
               <RiArrowGoBackLine />
               <span>Back to Home Page</span>

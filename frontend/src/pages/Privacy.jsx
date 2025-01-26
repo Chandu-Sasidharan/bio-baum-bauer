@@ -13,16 +13,16 @@ const Privacy = () => {
   const daLinkValues = { linkText: 'Privacy Policy' };
 
   return (
-    <div className='relative text-stone'>
+    <div className='text-stone relative'>
       <PageBreadcrumb activeLinks={aLinkValues} deActiveLink={daLinkValues} />
       {/* Privacy title, positioned absolutely */}
-      <h2 className='absolute top-0 left-1/2 transform -translate-x-1/2 py-10 text-center'>
+      <h2 className='absolute left-1/2 top-0 -translate-x-1/2 transform py-10 text-center'>
         <EachPageHeader title={titles[0]} subtitle={titles[1]} />
       </h2>
       <section className='relative flex flex-col items-center justify-center pt-[100px] md:pt-[160px] lg:pt-[180px] xl:pt-[220px]'>
         {/* Overlay with background image and opacity */}
         <div
-          className='cart-page-bg absolute top-0 left-0 w-full h-[25%] bg-cover bg-no-repeat bg-center'
+          className='absolute left-0 top-0 z-[-1] h-[25%] w-full bg-cover bg-center bg-no-repeat'
           style={{
             backgroundImage: `url(${backgroundImage})`,
             opacity: 0.2,
@@ -30,7 +30,7 @@ const Privacy = () => {
         ></div>
 
         {/* Privacy Policy Content */}
-        <div className='max-w-6xl mx-auto px-4 py-8 md:p-8 bg-white rounded-xl shadow-lg my-10'>
+        <div className='mx-auto my-10 max-w-6xl rounded-xl bg-white px-4 py-8 shadow-lg md:p-8'>
           <p>
             At <b>Bio Baum Bauer</b>, accessible from{' '}
             <b>www.biobaumbauer.com</b>, one of our main priorities is the
@@ -52,14 +52,14 @@ const Privacy = () => {
             other than this website.
           </p>
 
-          <h2 className='text-3xl font-semibold mt-6'>Consent</h2>
+          <h2 className='mt-6 text-3xl font-semibold'>Consent</h2>
 
           <p>
             By using our website, you hereby consent to our Privacy Policy and
             agree to its terms.
           </p>
 
-          <h2 className='text-3xl font-semibold mt-6'>
+          <h2 className='mt-6 text-3xl font-semibold'>
             Information we collect
           </h2>
 
@@ -80,7 +80,7 @@ const Privacy = () => {
             email address, and telephone number.
           </p>
 
-          <h2 className='text-3xl font-semibold mt-6'>
+          <h2 className='mt-6 text-3xl font-semibold'>
             How we use your information
           </h2>
 
@@ -88,7 +88,7 @@ const Privacy = () => {
             We use the information we collect in various ways, including to:
           </p>
 
-          <ul className='list-disc pl-5 space-y-2'>
+          <ul className='list-disc space-y-2 pl-5'>
             <li>Provide, operate, and maintain our website</li>
             <li>Improve, personalize, and expand our website</li>
             <li>Understand and analyze how you use our website</li>
@@ -103,7 +103,7 @@ const Privacy = () => {
             <li>Find and prevent fraud</li>
           </ul>
 
-          <h2 className='text-3xl font-semibold mt-6'>Log Files</h2>
+          <h2 className='mt-6 text-3xl font-semibold'>Log Files</h2>
 
           <p>
             Bio Baum Bauer follows a standard procedure of using log files.
@@ -118,7 +118,7 @@ const Privacy = () => {
             website, and gathering demographic information.
           </p>
 
-          <h2 className='text-3xl font-semibold mt-6'>
+          <h2 className='mt-6 text-3xl font-semibold'>
             Cookies and Web Beacons
           </h2>
 
@@ -131,7 +131,7 @@ const Privacy = () => {
             information.
           </p>
 
-          <h2 className='text-3xl font-semibold mt-6'>
+          <h2 className='mt-6 text-3xl font-semibold'>
             Advertising Partners Privacy Policies
           </h2>
 
@@ -156,7 +156,7 @@ const Privacy = () => {
             cookies that are used by third-party advertisers.
           </p>
 
-          <h2 className='text-3xl font-semibold mt-6'>
+          <h2 className='mt-6 text-3xl font-semibold'>
             Third Party Privacy Policies
           </h2>
 
@@ -175,7 +175,7 @@ const Privacy = () => {
             respective websites.
           </p>
 
-          <h2 className='text-3xl font-semibold mt-6'>
+          <h2 className='mt-6 text-3xl font-semibold'>
             CCPA Privacy Rights (Do Not Sell My Personal Information)
           </h2>
 
@@ -201,7 +201,7 @@ const Privacy = () => {
             would like to exercise any of these rights, please contact us.
           </p>
 
-          <h2 className='text-3xl font-semibold mt-6'>
+          <h2 className='mt-6 text-3xl font-semibold'>
             GDPR Data Protection Rights
           </h2>
 
@@ -242,7 +242,7 @@ const Privacy = () => {
             would like to exercise any of these rights, please contact us.
           </p>
 
-          <h2 className='text-3xl font-semibold mt-6'>
+          <h2 className='mt-6 text-3xl font-semibold'>
             Children's Information
           </h2>
 
@@ -260,7 +260,7 @@ const Privacy = () => {
             best efforts to promptly remove such information from our records.
           </p>
 
-          <h2 className='text-3xl font-semibold mt-6'>
+          <h2 className='mt-6 text-3xl font-semibold'>
             Changes to This Privacy Policy
           </h2>
 
@@ -280,7 +280,7 @@ const Privacy = () => {
             .
           </p>
 
-          <h2 className='text-3xl font-semibold mt-6'>Contact Us</h2>
+          <h2 className='mt-6 text-3xl font-semibold'>Contact Us</h2>
 
           <p>
             If you have any questions or suggestions about our Privacy Policy,
@@ -288,10 +288,10 @@ const Privacy = () => {
           </p>
           <br />
           {/* Link going back to Home page */}
-          <div className='flex justify-center mt-10'>
+          <div className='mt-10 flex justify-center'>
             <Link
               to='/'
-              className='flex items-center w-max px-4 py-2 justify-center gap-2 text-md bg-primary border-2 md:text-lg text-accent font-bold rounded-md hover:bg-primary-light transition duration-4000 ease-linear'
+              className='text-md bg-primary text-accent hover:bg-primary-light duration-4000 flex w-max items-center justify-center gap-2 rounded-md border-2 px-4 py-2 font-bold transition ease-linear md:text-lg'
             >
               <RiArrowGoBackLine />
               <span>Back to Home Page</span>

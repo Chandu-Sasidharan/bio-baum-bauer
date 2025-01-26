@@ -46,10 +46,10 @@ const UserSponsorships = () => {
   return (
     <main>
       <PageBreadcrumb activeLinks={aLinkValues} deActiveLink={daLinkValues} />
-      <div className='cart-page-container bg-gray-light relative mx-auto flex w-full items-center justify-center p-4 pb-[25px] md:pb-[40px] lg:pb-[100px] xl:pb-[120px]'>
+      <div className='bg-gray-light relative z-[4] mx-auto flex w-full items-center justify-center p-4 pb-[25px] md:pb-[40px] lg:pb-[100px] xl:pb-[120px]'>
         {/* Overlay with background image and opacity */}
         <div
-          className='cart-page-bg absolute left-0 top-0 hidden h-full w-full bg-contain bg-top bg-no-repeat lg:block'
+          className='absolute left-0 top-0 z-[-1] hidden h-full w-full bg-contain bg-top bg-no-repeat lg:block'
           style={{ backgroundImage: `url(${backgroundImage})`, opacity: 0.6 }}
         ></div>
 

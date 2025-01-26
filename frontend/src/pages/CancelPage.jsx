@@ -33,10 +33,10 @@ const CancelPage = () => {
       <h2 className='absolute left-1/2 top-0 -translate-x-1/2 transform py-10 text-center'>
         <EachPageHeader title={titles[0]} subtitle={titles[1]} />
       </h2>
-      <section className='cart-page-container relative flex flex-col items-center justify-center pt-[100px] md:pt-[160px] lg:pt-[180px] xl:pt-[220px]'>
+      <section className='relative z-[4] flex flex-col items-center justify-center pt-[100px] md:pt-[160px] lg:pt-[180px] xl:pt-[220px]'>
         {/* Overlay with background image and opacity */}
         <div
-          className='cart-page-bg absolute left-0 top-0 h-full w-full bg-cover bg-center bg-no-repeat'
+          className='absolute left-0 top-0 z-[-1] h-full w-full bg-cover bg-center bg-no-repeat'
           style={{
             backgroundImage: `url(${backgroundImage})`,
             opacity: 0.2,

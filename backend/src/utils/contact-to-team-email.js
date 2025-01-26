@@ -1,6 +1,6 @@
 import sendEmail from '#src/utils/send-email.js';
 
-const sendContactToTeam = async (email, message) => {
+const sendContactToTeam = async (email, userName, message) => {
   const emailOptions = {
     from: 'Contact Form Submission <contact-form-submission@biobaumbauer.de>',
     replyTo: email,
@@ -8,6 +8,7 @@ const sendContactToTeam = async (email, message) => {
     subject: 'New Contact Form Submission',
     templateName: 'contact-form-to-team',
     templateData: {
+      userName,
       message,
     },
   };

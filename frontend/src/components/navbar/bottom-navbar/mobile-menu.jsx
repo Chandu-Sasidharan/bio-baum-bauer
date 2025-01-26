@@ -18,7 +18,7 @@ export default function MobileMenu() {
 
   return (
     <div className='w-full md:hidden'>
-      <div className='mobile-nav bg-primary top-0 flex h-[60px] w-full items-center justify-start px-2'>
+      <div className='bg-primary top-0 z-[1] flex h-[60px] w-full items-center justify-start px-2'>
         {/* Open Menu Button */}
         <button
           onClick={() => setIsMenuOpen(true)}

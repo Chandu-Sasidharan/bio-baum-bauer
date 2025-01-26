@@ -38,7 +38,7 @@ export default function TopNavBar({
   };
 
   return (
-    <nav className='auth-nav-z-index-v-12 bg-accent relative flex h-20 w-full items-center justify-between px-5 shadow-md md:px-8'>
+    <nav className='bg-accent relative z-[1] flex h-20 w-full items-center justify-between px-5 shadow-md md:px-8'>
       <div className='flex h-full grow justify-between'>
         {/* Left Side */}
         <Link to='/' className='flex items-center gap-3'>
