@@ -29,7 +29,9 @@ export default function Mission() {
           </Button>
         </Link>
       </article>
-      <div className={`relative h-96 w-full md:w-1/2 ${styles.imageContainer}`}>
+      <div
+        className={`relative w-full md:h-96 md:w-1/2 ${styles.imageContainer}`}
+      >
         <img
           src={visionImage}
           alt='Vision Image'

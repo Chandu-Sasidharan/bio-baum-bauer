@@ -6,26 +6,7 @@ import styles from './more.module.css';
 
 export default function Mission() {
   return (
-    <div className='mx-auto my-7 flex max-w-7xl flex-col items-center justify-center gap-10 p-5 md:my-20 md:flex-row md:gap-16'>
-      <div className={`relative h-96 w-full md:w-1/2 ${styles.imageContainer}`}>
-        <img
-          src={missionImage}
-          alt='Mission Image'
-          className={`${styles.image}`}
-        />
-        <div
-          className={`${styles.overlay} flex flex-col items-center justify-center`}
-        >
-          <Link to='/trees'>
-            <Button primary={true} rounded={true}>
-              <span className='flex items-center gap-2'>
-                <span>Sponsor a tree</span>
-                <FaArrowRightLong className='transition-transform duration-300' />
-              </span>
-            </Button>
-          </Link>
-        </div>
-      </div>
+    <div className='mx-auto my-7 flex max-w-7xl flex-col items-center justify-center gap-10 p-5 md:my-20 md:flex-row-reverse md:gap-16'>
       <article className='text-stone flex w-full flex-col items-start justify-center gap-3 md:w-1/2'>
         <h2 className='text-sage text-2xl tracking-wider'>Our Mission</h2>
         <h3 className='text-accent text-3xl font-semibold'>
@@ -49,6 +30,27 @@ export default function Mission() {
           </Button>
         </Link>
       </article>
+      <div
+        className={`relative w-full md:h-96 md:w-1/2 ${styles.imageContainer}`}
+      >
+        <img
+          src={missionImage}
+          alt='Mission Image'
+          className={`${styles.image}`}
+        />
+        <div
+          className={`${styles.overlay} flex flex-col items-center justify-center`}
+        >
+          <Link to='/trees'>
+            <Button primary={true} rounded={true}>
+              <span className='flex items-center gap-2'>
+                <span>Sponsor a tree</span>
+                <FaArrowRightLong className='transition-transform duration-300' />
+              </span>
+            </Button>
+          </Link>
+        </div>
+      </div>
     </div>
   );
 }
