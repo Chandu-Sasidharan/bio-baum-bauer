@@ -26,7 +26,7 @@ export const createContact = async (req, res) => {
 
     return res
       .status(StatusCodes.CREATED)
-      .json({ message: 'We have recieved your message.' });
+      .json({ message: 'We have received your message.' });
   } catch (error) {
     throw error;
   }

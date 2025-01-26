@@ -1,7 +1,7 @@
 import { Link } from 'react-router-dom';
 import logoImage from '/images/logo/bbb-logo.svg';
 import { FaArrowRightLong } from 'react-icons/fa6';
-import style from '@/pages/home/hero.module.css';
+import style from '@/pages/home/hero/hero.module.css';
 import Button from '@/components/elements/button';
 
 export default function Hero() {
@@ -29,10 +29,10 @@ export default function Hero() {
           </p>
         </div>
         <div className='flex gap-4'>
-          <Link to='/login'>
+          <Link to='/trees'>
             <Button>Plant a Tree</Button>
           </Link>
-          <Link to='/trees'>
+          <Link to='#more'>
             <Button>
               <span className='flex items-center gap-2'>
                 <span>Learn More</span>
