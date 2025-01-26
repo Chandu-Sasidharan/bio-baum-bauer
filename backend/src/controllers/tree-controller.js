@@ -1,4 +1,4 @@
-import Tree from '../models/Tree.js';
+import Tree from '#src/models/tree.js';
 import { StatusCodes } from 'http-status-codes';
 
 export const getAllTrees = async (req, res) => {
@@ -129,14 +129,13 @@ export const getTreesInCart = async (req, res) => {
   }
 };
 
-export const getFeaturedTrees = async (req, res) => {
+// Get All Featured Trees
+export const getAllFeaturedTrees = async (_req, res) => {
   try {
     const featuredTrees = await Tree.find({ isFeatured: true }).limit(4).lean();
 
-    res.status(StatusCodes.OK).json({ featuredTrees });
+    return res.status(StatusCodes.OK).json({ featuredTrees });
   } catch (error) {
-    res
-      .status(StatusCodes.INTERNAL_SERVER_ERROR)
-      .json({ message: error.message });
+    throw error;
   }
 };

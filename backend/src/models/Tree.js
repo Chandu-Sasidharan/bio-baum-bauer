@@ -10,29 +10,35 @@ const treeSchema = new Schema(
     category: {
       type: String,
       required: true,
-      enum: ['Fruit', 'Evergreen', 'Deciduous'], // have to update it later
+      enum: ['Fruit', 'Evergreen', 'Deciduous'],
     },
     price: {
-      type: Schema.Types.Decimal128, // for precise price representation
+      type: Schema.Types.Decimal128,
       required: true,
     },
     availableQuantity: {
       type: Number,
       required: true,
-      min: 0, // quantity should not be negative
+      min: 0,
     },
     description: {
       type: String,
-      trim: true,
+      required: true,
     },
-    image: { type: String, required: true },
+    image: {
+      type: String,
+      required: true,
+    },
     status: {
       type: String,
       enum: ['Available', 'Sold Out', 'Backorder'],
       default: 'Available',
     },
     tags: [String],
-    isFeatured: { type: Boolean, default: false },
+    isFeatured: {
+      type: Boolean,
+      default: false,
+    },
   },
   { timestamps: true }
 );

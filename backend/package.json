@@ -10,7 +10,8 @@
   "scripts": {
     "dev": "node --watch server.js",
     "start": "node server.js",
-    "migrate": "migrate-mongo up"
+    "migrate": "migrate-mongo up",
+    "modify-db": "node scripts/modify-db.js"
   },
   "dependencies": {
     "bad-words": "^3.0.4",
