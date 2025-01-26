@@ -1,6 +1,7 @@
 import { Link } from 'react-router-dom';
+import { Link as ScrollLink } from 'react-scroll';
 import logoImage from '/images/logo/bbb-logo.svg';
-import { FaArrowRightLong } from 'react-icons/fa6';
+import { FaArrowDown } from 'react-icons/fa6';
 import style from '@/pages/home/hero/hero.module.css';
 import Button from '@/components/elements/button';
 
@@ -32,14 +33,14 @@ export default function Hero() {
           <Link to='/trees'>
             <Button>Plant a Tree</Button>
           </Link>
-          <Link to='#more'>
+          <ScrollLink to='more' smooth={true} duration={100} offset={-140}>
             <Button>
               <span className='flex items-center gap-2'>
                 <span>Learn More</span>
-                <FaArrowRightLong />
+                <FaArrowDown />
               </span>
             </Button>
-          </Link>
+          </ScrollLink>
         </div>
       </div>
     </section>

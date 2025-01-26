@@ -25,7 +25,9 @@ const FeaturedTrees = () => {
               name={tree.name}
               price={tree.price.$numberDecimal}
               id={tree._id}
-            />
+            >
+              Plant Now
+            </Card>
           ))}
         </div>
       </div>

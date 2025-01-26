@@ -19,14 +19,18 @@ export default function Upper() {
                   className='w-20 rounded-full shadow-lg'
                   alt='Bio Baum Bauer Logo'
                 />
-                <h3 className='font-chicle text-3xl'>Bio Baum Bauer</h3>
+                <h3 className='font-chicle text-3xl tracking-wide'>
+                  Bio Baum Bauer
+                </h3>
               </p>
               <p className='mt-3 font-sans text-lg'>
                 Growing a greener tomorrow.
               </p>
             </div>
             <p className='mt-3 font-sans text-lg'>
-              Sponsor a tree with BioBaumBauer and nurture hope.
+              Sponsor a tree with BioBaumBauer
+              <br />
+              and nurture hope.
             </p>
             <div className='space-y-3'>
               <p className='text-lg font-bold'>Follow Us</p>

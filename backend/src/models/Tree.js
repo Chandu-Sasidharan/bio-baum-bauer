@@ -21,6 +21,10 @@ const treeSchema = new Schema(
       required: true,
       min: 0,
     },
+    shortDescription: {
+      type: String,
+      required: true,
+    },
     description: {
       type: String,
       required: true,

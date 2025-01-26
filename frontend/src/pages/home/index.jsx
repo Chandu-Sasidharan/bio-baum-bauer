@@ -3,7 +3,7 @@ import More from '@/pages/home/more';
 import Featured from '@/pages/home/featured';
 import Info from '@/pages/home/info';
 
-const Home = () => {
+export default function Home() {
   return (
     <>
       <Hero />
@@ -12,6 +12,4 @@ const Home = () => {
       <Info />
     </>
   );
-};
-
-export default Home;
+}

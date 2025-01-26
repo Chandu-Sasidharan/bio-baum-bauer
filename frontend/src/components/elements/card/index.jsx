@@ -2,7 +2,7 @@ import { Link } from 'react-router-dom';
 import Button from '@/components/elements/button';
 import styles from './card.module.css';
 
-export default function Card({ image, name, price, id }) {
+export default function Card({ image, name, price, id, children }) {
   return (
     <Link
       to={`/tree/${id}`}
@@ -16,7 +16,7 @@ export default function Card({ image, name, price, id }) {
           <span className='text-accent text-xl font-semibold'>{name}</span>
           <span className='bg-mint rounded-full px-3 py-1'>{price}&nbsp;€</span>
         </p>
-        <Button>Learn More</Button>
+        <Button>{children || 'View Details'}</Button>
       </div>
     </Link>
   );
