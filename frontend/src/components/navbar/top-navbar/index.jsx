@@ -1,4 +1,4 @@
-import { useContext, useEffect } from 'react';
+import { useContext, useEffect, useRef } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { CgProfile } from 'react-icons/cg';
 import { PiShoppingCartSimpleFill } from 'react-icons/pi';
@@ -15,6 +15,7 @@ export default function TopNavBar({
   const { isAuthenticated, authUser, handleLogout } = useUser();
   const { cartTrees } = useContext(CartContext);
   const navigate = useNavigate();
+  const dropdownRef = useRef(null);
 
   useEffect(() => {
     if (isNavbarFixed) {
@@ -22,11 +23,28 @@ export default function TopNavBar({
     }
   }, [isNavbarFixed]);
 
+  useEffect(() => {
+    const handleClickOutside = event => {
+      if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
+        setTopNavDropdownOpen(false);
+      }
+    };
+
+    if (isTopNavDropdownOpen) {
+      document.addEventListener('mousedown', handleClickOutside);
+    } else {
+      document.removeEventListener('mousedown', handleClickOutside);
+    }
+
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+    };
+  }, [isTopNavDropdownOpen]);
+
   const toggleDropdown = () => {
     setTopNavDropdownOpen(!isTopNavDropdownOpen);
   };
 
-  // Handle Dropdown Click
   const handleClick = type => {
     setTopNavDropdownOpen(false);
 
@@ -69,7 +87,7 @@ export default function TopNavBar({
         {isAuthenticated && (
           <div className='relative flex items-center gap-3 md:gap-6'>
             {/* Profile Dropdown */}
-            <div>
+            <div ref={dropdownRef}>
               {/* Dropdown Button */}
               <div
                 onClick={toggleDropdown}
