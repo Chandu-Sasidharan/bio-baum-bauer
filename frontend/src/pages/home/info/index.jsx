@@ -1,9 +1,14 @@
+import { Parallax } from 'react-parallax';
 import InfoItem from '@/pages/home/info/info-item';
-import styles from './info.module.css';
 
 export default function Info() {
   return (
-    <div className={`${styles.infoContainer}`}>
+    <Parallax
+      blur={1}
+      bgImage='/images/info/farm.jpg'
+      bgImageAlt='Image of the farm.'
+      strength={300}
+    >
       <div
         className='w-full px-5 py-10 md:py-20 lg:py-36'
         style={{ backgroundColor: 'rgba(36, 49, 35, 0.347)' }}
@@ -26,6 +31,6 @@ export default function Info() {
           />
         </div>
       </div>
-    </div>
+    </Parallax>
   );
 }
