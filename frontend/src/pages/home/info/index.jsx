@@ -1,0 +1,31 @@
+import InfoItem from '@/pages/home/info/info-item';
+import styles from './info.module.css';
+
+export default function Info() {
+  return (
+    <div className={`${styles.infoContainer}`}>
+      <div
+        className='w-full px-5 py-10 md:py-20 lg:py-36'
+        style={{ backgroundColor: 'rgba(36, 49, 35, 0.347)' }}
+      >
+        <div className='mx-auto flex max-w-7xl flex-col items-center gap-5 md:flex-row md:items-start md:gap-10'>
+          <InfoItem
+            title='News'
+            description='Stay updated with the latest news about our business and activities.'
+            link='/news'
+          />
+          <InfoItem
+            title='Gallery'
+            description='Explore our gallery to see a collection of images showcasing our farm.'
+            link='/gallery'
+          />
+          <InfoItem
+            title='FAQs'
+            description='Have questions? Check our FAQs for answers to common inquiries.'
+            link='/faq'
+          />
+        </div>
+      </div>
+    </div>
+  );
+}

@@ -1,7 +1,7 @@
 import Hero from '@/pages/home/hero';
 import More from '@/pages/home/more';
 import Featured from '@/pages/home/featured';
-import AdditionalLinks from '../../components/homePage/AdditionalLinks';
+import Info from '@/pages/home/info';
 
 const Home = () => {
   return (
@@ -9,10 +9,7 @@ const Home = () => {
       <Hero />
       <More />
       <Featured />
-
-      <section className='container-fluid'>
-        <AdditionalLinks />
-      </section>
+      <Info />
     </>
   );
 };

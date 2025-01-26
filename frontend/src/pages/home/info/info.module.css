@@ -1,0 +1,5 @@
+.infoContainer {
+  background: url(/images/info/farm.jpg) center no-repeat fixed;
+  background-size: cover;
+  filter: grayscale(75%);
+}

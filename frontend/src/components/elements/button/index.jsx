@@ -10,6 +10,7 @@ const Button = ({
   disabled = false,
   isProcessing = false,
   rounded = false,
+  transparent = false,
 }) => {
   const buttonClass = classNames(
     'btn tracking-wider duration-300 focus:ring-0',
@@ -18,8 +19,10 @@ const Button = ({
       'btn-sm': size === 'sm',
       'btn-md': size === 'md',
       'btn-lg': size === 'lg',
-      'bg-accent hover:bg-accent-light text-primary-light': !primary,
-      'bg-primary hover:bg-primary-light text-accent': primary,
+      'bg-accent hover:bg-accent-light text-primary-light':
+        !primary && !transparent,
+      'bg-primary hover:bg-primary-light text-accent': primary && !transparent,
+      'bg-transparent text-primary-light hover:text-accent': transparent,
       'btn-disabled': disabled || isProcessing,
       'rounded-full px-8': rounded,
       'rounded-md': !rounded,
