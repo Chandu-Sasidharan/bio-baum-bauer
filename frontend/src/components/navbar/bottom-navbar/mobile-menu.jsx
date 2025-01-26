@@ -1,9 +1,9 @@
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
-import classNames from 'classnames';
 import { fallDown as FalldownMenu } from 'react-burger-menu';
 import closeIcon from '/images/navbar/close-icon.svg';
 import hamburgerIcon from '/images/navbar/hamburger-icon.svg';
+import menuItems from '@/components/navbar/bottom-navbar/menu-items';
 
 export default function MobileMenu() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -11,10 +11,6 @@ export default function MobileMenu() {
   const handleLinkClick = () => {
     setIsMenuOpen(false);
   };
-
-  const linkStyles = classNames({
-    'text-stone border-b border-primary-light pt-4': true,
-  });
 
   return (
     <div className='w-full md:hidden'>
@@ -49,62 +45,17 @@ export default function MobileMenu() {
         </div>
 
         {/* Links */}
-        <Link
-          to='/'
-          className={linkStyles}
-          onClick={handleLinkClick}
-          aria-label='Home page'
-        >
-          Home
-        </Link>
-        <Link
-          to='/trees'
-          className={linkStyles}
-          onClick={handleLinkClick}
-          aria-label='Sponsor page'
-        >
-          Trees
-        </Link>
-        <Link
-          to='/news'
-          className={linkStyles}
-          onClick={handleLinkClick}
-          aria-label='News page'
-        >
-          News
-        </Link>
-        <Link
-          to='/about'
-          className={linkStyles}
-          onClick={handleLinkClick}
-          aria-label='About page'
-        >
-          About
-        </Link>
-        <Link
-          to='/gallery'
-          className={linkStyles}
-          onClick={handleLinkClick}
-          aria-label='Gallery page'
-        >
-          Gallery
-        </Link>
-        <Link
-          to='/faq'
-          className={linkStyles}
-          onClick={handleLinkClick}
-          aria-label='FAQ page'
-        >
-          FAQs
-        </Link>
-        <Link
-          to='/contact'
-          className={linkStyles}
-          onClick={handleLinkClick}
-          aria-label='Contact page'
-        >
-          Contact
-        </Link>
+        {menuItems.map(item => (
+          <Link
+            key={item.to}
+            to={item.to}
+            className='text-stone border-primary-light block border-b pt-4'
+            onClick={handleLinkClick}
+            aria-label={item.ariaLabel}
+          >
+            {item.pageName}
+          </Link>
+        ))}
       </FalldownMenu>
     </div>
   );
