@@ -45,8 +45,8 @@ const PasswordChange = () => {
           title: 'The Password changed successfully!',
           text: 'You have successfully changed your password.',
           customClass: {
-            confirmButton: 'btn-custom-class',
-            title: 'title-class',
+            confirmButton: 'sweet-alert-btn',
+            title: 'sweet-alert-title',
           },
           buttonsStyling: false,
         });
@@ -75,8 +75,8 @@ const PasswordChange = () => {
         title: 'Failed to Change the Password',
         text: errorsList,
         customClass: {
-          confirmButton: 'btn-custom-class',
-          title: 'title-class',
+          confirmButton: 'sweet-alert-btn',
+          title: 'sweet-alert-title',
         },
         buttonsStyling: false,
       });

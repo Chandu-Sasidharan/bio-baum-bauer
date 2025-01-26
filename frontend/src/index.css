@@ -51,3 +51,27 @@ html {
   scroll-behavior: smooth;
   line-height: 1.5;
 }
+
+/* sweet alert custom button */
+.sweet-alert-btn {
+  background-color: var(--accent);
+  color: var(--white);
+  padding: 0.5rem 1rem;
+  border: 2px solid var(--accent);
+  border-radius: 7px;
+  transition: all 0.2s linear;
+}
+
+.sweet-alert-btn:hover {
+  background-color: var(--aloe);
+  color: var(--accent);
+}
+
+/* sweet alert title */
+.sweet-alert-title {
+  font-family: 'Chicle', 'serif';
+  color: var(--accent);
+  font-weight: 500;
+  letter-spacing: 0.1rem;
+  font-size: 2rem;
+}

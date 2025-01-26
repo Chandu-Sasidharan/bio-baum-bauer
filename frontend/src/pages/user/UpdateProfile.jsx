@@ -61,10 +61,10 @@ const UpdateProfile = () => {
       confirmButtonText: 'Save',
       denyButtonText: `Don't save`,
       customClass: {
-        confirmButton: 'btn-custom-class',
+        confirmButton: 'sweet-alert-btn',
         denyButton: 'btn-deny-class',
         cancelButton: 'btn-cancel-class',
-        title: 'title-class',
+        title: 'sweet-alert-title',
       },
       buttonsStyling: false,
     }).then(result => {
@@ -74,8 +74,8 @@ const UpdateProfile = () => {
           title: 'Profile updated successfully',
           icon: 'success',
           customClass: {
-            confirmButton: 'btn-custom-class',
-            title: 'title-class',
+            confirmButton: 'sweet-alert-btn',
+            title: 'sweet-alert-title',
           },
           buttonsStyling: false,
         });
@@ -86,8 +86,8 @@ const UpdateProfile = () => {
           title: 'Changes are not saved!',
           icon: 'info',
           customClass: {
-            confirmButton: 'btn-custom-class',
-            title: 'title-class',
+            confirmButton: 'sweet-alert-btn',
+            title: 'sweet-alert-title',
           },
           buttonsStyling: false,
         });

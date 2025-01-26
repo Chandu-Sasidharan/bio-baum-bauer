@@ -113,7 +113,7 @@ export function CartContextProvider({ children }) {
           popup: 'animate__animated animate__fadeOutDown animate__faster',
         },
         customClass: {
-          confirmButton: 'btn-custom-class',
+          confirmButton: 'sweet-alert-btn',
         },
         buttonsStyling: false,
       });

@@ -7,8 +7,8 @@ export default function showAlert(icon, title, text, html = null) {
     text,
     html,
     customClass: {
-      confirmButton: 'btn-custom-class',
-      title: 'title-class',
+      confirmButton: 'sweet-alert-btn',
+      title: 'sweet-alert-title',
     },
     buttonsStyling: false,
   });
