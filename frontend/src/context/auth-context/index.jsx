@@ -15,6 +15,7 @@ import {
 import axios from '@/utils/axios';
 import showAlert from '@/utils/alert';
 import formatError from '@/utils/format-error';
+import { useNavigate } from 'react-router-dom';
 
 const INACTIVITY_TIMEOUT_INTERVAL = 15 * 60 * 1000; // 15 minutes
 const TOKEN_REFRESH_INTERVAL = 5 * 60 * 1000; // 5 minutes
@@ -53,6 +54,7 @@ export const AuthProvider = ({ children }) => {
   const [authUser, setAuthUser] = useState(initialUserState);
   const [isUserLoading, setIsUserLoading] = useState(false);
   const isAuthenticated = !!authUser;
+  const navigate = useNavigate();
 
   // Save user to local storage
   useEffect(() => {
@@ -155,6 +157,37 @@ export const AuthProvider = ({ children }) => {
 
     setIsUserLoading(false);
     return isError;
+  };
+
+  // Confirm account
+  const confirmAccount = async token => {
+    setIsUserLoading(true);
+    try {
+      // Send the token to the backend for verification
+      const response = await axios.post('/api/auth/confirm-account', { token });
+      if (response.status === 200) {
+        setAuthUser(response.data.user);
+        setIsUserLoading(false);
+        navigate('/account');
+      } else {
+        showAlert(
+          'error',
+          'Sign up failed',
+          response.data.message || 'Something went wrong!'
+        );
+        setIsUserLoading(false);
+        navigate('/');
+      }
+    } catch (error) {
+      console.log('errormmm', error);
+      showAlert(
+        'error',
+        'Sign up failed',
+        error.response.data.message || 'Something went wrong!'
+      );
+      setIsUserLoading(false);
+      navigate('/');
+    }
   };
 
   // Login user
@@ -279,9 +312,10 @@ export const AuthProvider = ({ children }) => {
       value={{
         authUser,
         setAuthUser,
-        loginUser,
         signUpUser,
+        confirmAccount,
         updateUser,
+        loginUser,
         isUserLoading,
         setIsUserLoading,
         isAuthenticated,

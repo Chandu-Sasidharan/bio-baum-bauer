@@ -4,7 +4,7 @@ import Button from '@/components/elements/button';
 
 export default function EditMode({ setIsEditing }) {
   const { authUser, updateUser } = useUser();
-  const { firstName, lastName, phoneNumber, address } = authUser;
+  const { firstName, lastName, phoneNumber, address = {} } = authUser || {};
   const { street, houseNumber, zipCode, city, country } = address;
   const [isProcessing, setIsProcessing] = useState(false);
   const [updatedUser, setUpdatedUser] = useState({

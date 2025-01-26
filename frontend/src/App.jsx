@@ -33,10 +33,10 @@ import NotFound from '@/pages/not-found';
 function App() {
   return (
     <>
-      <AuthProvider>
-        <CartContextProvider>
-          <PatronProvider>
-            <BrowserRouter>
+      <BrowserRouter>
+        <AuthProvider>
+          <CartContextProvider>
+            <PatronProvider>
               <Routes>
                 <Route path='/' element={<Layout />}>
                   <Route index element={<Home />} />
@@ -118,10 +118,10 @@ function App() {
                   <Route path='*' element={<NotFound />} />
                 </Route>
               </Routes>
-            </BrowserRouter>
-          </PatronProvider>
-        </CartContextProvider>
-      </AuthProvider>
+            </PatronProvider>
+          </CartContextProvider>
+        </AuthProvider>
+      </BrowserRouter>
     </>
   );
 }
