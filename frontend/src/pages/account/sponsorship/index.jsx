@@ -6,7 +6,7 @@ export default function Sponsorship() {
       <Helmet>
         <title>Sponsorships | Bio Baum Bauer</title>
       </Helmet>
-      <div>Hello</div>
+      <div className='h-[500px]'>Hello</div>
     </>
   );
 }

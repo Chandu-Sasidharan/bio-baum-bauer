@@ -1,25 +1,4 @@
-import { useState } from 'react';
-import { useUser } from '@/context/auth-context';
-import Button from '@/components/elements/button';
-
-export default function EditMode({ setIsEditing }) {
-  const { authUser, updateUser } = useUser();
-  const { firstName, lastName, phoneNumber, address = {} } = authUser || {};
-  const { street, houseNumber, zipCode, city, country } = address;
-  const [isProcessing, setIsProcessing] = useState(false);
-  const [updatedUser, setUpdatedUser] = useState({
-    firstName: firstName || '',
-    lastName: lastName || '',
-    phoneNumber: phoneNumber || '',
-    address: {
-      street: street || '',
-      houseNumber: houseNumber || '',
-      zipCode: zipCode || '',
-      city: city || '',
-      country: country || '',
-    },
-  });
-
+export default function EditMode({ updatedUser, setUpdatedUser }) {
   const handleChange = e => {
     const { name, value } = e.target;
     setUpdatedUser(prev => ({
@@ -39,16 +18,8 @@ export default function EditMode({ setIsEditing }) {
     }));
   };
 
-  const handleSubmit = async e => {
-    e.preventDefault();
-    setIsProcessing(true);
-    await updateUser(updatedUser);
-    setIsProcessing(false);
-    setIsEditing(false);
-  };
-
   return (
-    <form onSubmit={handleSubmit} className='space-y-4'>
+    <form className='space-y-4'>
       <div>
         <label className='text-primary-dark ml-1 inline-block text-sm font-medium'>
           First Name
@@ -154,14 +125,6 @@ export default function EditMode({ setIsEditing }) {
           />
         </div>
       </div>
-      <Button
-        type='submit'
-        size='sm'
-        className='bg-primary mt-4 rounded-md px-4 py-2 text-white'
-        isProcessing={isProcessing}
-      >
-        Save
-      </Button>
     </form>
   );
 }
