@@ -18,7 +18,7 @@ export default function AccountLayout() {
         </div>
 
         {/* Content */}
-        <div className='my-5 p-5'>
+        <div className='mb-5 p-5'>
           <div
             className='mx-auto flex max-w-5xl flex-col items-start gap-10 rounded-md p-5 shadow-sm md:flex-row md:p-8'
             style={{ backgroundColor: 'rgba(255, 255, 255, 0.9)' }}
