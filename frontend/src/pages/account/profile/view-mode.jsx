@@ -32,14 +32,6 @@ export default function ViewMode() {
         </div>
         <div>
           <label className='text-primary-dark ml-1 inline-block text-sm font-medium'>
-            Email
-          </label>
-          <span className='mt-1 inline-block w-full rounded-md border p-1 px-2'>
-            {email}
-          </span>
-        </div>
-        <div>
-          <label className='text-primary-dark ml-1 inline-block text-sm font-medium'>
             Phone Number
           </label>
           <span className='mt-1 inline-block w-full rounded-md border p-1 px-2'>

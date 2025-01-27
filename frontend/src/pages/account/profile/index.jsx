@@ -13,20 +13,20 @@ export default function AccountDetails() {
         <title>My Profile | Bio Baum Bauer</title>
       </Helmet>
 
-      <div>
+      <div className='w-full'>
+        {/* Profile Header */}
         <div className='flex items-center justify-between'>
-          <h2 className='my-4 text-2xl font-bold'>My Profile</h2>
-          <div className='flex gap-2'>
-            <Button
-              onClick={() => setIsEditing(!isEditing)}
-              primary={true}
-              size='sm'
-            >
-              {isEditing ? 'Cancel' : 'Edit'}
-            </Button>
-          </div>
+          <h2 className='text-2xl font-bold'>My Profile</h2>
+          <Button
+            onClick={() => setIsEditing(!isEditing)}
+            primary={true}
+            size='sm'
+          >
+            {isEditing ? 'Cancel' : 'Edit'}
+          </Button>
         </div>
 
+        {/* Profile Details  */}
         {isEditing ? <EditMode setIsEditing={setIsEditing} /> : <ViewMode />}
       </div>
     </>
