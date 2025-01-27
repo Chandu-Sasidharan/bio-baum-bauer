@@ -5,7 +5,7 @@ import Home from '@/pages/home';
 import Trees from './pages/Trees';
 import Layout from '@/layout';
 import News from './pages/News';
-import About from './pages/About';
+import About from '@/pages/about';
 import Gallery from './pages/Gallery';
 import Faq from './pages/Faq';
 import Contact from '@/pages/contact';

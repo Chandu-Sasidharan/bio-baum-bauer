@@ -20,6 +20,9 @@ export default function Mission() {
           trees, we combat climate change, enhance biodiversity, and foster
           environmental stewardship. Our goal is to inspire communities to join
           hands in creating a healthier, greener planet for future generations.
+          It is a collective journey - one where every tree, every volunteer,
+          and every act of kindness contributes to a more vibrant and
+          sustainable future.
         </p>
         <Link to='/trees' className='mt-2'>
           <Button primary={true} rounded={true}>
