@@ -12,32 +12,34 @@ export default function ContactUs() {
         <title>Contact Us | Bio Baum Bauer</title>
       </Helmet>
 
-      <div className='relative flex flex-col items-center'>
-        {/* Overlay with background image and opacity */}
-        <div
-          className='absolute left-0 top-0 z-[0] h-full w-full bg-cover bg-top bg-no-repeat'
-          style={{ backgroundImage: `url(${backgroundImage})`, opacity: 0.1 }}
-        ></div>
+      {/* Container */}
+      <section
+        style={{ backgroundImage: `url(${backgroundImage})` }}
+        className='bg-cover bg-center bg-no-repeat'
+      >
+        <div style={{ backgroundColor: 'rgba(255, 255, 255, 0.7)' }}>
+          {/* Breadcrumbs */}
+          <div className='w-full px-5'>
+            <Breadcrumbs />
+          </div>
 
-        {/* Flex Row1 */}
-        <div className='z-[1] w-full px-5'>
-          <Breadcrumbs />
-        </div>
+          {/* Content */}
+          <div className='my-5 p-5'>
+            <div
+              className='mx-auto flex max-w-5xl flex-col items-center gap-10 rounded-md p-10 shadow-sm md:flex-row md:p-16'
+              style={{ backgroundColor: 'rgba(255, 255, 255, 0.7)' }}
+            >
+              <Details />
+              <Form />
+            </div>
+          </div>
 
-        {/* Flex Row2 */}
-        <div className='z-[1] flex w-full max-w-5xl flex-col items-center gap-10 p-10 md:mb-16 md:flex-row'>
-          {/* Contact Details */}
-          <Details />
-          {/* Contact Form */}
-          <Form />
+          {/* Google Map */}
+          <div className='z-[1] w-full'>
+            <Map />
+          </div>
         </div>
-
-        {/* Flex Row3 */}
-        {/* Google Map */}
-        <div className='z-[1] w-full'>
-          <Map />
-        </div>
-      </div>
+      </section>
     </>
   );
 }
