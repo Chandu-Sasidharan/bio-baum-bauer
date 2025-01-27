@@ -27,7 +27,7 @@ export default function ContactUs() {
           <div className='my-5 p-5'>
             <div
               className='mx-auto flex max-w-5xl flex-col items-center gap-10 rounded-md p-10 shadow-sm md:flex-row md:p-16'
-              style={{ backgroundColor: 'rgba(255, 255, 255, 0.7)' }}
+              style={{ backgroundColor: 'rgba(255, 255, 255, 0.9)' }}
             >
               <Details />
               <Form />

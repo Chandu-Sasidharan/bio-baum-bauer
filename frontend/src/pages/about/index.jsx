@@ -32,7 +32,7 @@ export default function AboutUs() {
           <div className='my-5 p-5'>
             <div
               className='text-accent mx-auto flex w-full max-w-7xl flex-col gap-2 rounded-md p-10 shadow-sm md:p-16'
-              style={{ backgroundColor: 'rgba(255, 255, 255, 0.7)' }}
+              style={{ backgroundColor: 'rgba(255, 255, 255, 0.9)' }}
             >
               <h1 className='font-chicle mb-1 text-3xl font-bold tracking-wide md:text-4xl'>
                 About BioBaumBauer
