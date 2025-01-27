@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { MdKeyboardDoubleArrowUp } from 'react-icons/md';
 
-export default function ScrollToTop() {
+export default function ScrollToTopButton() {
   const [isVisible, setIsVisible] = useState(false);
 
   useEffect(() => {

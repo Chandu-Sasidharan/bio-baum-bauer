@@ -4,7 +4,8 @@ import classNames from 'classnames';
 import { HelmetProvider } from 'react-helmet-async';
 import Navbar from '@/components/navbar';
 import Footer from '@/components/footer';
-import ScrollToTop from '@/components/scroll-to-top';
+import ScrollToTopButton from '@/components/scroll-to-top';
+import AutoScrollToTop from '@/components/auto-scroll';
 
 export default function Layout() {
   const [isNavbarFixed, setIsNavbarFixed] = useState(false);
@@ -51,7 +52,8 @@ export default function Layout() {
         <footer className={footerClasses}>
           <Footer />
         </footer>
-        <ScrollToTop />
+        <ScrollToTopButton />
+        <AutoScrollToTop />
       </div>
     </HelmetProvider>
   );
