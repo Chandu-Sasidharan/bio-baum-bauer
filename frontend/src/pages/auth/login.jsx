@@ -54,16 +54,16 @@ export default function Login() {
         style={{ backgroundImage: `url(${backgroundImage})` }}
         className='bg-cover bg-center bg-no-repeat'
       >
-        <div div style={{ backgroundColor: 'rgba(255, 255, 255, 0.7)' }}>
+        <div style={{ backgroundColor: 'rgba(255, 255, 255, 0.7)' }}>
           {/* Breadcrumbs */}
           <div className='w-full px-5'>
             <Breadcrumbs />
           </div>
 
           {/* Content */}
-          <div div className='my-5 p-5'>
+          <div className='my-16 p-5'>
             <div
-              className='mx-auto flex max-w-[500px] flex-col gap-3 rounded-md p-10 shadow-sm md:p-16'
+              className='mx-auto flex max-w-[500px] flex-col gap-3 rounded-md p-10 shadow-sm md:p-12'
               style={{ backgroundColor: 'rgba(255, 255, 255, 0.9)' }}
             >
               <div className='flex items-baseline'>
