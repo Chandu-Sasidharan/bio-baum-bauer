@@ -17,22 +17,10 @@ const menuItems = [
     ariaLabel: 'Trees page',
   },
   {
-    to: '/news',
-    pageName: 'News',
-    icon: <FaRegNewspaper />,
-    ariaLabel: 'News page',
-  },
-  {
     to: '/gallery',
     pageName: 'Gallery',
     icon: <FaImages />,
     ariaLabel: 'Gallery page',
-  },
-  {
-    to: '/faq',
-    pageName: 'FAQs',
-    icon: <RiQuestionAnswerFill />,
-    ariaLabel: 'FAQs page',
   },
   {
     to: '/contact',

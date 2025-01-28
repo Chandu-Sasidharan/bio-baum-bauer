@@ -48,6 +48,7 @@ export default function Upper() {
             </div>
           </div>
         </div>
+
         {/* Second Coloumn */}
         <div className='flex w-full lg:mt-10 lg:w-1/3 lg:justify-center'>
           <div className='space-y-5'>
@@ -57,20 +58,21 @@ export default function Upper() {
             <div className='flex gap-16'>
               <div className='space-y-3'>
                 <MenuLink to='/' pageName='Home' />
-                <MenuLink to='/trees' pageName='Trees' />
-                <MenuLink to='/news' pageName='News' />
                 <MenuLink to='/about' pageName='About' />
+                <MenuLink to='/trees' pageName='Trees' />
                 <MenuLink to='/gallery' pageName='Gallery' />
+                <MenuLink to='/contact' pageName='Contact' />
               </div>
               <div className='space-y-3'>
                 <MenuLink to='/faq' pageName='FAQs' />
-                <MenuLink to='/contact' pageName='Contact' />
+                <MenuLink to='/news' pageName='News' />
                 <MenuLink to='/terms' pageName='Terms' />
                 <MenuLink to='/privacy' pageName='Privacy' />
               </div>
             </div>
           </div>
         </div>
+
         {/* Third Coloumn */}
         <div className='flex w-full flex-col gap-5 lg:mt-10 lg:w-1/3 lg:items-center'>
           <div className='space-y-5'>
