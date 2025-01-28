@@ -8,7 +8,7 @@ export default function useFeaturedTrees() {
   useEffect(() => {
     async function fetchFeaturedTrees() {
       try {
-        const response = await axios.get('/api/tree/featured');
+        const response = await axios.get('/api/trees/featured');
         setFeaturedTrees(response.data.featuredTrees);
       } catch (error) {
         // do nothing

@@ -3,17 +3,18 @@ import { StatusCodes } from 'http-status-codes';
 
 export const getAllTrees = async (req, res) => {
   try {
-    const limitValue = Number(req.query.limit);
-    const skipValue = Number(req.query.skip);
+    // const limitValue = Number(req.query.limit);
+    // const skipValue = Number(req.query.skip);
 
-    const trees = await Tree.find({}).limit(limitValue).skip(skipValue).lean();
-    const total = await Tree.find({}).count();
+    // const trees = await Tree.find({}).limit(limitValue).skip(skipValue).lean();
+    // const total = await Tree.find({}).count();
 
-    res.status(StatusCodes.OK).json({ trees, total });
+    const trees = await Tree.find({}).lean();
+
+    // res.status(StatusCodes.OK).json({ trees, total });
+    return res.status(StatusCodes.OK).json({ trees });
   } catch (error) {
-    res
-      .status(StatusCodes.INTERNAL_SERVER_ERROR)
-      .json({ message: error.message });
+    throw error;
   }
 };
 

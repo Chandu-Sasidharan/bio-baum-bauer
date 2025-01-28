@@ -1,22 +1,19 @@
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import { CartContextProvider } from '@/context/cart-context';
 import { AuthProvider } from '@/context/auth-context';
-import Home from '@/pages/home';
-import Trees from './pages/Trees';
 import Layout from '@/layout';
-import News from './pages/News';
+import Home from '@/pages/home';
 import About from '@/pages/about';
+import Trees from '@/pages/trees';
+import SingleTreePage from './pages/SingleTreePage';
 import Gallery from './pages/Gallery';
-import Faq from './pages/Faq';
 import Contact from '@/pages/contact';
-import Cart from './pages/user/Cart';
 import Login from '@/pages/auth/login';
 import Signup from './pages/auth/signup';
 import ConfirmAccount from '@/pages/auth/confirm-account';
-import SingleTreePage from './pages/SingleTreePage';
+import AccountLayout from '@/pages/account';
+import Profile from '@/pages/account/profile';
 import NewsArticle from './pages/NewsArticle';
-import Checkout from './pages/user/Checkout';
-import Order from './pages/user/Order';
 import Privacy from './pages/Privacy';
 import Terms from './pages/TermsConditions';
 import './assets/styles/PrevNext.css';
@@ -25,9 +22,12 @@ import CancelPage from './pages/CancelPage';
 import ProtectedRoute from '@/components/protected-route';
 import { PatronProvider } from '@/context/PatronContext';
 import SponsorShipDetails from './pages/user/SponsorShipDetails';
-import AccountLayout from '@/pages/account';
-import Profile from '@/pages/account/profile';
 import Sponsorship from '@/pages/account/sponsorship';
+import Checkout from './pages/user/Checkout';
+import Order from './pages/user/Order';
+import News from './pages/News';
+import Faq from './pages/Faq';
+import Cart from './pages/user/Cart';
 import NotFound from '@/pages/not-found';
 
 function App() {
@@ -40,13 +40,16 @@ function App() {
               <Routes>
                 <Route path='/' element={<Layout />}>
                   <Route index element={<Home />} />
+                  <Route path='/login' element={<Login />} />
+                  <Route path='/signup' element={<Signup />} />
+                  <Route path='/confirm-account' element={<ConfirmAccount />} />
+                  <Route path='/about' element={<About />} />
                   <Route path='/trees' element={<Trees />} />
                   <Route path='/trees/:id' element={<SingleTreePage />} />
                   <Route path='/news' element={<News />} />
                   <Route path='/news/:id' element={<NewsArticle />} />
                   <Route path='/privacy' element={<Privacy />} />
                   <Route path='/Terms' element={<Terms />} />
-                  <Route path='/about' element={<About />} />
                   <Route path='/gallery' element={<Gallery />} />
                   <Route path='/faq' element={<Faq />} />
                   <Route path='/contact' element={<Contact />} />
@@ -75,9 +78,6 @@ function App() {
                       </ProtectedRoute>
                     }
                   />
-                  <Route path='/login' element={<Login />} />
-                  <Route path='/signup' element={<Signup />} />
-                  <Route path='/confirm-account' element={<ConfirmAccount />} />
                   <Route
                     path='/account'
                     element={

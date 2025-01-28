@@ -13,8 +13,8 @@ import authRoute from '#src/routes/auth-route.js';
 const router = express.Router();
 
 router.use('/auth', authRoute);
+router.use('/trees', treeRoute);
 router.use('/user', userRoute);
-router.use('/tree', treeRoute);
 router.use('/contact', contactRoute);
 router.use('/feedbacks', feedbackRoute);
 // router.use('/sponsorships', sponsorShipRoute);
