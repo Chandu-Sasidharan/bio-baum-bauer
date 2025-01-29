@@ -10,7 +10,14 @@ const treeSchema = new Schema(
     category: {
       type: String,
       required: true,
-      enum: ['Fruit', 'Evergreen', 'Deciduous'],
+      enum: [
+        'Fruit Tree',
+        'Nut Trees',
+        'Flowering Trees',
+        'Berry Shrubs',
+        'Deciduous Forest',
+        'Evergreen Forest',
+      ],
     },
     price: {
       type: Schema.Types.Decimal128,
