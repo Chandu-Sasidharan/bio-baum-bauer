@@ -3,6 +3,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import { CgProfile } from 'react-icons/cg';
 import { PiShoppingCartSimpleFill } from 'react-icons/pi';
 import { IoIosArrowDown, IoIosArrowUp, IoMdLogOut } from 'react-icons/io';
+import Button from '@/components/elements/button';
 import { CartContext } from '@/context/cart-context';
 import { useUser } from '@/context/auth-context';
 import logoImage from '/images/logo/bbb-logo.svg';
@@ -74,12 +75,8 @@ export default function TopNavBar({
         {/* Right Side */}
         <div className='flex items-center'>
           {!isAuthenticated && (
-            <Link
-              to='/login'
-              aria-label='login page'
-              className='hover:bg-primary hover:text-accent text-primary-light font-chicle border-primary-dark rounded-md border-[1px] px-3 py-2 text-2xl tracking-wider duration-300'
-            >
-              Sponsor a Tree
+            <Link to='/trees'>
+              <Button>Plant a Tree</Button>
             </Link>
           )}
         </div>

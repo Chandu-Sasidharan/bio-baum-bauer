@@ -167,7 +167,11 @@ export default function Login() {
                   </Link>
                 </div>
                 {/* Submit Button */}
-                <Button type='submit' isProcessing={isUserLoading}>
+                <Button
+                  type='submit'
+                  isProcessing={isUserLoading}
+                  className='w-full'
+                >
                   Login
                 </Button>
               </form>

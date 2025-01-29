@@ -43,7 +43,6 @@ export default function Profile() {
               <Button
                 onClick={handleSubmit}
                 size='sm'
-                className='bg-primary mt-4 rounded-md px-4 py-2 text-white'
                 isProcessing={isUserLoading}
               >
                 Save

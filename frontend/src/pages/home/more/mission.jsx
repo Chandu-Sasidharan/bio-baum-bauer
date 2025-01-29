@@ -2,6 +2,7 @@ import { Link } from 'react-router-dom';
 import Button from '@/components/elements/button';
 import { FaArrowRightLong } from 'react-icons/fa6';
 import missionImage from '/images/more/mission.jpeg';
+import treeIcon from '/images/misc/tree.png';
 import styles from './more.module.css';
 
 export default function Mission() {
@@ -48,7 +49,8 @@ export default function Mission() {
           <Link to='/trees'>
             <Button variant='primary' rounded={true}>
               <span className='flex items-center gap-2'>
-                <span>Sponsor a tree</span>
+                <img src={treeIcon} alt='Tree Icon' className='h-5 w-5' />
+                <span>Plant a Tree</span>
                 <FaArrowRightLong className='transition-transform duration-300' />
               </span>
             </Button>

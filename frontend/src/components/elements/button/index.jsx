@@ -6,7 +6,7 @@ const Button = ({
   children,
   size = 'md',
   type = 'button',
-  classnames = '',
+  className = '',
   disabled = false,
   isProcessing = false,
   rounded = false,
@@ -27,7 +27,8 @@ const Button = ({
       'btn-disabled': disabled || isProcessing,
       'rounded-full px-8': rounded,
       'rounded-md': !rounded,
-    }
+    },
+    className
   );
 
   const loadingClass = classNames({

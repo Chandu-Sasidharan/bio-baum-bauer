@@ -222,7 +222,11 @@ export default function Signup() {
                   </div>
                 </div>
                 {/* Submit Button */}
-                <Button type='submit' isProcessing={isUserLoading}>
+                <Button
+                  type='submit'
+                  isProcessing={isUserLoading}
+                  className='w-full'
+                >
                   Sign Up
                 </Button>
               </form>

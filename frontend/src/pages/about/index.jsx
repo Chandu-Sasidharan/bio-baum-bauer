@@ -1,4 +1,4 @@
-import { useNavigate } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import { Helmet } from 'react-helmet-async';
 import Button from '@/components/elements/button';
 import Breadcrumbs from '@/components/elements/breadcrumbs';
@@ -6,8 +6,6 @@ import backgroundImage from '/images/background/leaves-background.webp';
 import treeIcon from '/images/misc/tree.png';
 
 export default function AboutUs() {
-  const navigate = useNavigate();
-
   return (
     <>
       <Helmet>
@@ -116,10 +114,15 @@ export default function AboutUs() {
                 tree, and help shape a world where people and planet flourish
                 together. Let us grow a greener tomorrow, one tree at a time.
               </p>
-              <Button onClick={() => navigate('/trees')} variant='primary'>
-                <img src={treeIcon} alt='' className='h-5 w-5' />
-                <span>Plant a Tree Today</span>
-              </Button>
+              <Link to='/trees'>
+                <Button
+                  variant='primary'
+                  className='bg-primary-light mt-5 w-fit'
+                >
+                  <img src={treeIcon} alt='Tree Icon' className='h-5 w-5' />
+                  <span>Plant a Tree Today</span>
+                </Button>
+              </Link>
             </div>
           </div>
         </div>

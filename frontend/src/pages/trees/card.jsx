@@ -15,7 +15,7 @@ export default function Card({ imageUrl, name, price, children }) {
         <p className='text-accent text-nowrap text-xl font-semibold'>{name}</p>
         <p className='bg-mint rounded-full px-3 py-1'>{price}&nbsp;€</p>
 
-        <Button>{children}</Button>
+        <Button className='mt-1 w-full'>{children}</Button>
       </div>
     </div>
   );
