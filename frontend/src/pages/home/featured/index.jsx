@@ -1,8 +1,8 @@
 import { Link } from 'react-router-dom';
-import Card from '@/components/elements/card';
-import cardStyles from '@/components/elements/card/card.module.css';
 import Spinner from '@/components/elements/spinner';
 import useFeaturedTrees from '@/hooks/use-featured-trees';
+import Card from './card';
+import styles from './featured.module.css';
 
 const FeaturedTrees = () => {
   const { featuredTrees, loading } = useFeaturedTrees();
@@ -19,7 +19,7 @@ const FeaturedTrees = () => {
           The following trees are among the rarest to cultivate or are in urgent
           need of care.
         </p>
-        <div className={cardStyles.cardContainer}>
+        <div className={styles.cardContainer}>
           {featuredTrees.map(tree => (
             <Link to={`/trees/${tree._id}`} key={tree._id}>
               <Card

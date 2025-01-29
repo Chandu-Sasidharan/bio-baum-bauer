@@ -1,5 +1,5 @@
 import Button from '@/components/elements/button';
-import styles from './card.module.css';
+import styles from './featured.module.css';
 
 export default function Card({ imageUrl, name, price, children }) {
   console.log(imageUrl);
