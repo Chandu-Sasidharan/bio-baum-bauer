@@ -1,14 +1,13 @@
 import { useState } from 'react';
-import { Link } from 'react-router-dom';
 import { Helmet } from 'react-helmet-async';
 import Spinner from '@/components/elements/spinner';
 import Breadcrumbs from '@/components/elements/breadcrumbs';
 import backgroundImage from '/images/background/leaves-background.webp';
 import useTrees from '@/hooks/use-trees';
+import Sidebar from './sidebar';
+import CardGrid from './card-grid';
 import PaginationControls from './pagination-controls';
 import styles from './trees.module.css';
-import Card from './card';
-import treeIcon from '/images/misc/tree.png';
 
 export default function Trees() {
   const [sort, setSort] = useState('');
@@ -52,31 +51,7 @@ export default function Trees() {
           <div className='mx-auto max-w-7xl'>
             <div className={styles.mainContainer}>
               {/* Sidebar */}
-              <aside className={styles.asideContainer}>
-                <h2 className='mb-4 text-lg font-bold'>Sort & Preferences</h2>
-                <select
-                  onChange={e => setSort(e.target.value)}
-                  className='mb-2 block w-full rounded bg-blue-500 p-2 text-white'
-                >
-                  <option value=''>Sort By</option>
-                  <option value='name:asc'>Name Ascending</option>
-                  <option value='name:desc'>Name Descending</option>
-                  <option value='price:asc'>Price Ascending</option>
-                  <option value='price:desc'>Price Descending</option>
-                </select>
-                <select
-                  onChange={e => setCategory(e.target.value)}
-                  className='mb-2 block w-full rounded bg-blue-500 p-2 text-white'
-                >
-                  <option value=''>Filter By Category</option>
-                  <option value='Fruit Tree'>Fruit Tree</option>
-                  <option value='Nut Tree'>Nut Trees</option>
-                  <option value='Flowering Tree'>Flowering Trees</option>
-                  <option value='Berry Shrubs'>Berry Shrubs</option>
-                  <option value='Deciduous Forest'>Deciduous Forest</option>
-                  <option value='Evergreen Forest'>Evergreen Forest</option>
-                </select>
-              </aside>
+              <Sidebar setSort={setSort} setCategory={setCategory} />
 
               {/* Main Content */}
               <main className='flex-1'>
@@ -86,22 +61,7 @@ export default function Trees() {
                   total={total}
                   limit={limit}
                 />
-
-                {/* Responsive grid for the cards */}
-                <div className={styles.gridContainer}>
-                  {trees.map(tree => (
-                    <Link to={`/trees/${tree._id}`} key={tree._id}>
-                      <Card
-                        imageUrl={tree.imageUrl}
-                        name={tree.name}
-                        price={tree.price.$numberDecimal}
-                      >
-                        Plant Now
-                      </Card>
-                    </Link>
-                  ))}
-                </div>
-
+                <CardGrid trees={trees} />
                 <PaginationControls
                   page={page}
                   setPage={setPage}

@@ -5,7 +5,7 @@ export default function PaginationControls({ page, setPage, total, limit }) {
   const endItem = Math.min(page * limit, total);
 
   return (
-    <div className='my-4 flex items-center justify-between'>
+    <div className={styles.paginationContainer}>
       <span className='text-sm'>
         Showing {startItem} to {endItem} of {total} items
       </span>
