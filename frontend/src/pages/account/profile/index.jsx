@@ -52,7 +52,7 @@ export default function Profile() {
 
             <Button
               onClick={() => setIsEditing(!isEditing)}
-              primary={true}
+              variant='primary'
               size='sm'
             >
               {isEditing ? 'Cancel' : 'Edit'}

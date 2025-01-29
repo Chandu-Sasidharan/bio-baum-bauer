@@ -21,7 +21,7 @@ export default function Mission() {
           social empowerment, ensuring a vibrant and sustainable future for all.
         </p>
         <Link to='/trees' className='mt-2'>
-          <Button primary={true} rounded={true}>
+          <Button variant='primary' rounded={true}>
             <span className='flex items-center gap-2'>
               <span>Learn More</span>
               <FaArrowRightLong className='transition-transform duration-300' />
@@ -40,8 +40,9 @@ export default function Mission() {
         <div
           className={`${styles.overlay} flex flex-col items-center justify-center`}
         >
+          {/* Overlay Button */}
           <Link to='/trees'>
-            <Button primary={true} rounded={true}>
+            <Button variant='primary' rounded={true}>
               <span className='flex items-center gap-2'>
                 <span>Sponsor a tree</span>
                 <FaArrowRightLong className='transition-transform duration-300' />

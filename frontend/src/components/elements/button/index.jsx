@@ -2,7 +2,7 @@ import classNames from 'classnames';
 
 const Button = ({
   onClick,
-  primary = false,
+  variant = 'accent',
   children,
   size = 'md',
   type = 'button',
@@ -20,14 +20,14 @@ const Button = ({
       'btn-md': size === 'md',
       'btn-lg': size === 'lg',
       'bg-accent hover:bg-accent-light text-primary-light':
-        !primary && !transparent,
-      'bg-primary hover:bg-primary-light text-accent': primary && !transparent,
+        variant === 'accent' && !transparent,
+      'bg-primary hover:bg-primary-light text-accent':
+        variant === 'primary' && !transparent,
       'bg-transparent text-primary-light hover:text-accent': transparent,
       'btn-disabled': disabled || isProcessing,
       'rounded-full px-8': rounded,
       'rounded-md': !rounded,
-    },
-    classnames
+    }
   );
 
   const loadingClass = classNames({
