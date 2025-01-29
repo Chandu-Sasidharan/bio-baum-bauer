@@ -3,18 +3,32 @@ import { StatusCodes } from 'http-status-codes';
 
 export const getAllTrees = async (req, res) => {
   try {
-    // const limitValue = Number(req.query.limit);
-    // const skipValue = Number(req.query.skip);
+    const { sort, category, page = 1, limit = 10 } = req.query;
 
-    // const trees = await Tree.find({}).limit(limitValue).skip(skipValue).lean();
-    // const total = await Tree.find({}).count();
+    const query = {};
+    if (category) {
+      query.category = category;
+    }
 
-    const trees = await Tree.find({}).lean();
+    let sortOption = {};
+    if (sort) {
+      const [key, order] = sort.split(':');
+      sortOption[key] = order === 'desc' ? -1 : 1;
+    }
 
-    // res.status(StatusCodes.OK).json({ trees, total });
-    return res.status(StatusCodes.OK).json({ trees });
+    const trees = await Tree.find(query)
+      .sort(sortOption)
+      .skip((page - 1) * limit)
+      .limit(Number(limit))
+      .lean();
+
+    const total = await Tree.countDocuments(query);
+
+    return res.status(StatusCodes.OK).json({ trees, total });
   } catch (error) {
-    throw error;
+    res
+      .status(StatusCodes.INTERNAL_SERVER_ERROR)
+      .json({ error: error.message });
   }
 };
 

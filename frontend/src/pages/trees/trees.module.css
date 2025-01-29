@@ -76,3 +76,12 @@
 .card:hover .cardImage {
   transform: scale(1.05);
 }
+
+/* Disbale hover and click on Page Number dispaly */
+.noHover {
+  pointer-events: none;
+  background-color: inherit;
+  color: inherit;
+  border: none;
+  box-shadow: none;
+}

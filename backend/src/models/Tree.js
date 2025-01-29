@@ -12,8 +12,8 @@ const treeSchema = new Schema(
       required: true,
       enum: [
         'Fruit Tree',
-        'Nut Trees',
-        'Flowering Trees',
+        'Nut Tree',
+        'Flowering Tree',
         'Berry Shrubs',
         'Deciduous Forest',
         'Evergreen Forest',
