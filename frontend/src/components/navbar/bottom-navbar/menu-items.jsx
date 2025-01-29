@@ -1,6 +1,7 @@
-import { FaHome, FaTree, FaRegNewspaper, FaImages } from 'react-icons/fa';
-import { RiQuestionAnswerFill, RiFileInfoFill } from 'react-icons/ri';
+import { FaHome, FaImages } from 'react-icons/fa';
+import { RiFileInfoFill } from 'react-icons/ri';
 import { MdContacts } from 'react-icons/md';
+import treeIcon from '/images/misc/tree.png';
 
 const menuItems = [
   { to: '/', pageName: 'Home', icon: <FaHome />, ariaLabel: 'Home page' },
@@ -13,7 +14,7 @@ const menuItems = [
   {
     to: '/trees',
     pageName: 'Trees',
-    icon: <FaTree />,
+    icon: <img src={treeIcon} alt='Tree Icon' className='h-4 w-4' />,
     ariaLabel: 'Trees page',
   },
   {

@@ -7,6 +7,7 @@ import Button from '@/components/elements/button';
 import { CartContext } from '@/context/cart-context';
 import { useUser } from '@/context/auth-context';
 import logoImage from '/images/logo/bbb-logo.svg';
+import treeIcon from '/images/misc/tree.png';
 
 export default function TopNavBar({
   isNavbarFixed,
@@ -76,7 +77,10 @@ export default function TopNavBar({
         <div className='flex items-center'>
           {!isAuthenticated && (
             <Link to='/trees'>
-              <Button>Plant a Tree</Button>
+              <Button>
+                <img src={treeIcon} alt='Tree Icon' className='mr-2 h-5 w-5' />
+                <span>Plant a Tree</span>
+              </Button>
             </Link>
           )}
         </div>
