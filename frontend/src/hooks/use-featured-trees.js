@@ -1,24 +1,20 @@
-import { useState, useEffect } from 'react';
+import { useQuery } from '@tanstack/react-query';
 import axios from '@/utils/axios';
 
+const fetchFeaturedTrees = async () => {
+  const response = await axios.get('/api/trees/featured');
+  return response.data.featuredTrees;
+};
+
 export default function useFeaturedTrees() {
-  const [featuredTrees, setFeaturedTrees] = useState([]);
-  const [loading, setLoading] = useState(true);
+  const {
+    data: featuredTrees,
+    isLoading,
+    isError,
+  } = useQuery({
+    queryKey: ['featuredTrees'],
+    queryFn: fetchFeaturedTrees,
+  });
 
-  useEffect(() => {
-    async function fetchFeaturedTrees() {
-      try {
-        const response = await axios.get('/api/trees/featured');
-        setFeaturedTrees(response.data.featuredTrees);
-      } catch (error) {
-        // do nothing
-      }
-
-      setLoading(false);
-    }
-
-    fetchFeaturedTrees();
-  }, []);
-
-  return { featuredTrees, loading };
+  return { featuredTrees, isLoading, isError };
 }

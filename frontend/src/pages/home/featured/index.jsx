@@ -5,10 +5,14 @@ import Card from './card';
 import styles from './featured.module.css';
 
 const FeaturedTrees = () => {
-  const { featuredTrees, loading } = useFeaturedTrees();
+  const { featuredTrees, isLoading, isError } = useFeaturedTrees();
 
-  if (loading) {
+  if (isLoading) {
     return <Spinner />;
+  }
+
+  if (isError) {
+    return <div>Error fetching data!</div>;
   }
 
   return (

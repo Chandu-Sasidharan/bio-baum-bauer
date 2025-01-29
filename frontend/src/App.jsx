@@ -1,4 +1,6 @@
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
+import { QueryClientProvider } from '@tanstack/react-query';
+import createQueryClient from '@/utils/create-query-client';
 import { CartContextProvider } from '@/context/cart-context';
 import { AuthProvider } from '@/context/auth-context';
 import Layout from '@/layout';
@@ -31,96 +33,103 @@ import Cart from './pages/user/Cart';
 import NotFound from '@/pages/not-found';
 
 function App() {
+  const queryClient = createQueryClient();
+
   return (
     <>
       <BrowserRouter>
-        <AuthProvider>
-          <CartContextProvider>
-            <PatronProvider>
-              <Routes>
-                <Route path='/' element={<Layout />}>
-                  <Route index element={<Home />} />
-                  <Route path='/login' element={<Login />} />
-                  <Route path='/signup' element={<Signup />} />
-                  <Route path='/confirm-account' element={<ConfirmAccount />} />
-                  <Route path='/about' element={<About />} />
-                  <Route path='/trees' element={<Trees />} />
-                  <Route path='/trees/:id' element={<SingleTreePage />} />
-                  <Route path='/news' element={<News />} />
-                  <Route path='/news/:id' element={<NewsArticle />} />
-                  <Route path='/privacy' element={<Privacy />} />
-                  <Route path='/Terms' element={<Terms />} />
-                  <Route path='/gallery' element={<Gallery />} />
-                  <Route path='/faq' element={<Faq />} />
-                  <Route path='/contact' element={<Contact />} />
-                  {/* <Route path="/contributors" element={<Contributors />} /> */}
-                  <Route
-                    path='/cart'
-                    element={
-                      <ProtectedRoute>
-                        <Cart />
-                      </ProtectedRoute>
-                    }
-                  />
-                  <Route
-                    path='/checkout'
-                    element={
-                      <ProtectedRoute>
-                        <Checkout />
-                      </ProtectedRoute>
-                    }
-                  />
-                  <Route
-                    path='/order/place_order'
-                    element={
-                      <ProtectedRoute>
-                        <Order />
-                      </ProtectedRoute>
-                    }
-                  />
-                  <Route
-                    path='/account'
-                    element={
-                      <ProtectedRoute>
-                        <AccountLayout />
-                      </ProtectedRoute>
-                    }
-                  >
-                    <Route index element={<Profile />} />
-                    <Route path='sponsorships' element={<Sponsorship />} />
+        <QueryClientProvider client={queryClient}>
+          <AuthProvider>
+            <CartContextProvider>
+              <PatronProvider>
+                <Routes>
+                  <Route path='/' element={<Layout />}>
+                    <Route index element={<Home />} />
+                    <Route path='/login' element={<Login />} />
+                    <Route path='/signup' element={<Signup />} />
+                    <Route
+                      path='/confirm-account'
+                      element={<ConfirmAccount />}
+                    />
+                    <Route path='/about' element={<About />} />
+                    <Route path='/trees' element={<Trees />} />
+                    <Route path='/trees/:id' element={<SingleTreePage />} />
+                    <Route path='/news' element={<News />} />
+                    <Route path='/news/:id' element={<NewsArticle />} />
+                    <Route path='/privacy' element={<Privacy />} />
+                    <Route path='/Terms' element={<Terms />} />
+                    <Route path='/gallery' element={<Gallery />} />
+                    <Route path='/faq' element={<Faq />} />
+                    <Route path='/contact' element={<Contact />} />
+                    {/* <Route path="/contributors" element={<Contributors />} /> */}
+                    <Route
+                      path='/cart'
+                      element={
+                        <ProtectedRoute>
+                          <Cart />
+                        </ProtectedRoute>
+                      }
+                    />
+                    <Route
+                      path='/checkout'
+                      element={
+                        <ProtectedRoute>
+                          <Checkout />
+                        </ProtectedRoute>
+                      }
+                    />
+                    <Route
+                      path='/order/place_order'
+                      element={
+                        <ProtectedRoute>
+                          <Order />
+                        </ProtectedRoute>
+                      }
+                    />
+                    <Route
+                      path='/account'
+                      element={
+                        <ProtectedRoute>
+                          <AccountLayout />
+                        </ProtectedRoute>
+                      }
+                    >
+                      <Route index element={<Profile />} />
+                      <Route path='sponsorships' element={<Sponsorship />} />
+                    </Route>
+
+                    <Route
+                      path='/success'
+                      element={
+                        <ProtectedRoute>
+                          <SuccessPage />
+                        </ProtectedRoute>
+                      }
+                    />
+
+                    <Route
+                      path='/cancel'
+                      element={
+                        <ProtectedRoute>
+                          <CancelPage />
+                        </ProtectedRoute>
+                      }
+                    />
+                    <Route
+                      path='/sponsorship-details/:id'
+                      element={
+                        <ProtectedRoute>
+                          <SponsorShipDetails />
+                        </ProtectedRoute>
+                      }
+                    />
+                    <Route path='*' element={<NotFound />} />
                   </Route>
-
-                  <Route
-                    path='/success'
-                    element={
-                      <ProtectedRoute>
-                        <SuccessPage />
-                      </ProtectedRoute>
-                    }
-                  />
-
-                  <Route
-                    path='/cancel'
-                    element={
-                      <ProtectedRoute>
-                        <CancelPage />
-                      </ProtectedRoute>
-                    }
-                  />
-                  <Route
-                    path='/sponsorship-details/:id'
-                    element={
-                      <ProtectedRoute>
-                        <SponsorShipDetails />
-                      </ProtectedRoute>
-                    }
-                  />
-                  <Route path='*' element={<NotFound />} />
-                </Route>
-              </Routes>
-            </PatronProvider>
-          </CartContextProvider>
-        </AuthProvider>
+                </Routes>
+              </PatronProvider>
+            </CartContextProvider>
+          </AuthProvider>
+        </QueryClientProvider>
       </BrowserRouter>
     </>
   );
