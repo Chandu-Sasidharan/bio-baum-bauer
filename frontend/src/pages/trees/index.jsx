@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Helmet } from 'react-helmet-async';
 import Spinner from '@/components/elements/spinner';
 import Breadcrumbs from '@/components/elements/breadcrumbs';
@@ -21,6 +21,11 @@ export default function Trees() {
     page,
     limit,
   });
+
+  // Reset page when category changes
+  useEffect(() => {
+    setPage(1);
+  }, [category]);
 
   if (isLoading) {
     return <Spinner />;
