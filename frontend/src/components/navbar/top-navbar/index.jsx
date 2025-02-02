@@ -59,7 +59,7 @@ export default function TopNavBar({
 
   return (
     <nav className='bg-accent relative z-[1] flex h-20 w-full items-center justify-between px-5 shadow-md md:px-8'>
-      <div className='flex h-full grow justify-between'>
+      <div className='flex h-full w-full grow items-center justify-between'>
         {/* Left Side */}
         <Link to='/' className='flex items-center gap-3'>
           <img
@@ -74,88 +74,90 @@ export default function TopNavBar({
         </Link>
 
         {/* Right Side */}
-        <div className='flex items-center'>
+        <div className='flex items-center gap-3'>
+          <Link to='/trees' className='hidden items-center gap-3 md:flex'>
+            <Button>
+              <img src={treeIcon} alt='Tree Icon' className='mr-2 h-5 w-5' />
+              <span>Plant a Tree</span>
+            </Button>
+          </Link>
           {!isAuthenticated && (
-            <Link to='/trees'>
+            <Link to='/login'>
               <Button>
-                <img src={treeIcon} alt='Tree Icon' className='mr-2 h-5 w-5' />
-                <span>Plant a Tree</span>
+                <span>Login</span>
               </Button>
             </Link>
           )}
-        </div>
 
-        {isAuthenticated && (
-          <div className='relative flex items-center gap-3 md:gap-6'>
-            {/* Profile Dropdown */}
-            <div ref={dropdownRef}>
-              {/* Dropdown Button */}
-              <div
-                onClick={toggleDropdown}
-                className='flex cursor-pointer items-center justify-between'
-              >
-                {authUser.firstName ? (
-                  <div>
-                    <span className='font-open-sans text-primary-light mr-1 inline-block text-lg'>
-                      {authUser.firstName}
+          {isAuthenticated && (
+            <div className='relative flex items-center gap-3 md:gap-6'>
+              {/* Profile Dropdown */}
+              <div ref={dropdownRef}>
+                {/* Dropdown Button */}
+                <div
+                  onClick={toggleDropdown}
+                  className='flex cursor-pointer items-center justify-between'
+                >
+                  {authUser.firstName ? (
+                    <div>
+                      <span className='font-open-sans text-primary-light mr-1 inline-block text-lg'>
+                        {authUser.firstName}
+                      </span>
+                    </div>
+                  ) : (
+                    <span className='font-open-sans text-primary-light mr-2 inline-block text-lg'>
+                      More
                     </span>
-                  </div>
-                ) : (
-                  <span className='font-open-sans text-primary-light mr-2 inline-block text-lg'>
-                    More
-                  </span>
-                )}
-
-                {isTopNavDropdownOpen ? (
-                  <IoIosArrowUp className='text-primary-light text-xl' />
-                ) : (
-                  <IoIosArrowDown className='text-primary-light text-xl' />
-                )}
-              </div>
-
-              {/* Dropdown Menu */}
-              <ul
-                className={`${
-                  isTopNavDropdownOpen ? 'block' : 'hidden'
-                } bg-primary-light text-stone absolute right-0 top-full overflow-hidden rounded-b-md shadow-md transition-all duration-300`}
-              >
-                <li
-                  className='hover:bg-aloe border-primary cursor-pointer border-b text-lg'
-                  onClick={() => handleClick('account')}
+                  )}
+                  {isTopNavDropdownOpen ? (
+                    <IoIosArrowUp className='text-primary-light text-xl' />
+                  ) : (
+                    <IoIosArrowDown className='text-primary-light text-xl' />
+                  )}
+                </div>
+                {/* Dropdown Menu */}
+                <ul
+                  className={`${
+                    isTopNavDropdownOpen ? 'block' : 'hidden'
+                  } bg-primary-light text-stone absolute right-0 top-full overflow-hidden rounded-b-md shadow-md transition-all duration-300`}
                 >
-                  <span className='flex items-center gap-3 px-5 py-4 transition-transform duration-75 ease-linear'>
-                    <CgProfile className='text-accent text-xl' />
-                    <span className='text-nowrap'>My Account</span>
-                  </span>
-                </li>
-                <li
-                  className='hover:bg-aloe border-primary cursor-pointer text-lg'
-                  onClick={() => handleClick('logout')}
-                >
-                  <span className='flex items-center justify-start gap-3 px-5 py-4 transition-transform duration-75 ease-linear'>
-                    <IoMdLogOut className='text-accent text-xl' />
-                    <span>Logout</span>
-                  </span>
-                </li>
-              </ul>
-            </div>
-
-            {/* Shopping Cart */}
-            <Link to='/cart' aria-label='Cart page'>
-              <span className='bg-primary-light text-accent relative flex h-[45px] w-[45px] items-center justify-center rounded-full text-2xl'>
-                <PiShoppingCartSimpleFill />
-                {!!cartTrees.length && (
-                  <div
-                    className='text-primary-light absolute right-[0.2rem] top-[0.2rem] flex h-6 w-6 items-center justify-center rounded-full bg-red-500 text-xs'
-                    style={{ transform: 'translate(50%, -50%)' }}
+                  <li
+                    className='hover:bg-aloe border-primary cursor-pointer border-b text-lg'
+                    onClick={() => handleClick('account')}
                   >
-                    {cartTrees.length}
-                  </div>
-                )}
-              </span>
-            </Link>
-          </div>
-        )}
+                    <span className='flex items-center gap-3 px-5 py-4 transition-transform duration-75 ease-linear'>
+                      <CgProfile className='text-accent text-xl' />
+                      <span className='text-nowrap'>My Account</span>
+                    </span>
+                  </li>
+                  <li
+                    className='hover:bg-aloe border-primary cursor-pointer text-lg'
+                    onClick={() => handleClick('logout')}
+                  >
+                    <span className='flex items-center justify-start gap-3 px-5 py-4 transition-transform duration-75 ease-linear'>
+                      <IoMdLogOut className='text-accent text-xl' />
+                      <span>Logout</span>
+                    </span>
+                  </li>
+                </ul>
+              </div>
+              {/* Shopping Cart */}
+              <Link to='/cart' aria-label='Cart page'>
+                <span className='bg-primary-light text-accent relative flex h-[45px] w-[45px] items-center justify-center rounded-full text-2xl'>
+                  <PiShoppingCartSimpleFill />
+                  {!!cartTrees.length && (
+                    <div
+                      className='text-primary-light absolute right-[0.2rem] top-[0.2rem] flex h-6 w-6 items-center justify-center rounded-full bg-red-500 text-xs'
+                      style={{ transform: 'translate(50%, -50%)' }}
+                    >
+                      {cartTrees.length}
+                    </div>
+                  )}
+                </span>
+              </Link>
+            </div>
+          )}
+        </div>
       </div>
     </nav>
   );

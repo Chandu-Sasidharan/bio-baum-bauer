@@ -1,9 +1,11 @@
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { fallDown as FalldownMenu } from 'react-burger-menu';
+import Button from '@/components/elements/button';
 import closeIcon from '/images/misc/close-icon.svg';
 import hamburgerIcon from '/images/misc/hamburger-icon.svg';
 import menuItems from '@/components/navbar/bottom-navbar/menu-items';
+import treeIcon from '/images/misc/tree.png';
 
 export default function MobileMenu() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -14,7 +16,7 @@ export default function MobileMenu() {
 
   return (
     <div className='w-full md:hidden'>
-      <div className='bg-primary top-0 z-[1] flex h-[60px] w-full items-center justify-start px-2'>
+      <div className='bg-primary top-0 z-[1] flex h-[60px] w-full items-center justify-between px-2'>
         {/* Open Menu Button */}
         <button
           onClick={() => setIsMenuOpen(true)}
@@ -23,6 +25,12 @@ export default function MobileMenu() {
         >
           <img src={hamburgerIcon} alt='Hamburger Icon' />
         </button>
+        <Link to='/trees'>
+          <Button size='sm' variant='primary' className='bg-primary-light'>
+            <img src={treeIcon} alt='Tree Icon' className='mr-2 h-5 w-5' />
+            <span>Plant a Tree</span>
+          </Button>
+        </Link>
       </div>
 
       {/* MobileNavbar Menu with Links */}
