@@ -1,6 +1,6 @@
 import mongoose from 'mongoose';
 import dotenv from 'dotenv';
-import Tree from '#src/models/tree.js';
+import Impression from '#src/models/impression.js';
 
 dotenv.config();
 
@@ -10,7 +10,7 @@ async function modifyDb() {
   try {
     await mongoose.connect(uri);
 
-    await Tree.updateMany(
+    await Impression.updateMany(
       { image: { $exists: true } },
       { $rename: { image: 'imageUrl' } }
     );
@@ -19,7 +19,7 @@ async function modifyDb() {
     console.log(`Updated documents.`);
   } catch (error) {
     // eslint-disable-next-line no-console
-    console.error('Error updating tree image field:', error);
+    console.error('Error updating Impression image field:', error);
   } finally {
     await mongoose.disconnect();
   }

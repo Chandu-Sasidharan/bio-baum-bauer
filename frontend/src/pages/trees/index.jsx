@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import { Fade } from 'react-awesome-reveal';
 import { Helmet } from 'react-helmet-async';
 import Spinner from '@/components/elements/spinner';
 import Breadcrumbs from '@/components/elements/breadcrumbs';
@@ -66,7 +67,15 @@ export default function Trees() {
                   total={total}
                   limit={limit}
                 />
-                <CardGrid trees={trees} />
+                <Fade
+                  key={`${sort}-${category}-${page}`}
+                  delay={100}
+                  cascade
+                  damping={0.1}
+                  duration={3000}
+                >
+                  <CardGrid trees={trees} />
+                </Fade>
                 <PaginationControls
                   page={page}
                   setPage={setPage}

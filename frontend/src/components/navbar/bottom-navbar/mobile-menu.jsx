@@ -1,8 +1,8 @@
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { fallDown as FalldownMenu } from 'react-burger-menu';
-import closeIcon from '/images/navbar/close-icon.svg';
-import hamburgerIcon from '/images/navbar/hamburger-icon.svg';
+import closeIcon from '/images/misc/close-icon.svg';
+import hamburgerIcon from '/images/misc/hamburger-icon.svg';
 import menuItems from '@/components/navbar/bottom-navbar/menu-items';
 
 export default function MobileMenu() {

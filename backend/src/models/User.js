@@ -8,21 +8,25 @@ const userSchema = new Schema(
   {
     firstName: {
       type: String,
+      trim: true,
     },
     lastName: {
       type: String,
+      trim: true,
     },
     address: {
-      street: { type: String },
-      houseNumber: { type: String },
-      city: { type: String },
-      country: { type: String },
-      zipCode: { type: String },
+      street: { type: String, trim: true },
+      houseNumber: { type: String, trim: true },
+      city: { type: String, trim: true },
+      country: { type: String, trim: true },
+      zipCode: { type: String, trim: true },
     },
     email: {
       type: String,
       required: true,
+      lowercase: true,
       unique: true,
+      trim: true,
     },
     password: {
       type: String,
@@ -30,9 +34,11 @@ const userSchema = new Schema(
     },
     phoneNumber: {
       type: String,
+      trim: true,
     },
     avatarUrl: {
       type: String,
+      trim: true,
       default: 'dummy',
     },
     passwordResetToken: {

@@ -4,13 +4,16 @@ import { z } from 'zod';
 const contactFormValidationSchema = z.object({
   userName: z
     .string({ message: 'User name must be a string' })
+    .trim()
     .min(3, { message: 'User name should have a minimum length of 3' })
     .max(50, { message: 'User name should have a maximum length of 50' }),
   email: z
     .string({ message: 'Email must be a string' })
+    .trim()
     .email({ message: 'Invalid Email' }),
   message: z
     .string({ message: 'Message must be a string' })
+    .trim()
     .min(1, { message: 'Message is required' }),
   agreeToPolicies: z
     .boolean({ message: 'Agree to policies must be a boolean' })

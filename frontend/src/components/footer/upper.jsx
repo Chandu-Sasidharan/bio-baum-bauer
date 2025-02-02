@@ -60,7 +60,7 @@ export default function Upper() {
                 <MenuLink to='/' pageName='Home' />
                 <MenuLink to='/about' pageName='About' />
                 <MenuLink to='/trees' pageName='Trees' />
-                <MenuLink to='/gallery' pageName='Gallery' />
+                <MenuLink to='/impressions' pageName='Gallery' />
                 <MenuLink to='/contact' pageName='Contact' />
               </div>
               <div className='space-y-3'>

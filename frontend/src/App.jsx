@@ -8,7 +8,7 @@ import Home from '@/pages/home';
 import About from '@/pages/about';
 import Trees from '@/pages/trees';
 import SingleTreePage from './pages/SingleTreePage';
-import Gallery from './pages/Gallery';
+import Impressions from '@/pages/impressions';
 import Contact from '@/pages/contact';
 import Login from '@/pages/auth/login';
 import Signup from './pages/auth/signup';
@@ -54,11 +54,11 @@ function App() {
                     <Route path='/about' element={<About />} />
                     <Route path='/trees' element={<Trees />} />
                     <Route path='/trees/:id' element={<SingleTreePage />} />
+                    <Route path='/impressions' element={<Impressions />} />
                     <Route path='/news' element={<News />} />
                     <Route path='/news/:id' element={<NewsArticle />} />
                     <Route path='/privacy' element={<Privacy />} />
                     <Route path='/Terms' element={<Terms />} />
-                    <Route path='/gallery' element={<Gallery />} />
                     <Route path='/faq' element={<Faq />} />
                     <Route path='/contact' element={<Contact />} />
                     {/* <Route path="/contributors" element={<Contributors />} /> */}

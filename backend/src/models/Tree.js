@@ -1,4 +1,5 @@
 import { model, Schema } from 'mongoose';
+import validateTree from '#src/validations/tree-validation.js';
 
 const treeSchema = new Schema(
   {
@@ -22,6 +23,7 @@ const treeSchema = new Schema(
     price: {
       type: Schema.Types.Decimal128,
       required: true,
+      trim: true,
     },
     availableQuantity: {
       type: Number,
@@ -31,14 +33,17 @@ const treeSchema = new Schema(
     shortDescription: {
       type: String,
       required: true,
+      trim: true,
     },
     description: {
       type: String,
       required: true,
+      trim: true,
     },
-    image: {
+    imageUrl: {
       type: String,
       required: true,
+      trim: true,
     },
     status: {
       type: String,
@@ -55,4 +60,8 @@ const treeSchema = new Schema(
 );
 
 const Tree = model('Tree', treeSchema);
+Object.assign(Tree, {
+  validateTree,
+});
+
 export default Tree;

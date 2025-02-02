@@ -18,7 +18,7 @@ const menuItems = [
     ariaLabel: 'Trees page',
   },
   {
-    to: '/gallery',
+    to: '/impressions',
     pageName: 'Gallery',
     icon: <FaImages />,
     ariaLabel: 'Gallery page',

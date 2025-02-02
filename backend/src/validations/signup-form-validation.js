@@ -4,6 +4,7 @@ import { z } from 'zod';
 const signupFormValidationSchema = z.object({
   email: z
     .string({ message: 'Email must be a string' })
+    .trim()
     .email({ message: 'Invalid Email' }),
   password: z
     .string({ message: 'Password must be a string' })

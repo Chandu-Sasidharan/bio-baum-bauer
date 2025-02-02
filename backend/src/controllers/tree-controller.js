@@ -1,5 +1,5 @@
-import Tree from '#src/models/tree.js';
 import { StatusCodes } from 'http-status-codes';
+import Tree from '#src/models/tree.js';
 
 export const getAllTrees = async (req, res) => {
   try {
