@@ -70,7 +70,10 @@ export default function Impressions() {
           style={{ backgroundColor: 'rgba(255, 255, 255, 0.7)' }}
           className='md:py-15 px-5 py-10 md:px-10'
         >
-          <div className='mx-auto max-w-7xl space-y-5 text-center'>
+          <div className='mx-auto max-w-7xl space-y-5'>
+            <h1 className='text-lg'>
+              Images are AI-generated and are for representative purposes only.
+            </h1>
             {/* Image Grid */}
             <Fade delay={100} cascade damping={0.1} duration={3000}>
               <div className='grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-4'>
@@ -113,6 +116,7 @@ export default function Impressions() {
                 }
                 variant='primary'
                 rounded={true}
+                className='w-full'
               >
                 {displayedImages.length === 6
                   ? 'Show All Images'
