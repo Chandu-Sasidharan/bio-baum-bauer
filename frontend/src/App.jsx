@@ -6,8 +6,8 @@ import { AuthProvider } from '@/context/auth-context';
 import Layout from '@/layout';
 import Home from '@/pages/home';
 import About from '@/pages/about';
-import Trees from '@/pages/trees';
-import SingleTreePage from './pages/SingleTreePage';
+import Trees from '@/pages/trees/tree-list';
+import TreePage from '@/pages/trees/tree-page';
 import Impressions from '@/pages/impressions';
 import Contact from '@/pages/contact';
 import Login from '@/pages/auth/login';
@@ -53,7 +53,7 @@ function App() {
                     />
                     <Route path='/about' element={<About />} />
                     <Route path='/trees' element={<Trees />} />
-                    <Route path='/trees/:id' element={<SingleTreePage />} />
+                    <Route path='/trees/:id' element={<TreePage />} />
                     <Route path='/impressions' element={<Impressions />} />
                     <Route path='/privacy' element={<Privacy />} />
                     <Route path='/faqs' element={<Faqs />} />
