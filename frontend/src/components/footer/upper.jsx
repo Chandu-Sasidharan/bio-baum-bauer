@@ -64,7 +64,7 @@ export default function Upper() {
                 <MenuLink to='/contact' pageName='Contact' />
               </div>
               <div className='space-y-3'>
-                <MenuLink to='/faq' pageName='FAQs' />
+                <MenuLink to='/faqs' pageName='FAQs' />
                 <MenuLink to='/news' pageName='News' />
                 <MenuLink to='/terms' pageName='Terms' />
                 <MenuLink to='/privacy' pageName='Privacy' />

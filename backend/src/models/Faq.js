@@ -1,12 +1,15 @@
 import { model, Schema } from 'mongoose';
+import validateFaqData from '#src/validations/faq-validation.js';
 
 const faqSchema = new Schema(
   {
-    Question: { type: String, required: true },
-    Answers: { type: String, required: true },
+    question: { type: String, required: true, trim: true },
+    answer: { type: String, required: true, trim: true },
   },
   { timestamps: true }
 );
 
-const Faq = model('faq', faqSchema);
+const Faq = model('Faq', faqSchema);
+Object.assign(Faq, { validateFaqData });
+
 export default Faq;

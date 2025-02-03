@@ -28,7 +28,7 @@ import Sponsorship from '@/pages/account/sponsorship';
 import Checkout from './pages/user/Checkout';
 import Order from './pages/user/Order';
 import News from './pages/News';
-import Faq from './pages/Faq';
+import Faqs from '@/pages/faqs';
 import Cart from './pages/user/Cart';
 import NotFound from '@/pages/not-found';
 
@@ -56,7 +56,7 @@ function App() {
                     <Route path='/trees/:id' element={<SingleTreePage />} />
                     <Route path='/impressions' element={<Impressions />} />
                     <Route path='/privacy' element={<Privacy />} />
-                    <Route path='/faq' element={<Faq />} />
+                    <Route path='/faqs' element={<Faqs />} />
                     <Route path='/terms' element={<Terms />} />
                     <Route path='/contact' element={<Contact />} />
                     <Route path='/news' element={<News />} />

@@ -1,28 +1,28 @@
 import mongoose from 'mongoose';
 import dotenv from 'dotenv';
-import Impression from '#src/models/impression.js';
+import Faq from '#src/models/Faq.js';
 
 dotenv.config();
 
 const uri = process.env.MONGODB_URI;
 
-async function modifyDb() {
+async function modifyFaqDb() {
   try {
     await mongoose.connect(uri);
 
-    await Impression.updateMany(
-      { image: { $exists: true } },
-      { $rename: { image: 'imageUrl' } }
+    await Faq.updateMany(
+      { Question: { $exists: true } },
+      { $rename: { Question: 'question', Answers: 'answer' } }
     );
 
     // eslint-disable-next-line no-console
     console.log(`Updated documents.`);
   } catch (error) {
     // eslint-disable-next-line no-console
-    console.error('Error updating Impression image field:', error);
+    console.error('Error updating Faq fields:', error);
   } finally {
     await mongoose.disconnect();
   }
 }
 
-modifyDb();
+modifyFaqDb();
