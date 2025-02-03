@@ -16,7 +16,7 @@ import ConfirmAccount from '@/pages/auth/confirm-account';
 import AccountLayout from '@/pages/account';
 import Profile from '@/pages/account/profile';
 import NewsArticle from './pages/NewsArticle';
-import Privacy from './pages/Privacy';
+import Privacy from '@/pages/privacy';
 import Terms from './pages/TermsConditions';
 import './assets/styles/PrevNext.css';
 import SuccessPage from './pages/SuccessPage';
@@ -55,13 +55,12 @@ function App() {
                     <Route path='/trees' element={<Trees />} />
                     <Route path='/trees/:id' element={<SingleTreePage />} />
                     <Route path='/impressions' element={<Impressions />} />
+                    <Route path='/privacy' element={<Privacy />} />
+                    <Route path='/faq' element={<Faq />} />
+                    <Route path='/Terms' element={<Terms />} />
+                    <Route path='/contact' element={<Contact />} />
                     <Route path='/news' element={<News />} />
                     <Route path='/news/:id' element={<NewsArticle />} />
-                    <Route path='/privacy' element={<Privacy />} />
-                    <Route path='/Terms' element={<Terms />} />
-                    <Route path='/faq' element={<Faq />} />
-                    <Route path='/contact' element={<Contact />} />
-                    {/* <Route path="/contributors" element={<Contributors />} /> */}
                     <Route
                       path='/cart'
                       element={
