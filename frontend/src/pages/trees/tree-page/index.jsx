@@ -1,20 +1,17 @@
 import { useContext } from 'react';
-import { Link } from 'react-router-dom';
 import { Helmet } from 'react-helmet-async';
 import { useParams, useNavigate } from 'react-router-dom';
-import { CartContext } from '@/context/cart-context';
-import { AuthContext } from '@/context/auth-context';
 import { FaCartPlus } from 'react-icons/fa';
-import useOneTree from '@/hooks/use-one-tree';
 import Button from '@/components/elements/button';
 import Breadcrumbs from '@/components/elements/breadcrumbs';
+import { CartContext } from '@/context/cart-context';
+import useOneTree from '@/hooks/use-one-tree';
 import backgroundImage from '/images/background/leaves-background.webp';
 import treeIcon from '/images/misc/tree.png';
 
 export default function TreePage() {
   const { id } = useParams();
   const { addTree } = useContext(CartContext);
-  const { isAuthenticated } = useContext(AuthContext);
   const { tree, isLoading, isError } = useOneTree(id);
   const navigate = useNavigate();
 
@@ -74,29 +71,46 @@ export default function TreePage() {
                     {tree.name}
                   </h1>
                 </div>
-                <p className='bg-mint text-accent rounded-full px-3 py-1'>
-                  {tree.price.$numberDecimal}&nbsp;€
-                </p>
+                <div className='hidden items-center gap-3 sm:flex'>
+                  <p className='bg-mint text-accent rounded-full px-3 py-1'>
+                    Price:&nbsp;{tree.price.$numberDecimal}&nbsp;€
+                  </p>
+                  <Button onClick={handleAddToCart} size='sm'>
+                    <FaCartPlus />
+                    <span>Plant now</span>
+                  </Button>
+                </div>
               </div>
 
               {/* Tree Details */}
-              <div className='flex items-center gap-4'>
-                <p>
-                  <span className='text-primary-dark font-semibold'>
-                    Category:
-                  </span>
-                  <span className='ml-2 inline-block font-semibold'>
-                    {tree.category}
-                  </span>
-                </p>
-                <p>
-                  <span className='text-primary-dark font-semibold'>
-                    Stock:
-                  </span>
-                  <span className='ml-2 inline-block font-semibold'>
-                    {tree.availableQuantity}
-                  </span>
-                </p>
+              <div className='space-y-3'>
+                <div className='flex items-center gap-3'>
+                  <p>
+                    <span className='text-primary-dark font-semibold'>
+                      Category:
+                    </span>
+                    <span className='ml-2 inline-block font-semibold'>
+                      {tree.category}
+                    </span>
+                  </p>
+                  <p>
+                    <span className='text-primary-dark font-semibold'>
+                      Stock:
+                    </span>
+                    <span className='ml-2 inline-block font-semibold'>
+                      {tree.availableQuantity}
+                    </span>
+                  </p>
+                </div>
+                <div className='flex w-full items-center justify-end gap-3 sm:hidden'>
+                  <p className='bg-mint text-accent rounded-full px-3 py-1'>
+                    Price:&nbsp;{tree.price.$numberDecimal}&nbsp;€
+                  </p>
+                  <Button onClick={handleAddToCart} size='sm'>
+                    <FaCartPlus />
+                    <span>Plant now</span>
+                  </Button>
+                </div>
               </div>
 
               {/* Tree Image */}
@@ -129,22 +143,15 @@ export default function TreePage() {
               </div>
 
               {/* Add to Cart Function */}
-              {isAuthenticated && (
-                <Button onClick={handleAddToCart}>
-                  <FaCartPlus />
-                  <span>Add to Cart</span>
-                </Button>
-              )}
-
-              {!isAuthenticated && (
-                // TODO: Take the tree and add it to the Cart upon login/signup
-                <Link to='/login' className='w-full'>
-                  <Button variant='primary' rounded={true} className='w-full'>
-                    <FaCartPlus />
-                    <span>Please login to sponsor this tree</span>
-                  </Button>
-                </Link>
-              )}
+              <Button
+                variant='primary'
+                rounded={true}
+                className='w-full'
+                onClick={handleAddToCart}
+              >
+                <FaCartPlus />
+                <span>Plant this tree now</span>
+              </Button>
             </div>
           </div>
         </div>
