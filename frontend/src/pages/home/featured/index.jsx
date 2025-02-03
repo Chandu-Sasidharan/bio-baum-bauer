@@ -1,5 +1,5 @@
 import { Link } from 'react-router-dom';
-import Spinner from '@/components/elements/spinner';
+import Spinner from '@/components/spinner';
 import useFeaturedTrees from '@/hooks/use-featured-trees';
 import Card from './card';
 import styles from './featured.module.css';

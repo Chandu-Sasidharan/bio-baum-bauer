@@ -1,5 +1,5 @@
 import { Link } from 'react-router-dom';
-import Button from '@/components/elements/button';
+import Button from '@/components/ui/button';
 import { FaArrowRightLong } from 'react-icons/fa6';
 import missionImage from '/images/more/mission.jpeg';
 import treeIcon from '/images/misc/tree.png';

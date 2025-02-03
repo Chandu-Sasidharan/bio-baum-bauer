@@ -4,7 +4,7 @@ import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
 import axios from '@/utils/axios';
-import Button from '@/components/elements/button';
+import Button from '@/components/ui/button';
 import showAlert from '@/utils/alert';
 import formatError from '@/utils/format-error';
 

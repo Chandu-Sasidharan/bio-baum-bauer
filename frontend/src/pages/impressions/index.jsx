@@ -1,8 +1,8 @@
 import { useState, useEffect } from 'react';
 import { Helmet } from 'react-helmet-async';
 import { Fade } from 'react-awesome-reveal';
-import Spinner from '@/components/elements/spinner';
-import Button from '@/components/elements/button';
+import Spinner from '@/components/spinner';
+import Button from '@/components/ui/button';
 import backgroundImage from '/images/background/leaves-background.webp';
 import useImpressions from '@/hooks/use-impressions';
 import ImageModal from './modal';

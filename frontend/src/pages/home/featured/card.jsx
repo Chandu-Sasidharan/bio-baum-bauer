@@ -1,4 +1,4 @@
-import Button from '@/components/elements/button';
+import Button from '@/components/ui/button';
 import styles from './featured.module.css';
 
 export default function Card({ imageUrl, name, price, children }) {

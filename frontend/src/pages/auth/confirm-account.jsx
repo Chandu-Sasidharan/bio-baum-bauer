@@ -1,7 +1,7 @@
 import { useEffect } from 'react';
 import { useSearchParams, useNavigate } from 'react-router-dom';
 import { useUser } from '@/context/auth-context';
-import Spinner from '@/components/elements/spinner';
+import Spinner from '@/components/spinner';
 import showAlert from '@/utils/alert';
 
 export default function ConfirmAccount() {

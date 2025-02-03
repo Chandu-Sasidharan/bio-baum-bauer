@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { fallDown as FalldownMenu } from 'react-burger-menu';
-import Button from '@/components/elements/button';
+import Button from '@/components/ui/button';
 import closeIcon from '/images/misc/close-icon.svg';
 import hamburgerIcon from '/images/misc/hamburger-icon.svg';
 import menuItems from '@/components/navbar/bottom-navbar/menu-items';

@@ -1,7 +1,7 @@
 import { Link } from 'react-router-dom';
 import { Helmet } from 'react-helmet-async';
-import Button from '@/components/elements/button';
-import Breadcrumbs from '@/components/elements/breadcrumbs';
+import Button from '@/components/ui/button';
+import Breadcrumbs from '@/components/breadcrumbs';
 import backgroundImage from '/images/background/leaves-background.webp';
 import treeIcon from '/images/misc/tree.png';
 

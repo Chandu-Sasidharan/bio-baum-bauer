@@ -1,7 +1,7 @@
 import { FaYoutube, FaLocationDot, FaLinkedin } from 'react-icons/fa6';
 import { BsTwitterX } from 'react-icons/bs';
 import { MdEmail } from 'react-icons/md';
-import SocialLink from '@/components/elements/social-link';
+import SocialLink from '@/components/ui/social-link';
 import MenuLink from '@/components/footer/menu-link';
 import logoFooter from '/images/logo/bbb-logo-footer.svg';
 

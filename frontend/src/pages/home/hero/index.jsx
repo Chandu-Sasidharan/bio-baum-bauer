@@ -3,7 +3,7 @@ import { Link as ScrollLink } from 'react-scroll';
 import logoImage from '/images/logo/bbb-logo.svg';
 import { FaArrowDown } from 'react-icons/fa6';
 import style from '@/pages/home/hero/hero.module.css';
-import Button from '@/components/elements/button';
+import Button from '@/components/ui/button';
 import treeIcon from '/images/misc/tree.png';
 
 export default function Hero() {

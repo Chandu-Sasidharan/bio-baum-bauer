@@ -1,6 +1,6 @@
 import { Outlet } from 'react-router-dom';
 import backgroundImage from '/images/background/leaves-background.webp';
-import Breadcrumbs from '@/components/elements/breadcrumbs';
+import Breadcrumbs from '@/components/breadcrumbs';
 import Sidebar from '@/pages/account/sidebar';
 
 export default function AccountLayout() {

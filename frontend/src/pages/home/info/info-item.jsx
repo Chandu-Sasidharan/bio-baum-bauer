@@ -1,6 +1,6 @@
 import { Link } from 'react-router-dom';
 import { FaArrowRightLong } from 'react-icons/fa6';
-import Button from '@/components/elements/button';
+import Button from '@/components/ui/button';
 
 export default function InfoItem({ title, description, link }) {
   return (

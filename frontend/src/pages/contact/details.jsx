@@ -3,7 +3,7 @@ import { BsTwitterX } from 'react-icons/bs';
 import treeIcon from '/images/misc/tree.png';
 import { FaYoutube, FaLocationDot } from 'react-icons/fa6';
 import { FaLinkedin, FaSquarePhone } from 'react-icons/fa6';
-import SocialLink from '@/components/elements/social-link';
+import SocialLink from '@/components/ui/social-link';
 
 export default function Details() {
   return (

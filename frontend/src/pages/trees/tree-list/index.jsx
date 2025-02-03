@@ -1,8 +1,8 @@
 import { useState, useEffect } from 'react';
 import { Fade } from 'react-awesome-reveal';
 import { Helmet } from 'react-helmet-async';
-import Spinner from '@/components/elements/spinner';
-import Breadcrumbs from '@/components/elements/breadcrumbs';
+import Spinner from '@/components/spinner';
+import Breadcrumbs from '@/components/breadcrumbs';
 import backgroundImage from '/images/background/leaves-background.webp';
 import useTrees from '@/hooks/use-trees';
 import Sidebar from './sidebar';

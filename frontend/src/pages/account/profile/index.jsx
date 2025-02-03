@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { Helmet } from 'react-helmet-async';
 import { useUser } from '@/context/auth-context';
-import Button from '@/components/elements/button';
+import Button from '@/components/ui/button';
 import ViewMode from '@/pages/account/profile/view-mode';
 import EditMode from '@/pages/account/profile/edit-mode';
 

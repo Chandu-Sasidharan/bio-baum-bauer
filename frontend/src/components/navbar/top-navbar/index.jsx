@@ -3,7 +3,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import { CgProfile } from 'react-icons/cg';
 import { PiShoppingCartSimpleFill } from 'react-icons/pi';
 import { IoIosArrowDown, IoIosArrowUp, IoMdLogOut } from 'react-icons/io';
-import Button from '@/components/elements/button';
+import Button from '@/components/ui/button';
 import { CartContext } from '@/context/cart-context';
 import { useUser } from '@/context/auth-context';
 import logoImage from '/images/logo/bbb-logo.svg';

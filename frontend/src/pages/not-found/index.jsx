@@ -1,7 +1,7 @@
 import { useNavigate } from 'react-router-dom';
 import { Helmet } from 'react-helmet-async';
 import { RiArrowGoBackFill } from 'react-icons/ri';
-import Button from '@/components/elements/button';
+import Button from '@/components/ui/button';
 
 export default function NotFound() {
   const navigate = useNavigate();

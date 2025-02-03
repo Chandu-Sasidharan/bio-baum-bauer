@@ -1,6 +1,6 @@
 import { Helmet } from 'react-helmet-async';
 import backgroundImage from '/images/background/leaves-background.webp';
-import Breadcrumbs from '@/components/elements/breadcrumbs';
+import Breadcrumbs from '@/components/breadcrumbs';
 import Map from '@/pages/contact/map';
 import Form from '@/pages/contact/form';
 import Details from '@/pages/contact/details';
