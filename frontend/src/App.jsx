@@ -17,7 +17,7 @@ import AccountLayout from '@/pages/account';
 import Profile from '@/pages/account/profile';
 import NewsArticle from './pages/NewsArticle';
 import Privacy from '@/pages/privacy';
-import Terms from './pages/TermsConditions';
+import Terms from '@/pages/terms';
 import './assets/styles/PrevNext.css';
 import SuccessPage from './pages/SuccessPage';
 import CancelPage from './pages/CancelPage';
@@ -57,7 +57,7 @@ function App() {
                     <Route path='/impressions' element={<Impressions />} />
                     <Route path='/privacy' element={<Privacy />} />
                     <Route path='/faq' element={<Faq />} />
-                    <Route path='/Terms' element={<Terms />} />
+                    <Route path='/terms' element={<Terms />} />
                     <Route path='/contact' element={<Contact />} />
                     <Route path='/news' element={<News />} />
                     <Route path='/news/:id' element={<NewsArticle />} />

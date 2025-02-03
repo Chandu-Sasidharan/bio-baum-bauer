@@ -22,7 +22,10 @@ export default function Privacy() {
             className='mx-auto flex w-full max-w-7xl flex-col gap-2 rounded-md p-10 shadow-sm md:p-16'
             style={{ backgroundColor: 'rgba(255, 255, 255, 0.9)' }}
           >
-            <p className='text-stone leading-8'>
+            <h1 className='text-accent font-chicle text-3xl tracking-wide md:text-4xl'>
+              Privacy Policy of BioBaumBauer
+            </h1>
+            <p>
               At{' '}
               <span className='text-accent font-semibold'>Bio Baum Bauer</span>,
               accessible from{' '}
