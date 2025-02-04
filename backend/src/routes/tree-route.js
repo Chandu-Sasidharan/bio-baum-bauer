@@ -10,7 +10,7 @@ const router = express.Router();
 
 router.get('/', getAllTrees);
 router.get('/featured', getAllFeaturedTrees);
-router.get('/cart', getTreesInCart);
 router.get('/:id', getTreeById);
+router.post('/cart', getTreesInCart);
 
 export default router;

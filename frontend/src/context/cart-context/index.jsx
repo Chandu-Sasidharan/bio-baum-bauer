@@ -42,11 +42,11 @@ export const CartProvider = ({ children }) => {
     const updateCartTrees = async () => {
       if (cartItems.length > 0) {
         const response = await axios.post('/api/trees/cart', {
-          ids: cartItems.map(item => item.id),
+          ids: cartItems.map(item => item._id),
         });
 
         const updatedCartTrees = response.data.trees.map(tree => {
-          const cartItem = cartItems.find(item => item.id === tree.id);
+          const cartItem = cartItems.find(item => item._id === tree._id);
           return { ...tree, quantity: cartItem ? cartItem.quantity : 0 };
         });
 
@@ -57,7 +57,7 @@ export const CartProvider = ({ children }) => {
     };
 
     updateCartTrees();
-  }, []);
+  }, [cartItems]);
 
   // Save cartItems to Local Storage
   useEffect(() => {
@@ -88,24 +88,12 @@ export const CartProvider = ({ children }) => {
         );
       });
 
-      setCartTrees(prev => {
-        return prev.map(tree =>
-          tree._id === newTree._id
-            ? { ...tree, quantity: tree.quantity + 1 }
-            : tree
-        );
-      });
-
       return;
     }
 
     // If no existing tree, add a new tree to the cart
     setCartItems(prev => {
       return [...prev, { _id: newTree._id, quantity: 1 }];
-    });
-
-    setCartTrees(prev => {
-      return [...prev, { ...newTree, quantity: 1 }];
     });
   };
 
