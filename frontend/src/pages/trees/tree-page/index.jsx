@@ -11,12 +11,9 @@ export default function TreePage() {
   const { id } = useParams();
   const { addTreeToCart } = useCart();
   const { tree, isLoading, isError } = useOneTree(id);
-  const navigate = useNavigate();
 
   const handleAddToCart = () => {
     addTreeToCart(tree);
-    // Redirect to the cart page
-    navigate('/cart');
   };
 
   if (isLoading) {

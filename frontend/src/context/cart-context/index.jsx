@@ -17,9 +17,6 @@ export const CartProvider = ({ children }) => {
   const [cartTrees, setCartTrees] = useState([]);
   const navigate = useNavigate();
 
-  console.log('cartItems', cartItems);
-  console.log('cartTrees', cartTrees);
-
   // Get CartItems from Local Storage
   useEffect(() => {
     try {
@@ -64,7 +61,7 @@ export const CartProvider = ({ children }) => {
     lsRef?.setItem('cart', JSON.stringify(cartItems));
   }, [cartItems]);
 
-  // Add tree to the shopping cart
+  // Add Tree to the Cart
   const addTreeToCart = newTree => {
     const existingTree = cartItems.find(tree => tree._id === newTree._id);
 
@@ -80,6 +77,7 @@ export const CartProvider = ({ children }) => {
     }
 
     if (existingTree) {
+      // If existing tree, update the quantity
       setCartItems(prev => {
         return prev.map(tree =>
           tree._id === newTree._id
@@ -87,14 +85,14 @@ export const CartProvider = ({ children }) => {
             : tree
         );
       });
-
-      return;
+    } else {
+      // If no existing tree, add new to the cart
+      setCartItems(prev => {
+        return [...prev, { _id: newTree._id, quantity: 1 }];
+      });
     }
 
-    // If no existing tree, add a new tree to the cart
-    setCartItems(prev => {
-      return [...prev, { _id: newTree._id, quantity: 1 }];
-    });
+    navigate('/cart');
   };
 
   // Remove tree from the shopping cart
