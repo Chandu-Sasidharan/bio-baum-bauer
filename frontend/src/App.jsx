@@ -1,7 +1,7 @@
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import { QueryClientProvider } from '@tanstack/react-query';
 import createQueryClient from '@/utils/create-query-client';
-import { CartContextProvider } from '@/context/cart-context';
+import { CartProvider } from '@/context/cart-context';
 import { AuthProvider } from '@/context/auth-context';
 import Layout from '@/layout';
 import Home from '@/pages/home';
@@ -29,7 +29,7 @@ import Checkout from './pages/user/Checkout';
 import Order from './pages/user/Order';
 import News from './pages/News';
 import Faqs from '@/pages/faqs';
-import Cart from './pages/user/Cart';
+import Cart from '@/pages//cart';
 import NotFound from '@/pages/not-found';
 
 function App() {
@@ -40,7 +40,7 @@ function App() {
       <BrowserRouter>
         <QueryClientProvider client={queryClient}>
           <AuthProvider>
-            <CartContextProvider>
+            <CartProvider>
               <PatronProvider>
                 <Routes>
                   <Route path='/' element={<Layout />}>
@@ -61,6 +61,17 @@ function App() {
                       path='/confirm-account'
                       element={<ConfirmAccount />}
                     />
+                    <Route
+                      path='/account'
+                      element={
+                        <ProtectedRoute>
+                          <AccountLayout />
+                        </ProtectedRoute>
+                      }
+                    >
+                      <Route index element={<Profile />} />
+                      <Route path='sponsorships' element={<Sponsorship />} />
+                    </Route>
                     <Route
                       path='/cart'
                       element={
@@ -85,18 +96,6 @@ function App() {
                         </ProtectedRoute>
                       }
                     />
-                    <Route
-                      path='/account'
-                      element={
-                        <ProtectedRoute>
-                          <AccountLayout />
-                        </ProtectedRoute>
-                      }
-                    >
-                      <Route index element={<Profile />} />
-                      <Route path='sponsorships' element={<Sponsorship />} />
-                    </Route>
-
                     <Route
                       path='/success'
                       element={
@@ -126,7 +125,7 @@ function App() {
                   </Route>
                 </Routes>
               </PatronProvider>
-            </CartContextProvider>
+            </CartProvider>
           </AuthProvider>
         </QueryClientProvider>
       </BrowserRouter>

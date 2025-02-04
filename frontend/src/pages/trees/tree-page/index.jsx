@@ -1,22 +1,20 @@
-import { useContext } from 'react';
 import { Helmet } from 'react-helmet-async';
 import { useParams, useNavigate } from 'react-router-dom';
-import { FaCartPlus } from 'react-icons/fa';
 import Button from '@/components/ui/button';
 import Breadcrumbs from '@/components/breadcrumbs';
-import { CartContext } from '@/context/cart-context';
 import useOneTree from '@/hooks/use-one-tree';
 import backgroundImage from '/images/background/leaves-background.webp';
 import treeIcon from '/images/misc/tree.png';
+import { useCart } from '@/context/cart-context';
 
 export default function TreePage() {
   const { id } = useParams();
-  const { addTree } = useContext(CartContext);
+  const { addTreeToCart } = useCart();
   const { tree, isLoading, isError } = useOneTree(id);
   const navigate = useNavigate();
 
   const handleAddToCart = () => {
-    addTree(id);
+    addTreeToCart(tree);
     // Redirect to the cart page
     navigate('/cart');
   };
@@ -64,7 +62,6 @@ export default function TreePage() {
                     style={{
                       width: '35px',
                       height: '35px',
-                      borderRadius: '50%',
                     }}
                   />
                   <h1 className='font-chicle text-nowrap text-3xl md:text-4xl'>
@@ -76,7 +73,14 @@ export default function TreePage() {
                     Price:&nbsp;{tree.price.$numberDecimal}&nbsp;€
                   </p>
                   <Button onClick={handleAddToCart} size='sm'>
-                    <FaCartPlus />
+                    <img
+                      src={treeIcon}
+                      alt='Tree Icon'
+                      style={{
+                        width: '16px',
+                        height: '16px',
+                      }}
+                    />
                     <span>Plant now</span>
                   </Button>
                 </div>
@@ -107,7 +111,14 @@ export default function TreePage() {
                     Price:&nbsp;{tree.price.$numberDecimal}&nbsp;€
                   </p>
                   <Button onClick={handleAddToCart} size='sm'>
-                    <FaCartPlus />
+                    <img
+                      src={treeIcon}
+                      alt='Tree Icon'
+                      style={{
+                        width: '16px',
+                        height: '16px',
+                      }}
+                    />
                     <span>Plant now</span>
                   </Button>
                 </div>
@@ -149,7 +160,14 @@ export default function TreePage() {
                 className='w-full'
                 onClick={handleAddToCart}
               >
-                <FaCartPlus />
+                <img
+                  src={treeIcon}
+                  alt='Tree Icon'
+                  style={{
+                    width: '16px',
+                    height: '16px',
+                  }}
+                />
                 <span>Plant this tree now</span>
               </Button>
             </div>

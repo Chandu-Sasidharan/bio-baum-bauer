@@ -1,180 +1,114 @@
-import { createContext, useEffect, useState } from 'react';
-import axios from '@/utils/axios';
-import Swal from 'sweetalert2';
+import { createContext, useEffect, useState, useContext } from 'react';
+import { useNavigate } from 'react-router-dom';
+// import axios from '@/utils/axios';
+import showAlert from '@/utils/alert';
 
 export const CartContext = createContext({});
+export const useCart = () => {
+  return useContext(CartContext);
+};
 
-export function CartContextProvider({ children }) {
-  const ls = typeof window !== 'undefined' ? window.localStorage : null;
-  const [cartTrees, setCartTrees] = useState([]);
-  const [cartProducts, setCartProducts] = useState([]);
-  const [loading, setLoading] = useState(false);
+export const CartProvider = ({ children }) => {
+  const lsRef = typeof window !== 'undefined' ? window.localStorage : null;
+  const [shoppingCart, setShoppingCart] = useState([]);
+  const [isCartLoading, setIsCartLoading] = useState(false);
+  const navigate = useNavigate();
 
+  // Get Cart from Local Storage
   useEffect(() => {
-    if (cartTrees?.length > 0) {
-      ls?.setItem('cart', JSON.stringify(cartTrees));
-    }
-  }, [cartTrees]);
-
-  useEffect(() => {
-    if (ls && ls.getItem('cart')) {
-      const storedCart = JSON.parse(ls.getItem('cart'));
-      if (storedCart.length === 0) {
-        ls.removeItem('cart');
-      }
-      setCartTrees(storedCart);
-    }
-  }, []);
-
-  function addTree(treeId) {
-    setCartTrees(prev => [...prev, treeId]);
-  }
-
-  function removeTree(treeId) {
-    setCartTrees(prev => {
-      const pos = prev.indexOf(treeId);
-      if (pos !== -1) {
-        const updatedCart = prev.filter((value, index) => index !== pos);
-
-        if (updatedCart.length === 0) {
-          ls?.removeItem('cart');
+    try {
+      if (lsRef) {
+        const cartData = lsRef.getItem('cart');
+        if (cartData) {
+          const itemsInLocalStorage = JSON.parse(cartData);
+          if (Array.isArray(itemsInLocalStorage)) {
+            setShoppingCart(itemsInLocalStorage);
+          }
         }
-
-        return updatedCart;
       }
-      return prev;
+    } catch (error) {
+      // Do nothing
+    }
+  }, [lsRef, setShoppingCart]);
+
+  // Save Cart to Local Storage
+  useEffect(() => {
+    lsRef?.setItem('cart', JSON.stringify(shoppingCart));
+  }, [shoppingCart]);
+
+  // Add tree to the shopping cart
+  const addTreeToCart = newTree => {
+    setShoppingCart(prev => {
+      const existingTree = prev.find(tree => tree.id === newTree.id);
+
+      if (existingTree) {
+        // Check if adding another tree exceeds the available quantity
+        if (existingTree.quantity < newTree.availableQuantity) {
+          return prev.map(tree =>
+            tree.id === newTree.id
+              ? { ...tree, quantity: tree.quantity + 1 }
+              : tree
+          );
+        } else {
+          showAlert(
+            'error',
+            'Out of Stock',
+            `You cannot add more than ${newTree.availableQuantity} of this tree to the cart.`
+          );
+          return prev;
+        }
+      } else {
+        return [...prev, { ...newTree, quantity: 1 }];
+      }
     });
-  }
 
-  const removeButton = treeId => {
-    setCartTrees(prevCart => {
-      const updatedCart = prevCart.filter(id => id !== treeId);
+    navigate('/cart');
+  };
 
-      if (updatedCart.length === 0) {
-        ls?.removeItem('cart');
-      }
+  // Remove tree from the shopping cart
+  const removeTreeFromCart = treeId => {
+    setShoppingCart(prev => {
+      const updatedCart = prev.filter(tree => tree.id !== treeId);
 
       return updatedCart;
     });
   };
 
-  function clearCart() {
-    localStorage.removeItem('cart');
-    setCartTrees([]);
-  }
-
-  // Function to count occurrences of a specific tree ID in cartTrees
-  const getTreeQuantity = treeId => {
-    return cartTrees.filter(id => id === treeId).length;
+  // Get Tree Count
+  const getTreeCount = treeId => {
+    const tree = shoppingCart.find(tree => tree.id === treeId);
+    return tree ? tree.quantity : 0;
   };
 
-  // Calculate the total price for each item
-  const getItemTotalPrice = tree => {
-    const quantity = getTreeQuantity(tree._id);
-    return quantity * parseFloat(tree.price.$numberDecimal);
+  // Clear the shopping cart
+  const clearShoppingCart = () => {
+    setShoppingCart([]);
   };
 
-  // Calculate the overall total price
+  // Calculate the total price of the shopping cart
   const calculateTotalPrice = () => {
-    return cartProducts.reduce((total, tree) => {
-      return total + getItemTotalPrice(tree);
+    const total = shoppingCart.reduce((total, tree) => {
+      const price = parseFloat(tree.price.toString());
+      return total + price * tree.quantity;
     }, 0);
-  };
 
-  // Tax rate is 19%
-  const TAX_RATE = 0.19;
-
-  // Calculate the overall total price including tax
-  const calculateGrandTotal = () => {
-    // Calculate total price without tax
-    const totalPriceWithoutTax = calculateTotalPrice();
-
-    // Calculate tax based on the total price
-    const totalTax = totalPriceWithoutTax * TAX_RATE;
-
-    // Calculate grand total by adding total price and tax
-    const grandTotal = totalPriceWithoutTax + totalTax;
-
-    return grandTotal;
-  };
-
-  const handleAddTree = tree => {
-    const treeQuantityInCart = getTreeQuantity(tree._id);
-    if (treeQuantityInCart < tree.availableQuantity) {
-      addTree(tree._id);
-    } else {
-      Swal.fire({
-        text: `Cannot add more ${tree.name}. Maximum available: ${tree.availableQuantity}`,
-        icon: 'error',
-        showClass: {
-          popup: 'animate__animated animate__fadeInUp animate__faster',
-        },
-        hideClass: {
-          popup: 'animate__animated animate__fadeOutDown animate__faster',
-        },
-        customClass: {
-          confirmButton: 'sweet-alert-btn',
-        },
-        buttonsStyling: false,
-      });
-    }
-  };
-
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        if (cartTrees.length > 0) {
-          setLoading(true);
-
-          const response = await axios.post('/api/tree/cart', {
-            ids: cartTrees,
-          });
-
-          setCartProducts(response.data);
-          setLoading(false);
-        } else {
-          setCartProducts([]);
-        }
-      } catch (error) {
-        console.error('Error fetching cart products:', error);
-        setLoading(false);
-      }
-    };
-
-    fetchData();
-  }, [cartTrees]);
-
-  const getSelectedDataFromCart = () => {
-    return cartProducts.map(tree => ({
-      treeId: tree._id,
-      treeName: tree.name,
-      treeImage: tree.image,
-      treePrice: Number(tree.price.$numberDecimal),
-      qty: getTreeQuantity(tree._id),
-    }));
+    return parseFloat(total.toFixed(2));
   };
 
   return (
     <CartContext.Provider
       value={{
-        cartTrees,
-        cartProducts,
-        loading,
-        setCartTrees,
-        addTree,
-        removeTree,
-        removeButton,
-        clearCart,
-        getTreeQuantity,
-        TAX_RATE,
-        getItemTotalPrice,
+        shoppingCart,
+        setShoppingCart,
+        isCartLoading,
+        addTreeToCart,
+        removeTreeFromCart,
+        clearShoppingCart,
         calculateTotalPrice,
-        calculateGrandTotal,
-        handleAddTree,
-        getSelectedDataFromCart,
+        getTreeCount,
       }}
     >
       {children}
     </CartContext.Provider>
   );
-}
+};

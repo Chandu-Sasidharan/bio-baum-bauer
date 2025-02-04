@@ -1,13 +1,13 @@
-import { useContext, useEffect, useRef } from 'react';
+import { useEffect, useRef } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { CgProfile } from 'react-icons/cg';
 import { PiShoppingCartSimpleFill } from 'react-icons/pi';
 import { IoIosArrowDown, IoIosArrowUp, IoMdLogOut } from 'react-icons/io';
 import Button from '@/components/ui/button';
-import { CartContext } from '@/context/cart-context';
 import { useUser } from '@/context/auth-context';
 import logoImage from '/images/logo/bbb-logo.svg';
 import treeIcon from '/images/misc/tree.png';
+import { useCart } from '@/context/cart-context';
 
 export default function TopNavBar({
   isNavbarFixed,
@@ -15,9 +15,9 @@ export default function TopNavBar({
   setTopNavDropdownOpen,
 }) {
   const { isAuthenticated, authUser, handleLogout } = useUser();
-  const { cartTrees } = useContext(CartContext);
-  const navigate = useNavigate();
+  const { shoppingCart } = useCart();
   const dropdownRef = useRef(null);
+  const navigate = useNavigate();
 
   useEffect(() => {
     if (isNavbarFixed) {
@@ -115,6 +115,7 @@ export default function TopNavBar({
                     <IoIosArrowDown className='text-primary-light text-xl' />
                   )}
                 </div>
+
                 {/* Dropdown Menu */}
                 <ul
                   className={`${
@@ -141,17 +142,18 @@ export default function TopNavBar({
                   </li>
                 </ul>
               </div>
+
               {/* Shopping Cart */}
               <Link to='/cart' aria-label='Cart page'>
-                <span className='bg-primary-light text-accent relative flex h-[45px] w-[45px] items-center justify-center rounded-full text-2xl'>
+                <span className='bg-primary-light text-accent relative flex h-[40px] w-[40px] items-center justify-center rounded-full text-xl'>
                   <PiShoppingCartSimpleFill />
-                  {!!cartTrees.length && (
-                    <div
-                      className='text-primary-light absolute right-[0.2rem] top-[0.2rem] flex h-6 w-6 items-center justify-center rounded-full bg-red-500 text-xs'
-                      style={{ transform: 'translate(50%, -50%)' }}
+                  {!!shoppingCart.length && (
+                    <span
+                      className='bg-golden-red absolute rounded-full px-[7px] py-[2px] text-xs text-white'
+                      style={{ transform: 'translate(90%, -90%)' }}
                     >
-                      {cartTrees.length}
-                    </div>
+                      {shoppingCart.length}
+                    </span>
                   )}
                 </span>
               </Link>
