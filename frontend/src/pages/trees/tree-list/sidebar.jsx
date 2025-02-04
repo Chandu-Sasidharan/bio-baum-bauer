@@ -8,8 +8,9 @@ export default function Sidebar({ setSort, setCategory }) {
         <select
           onChange={e => setSort(e.target.value)}
           className='select border-primary w-full rounded pl-3 focus:outline-none'
+          defaultValue=''
         >
-          <option value='' disabled selected>
+          <option value='' disabled>
             Sort By
           </option>
           <option value='name:asc'>Name Ascending</option>
@@ -24,8 +25,9 @@ export default function Sidebar({ setSort, setCategory }) {
         <select
           onChange={e => setCategory(e.target.value)}
           className='select border-primary w-full rounded pl-3 focus:outline-none'
+          defaultValue=''
         >
-          <option value='' disabled selected>
+          <option value='' disabled>
             Filter By Category
           </option>
           <option value='Fruit Tree'>Fruit Tree</option>

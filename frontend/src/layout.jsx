@@ -38,7 +38,7 @@ export default function Layout() {
 
   return (
     <HelmetProvider>
-      <div className='text-accent'>
+      <div className='text-accent' id='outer-container'>
         <header>
           <Navbar
             isNavbarFixed={isNavbarFixed}
@@ -46,7 +46,7 @@ export default function Layout() {
             setTopNavDropdownOpen={setTopNavDropdownOpen}
           />
         </header>
-        <main className={mainClasses}>
+        <main className={mainClasses} id='page-wrap'>
           <Outlet />
         </main>
         <footer className={footerClasses}>

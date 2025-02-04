@@ -40,6 +40,8 @@ export default function MobileMenu() {
         customCrossIcon={false}
         width={'100%'}
         className='bg-primary fixed left-0 top-0 h-screen overflow-y-auto p-4 pt-10'
+        outerContainerId='outer-container'
+        pageWrapId='page-wrap'
       >
         {/* Close Menu Button */}
         <div className='absolute right-6 top-6'>
