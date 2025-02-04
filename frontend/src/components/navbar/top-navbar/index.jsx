@@ -15,9 +15,10 @@ export default function TopNavBar({
   setTopNavDropdownOpen,
 }) {
   const { isAuthenticated, authUser, handleLogout } = useUser();
-  const { shoppingCart } = useCart();
+  const { getTotalTreeCount } = useCart();
   const dropdownRef = useRef(null);
   const navigate = useNavigate();
+  const totalTreeCount = getTotalTreeCount();
 
   useEffect(() => {
     if (isNavbarFixed) {
@@ -147,12 +148,12 @@ export default function TopNavBar({
               <Link to='/cart' aria-label='Cart page'>
                 <span className='bg-primary-light text-accent relative flex h-[40px] w-[40px] items-center justify-center rounded-full text-xl'>
                   <PiShoppingCartSimpleFill />
-                  {!!shoppingCart.length && (
+                  {!!totalTreeCount && (
                     <span
                       className='bg-golden-red absolute rounded-full px-[7px] py-[2px] text-xs text-white'
                       style={{ transform: 'translate(90%, -90%)' }}
                     >
-                      {shoppingCart.length}
+                      {totalTreeCount}
                     </span>
                   )}
                 </span>

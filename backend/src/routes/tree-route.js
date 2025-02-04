@@ -3,12 +3,14 @@ import {
   getAllTrees,
   getTreeById,
   getAllFeaturedTrees,
+  getTreesInCart,
 } from '#src/controllers/tree-controller.js';
 
 const router = express.Router();
 
 router.get('/', getAllTrees);
 router.get('/featured', getAllFeaturedTrees);
+router.get('/cart', getTreesInCart);
 router.get('/:id', getTreeById);
 
 export default router;

@@ -1,7 +1,7 @@
 import { createContext, useEffect, useState, useContext } from 'react';
 import { useNavigate } from 'react-router-dom';
-// import axios from '@/utils/axios';
 import showAlert from '@/utils/alert';
+import axios from '@/utils/axios';
 
 export const CartContext = createContext({});
 export const useCart = () => {
@@ -9,87 +9,142 @@ export const useCart = () => {
 };
 
 export const CartProvider = ({ children }) => {
+  // Local Storage Reference
   const lsRef = typeof window !== 'undefined' ? window.localStorage : null;
-  const [shoppingCart, setShoppingCart] = useState([]);
-  const [isCartLoading, setIsCartLoading] = useState(false);
+  // Cart item is an array of objects with tree id and quantity
+  const [cartItems, setCartItems] = useState([]);
+  // Cart trees is an array of tree objects
+  const [cartTrees, setCartTrees] = useState([]);
   const navigate = useNavigate();
 
-  // Get Cart from Local Storage
+  console.log('cartItems', cartItems);
+  console.log('cartTrees', cartTrees);
+
+  // Get CartItems from Local Storage
   useEffect(() => {
     try {
       if (lsRef) {
-        const cartData = lsRef.getItem('cart');
-        if (cartData) {
-          const itemsInLocalStorage = JSON.parse(cartData);
+        const cart = lsRef.getItem('cart');
+        if (cart) {
+          const itemsInLocalStorage = JSON.parse(cart);
           if (Array.isArray(itemsInLocalStorage)) {
-            setShoppingCart(itemsInLocalStorage);
+            setCartItems(itemsInLocalStorage);
           }
         }
       }
     } catch (error) {
       // Do nothing
     }
-  }, [lsRef, setShoppingCart]);
+  }, [lsRef]);
 
-  // Save Cart to Local Storage
+  // Update cartTrees on initial load
   useEffect(() => {
-    lsRef?.setItem('cart', JSON.stringify(shoppingCart));
-  }, [shoppingCart]);
+    const updateCartTrees = async () => {
+      if (cartItems.length > 0) {
+        const response = await axios.post('/api/trees/cart', {
+          ids: cartItems.map(item => item.id),
+        });
+
+        const updatedCartTrees = response.data.trees.map(tree => {
+          const cartItem = cartItems.find(item => item.id === tree.id);
+          return { ...tree, quantity: cartItem ? cartItem.quantity : 0 };
+        });
+
+        setCartTrees(updatedCartTrees);
+      } else {
+        setCartTrees([]);
+      }
+    };
+
+    updateCartTrees();
+  }, []);
+
+  // Save cartItems to Local Storage
+  useEffect(() => {
+    lsRef?.setItem('cart', JSON.stringify(cartItems));
+  }, [cartItems]);
 
   // Add tree to the shopping cart
   const addTreeToCart = newTree => {
-    setShoppingCart(prev => {
-      const existingTree = prev.find(tree => tree.id === newTree.id);
+    const existingTree = cartItems.find(tree => tree._id === newTree._id);
 
-      if (existingTree) {
-        // Check if adding another tree exceeds the available quantity
-        if (existingTree.quantity < newTree.availableQuantity) {
-          return prev.map(tree =>
-            tree.id === newTree.id
-              ? { ...tree, quantity: tree.quantity + 1 }
-              : tree
-          );
-        } else {
-          showAlert(
-            'error',
-            'Out of Stock',
-            `You cannot add more than ${newTree.availableQuantity} of this tree to the cart.`
-          );
-          return prev;
-        }
-      } else {
-        return [...prev, { ...newTree, quantity: 1 }];
-      }
+    // Check if adding another tree exceeds the available quantity
+    if (existingTree && !(newTree.availableQuantity > existingTree.quantity)) {
+      showAlert(
+        'error',
+        'Out of Stock!',
+        `We don't have more than ${newTree.availableQuantity} of this tree in stock.`
+      );
+
+      return;
+    }
+
+    if (existingTree) {
+      setCartItems(prev => {
+        return prev.map(tree =>
+          tree._id === newTree._id
+            ? { ...tree, quantity: tree.quantity + 1 }
+            : tree
+        );
+      });
+
+      setCartTrees(prev => {
+        return prev.map(tree =>
+          tree._id === newTree._id
+            ? { ...tree, quantity: tree.quantity + 1 }
+            : tree
+        );
+      });
+
+      return;
+    }
+
+    // If no existing tree, add a new tree to the cart
+    setCartItems(prev => {
+      return [...prev, { _id: newTree._id, quantity: 1 }];
     });
 
-    navigate('/cart');
+    setCartTrees(prev => {
+      return [...prev, { ...newTree, quantity: 1 }];
+    });
   };
 
   // Remove tree from the shopping cart
   const removeTreeFromCart = treeId => {
-    setShoppingCart(prev => {
-      const updatedCart = prev.filter(tree => tree.id !== treeId);
+    setCartItems(prev => {
+      return prev.filter(tree => tree.id !== treeId);
+    });
 
-      return updatedCart;
+    setCartTrees(prev => {
+      return prev.filter(tree => tree.id !== treeId);
     });
   };
 
-  // Get Tree Count
+  // Get Tree Count by ID
   const getTreeCount = treeId => {
-    const tree = shoppingCart.find(tree => tree.id === treeId);
+    const tree = cartItems.find(tree => tree.id === treeId);
     return tree ? tree.quantity : 0;
   };
 
+  // Get Total Tree Count
+  const getTotalTreeCount = () => {
+    return cartItems.reduce((acc, tree) => {
+      return acc + tree.quantity;
+    }, 0);
+  };
+
   // Clear the shopping cart
-  const clearShoppingCart = () => {
-    setShoppingCart([]);
+  const clearCartTrees = () => {
+    setCartItems([]);
+    setCartTrees([]);
   };
 
   // Calculate the total price of the shopping cart
   const calculateTotalPrice = () => {
-    const total = shoppingCart.reduce((total, tree) => {
-      const price = parseFloat(tree.price.toString());
-      return total + price * tree.quantity;
+    if (!cartTrees) return 0;
+
+    const total = cartTrees.reduce((acc, tree) => {
+      return acc + tree.price * tree.quantity;
     }, 0);
 
     return parseFloat(total.toFixed(2));
@@ -98,14 +153,14 @@ export const CartProvider = ({ children }) => {
   return (
     <CartContext.Provider
       value={{
-        shoppingCart,
-        setShoppingCart,
-        isCartLoading,
+        cartItems,
+        cartTrees,
         addTreeToCart,
         removeTreeFromCart,
-        clearShoppingCart,
+        clearCartTrees,
         calculateTotalPrice,
         getTreeCount,
+        getTotalTreeCount,
       }}
     >
       {children}

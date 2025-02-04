@@ -13,7 +13,7 @@ const createJwt = user => {
   ]);
 
   const token = jwt.sign(payload, process.env.JWT_SECRET_KEY, {
-    expiresIn: '7m', // 7 minutes
+    expiresIn: '1d', // 1 day
   });
 
   return token;

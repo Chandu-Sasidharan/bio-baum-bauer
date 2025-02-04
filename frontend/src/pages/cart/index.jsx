@@ -10,14 +10,16 @@ import { useCart } from '@/context/cart-context';
 
 export default function Cart() {
   const {
-    shoppingCart,
+    cartTrees,
     calculateTotalPrice,
-    clearShoppingCart,
+    clearCartTrees,
     removeTreeFromCart,
     getTreeCount,
+    getTotalTreeCount,
   } = useCart();
 
   const totalPrice = calculateTotalPrice();
+  const totalTreeCount = getTotalTreeCount();
 
   return (
     <div>
@@ -33,7 +35,7 @@ export default function Cart() {
                 Sponsorship Cart
               </h3>
             </div>
-            {shoppingCart.length > 0 && (
+            {cartTrees.length > 0 && (
               <Link
                 to='/checkout'
                 className='bg-sage hover:bg-aloe hover:text-accent duration-4000 flex h-max items-center justify-center gap-1 rounded-full px-5 py-2 text-[1.2rem] text-white transition ease-linear md:text-[1.4rem] lg:px-8 lg:text-[1.7rem]'
@@ -46,7 +48,7 @@ export default function Cart() {
           {/* Sponsor Cart */}
           <div className='mt-0 flex flex-col items-start justify-start gap-[1rem] sm:mt-10 sm:gap-[2rem] lg:flex-row'>
             {/* Payment Information */}
-            {shoppingCart.length > 0 && (
+            {cartTrees.length > 0 && (
               <div className='w-[100%] lg:w-[30%]'>
                 <div className='bg-gray-light xs:p-2 mt-4 flex flex-col gap-[0.4rem] rounded-md p-4 lg:bg-none'>
                   {/* Total Price */}
@@ -111,9 +113,9 @@ export default function Cart() {
               </div>
             )}
             {/* Tree Image with Name, Qty, Price, Remove Tree Button */}
-            {shoppingCart.length > 0 && (
+            {cartTrees.length > 0 && (
               <div className='mt-6 flex w-full flex-col items-center justify-start gap-9 rounded-md py-3 md:px-2 lg:mt-4 lg:w-[70%] lg:border-l-4'>
-                {shoppingCart.map(product => (
+                {cartTrees.map(product => (
                   <div
                     key={product._id}
                     className='bg-gray-light flex w-full flex-col items-center justify-between gap-[0.5rem] rounded-md py-4 pt-5 sm:flex-row sm:gap-[2rem] md:px-4 md:py-6'
@@ -206,7 +208,7 @@ export default function Cart() {
                   <button
                     className='bg-aloe text-accent hover:bg-sage duration-4000 my-2 mb-6 flex w-full items-center justify-center gap-1 rounded-[10px] px-4 py-2 text-center transition ease-linear hover:text-white sm:mb-0'
                     aria-label='Clear Cart'
-                    onClick={() => clearShoppingCart()}
+                    onClick={() => clearCartTrees()}
                   >
                     <BsCartXFill size='1.3rem' />
                     <span>Clear Cart</span>
@@ -216,7 +218,7 @@ export default function Cart() {
             )}
 
             {/* Empty Cart Message and Link */}
-            {shoppingCart.length === 0 && (
+            {cartTrees.length === 0 && (
               <div className='mx-auto my-8 flex flex-col text-center'>
                 <div className='mb-4 flex items-center'>
                   <img

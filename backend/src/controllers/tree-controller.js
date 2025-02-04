@@ -72,6 +72,17 @@ export const getTreeById = async (req, res) => {
 export const getTreesInCart = async (req, res) => {
   try {
     const { ids } = req.body;
+
+    // Validate ids
+    if (
+      !Array.isArray(ids) ||
+      !ids.every(id => mongoose.Types.ObjectId.isValid(id))
+    ) {
+      return res
+        .status(StatusCodes.BAD_REQUEST)
+        .json({ message: 'Invalid tree IDs' });
+    }
+
     const trees = await Tree.find({ _id: { $in: ids } });
 
     return res.status(StatusCodes.OK).json({ trees });
