@@ -1,3 +1,4 @@
+import mongoose from 'mongoose';
 import { StatusCodes } from 'http-status-codes';
 import Tree from '#src/models/tree.js';
 
@@ -44,17 +45,24 @@ export const getAllFeaturedTrees = async (_req, res) => {
 
 // Get Tree by ID
 export const getTreeById = async (req, res) => {
-  try {
-    const id = req.params.id;
-    const tree = await Tree.findById(id);
+  const { id } = req.params;
 
+  // Check if the ID is a valid MongoDB ObjectId
+  if (!mongoose.Types.ObjectId.isValid(id)) {
+    return res
+      .status(StatusCodes.BAD_REQUEST)
+      .json({ message: 'Invalid Tree ID' });
+  }
+
+  try {
+    const tree = await Tree.findById(id);
     if (!tree) {
       return res
         .status(StatusCodes.NOT_FOUND)
-        .send('There is no tree with that id');
+        .json({ message: 'Tree not found' });
     }
 
-    return res.json({ tree });
+    return res.status(StatusCodes.OK).json({ tree });
   } catch (error) {
     throw error;
   }

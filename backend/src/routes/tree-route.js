@@ -8,7 +8,7 @@ import {
 const router = express.Router();
 
 router.get('/', getAllTrees);
-router.get('/:id', getTreeById);
 router.get('/featured', getAllFeaturedTrees);
+router.get('/:id', getTreeById);
 
 export default router;
