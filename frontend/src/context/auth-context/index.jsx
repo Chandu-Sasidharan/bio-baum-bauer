@@ -17,8 +17,8 @@ import showAlert from '@/utils/alert';
 import formatError from '@/utils/format-error';
 import { useNavigate } from 'react-router-dom';
 
-const INACTIVITY_TIMEOUT_INTERVAL = 15 * 60 * 1000; // 15 minutes
-const TOKEN_REFRESH_INTERVAL = 5 * 60 * 1000; // 5 minutes
+const INACTIVITY_TIMEOUT_INTERVAL = 60 * 60 * 1000; // 1 hour
+const TOKEN_REFRESH_INTERVAL = 30 * 60 * 1000; // 30 minutes
 
 // To be refactored step by step
 export const AuthContext = createContext({});
@@ -61,7 +61,7 @@ export const AuthProvider = ({ children }) => {
     if (authUser) {
       const updatedAuthUser = {
         ...authUser,
-        expiresAt: Date.now() + 6 * 60 * 1000, // 6 minutes
+        expiresAt: Date.now() + 60 * 60 * 1000, // 1 hour
       };
       lsRef.setItem('userSession', JSON.stringify(updatedAuthUser));
     }
