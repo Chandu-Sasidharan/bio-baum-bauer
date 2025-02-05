@@ -1,249 +1,165 @@
-import { MdOutlineShoppingCartCheckout } from 'react-icons/md';
-import { MdAddShoppingCart } from 'react-icons/md';
-import { BsCartXFill } from 'react-icons/bs';
-import { FaCartArrowDown } from 'react-icons/fa6';
-import { LuPlus, LuMinus } from 'react-icons/lu';
 import { Link } from 'react-router-dom';
-import { GoSponsorTiers } from 'react-icons/go';
-import treeIcon from '../../assets/tree.png';
+import { Helmet } from 'react-helmet-async';
+import { PiShoppingCartSimpleFill } from 'react-icons/pi';
+import Button from '@/components/ui/button';
+import Spinner from '@/components/spinner';
+import Breadcrumbs from '@/components/breadcrumbs';
+import backgroundImage from '/images/background/leaves-background.webp';
+import treeIcon from '/images/misc/tree.png';
 import { useCart } from '@/context/cart-context';
+import CartItem from './cart-item';
 
 export default function Cart() {
-  const {
-    cartTrees,
-    calculateTotalPrice,
-    clearCartTrees,
-    removeTreeFromCart,
-    getTreeCount,
-    getTotalTreeCount,
-  } = useCart();
+  const { cartTrees, calculatePrice, getTotalTreeCount, isCartLoading } =
+    useCart();
 
-  const totalPrice = calculateTotalPrice();
+  const { totalPrice, totalTax, grandTotal } = calculatePrice();
   const totalTreeCount = getTotalTreeCount();
 
+  if (isCartLoading) {
+    return <Spinner />;
+  }
+
   return (
-    <div>
-      <div className='bg-gray-light text-stone relative z-[4] mx-auto flex w-full items-center justify-center p-4 pb-[25px] md:p-6 md:pb-[40px] lg:bg-none lg:pb-[100px] xl:pb-[120px]'>
-        <div className='xs:p-2 mt-[2px] w-full rounded-lg bg-white p-3 shadow-lg md:p-4 lg:relative lg:z-0 lg:mt-[100px] lg:w-11/12 lg:p-8 xl:mt-[120px] xl:w-[90%] 2xl:w-[80%]'>
-          <div className='flex items-center justify-between'>
-            <div className='text-sage mx-auto flex w-full flex-row items-center justify-start rounded-[15px] py-4 sm:items-start'>
-              <div className='mr-[10px] flex h-[40px] w-[40px] items-center justify-center rounded-full bg-white'>
-                <FaCartArrowDown size='2rem' />
-              </div>
-              <h3 className='font-chicle hidden text-3xl md:block'>
-                {' '}
-                Sponsorship Cart
-              </h3>
-            </div>
-            {cartTrees.length > 0 && (
-              <Link
-                to='/checkout'
-                className='bg-sage hover:bg-aloe hover:text-accent duration-4000 flex h-max items-center justify-center gap-1 rounded-full px-5 py-2 text-[1.2rem] text-white transition ease-linear md:text-[1.4rem] lg:px-8 lg:text-[1.7rem]'
-              >
-                <MdOutlineShoppingCartCheckout /> <span>Checkout</span>
-              </Link>
-            )}
+    <>
+      <Helmet>
+        <title>Cart | Bio Baum Bauer</title>
+      </Helmet>
+
+      {/* Container */}
+      <section
+        style={{ backgroundImage: `url(${backgroundImage})` }}
+        className='bg-cover bg-center bg-no-repeat'
+      >
+        <div style={{ backgroundColor: 'rgba(255, 255, 255, 0.7)' }}>
+          {/* Breadcrumbs */}
+          <div className='px-5'>
+            <Breadcrumbs />
           </div>
 
-          {/* Sponsor Cart */}
-          <div className='mt-0 flex flex-col items-start justify-start gap-[1rem] sm:mt-10 sm:gap-[2rem] lg:flex-row'>
-            {/* Payment Information */}
-            {cartTrees.length > 0 && (
-              <div className='w-[100%] lg:w-[30%]'>
-                <div className='bg-gray-light xs:p-2 mt-4 flex flex-col gap-[0.4rem] rounded-md p-4 lg:bg-none'>
-                  {/* Total Price */}
-                  <div className='flex flex-col'>
-                    <div className='flex flex-row justify-between'>
-                      <div className='felx font-chicle text-accent text-xl tracking-wide'>
-                        Total Price:
-                      </div>
-                      <div className='text-md text-gray-dark flex'>
-                        € {totalPrice}
-                      </div>
+          {/* Content */}
+          <div className='p-2 sm:my-5 lg:p-5'>
+            <div
+              className='mx-auto flex max-w-[500px] flex-col justify-center rounded-md p-5 shadow-sm sm:p-10 lg:w-full lg:max-w-5xl lg:p-14'
+              style={{
+                backgroundColor: 'rgba(255, 255, 255, 0.9)',
+                minHeight: '50vh',
+              }}
+            >
+              {/* Cart Header */}
+              {!!totalTreeCount && (
+                <div className='flex items-center justify-between'>
+                  <div className='space-y-1'>
+                    <div className='flex items-center gap-2'>
+                      <PiShoppingCartSimpleFill className='text-2xl md:text-3xl' />
+                      <h1 className='font-chicle text-2xl tracking-wide md:text-3xl'>
+                        Your Cart
+                      </h1>
                     </div>
+                    <p className='text-stone'>
+                      Checkout to sponsor these trees and make an impact.
+                    </p>
                   </div>
-
-                  {/* Tax */}
-                  <div className='flex flex-col'>
-                    <div className='flex flex-row justify-between'>
-                      <div className='felx font-chicle text-accent text-xl tracking-wide'>
-                        Tax:
-                      </div>
-                      <div className='text-md text-gray-dark flex'>
-                        € {totalPrice}
-                      </div>
-                    </div>
-                  </div>
-
-                  {/* Grand Total */}
-                  <div className='flex flex-col'>
-                    <div className='flex flex-row justify-between'>
-                      <div className='felx font-chicle text-accent text-xl tracking-wide'>
-                        Grand Total:
-                      </div>
-                      <div className='text-md text-gray-dark price flex rounded-3xl px-4 py-1 font-bold'>
-                        € {totalPrice}
-                      </div>
-                    </div>
-                  </div>
-
-                  {/* Horizontal Line */}
-                  <hr className='border-primary mx-auto my-2 w-[70%] border-t-2' />
-
-                  {/* Checkout Link */}
-                  <Link
-                    to='/checkout'
-                    className='bg-sage hover:bg-aloe hover:text-accent duration-4000 my-2 flex w-full items-center justify-center gap-1 rounded-[10px] px-4 py-2 text-center text-white transition ease-linear'
-                    aria-label='Checkout page'
-                  >
-                    <MdOutlineShoppingCartCheckout size='1.3rem' />
-                    <span>Checkout</span>
-                  </Link>
-
-                  {/* Sponsor Tree Link */}
-                  <Link
-                    to='/trees'
-                    className='bg-primary text-stone hover:bg-primary-light duration-4000 my-2 flex w-full items-center justify-center gap-1 rounded-[10px] border-2 px-4 py-2 text-center transition ease-linear hover:border-2'
-                    aria-label='Sponsor Tree page'
-                  >
-                    <MdAddShoppingCart size='1.3rem' />
-                    <span>Add More Tree</span>
+                  <Link to='/checkout' className='hidden lg:block'>
+                    <Button className='uppercase'>
+                      <span>
+                        <PiShoppingCartSimpleFill className='text-lg' />
+                      </span>
+                      <span>Checkout</span>
+                    </Button>
                   </Link>
                 </div>
-              </div>
-            )}
-            {/* Tree Image with Name, Qty, Price, Remove Tree Button */}
-            {cartTrees.length > 0 && (
-              <div className='mt-6 flex w-full flex-col items-center justify-start gap-9 rounded-md py-3 md:px-2 lg:mt-4 lg:w-[70%] lg:border-l-4'>
-                {cartTrees.map(product => (
-                  <div
-                    key={product._id}
-                    className='bg-gray-light flex w-full flex-col items-center justify-between gap-[0.5rem] rounded-md py-4 pt-5 sm:flex-row sm:gap-[2rem] md:px-4 md:py-6'
-                  >
-                    {/* Tree Photo and Name */}
-                    <div className='flex w-full flex-col items-center sm:w-[25%] sm:items-start'>
-                      <div className='font-chicle text-accent hidden flex-row items-center pb-2 text-xl tracking-wide sm:flex'>
-                        <img
-                          src={treeIcon}
-                          alt='Tree Icon'
-                          className='mr-2 h-[30px] w-[30px]'
-                        />
-                        Tree
-                      </div>
-                      <Link to={`/trees/${product._id}`}>
-                        <div className='flex flex-col-reverse items-center sm:flex-row'>
-                          <img
-                            src={product.imageUrl}
-                            alt={product.name}
-                            className='mb-6 mr-0 mt-2 h-[200px] w-full rounded-[10px] object-cover sm:mb-0 sm:mr-2 md:h-[80px] md:w-[80px]'
-                          />
-                          <div
-                            className={`font-chicle sm:font-open-sans text-accent sm:text-gray-dark text-center text-2xl font-bold sm:text-start sm:text-[1rem]`}
-                          >
-                            {product.name}
-                          </div>
-                        </div>
-                      </Link>
+              )}
+
+              {/* Cart Details */}
+              <div className='mt-3 flex flex-col gap-4 lg:flex-row'>
+                {/* Left Side */}
+                {!!totalTreeCount && (
+                  <div className='mt-3 flex w-[100%] flex-col gap-5 lg:w-[30%]'>
+                    <div className='bg-primary-light flex flex-col gap-2 rounded-sm p-3'>
+                      <p className='flex justify-between'>
+                        <span className='text-lg'>Total Price:</span>
+                        <span className='text-lg'>€ {totalPrice}</span>
+                      </p>
+                      <p className='flex justify-between'>
+                        <span className='text-lg'>Tax:</span>
+                        <span className='text-lg'>€ {totalTax}</span>
+                      </p>
+                      <hr className='border-primary border-t-1 mx-auto my-2 w-[70%]' />
+                      <p className='flex justify-between text-nowrap'>
+                        <span className='text-lg'>Grand Total:</span>
+                        <span className='text-lg'>€ {grandTotal}</span>
+                      </p>
                     </div>
 
-                    {/* Tree Qty */}
-                    <div className='flex w-full flex-col items-start justify-start sm:w-[25%]'>
-                      <div className='font-chicle text-accent hidden flex-row items-start justify-start pb-2 text-xl tracking-wide sm:block sm:flex-1'>
-                        Qty
-                      </div>
-                      <div className='border-primary mx-auto flex flex-row items-center justify-center rounded-[10px] border p-[4px] sm:mx-0'>
-                        <button
-                          className='text-gray-dark bg-transparent p-2 text-lg'
-                          aria-label='Remove Tree'
-                          onClick={() => removeTreeFromCart(product._id)}
-                        >
-                          <LuMinus />
-                        </button>
-                        <span className='mx-2 text-lg'>
-                          {getTreeCount(product._id)}
-                        </span>
-                        <button
-                          className='text-gray-dark bg-transparent p-2 text-lg'
-                          aria-label='Add Tree'
-                          onClick={() => addTreeToCart(product)}
-                        >
-                          <LuPlus />
-                        </button>
-                      </div>
-                    </div>
-
-                    {/* Tree Price */}
-                    <div className='flex w-full flex-col items-start pt-0 sm:w-[25%]'>
-                      <div className='font-chicle text-accent hidden pb-2 text-xl tracking-wide sm:flex'>
-                        Price
-                      </div>
-                      <div className='mx-auto flex flex-col text-center sm:mx-0 sm:text-left'>
-                        <div className='text-gray-dark text-lg'>
-                          € {totalPrice}
-                        </div>
-                        <div className='text-md'>
-                          {' '}
-                          €{' '}
-                          {product.price && product.price.$numberDecimal
-                            ? product.price.$numberDecimal
-                            : 'N/A'}{' '}
-                          each
-                        </div>
-                      </div>
-                    </div>
-
-                    {/* Remove Tree */}
-                    <div className='mb-12 mt-auto flex w-full flex-col items-center sm:mb-auto sm:w-[25%]'>
-                      <button
-                        className='bg-red hover:text-red duration-4000 my-auto ml-0 rounded-[10px] border-2 px-8 py-2 text-white transition ease-linear hover:bg-white sm:ml-auto'
-                        aria-label='Remove Tree'
-                        onClick={() => removeTreeFromCart(product._id)}
+                    <Link to='/checkout' className='mt-5'>
+                      <Button className='w-full uppercase'>
+                        <p className='flex items-center justify-center gap-1'>
+                          <span>
+                            <PiShoppingCartSimpleFill className='text-lg' />
+                          </span>
+                          <span>Checkout</span>
+                        </p>
+                      </Button>
+                    </Link>
+                    <Link to='/trees'>
+                      <Button
+                        className='w-full'
+                        variant='primary'
+                        rounded={true}
                       >
-                        Remove
-                      </button>
-                    </div>
+                        <div className='flex items-center justify-center gap-1'>
+                          <img
+                            src={treeIcon}
+                            alt='Tree Icon'
+                            className='h-[16px] w-[16px]'
+                          />
+                          <span className='text-nowrap'>Add More Trees</span>
+                        </div>
+                      </Button>
+                    </Link>
                   </div>
-                ))}
-                <div className='mx-auto flex w-full'>
-                  <button
-                    className='bg-aloe text-accent hover:bg-sage duration-4000 my-2 mb-6 flex w-full items-center justify-center gap-1 rounded-[10px] px-4 py-2 text-center transition ease-linear hover:text-white sm:mb-0'
-                    aria-label='Clear Cart'
-                    onClick={() => clearCartTrees()}
-                  >
-                    <BsCartXFill size='1.3rem' />
-                    <span>Clear Cart</span>
-                  </button>
-                </div>
-              </div>
-            )}
+                )}
 
-            {/* Empty Cart Message and Link */}
-            {cartTrees.length === 0 && (
-              <div className='mx-auto my-8 flex flex-col text-center'>
-                <div className='mb-4 flex items-center'>
-                  <img
-                    src={treeIcon}
-                    alt='Tree Icon'
-                    className='mr-2 h-[30px] w-[30px]'
-                  />
-                  <h3 className='text-accent font-chicle border-primary inline-block border-b-2 text-3xl tracking-wide'>
-                    Your cart is empty.
-                  </h3>
-                </div>
-                <Link
-                  to='/trees'
-                  className='bg-primary text-stone hover:bg-primary-light duration-4000 my-2 flex w-full items-center justify-center gap-1 rounded-[10px] border-2 px-4 py-2 transition ease-linear'
-                  aria-label='Sponsor Tree page'
-                >
-                  {' '}
-                  <GoSponsorTiers />
-                  <span>Sponsor a Tree</span>
-                </Link>
+                {/* Right Side */}
+                {!!totalTreeCount && (
+                  <div className='mt-3 flex w-full flex-col items-center gap-3 lg:w-[70%]'>
+                    {cartTrees.map(tree => (
+                      <CartItem key={tree._id} tree={tree} />
+                    ))}
+                  </div>
+                )}
+
+                {/* Empty Cart Message */}
+                {totalTreeCount === 0 && (
+                  <div className='flex max-w-fit flex-col items-center justify-center gap-5'>
+                    <div className='flex items-baseline gap-3'>
+                      <img
+                        src={treeIcon}
+                        alt='Tree Icon'
+                        className='h-[25px] w-[25px]'
+                      />
+                      <h2 className='font-chicle text-3xl tracking-wide'>
+                        Your cart is empty.
+                      </h2>
+                    </div>
+                    <Link to='/trees'>
+                      <Button
+                        className='uppercase'
+                        variant='primary'
+                        rounded={true}
+                      >
+                        <PiShoppingCartSimpleFill className='text-lg' />
+                        <span>Add Trees</span>
+                      </Button>
+                    </Link>
+                  </div>
+                )}
               </div>
-            )}
+            </div>
           </div>
         </div>
-      </div>
-    </div>
+      </section>
+    </>
   );
 }

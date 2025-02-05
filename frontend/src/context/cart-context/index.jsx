@@ -2,6 +2,7 @@ import { createContext, useEffect, useState, useContext } from 'react';
 import { useNavigate } from 'react-router-dom';
 import showAlert from '@/utils/alert';
 import axios from '@/utils/axios';
+import { TAX_RATE } from '@/utils/constants';
 
 export const CartContext = createContext({});
 export const useCart = () => {
@@ -95,20 +96,54 @@ export const CartProvider = ({ children }) => {
     navigate('/cart');
   };
 
+  // Increment tree count in the cart
+  const incrementTreeCount = treeId => {
+    setCartItems(prev => {
+      return prev.map(tree => {
+        if (tree._id === treeId) {
+          const cartTree = cartTrees.find(t => t._id === treeId);
+          if (tree.quantity < cartTree.availableQuantity) {
+            return { ...tree, quantity: tree.quantity + 1 };
+          } else {
+            showAlert(
+              'error',
+              'Out of Stock!',
+              `We don't have more than ${cartTree.availableQuantity} of this tree in stock.`
+            );
+          }
+        }
+        return tree;
+      });
+    });
+  };
+
+  // Decrement tree count in the cart
+  const decrementTreeCount = treeId => {
+    setCartItems(prev => {
+      return prev.reduce((acc, tree) => {
+        if (tree._id === treeId) {
+          if (tree.quantity > 1) {
+            // If quantity is 1, the tree will not be adde to the acc
+            acc.push({ ...tree, quantity: tree.quantity - 1 });
+          }
+        } else {
+          acc.push(tree);
+        }
+        return acc;
+      }, []);
+    });
+  };
+
   // Remove tree from the shopping cart
   const removeTreeFromCart = treeId => {
     setCartItems(prev => {
-      return prev.filter(tree => tree.id !== treeId);
-    });
-
-    setCartTrees(prev => {
-      return prev.filter(tree => tree.id !== treeId);
+      return prev.filter(tree => tree._id !== treeId);
     });
   };
 
   // Get Tree Count by ID
   const getTreeCount = treeId => {
-    const tree = cartItems.find(tree => tree.id === treeId);
+    const tree = cartItems.find(tree => tree._id === treeId);
     return tree ? tree.quantity : 0;
   };
 
@@ -122,18 +157,26 @@ export const CartProvider = ({ children }) => {
   // Clear the shopping cart
   const clearCartTrees = () => {
     setCartItems([]);
-    setCartTrees([]);
   };
 
-  // Calculate the total price of the shopping cart
-  const calculateTotalPrice = () => {
-    if (!cartTrees) return 0;
+  // Calculate the totalPrice, totalTax and grandTotal of items in the cart
+  const calculatePrice = () => {
+    if (!cartTrees) return { totalPrice: 0, totalTax: 0, grandTotal: 0 };
 
-    const total = cartTrees.reduce((acc, tree) => {
-      return acc + tree.price * tree.quantity;
+    const totalPrice = cartTrees.reduce((acc, tree) => {
+      const price = parseFloat(tree.price.$numberDecimal);
+      const priceWithoutTax = price / (1 + TAX_RATE);
+      return acc + priceWithoutTax * tree.quantity;
     }, 0);
 
-    return parseFloat(total.toFixed(2));
+    const totalTax = totalPrice * TAX_RATE;
+    const grandTotal = totalPrice + totalTax;
+
+    return {
+      totalPrice: parseFloat(totalPrice.toFixed(2)),
+      totalTax: parseFloat(totalTax.toFixed(2)),
+      grandTotal: parseFloat(grandTotal.toFixed(2)),
+    };
   };
 
   return (
@@ -144,9 +187,11 @@ export const CartProvider = ({ children }) => {
         addTreeToCart,
         removeTreeFromCart,
         clearCartTrees,
-        calculateTotalPrice,
+        calculatePrice,
         getTreeCount,
         getTotalTreeCount,
+        incrementTreeCount,
+        decrementTreeCount,
       }}
     >
       {children}
