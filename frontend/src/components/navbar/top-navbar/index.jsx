@@ -121,7 +121,7 @@ export default function TopNavBar({
                 <ul
                   className={`${
                     isTopNavDropdownOpen ? 'block' : 'hidden'
-                  } bg-primary-light text-stone absolute right-0 top-full overflow-hidden rounded-b-md shadow-md transition-all duration-300`}
+                  } bg-primary-light text-stone absolute right-0 top-[60px] overflow-hidden rounded-b-md shadow-md transition-all duration-300`}
                 >
                   <li
                     className='hover:bg-aloe border-primary cursor-pointer border-b text-lg'

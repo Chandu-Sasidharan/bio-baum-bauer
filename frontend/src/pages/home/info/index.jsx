@@ -22,12 +22,12 @@ export default function Info() {
           <InfoItem
             title='Gallery'
             description='Explore our gallery to see a collection of images showcasing our farm.'
-            link='/gallery'
+            link='/impressions'
           />
           <InfoItem
             title='FAQs'
             description='Have questions? Check our FAQs for answers to common inquiries.'
-            link='/faq'
+            link='/faqs'
           />
         </div>
       </div>
