@@ -1,5 +1,4 @@
-import React, { useState, useEffect, useContext } from 'react';
-import backgroundImage from '../../assets/images/leaves_background_01.webp';
+import { useState, useEffect, useContext } from 'react';
 import { TextInput, Label } from 'flowbite-react';
 import { CartContext } from '@/context/cart-context';
 import { AuthContext } from '@/context/auth-context';
@@ -8,16 +7,14 @@ import { Link } from 'react-router-dom';
 import { Breadcrumb } from 'flowbite-react';
 import { HiHome } from 'react-icons/hi';
 import { MdOutlineSummarize } from 'react-icons/md';
-import treeIcon1 from '../../assets/tree.png';
 import { RiArrowGoBackLine } from 'react-icons/ri';
 import { MdFileDownloadDone } from 'react-icons/md';
 import { RiUserReceived2Fill } from 'react-icons/ri';
 import { ImAddressBook } from 'react-icons/im';
 import { MdOutlineShoppingCartCheckout } from 'react-icons/md';
-import SponsorList from './SponsorList';
+import SponsorList from '../user/SponsorList';
 
 const Checkout = () => {
-  document.title = 'Checkout';
   const { cartProducts, getTreeQuantity, getItemTotalPrice } =
     useContext(CartContext);
   const { authUser } = useContext(AuthContext);

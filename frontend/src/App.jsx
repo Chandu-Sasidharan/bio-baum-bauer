@@ -25,7 +25,7 @@ import ProtectedRoute from '@/components/protected-route';
 import { PatronProvider } from '@/context/PatronContext';
 import SponsorShipDetails from './pages/user/SponsorShipDetails';
 import Sponsorship from '@/pages/account/sponsorship';
-import Checkout from './pages/user/Checkout';
+import Checkout from '@/pages/checkout';
 import Order from './pages/user/Order';
 import News from './pages/News';
 import Faqs from '@/pages/faqs';
@@ -47,21 +47,22 @@ function App() {
                     <Route index element={<Home />} />
                     <Route path='/login' element={<Login />} />
                     <Route path='/signup' element={<Signup />} />
-                    <Route path='/about' element={<About />} />
-                    <Route path='/trees' element={<Trees />} />
-                    <Route path='/trees/:id' element={<TreePage />} />
-                    <Route path='/impressions' element={<Impressions />} />
-                    <Route path='/privacy' element={<Privacy />} />
-                    <Route path='/faqs' element={<Faqs />} />
-                    <Route path='/terms' element={<Terms />} />
-                    <Route path='/contact' element={<Contact />} />
-                    <Route path='/news' element={<News />} />
-                    <Route path='/news/:id' element={<NewsArticle />} />
-                    <Route path='/cart' element={<Cart />} />
                     <Route
                       path='/confirm-account'
                       element={<ConfirmAccount />}
                     />
+                    <Route path='/about' element={<About />} />
+                    <Route path='/trees' element={<Trees />} />
+                    <Route path='/trees/:id' element={<TreePage />} />
+                    <Route path='/impressions' element={<Impressions />} />
+                    <Route path='/contact' element={<Contact />} />
+                    <Route path='/privacy' element={<Privacy />} />
+                    <Route path='/faqs' element={<Faqs />} />
+                    <Route path='/terms' element={<Terms />} />
+                    <Route path='/news' element={<News />} />
+                    <Route path='/news/:id' element={<NewsArticle />} />
+                    <Route path='/cart' element={<Cart />} />
+                    <Route path='/checkout' element={<Checkout />} />
                     <Route
                       path='/account'
                       element={
@@ -73,14 +74,6 @@ function App() {
                       <Route index element={<Profile />} />
                       <Route path='sponsorships' element={<Sponsorship />} />
                     </Route>
-                    <Route
-                      path='/checkout'
-                      element={
-                        <ProtectedRoute>
-                          <Checkout />
-                        </ProtectedRoute>
-                      }
-                    />
                     <Route
                       path='/order/place_order'
                       element={
