@@ -47,61 +47,62 @@ export default function Cart() {
               }}
             >
               {/* Cart Header */}
-              {!!totalTreeCount && (
-                <div className='flex items-center justify-between'>
-                  <div className='space-y-1'>
-                    <div className='flex items-center gap-2'>
-                      <PiShoppingCartSimpleFill className='text-2xl md:text-3xl' />
-                      <h1 className='font-chicle text-2xl tracking-wide md:text-3xl'>
-                        Your Cart
-                      </h1>
-                    </div>
-                    <p className='text-stone'>
-                      Checkout to sponsor these trees and make an impact.
-                    </p>
+              <div className='flex items-center justify-between'>
+                <div className='space-y-1'>
+                  <div className='flex items-center gap-2'>
+                    <PiShoppingCartSimpleFill className='text-2xl md:text-3xl' />
+                    <h1 className='font-chicle text-2xl tracking-wide md:text-3xl'>
+                      Your Cart
+                    </h1>
                   </div>
-                  <Link to='/checkout' className='hidden lg:block'>
-                    <Button className='uppercase'>
-                      <span>
-                        <PiShoppingCartSimpleFill className='text-lg' />
-                      </span>
-                      <span>Checkout</span>
-                    </Button>
-                  </Link>
+                  <p className='text-stone'>
+                    Checkout to sponsor these trees and make an impact.
+                  </p>
                 </div>
-              )}
+                <Link to='/checkout' className='hidden lg:block'>
+                  <Button className='uppercase' disabled={!totalTreeCount}>
+                    <span>
+                      <PiShoppingCartSimpleFill className='text-lg' />
+                    </span>
+                    <span>Checkout</span>
+                  </Button>
+                </Link>
+              </div>
 
               {/* Cart Details */}
               <div className='mt-3 flex flex-col gap-4 lg:flex-row'>
                 {/* Left Side */}
-                {!!totalTreeCount && (
-                  <div className='mt-3 flex w-[100%] flex-col gap-5 lg:w-[30%]'>
-                    <div className='bg-primary-light flex flex-col gap-2 rounded-sm p-3'>
-                      <p className='flex justify-between'>
-                        <span className='text-lg'>Total Price:</span>
-                        <span className='text-lg'>€ {totalPrice}</span>
-                      </p>
-                      <p className='flex justify-between'>
-                        <span className='text-lg'>Tax:</span>
-                        <span className='text-lg'>€ {totalTax}</span>
-                      </p>
-                      <hr className='border-primary border-t-1 mx-auto my-2 w-[70%]' />
-                      <p className='flex justify-between text-nowrap'>
-                        <span className='text-lg'>Grand Total:</span>
-                        <span className='text-lg'>€ {grandTotal}</span>
-                      </p>
-                    </div>
+                <div className='mt-3 flex w-[100%] flex-col gap-5 lg:w-[30%]'>
+                  <div className='bg-primary-light flex flex-col gap-2 rounded-sm p-3'>
+                    <p className='flex justify-between'>
+                      <span className='text-lg'>Total Price:</span>
+                      <span className='text-lg'>€ {totalPrice}</span>
+                    </p>
+                    <p className='flex justify-between'>
+                      <span className='text-lg'>Tax:</span>
+                      <span className='text-lg'>€ {totalTax}</span>
+                    </p>
+                    <hr className='border-primary border-t-1 mx-auto my-2 w-[70%]' />
+                    <p className='flex justify-between text-nowrap'>
+                      <span className='text-lg'>Grand Total:</span>
+                      <span className='text-lg'>€ {grandTotal}</span>
+                    </p>
+                  </div>
 
-                    <Link to='/checkout' className='mt-5'>
-                      <Button className='w-full uppercase'>
-                        <p className='flex items-center justify-center gap-1'>
-                          <span>
-                            <PiShoppingCartSimpleFill className='text-lg' />
-                          </span>
-                          <span>Checkout</span>
-                        </p>
-                      </Button>
-                    </Link>
+                  <Link to='/checkout' className='mt-5'>
+                    <Button
+                      className='w-full uppercase'
+                      disabled={!totalTreeCount}
+                    >
+                      <p className='flex items-center justify-center gap-1'>
+                        <span>
+                          <PiShoppingCartSimpleFill className='text-lg' />
+                        </span>
+                        <span>Checkout</span>
+                      </p>
+                    </Button>
+                  </Link>
+                  {!!totalTreeCount && (
                     <Link to='/trees'>
                       <Button
                         className='w-full'
@@ -118,8 +119,8 @@ export default function Cart() {
                         </div>
                       </Button>
                     </Link>
-                  </div>
-                )}
+                  )}
+                </div>
 
                 {/* Right Side */}
                 {!!totalTreeCount && (
@@ -131,8 +132,8 @@ export default function Cart() {
                 )}
 
                 {/* Empty Cart Message */}
-                {totalTreeCount === 0 && (
-                  <div className='mx-auto flex max-w-fit flex-col items-center justify-center gap-5'>
+                {!totalTreeCount && (
+                  <div className='lg-mt-0 mx-auto mt-5 flex flex-col items-center justify-center gap-5'>
                     <div className='flex items-baseline gap-3'>
                       <img
                         src={treeIcon}
