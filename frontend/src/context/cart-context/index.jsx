@@ -12,7 +12,7 @@ export const useCart = () => {
 export const CartProvider = ({ children }) => {
   // Local Storage Reference
   const lsRef = typeof window !== 'undefined' ? window.localStorage : null;
-  // Cart item is an array of objects with tree id and quantity
+  // Cart item is an array of objects with treeId and quantity
   const [cartItems, setCartItems] = useState([]);
   // Cart trees is an array of tree objects
   const [cartTrees, setCartTrees] = useState([]);
@@ -35,16 +35,16 @@ export const CartProvider = ({ children }) => {
     }
   }, [lsRef]);
 
-  // Update cartTrees on initial load
+  // Update cartTrees on Initial Load and when cartItems change
   useEffect(() => {
     const updateCartTrees = async () => {
       if (cartItems.length > 0) {
         const response = await axios.post('/api/trees/cart', {
-          ids: cartItems.map(item => item._id),
+          ids: cartItems.map(item => item.treeId),
         });
 
         const updatedCartTrees = response.data.trees.map(tree => {
-          const cartItem = cartItems.find(item => item._id === tree._id);
+          const cartItem = cartItems.find(item => item.treeId === tree._id);
           return { ...tree, quantity: cartItem ? cartItem.quantity : 0 };
         });
 
@@ -64,7 +64,7 @@ export const CartProvider = ({ children }) => {
 
   // Add Tree to the Cart
   const addTreeToCart = newTree => {
-    const existingTree = cartItems.find(tree => tree._id === newTree._id);
+    const existingTree = cartItems.find(tree => tree.treeId === newTree._id);
 
     // Check if adding another tree exceeds the available quantity
     if (existingTree && !(newTree.availableQuantity > existingTree.quantity)) {
@@ -81,7 +81,7 @@ export const CartProvider = ({ children }) => {
       // If existing tree, update the quantity
       setCartItems(prev => {
         return prev.map(tree =>
-          tree._id === newTree._id
+          tree.treeId === newTree._id
             ? { ...tree, quantity: tree.quantity + 1 }
             : tree
         );
@@ -89,7 +89,7 @@ export const CartProvider = ({ children }) => {
     } else {
       // If no existing tree, add new to the cart
       setCartItems(prev => {
-        return [...prev, { _id: newTree._id, quantity: 1 }];
+        return [...prev, { treeId: newTree._id, quantity: 1 }];
       });
     }
 
@@ -100,7 +100,7 @@ export const CartProvider = ({ children }) => {
   const incrementTreeCount = treeId => {
     setCartItems(prev => {
       return prev.map(tree => {
-        if (tree._id === treeId) {
+        if (tree.treeId === treeId) {
           const cartTree = cartTrees.find(t => t._id === treeId);
           if (tree.quantity < cartTree.availableQuantity) {
             return { ...tree, quantity: tree.quantity + 1 };
@@ -121,9 +121,9 @@ export const CartProvider = ({ children }) => {
   const decrementTreeCount = treeId => {
     setCartItems(prev => {
       return prev.reduce((acc, tree) => {
-        if (tree._id === treeId) {
+        if (tree.treeId === treeId) {
           if (tree.quantity > 1) {
-            // If quantity is 1, the tree will not be adde to the acc
+            // If quantity is 1, the tree will not be added to the acc
             acc.push({ ...tree, quantity: tree.quantity - 1 });
           }
         } else {
@@ -137,13 +137,13 @@ export const CartProvider = ({ children }) => {
   // Remove tree from the shopping cart
   const removeTreeFromCart = treeId => {
     setCartItems(prev => {
-      return prev.filter(tree => tree._id !== treeId);
+      return prev.filter(tree => tree.treeId !== treeId);
     });
   };
 
   // Get Tree Count by ID
   const getTreeCount = treeId => {
-    const tree = cartItems.find(tree => tree._id === treeId);
+    const tree = cartItems.find(tree => tree.treeId === treeId);
     return tree ? tree.quantity : 0;
   };
 

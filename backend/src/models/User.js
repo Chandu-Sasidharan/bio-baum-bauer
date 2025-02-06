@@ -41,6 +41,18 @@ const userSchema = new Schema(
       trim: true,
       default: 'dummy',
     },
+    cartItems: [
+      {
+        treeId: {
+          type: Schema.Types.ObjectId,
+          ref: 'Tree',
+        },
+        quantity: {
+          type: Number,
+          default: 1,
+        },
+      },
+    ],
     passwordResetToken: {
       type: String,
     },

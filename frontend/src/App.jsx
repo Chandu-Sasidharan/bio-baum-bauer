@@ -57,6 +57,7 @@ function App() {
                     <Route path='/contact' element={<Contact />} />
                     <Route path='/news' element={<News />} />
                     <Route path='/news/:id' element={<NewsArticle />} />
+                    <Route path='/cart' element={<Cart />} />
                     <Route
                       path='/confirm-account'
                       element={<ConfirmAccount />}
@@ -72,14 +73,6 @@ function App() {
                       <Route index element={<Profile />} />
                       <Route path='sponsorships' element={<Sponsorship />} />
                     </Route>
-                    <Route
-                      path='/cart'
-                      element={
-                        <ProtectedRoute>
-                          <Cart />
-                        </ProtectedRoute>
-                      }
-                    />
                     <Route
                       path='/checkout'
                       element={

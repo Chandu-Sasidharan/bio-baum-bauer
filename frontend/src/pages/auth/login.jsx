@@ -62,6 +62,7 @@ export default function Login() {
 
           {/* Content */}
           <div className='my-16 p-5'>
+            <p className='mx-auto mb-3 w-fit'>Please login to continue.</p>
             <div
               className='mx-auto flex max-w-[500px] flex-col gap-3 rounded-md p-10 shadow-sm md:p-12'
               style={{ backgroundColor: 'rgba(255, 255, 255, 0.9)' }}

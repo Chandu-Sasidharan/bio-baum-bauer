@@ -143,23 +143,23 @@ export default function TopNavBar({
                   </li>
                 </ul>
               </div>
-
-              {/* Shopping Cart */}
-              <Link to='/cart' aria-label='Cart page'>
-                <span className='bg-primary-light text-accent relative flex h-[40px] w-[40px] items-center justify-center rounded-full text-xl'>
-                  <PiShoppingCartSimpleFill />
-                  {!!totalTreeCount && (
-                    <span
-                      className='bg-golden-red absolute rounded-full px-[7px] py-[2px] text-xs text-white'
-                      style={{ transform: 'translate(90%, -90%)' }}
-                    >
-                      {totalTreeCount}
-                    </span>
-                  )}
-                </span>
-              </Link>
             </div>
           )}
+
+          {/* Shopping Cart */}
+          <Link to='/cart' aria-label='Cart page'>
+            <span className='bg-primary-light text-accent relative flex h-[40px] w-[40px] items-center justify-center rounded-full text-xl'>
+              <PiShoppingCartSimpleFill />
+              {!!totalTreeCount && (
+                <span
+                  className='bg-golden-red absolute rounded-full px-[7px] py-[2px] text-xs text-white'
+                  style={{ transform: 'translate(90%, -90%)' }}
+                >
+                  {totalTreeCount}
+                </span>
+              )}
+            </span>
+          </Link>
         </div>
       </div>
     </nav>

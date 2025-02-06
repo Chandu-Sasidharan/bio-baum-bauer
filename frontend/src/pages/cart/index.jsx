@@ -40,7 +40,7 @@ export default function Cart() {
           {/* Content */}
           <div className='p-2 sm:my-5 lg:p-5'>
             <div
-              className='mx-auto flex max-w-[500px] flex-col justify-center rounded-md p-5 shadow-sm sm:p-10 lg:w-full lg:max-w-5xl lg:p-14'
+              className='mx-auto flex max-w-[500px] flex-col rounded-md p-5 shadow-sm sm:p-10 lg:w-full lg:max-w-5xl lg:p-14'
               style={{
                 backgroundColor: 'rgba(255, 255, 255, 0.9)',
                 minHeight: '50vh',
@@ -132,14 +132,14 @@ export default function Cart() {
 
                 {/* Empty Cart Message */}
                 {totalTreeCount === 0 && (
-                  <div className='flex max-w-fit flex-col items-center justify-center gap-5'>
+                  <div className='mx-auto flex max-w-fit flex-col items-center justify-center gap-5'>
                     <div className='flex items-baseline gap-3'>
                       <img
                         src={treeIcon}
                         alt='Tree Icon'
                         className='h-[25px] w-[25px]'
                       />
-                      <h2 className='font-chicle text-3xl tracking-wide'>
+                      <h2 className='font-chicle text-2xl tracking-wide md:text-3xl'>
                         Your cart is empty.
                       </h2>
                     </div>
