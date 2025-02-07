@@ -42,7 +42,7 @@ export default function AboutUs() {
                 eco-conscious individuals into a vibrant hub where sustainable
                 agriculture, education, and community engagement thrive.
               </p>
-              <h2 className='mt-3 text-2xl font-semibold tracking-wide md:text-3xl'>
+              <h2 className='font-chicle mt-3 text-2xl font-semibold tracking-wide md:text-3xl'>
                 Our Roots
               </h2>
               <p className='text-stone leading-7'>
@@ -56,7 +56,7 @@ export default function AboutUs() {
                 contributes to a healthier planet for future generations.
               </p>
               <div className='mt-3 flex flex-col gap-2'>
-                <h2 className='text-2xl font-semibold tracking-wide md:text-3xl'>
+                <h2 className='font-chicle text-2xl font-semibold tracking-wide md:text-3xl'>
                   What We Do
                 </h2>
                 <div>
@@ -94,7 +94,7 @@ export default function AboutUs() {
                   </p>
                 </div>
               </div>
-              <h2 className='mt-3 text-2xl font-semibold tracking-wide md:text-3xl'>
+              <h2 className='font-chicle mt-3 text-2xl font-semibold tracking-wide md:text-3xl'>
                 Our Vision
               </h2>
               <p className='text-stone leading-7'>
@@ -104,7 +104,7 @@ export default function AboutUs() {
                 balance and social empowerment, ensuring a vibrant and
                 sustainable future for all.
               </p>
-              <h2 className='mt-3 text-2xl font-semibold tracking-wide md:text-3xl'>
+              <h2 className='font-chicle mt-3 text-2xl font-semibold tracking-wide md:text-3xl'>
                 Join Us
               </h2>
               <p className='text-stone leading-7'>

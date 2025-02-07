@@ -53,7 +53,7 @@ export default function Form() {
       }
     } catch (error) {
       const errorMessage = formatError(error);
-      showAlert('error', 'Sign Up Failed', null, errorMessage);
+      showAlert('error', 'Message Failed', null, errorMessage);
     } finally {
       setIsProcessing(false);
     }
