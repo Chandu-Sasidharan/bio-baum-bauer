@@ -196,7 +196,6 @@ export const AuthProvider = ({ children }) => {
 
     try {
       const response = await axios.post('/api/auth/login', formData);
-      console.log('res', response);
 
       if (response.status === 200) {
         setAuthUser(response.data.user);
@@ -209,7 +208,6 @@ export const AuthProvider = ({ children }) => {
         );
       }
     } catch (error) {
-      console.log('ee', error);
       const errorMessage = formatError(error);
       showAlert('error', 'Login Failed', null, errorMessage);
     }

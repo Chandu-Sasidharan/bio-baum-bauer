@@ -1,5 +1,4 @@
-import { Link } from 'react-router-dom';
-import { useNavigate } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 import { Helmet } from 'react-helmet-async';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
@@ -23,10 +22,9 @@ const schema = z.object({
 
 export default function Checkout() {
   const { calculatePrice, isCartLoading } = useCart();
-  const { authUser, isAuthenticated } = useUser();
-  const navigate = useNavigate();
-
   const { totalPrice, totalTax, grandTotal } = calculatePrice();
+  const { authUser, isAuthenticated } = useUser();
+  const location = useLocation();
 
   const {
     register,
@@ -43,14 +41,12 @@ export default function Checkout() {
   });
 
   const isGuest = watch('isGuest');
-  const email = watch('email');
 
   if (isCartLoading) {
     return <Spinner />;
   }
 
   const onSubmit = async formData => {
-    console.log('forrmData:', formData);
     try {
       const response = await fetch('/api/create-checkout-session', {
         method: 'POST',
@@ -70,10 +66,6 @@ export default function Checkout() {
       alert('Checkout failed. Please try again.');
     }
   };
-
-  console.log('authUser', authUser);
-  console.log('isAuthenicated', isAuthenticated);
-  console.log('errors', errors);
 
   return (
     <>
@@ -135,7 +127,7 @@ export default function Checkout() {
                         dashboard.
                       </p>
                       <div className='flex flex-col gap-3 sm:flex-row sm:items-center sm:gap-10'>
-                        <Link to='/login'>
+                        <Link to='/login' state={{ from: location }}>
                           <Button
                             className=''
                             variant='primary'

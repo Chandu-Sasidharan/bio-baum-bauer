@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Link, Navigate } from 'react-router-dom';
+import { Link, Navigate, useNavigate, useLocation } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
@@ -20,6 +20,9 @@ const schema = z.object({
 export default function Login() {
   const { isAuthenticated, loginUser, isUserLoading } = useUser();
   const [showPassword, setShowPassword] = useState(false);
+  const navigate = useNavigate();
+  const location = useLocation();
+
   const {
     register,
     handleSubmit,
@@ -37,6 +40,8 @@ export default function Login() {
   // Submit form data
   const onSubmit = async formData => {
     await loginUser(formData);
+    const from = location.state?.from?.pathname;
+    if (from) navigate(from);
   };
 
   if (isAuthenticated) {
