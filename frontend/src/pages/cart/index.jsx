@@ -55,8 +55,9 @@ export default function Cart() {
                       Your Cart
                     </h1>
                   </div>
-                  <p className='text-stone'>
-                    Checkout to sponsor these trees and make an impact.
+                  <p className='text-primary-dark text-sm'>
+                    Checkout to sponsor these trees to help combat climate
+                    change and support reforestation efforts.
                   </p>
                 </div>
                 <Link to='/checkout' className='hidden lg:block'>

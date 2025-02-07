@@ -1,7 +1,9 @@
-import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { useNavigate } from 'react-router-dom';
 import { Helmet } from 'react-helmet-async';
+import { useForm } from 'react-hook-form';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { z } from 'zod';
 import { PiShoppingCartSimpleFill } from 'react-icons/pi';
 import { RiSecurePaymentFill } from 'react-icons/ri';
 import Button from '@/components/ui/button';
@@ -12,50 +14,66 @@ import treeIcon from '/images/misc/tree.png';
 import { useCart } from '@/context/cart-context';
 import { useUser } from '@/context/auth-context';
 
+// Define schema with zod
+const schema = z.object({
+  email: z.string().email({ message: 'Please enter a valid email address.' }),
+  name: z.string().min(2, { message: 'Please enter your name.' }),
+  isGuest: z.boolean(),
+});
+
 export default function Checkout() {
-  const { calculatePrice, getTotalTreeCount, isCartLoading } = useCart();
-  const { user } = useUser();
-  const [email, setEmail] = useState(user ? user.email : '');
-  const [isGuest, setIsGuest] = useState(false);
+  const { calculatePrice, isCartLoading } = useCart();
+  const { authUser, isAuthenticated } = useUser();
   const navigate = useNavigate();
 
   const { totalPrice, totalTax, grandTotal } = calculatePrice();
-  const totalTreeCount = getTotalTreeCount();
+
+  const {
+    register,
+    handleSubmit,
+    watch,
+    formState: { errors },
+  } = useForm({
+    resolver: zodResolver(schema),
+    defaultValues: {
+      email: authUser ? authUser.email : '',
+      isGuest: false,
+      name: '',
+    },
+  });
+
+  const isGuest = watch('isGuest');
+  const email = watch('email');
 
   if (isCartLoading) {
     return <Spinner />;
   }
 
-  const handleCheckboxChange = e => {
-    setIsGuest(e.target.checked);
-  };
-
-  const handleCheckout = async () => {
-    // Validate email if guest checkout
-    if (isGuest && !email) {
-      alert('Please enter your email for checkout.');
-      return;
-    }
-
+  const onSubmit = async formData => {
+    console.log('forrmData:', formData);
     try {
       const response = await fetch('/api/create-checkout-session', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
           cartItems,
-          email,
-          isGuest,
+          email: formData.email,
+          isGuest: formData.isGuest,
         }),
       });
-      const data = await response.json();
+      const responseData = await response.json();
 
       // Redirect to Stripe Checkout
-      window.location.href = data.url;
+      window.location.href = responseData.url;
     } catch (error) {
       console.error('Error during checkout:', error);
       alert('Checkout failed. Please try again.');
     }
   };
+
+  console.log('authUser', authUser);
+  console.log('isAuthenicated', isAuthenticated);
+  console.log('errors', errors);
 
   return (
     <>
@@ -104,14 +122,17 @@ export default function Checkout() {
               </div>
 
               <div className='mt-3 flex flex-col gap-5 lg:flex-row lg:gap-10'>
-                {/* Checkout Form */}
+                {/* Checkout Form / Left side */}
                 <div className='flex flex-col gap-3 lg:w-1/2'>
-                  {!user && (
-                    <div className='space-y-3'>
+                  <p className='text-primary-dark text-sm'>
+                    Sponsor these trees to help combat climate change and
+                    support reforestation efforts.
+                  </p>
+                  {!isAuthenticated && (
+                    <div className='bg-primary-light space-y-3 rounded-sm p-3'>
                       <p className='text-stone'>
                         Please log in or sign up to access a personalized
-                        dashboard where you can view your order details and
-                        receive updates.
+                        dashboard.
                       </p>
                       <div className='flex flex-col gap-3 sm:flex-row sm:items-center sm:gap-10'>
                         <Link to='/login'>
@@ -129,7 +150,7 @@ export default function Checkout() {
                           <input
                             type='checkbox'
                             className='checkbox checkbox-sm'
-                            onChange={handleCheckboxChange}
+                            {...register('isGuest')}
                           />
                           <span className='ml-2'>Continue as a guest</span>
                         </label>
@@ -137,34 +158,68 @@ export default function Checkout() {
                     </div>
                   )}
 
-                  {/* Guest Checkout */}
-                  {isGuest && (
+                  <hr className='border-primary border-t-1 mx-auto mb-2 mt-3 w-[70%]' />
+
+                  {/* Billing Details */}
+                  <div className='flex flex-col gap-1'>
+                    <h2 className='text-stone text-lg font-semibold'>
+                      Billing Adress
+                    </h2>
+                    {/* Name */}
+
                     <div>
-                      {/* Name */}
-                      <label htmlFor='name' className='text-stone'>
-                        Name
+                      <label htmlFor='name' className='text-stone ml-1 text-sm'>
+                        Your Name
                       </label>
                       <input
                         type='text'
-                        id='name'
-                        className='input input-bordered w-full pl-10'
+                        placeholder='Please enter your name'
+                        {...register('name')}
+                        className={`input input-bordered w-full pl-3 focus:outline-none ${
+                          errors.name
+                            ? 'border-red focus:border-red'
+                            : 'focus:border-primary'
+                        }`}
                       />
-                      {/* Email */}
-                      <label htmlFor='email' className='text-stone'>
-                        Email
+                      <div className='mt-[2px] h-4'>
+                        {errors.name && (
+                          <p className='text-red text-sm'>
+                            {errors.name.message}
+                          </p>
+                        )}
+                      </div>
+                    </div>
+
+                    {/* Email */}
+                    <div>
+                      <label
+                        htmlFor='email'
+                        className='text-stone ml-1 text-sm'
+                      >
+                        Your Email
                       </label>
                       <input
                         type='email'
-                        id='email'
-                        value={email}
-                        onChange={e => setEmail(e.target.value)}
-                        className='input input-bordered w-full pl-10'
+                        placeholder='Plese enter your email'
+                        {...register('email')}
+                        className={`input input-bordered w-full pl-3 focus:outline-none ${
+                          errors.email
+                            ? 'border-red focus:border-red'
+                            : 'focus:border-primary'
+                        }`}
                       />
+                      <div className='mt-[2px] h-4'>
+                        {errors.email && (
+                          <p className='text-red text-sm'>
+                            {errors.email.message}
+                          </p>
+                        )}
+                      </div>
                     </div>
-                  )}
+                  </div>
                 </div>
 
-                {/* Order Summary */}
+                {/* Order Summary / Right side */}
                 <div className='flex flex-col gap-5 lg:w-1/2'>
                   <div className='bg-primary-light flex flex-col gap-2 rounded-sm p-3'>
                     <p className='flex justify-between'>
@@ -181,17 +236,16 @@ export default function Checkout() {
                       <span className='text-lg'>€ {grandTotal}</span>
                     </p>
                   </div>
-                  <Link to='/checkout' className='mt-5'>
-                    <Button
-                      className='w-full uppercase'
-                      onClick={handleCheckout}
-                    >
-                      <p className='flex items-center justify-center gap-1'>
-                        <RiSecurePaymentFill className='text-lg' />
-                        <span>Proceed to Payment</span>
-                      </p>
-                    </Button>
-                  </Link>
+                  <Button
+                    className='w-full uppercase'
+                    onClick={handleSubmit(onSubmit)}
+                    disabled={!isAuthenticated && !isGuest}
+                  >
+                    <p className='flex items-center justify-center gap-1'>
+                      <RiSecurePaymentFill className='text-lg' />
+                      <span>Proceed to Payment</span>
+                    </p>
+                  </Button>
                   <Link to='/trees'>
                     <Button className='w-full' variant='primary' rounded={true}>
                       <div className='flex items-center justify-center gap-1'>
