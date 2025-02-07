@@ -141,6 +141,7 @@ export default function Checkout() {
                             variant='primary'
                             rounded={true}
                             size='sm'
+                            disabled={isGuest}
                           >
                             <span>Log In / Sign Up</span>
                           </Button>
