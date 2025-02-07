@@ -9,7 +9,6 @@ import { MdOutlineDateRange } from 'react-icons/md';
 import { BiTagAlt } from 'react-icons/bi';
 import { IoMdArrowBack } from 'react-icons/io';
 import axios from '@/utils/axios';
-import DOMPurify from 'dompurify';
 import EachPageHeader from '../components/EachPageHeader';
 import { Breadcrumb } from 'flowbite-react';
 import { Link } from 'react-router-dom';
@@ -133,9 +132,7 @@ const NewsArticle = () => {
                 <hr className='mb-2' />
                 <div
                   className='prose lg:prose-lg mb-6 px-4'
-                  dangerouslySetInnerHTML={{
-                    __html: DOMPurify.sanitize(article.content),
-                  }}
+                  dangerouslySetInnerHTML={article.content}
                 />
                 <Link
                   to='/news'
