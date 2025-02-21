@@ -5,11 +5,8 @@ const allowCors = app => {
   // Filter out undefined values
   const allowedOrigins = [frontendUrl, adminPanelUrl].filter(Boolean);
 
-  console.log('allowedOrigins', allowedOrigins);
-
   app.use((req, res, next) => {
     const origin = req.headers.origin;
-    console.log('origin', origin);
 
     if (allowedOrigins.includes(origin)) {
       res.setHeader('Access-Control-Allow-Origin', origin);
