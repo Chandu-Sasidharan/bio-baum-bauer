@@ -13,7 +13,7 @@ const Button = ({
   transparent = false,
 }) => {
   const buttonClass = classNames(
-    'btn tracking-wider duration-300 focus:ring-0',
+    'btn tracking-wider duration-300 focus:ring-0 !border-primary-light',
     {
       'btn-xs': size === 'xs',
       'btn-sm': size === 'sm',
