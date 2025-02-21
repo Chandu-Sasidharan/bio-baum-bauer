@@ -121,7 +121,7 @@ export default function Signup() {
                     name='email'
                     {...register('email')}
                     placeholder='Your Email'
-                    className={`input input-bordered w-full appearance-none bg-[rgba(255,255,255,0.9)] pl-10 focus:outline-none lg:flex-1 ${
+                    className={`input input-bordered input-light w-full pl-10 focus:outline-none lg:flex-1 ${
                       errors.email
                         ? 'border-red focus:border-red'
                         : 'focus:border-primary'
@@ -153,7 +153,7 @@ export default function Signup() {
                     type={showPassword ? 'text' : 'password'}
                     {...register('password')}
                     placeholder='Your Password'
-                    className={`input input-bordered w-full appearance-none bg-[rgba(255,255,255,0.9)] pl-10 focus:outline-none lg:flex-1 ${
+                    className={`input input-bordered input-light w-full pl-10 focus:outline-none lg:flex-1 ${
                       errors.password
                         ? 'border-red focus:border-red'
                         : 'focus:border-primary'
@@ -197,7 +197,7 @@ export default function Signup() {
                     type={showPassword ? 'text' : 'password'}
                     {...register('confirmPassword')}
                     placeholder='Confirm Your Password'
-                    className={`input input-bordered w-full appearance-none bg-[rgba(255,255,255,0.9)] pl-10 focus:outline-none lg:flex-1 ${
+                    className={`input input-bordered input-light w-full pl-10 focus:outline-none lg:flex-1 ${
                       errors.confirmPassword
                         ? 'border-red focus:border-red'
                         : 'focus:border-primary'

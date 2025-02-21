@@ -75,3 +75,10 @@ html {
   letter-spacing: 0.1rem;
   font-size: 2rem;
 }
+
+/* make input fields appear same in mobile and desktop browsers */
+.input-light {
+  appearance: none !important;
+  -webkit-appearance: none !important;
+  background-color: rgba(255, 255, 255, 0.9) !important;
+}

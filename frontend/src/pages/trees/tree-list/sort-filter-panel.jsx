@@ -7,7 +7,7 @@ export default function SortFilterPanel({ setSort, setCategory }) {
         <h2 className='mb-1 text-lg font-bold tracking-wide'>Sort</h2>
         <select
           onChange={e => setSort(e.target.value)}
-          className='select border-primary w-full appearance-none rounded bg-[rgba(255,255,255,0.9)] pl-3 focus:outline-none'
+          className='select border-primary input-light w-full pl-3 focus:outline-none'
           defaultValue=''
         >
           <option value='' disabled>
@@ -24,7 +24,7 @@ export default function SortFilterPanel({ setSort, setCategory }) {
         <h2 className='mb-1 text-lg font-bold tracking-wide'>Filter</h2>
         <select
           onChange={e => setCategory(e.target.value)}
-          className='select border-primary w-full appearance-none rounded bg-[rgba(255,255,255,0.9)] pl-3 focus:outline-none'
+          className='select border-primary input-light w-full pl-3 focus:outline-none'
           defaultValue=''
         >
           <option value='' disabled>

@@ -103,7 +103,7 @@ export default function Form() {
           name='email'
           placeholder='email@example.com'
           {...register('email')}
-          className={`input text-stone input-bordered w-full cursor-pointer focus:outline-none lg:flex-1 ${
+          className={`input text-stone input-bordered input-light input-light w-full cursor-pointer focus:outline-none lg:flex-1 ${
             errors.email
               ? 'border-red focus:border-red'
               : 'focus:border-primary'
@@ -131,7 +131,7 @@ export default function Form() {
           rows='4'
           name='message'
           {...register('message')}
-          className={`textarea textarea-bordered text-stone w-full cursor-pointer p-2 pl-3 text-base placeholder:text-base focus:outline-none ${
+          className={`textarea textarea-bordered text-stone input-light w-full cursor-pointer p-2 pl-3 text-base placeholder:text-base focus:outline-none ${
             errors.message
               ? 'border-red-500 focus:border-red-500'
               : 'focus:border-primary'
@@ -151,7 +151,7 @@ export default function Form() {
             type='checkbox'
             name='agreeToPolicies'
             {...register('agreeToPolicies')}
-            className='checkbox checkbox-sm checkbox-aloe'
+            className='checkbox checkbox-sm checkbox-aloe input-light'
           />
           <label htmlFor='checkbox'>
             <span className='text-stone'>I agree with the&nbsp;</span>
