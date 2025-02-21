@@ -61,12 +61,14 @@ export default function Trees() {
 
               {/* Main Content */}
               <main className='flex-1'>
-                <PaginationControls
-                  page={page}
-                  setPage={setPage}
-                  total={total}
-                  limit={limit}
-                />
+                {total > limit && (
+                  <PaginationControls
+                    page={page}
+                    setPage={setPage}
+                    total={total}
+                    limit={limit}
+                  />
+                )}
                 <Fade
                   key={`${sort}-${category}-${page}`}
                   delay={100}
@@ -76,12 +78,14 @@ export default function Trees() {
                 >
                   <CardGrid trees={trees} />
                 </Fade>
-                <PaginationControls
-                  page={page}
-                  setPage={setPage}
-                  total={total}
-                  limit={limit}
-                />
+                {total > limit && (
+                  <PaginationControls
+                    page={page}
+                    setPage={setPage}
+                    total={total}
+                    limit={limit}
+                  />
+                )}
               </main>
             </div>
           </div>
