@@ -1,6 +1,3 @@
-// import bcrypt from 'bcryptjs';
-// import jwt from 'jsonwebtoken';
-// import { pick } from 'lodash-es';
 import { StatusCodes } from 'http-status-codes';
 import formatZodError from '#src/utils/format-zod-error.js';
 import pickUserPayload from '#src/utils/pick-user-payload.js';

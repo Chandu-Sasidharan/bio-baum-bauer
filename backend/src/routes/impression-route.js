@@ -1,5 +1,4 @@
 import express from 'express';
-
 import { getAllImpressions } from '#src/controllers/impression-controller.js';
 
 const router = express.Router();

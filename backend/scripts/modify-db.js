@@ -1,3 +1,5 @@
+// This script is for development purposes only to modify the database.
+
 import mongoose from 'mongoose';
 import dotenv from 'dotenv';
 import Faq from '#src/models/Faq.js';
