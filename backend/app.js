@@ -27,17 +27,23 @@ app.use('/api', allRoutes);
 
 // Handle thrown errors
 app.use((error, _req, res, _next) => {
+  // eslint-disable-next-line no-console
+  console.log(error);
+
   const statusCode = error.statusCode || 500;
-  const isProduction = process.env.NODE_ENV === 'production';
-  const message = isProduction
-    ? 'Something went wrong!'
-    : error.message || 'Something went wrong!';
+  // const isProduction = process.env.NODE_ENV === 'production';
+  // const message = isProduction
+  //   ? 'Something went wrong!'
+  //   : error.message || 'Something went wrong!';
+
+  const message = error.message || 'Something went wrong!!!';
 
   res.status(statusCode).json({
     success: false,
     statusCode,
     message,
-    ...(isProduction ? {} : { stack: error.stack }),
+    stack: error.stack,
+    // ...(isProduction ? {} : { stack: error.stack }),
   });
 });
 
