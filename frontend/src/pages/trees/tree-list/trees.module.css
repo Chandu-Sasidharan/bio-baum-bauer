@@ -63,7 +63,7 @@
   transform: scale(1.05);
 }
 
-.asideContainer {
+.sortFilterContainer {
   display: flex;
   flex-direction: column;
   gap: 16px;

@@ -5,7 +5,7 @@ import Spinner from '@/components/spinner';
 import Breadcrumbs from '@/components/breadcrumbs';
 import backgroundImage from '/images/background/leaves-background.webp';
 import useTrees from '@/hooks/use-trees';
-import Sidebar from './sidebar';
+import SortFilterPanel from './sort-filter-panel';
 import CardGrid from './card-grid';
 import PaginationControls from './pagination-controls';
 import styles from './trees.module.css';
@@ -56,8 +56,8 @@ export default function Trees() {
           {/* Inner Container to center the content */}
           <div className='mx-auto max-w-7xl'>
             <div className={styles.mainContainer}>
-              {/* Sidebar */}
-              <Sidebar setSort={setSort} setCategory={setCategory} />
+              {/* SortFilterPanel */}
+              <SortFilterPanel setSort={setSort} setCategory={setCategory} />
 
               {/* Main Content */}
               <main className='flex-1'>

@@ -168,7 +168,7 @@ export default function Checkout() {
                         type='text'
                         placeholder='Please enter your name'
                         {...register('name')}
-                        className={`input input-bordered w-full pl-3 focus:outline-none ${
+                        className={`input input-bordered w-full appearance-none bg-[rgba(255,255,255,0.9)] pl-3 focus:outline-none ${
                           errors.name
                             ? 'border-red focus:border-red'
                             : 'focus:border-primary'
@@ -195,7 +195,7 @@ export default function Checkout() {
                         type='email'
                         placeholder='Plese enter your email'
                         {...register('email')}
-                        className={`input input-bordered w-full pl-3 focus:outline-none ${
+                        className={`input input-bordered w-full appearance-none bg-[rgba(255,255,255,0.9)] pl-3 focus:outline-none ${
                           errors.email
                             ? 'border-red focus:border-red'
                             : 'focus:border-primary'
