@@ -1,17 +1,5 @@
-import {
-  createContext,
-  useEffect,
-  useState,
-  useReducer,
-  useContext,
-} from 'react';
+import { createContext, useEffect, useState, useContext } from 'react';
 import { omit } from 'lodash-es';
-import {
-  paymentSessionReducer,
-  patronReducer,
-  calculateGrandPrice,
-  OrderItemsReducer,
-} from '../../reducers/reducers';
 import axios from '@/utils/axios';
 import showAlert from '@/utils/alert';
 import formatError from '@/utils/format-error';
@@ -259,52 +247,6 @@ export const AuthProvider = ({ children }) => {
     }
   };
 
-  // stripe session id
-  const stripSessionValue = JSON.parse(lsRef.getItem('ssid')) || {};
-  const [stripeSession, handleStripeSession] = useReducer(
-    paymentSessionReducer,
-    {
-      sid: stripSessionValue.stripeSession?.sid || '',
-    }
-  );
-
-  useEffect(() => {
-    lsRef?.setItem('ssid', JSON.stringify({ stripeSession }));
-  }, [stripeSession]);
-
-  // patron details
-  const patronDataValue = JSON.parse(lsRef.getItem('patron')) || {};
-  const [patron, handlePatronInfo] = useReducer(patronReducer, {
-    patronInfo: patronDataValue.patron?.patronInfo || {},
-  });
-
-  useEffect(() => {
-    lsRef.setItem('patron', JSON.stringify({ patron }));
-  }, [patron]);
-
-  // calculate total grand price
-  const grandValue = JSON.parse(lsRef.getItem('orderGrandPrice')) || {};
-  const [orderGrandPrice, handleOrderGrandPrice] = useReducer(
-    calculateGrandPrice,
-    {
-      grand: grandValue.orderGrandPrice?.grand || 0.0,
-    }
-  );
-
-  useEffect(() => {
-    lsRef.setItem('orderGrandPrice', JSON.stringify({ orderGrandPrice }));
-  }, [orderGrandPrice]);
-
-  // save payment
-  const orderValue = JSON.parse(lsRef.getItem('items')) || {};
-  const [order, handleOrder] = useReducer(OrderItemsReducer, {
-    items: orderValue.order?.items || {},
-  });
-
-  useEffect(() => {
-    lsRef.setItem('items', JSON.stringify({ order }));
-  }, [order]);
-
   return (
     <AuthContext.Provider
       value={{
@@ -317,14 +259,6 @@ export const AuthProvider = ({ children }) => {
         isUserLoading,
         setIsUserLoading,
         isAuthenticated,
-        stripeSession,
-        handleStripeSession,
-        patron,
-        handlePatronInfo,
-        orderGrandPrice,
-        handleOrderGrandPrice,
-        order,
-        handleOrder,
         handleLogout,
       }}
     >
