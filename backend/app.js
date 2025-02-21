@@ -1,5 +1,4 @@
 import express from 'express';
-import fs from 'fs';
 import morgan from 'morgan';
 import helmet from 'helmet';
 import cookieParser from 'cookie-parser';
@@ -12,12 +11,6 @@ app.use(helmet()); //provide basic security
 allowCors(app); // allow cors
 app.use(express.json()); // parse json
 app.use(cookieParser()); // parse cookies
-
-// Log requests to access.log
-const accessLogStream = fs.createWriteStream('./logs/access.log', {
-  flags: 'a',
-});
-app.use(morgan('combined', { stream: accessLogStream }));
 
 // Log requests to console if in development
 if (app.get('env') === 'development') {
