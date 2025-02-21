@@ -37,8 +37,8 @@ export default function Layout() {
   });
 
   return (
-    <HelmetProvider>
-      <div className='text-accent' id='outer-container'>
+    <div className='text-accent'>
+      <HelmetProvider>
         <header>
           <Navbar
             isNavbarFixed={isNavbarFixed}
@@ -46,7 +46,7 @@ export default function Layout() {
             setTopNavDropdownOpen={setTopNavDropdownOpen}
           />
         </header>
-        <main className={mainClasses} id='page-wrap'>
+        <main className={mainClasses}>
           <Outlet />
         </main>
         <footer className={footerClasses}>
@@ -54,7 +54,7 @@ export default function Layout() {
         </footer>
         <ScrollToTopButton />
         <AutoScrollToTop />
-      </div>
-    </HelmetProvider>
+      </HelmetProvider>
+    </div>
   );
 }
