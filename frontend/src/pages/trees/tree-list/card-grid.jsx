@@ -12,7 +12,7 @@ export default function CardGrid({ trees }) {
             name={tree.name}
             price={tree.price.$numberDecimal}
           >
-            Plant Now
+            Add To Cart
           </Card>
         </Link>
       ))}

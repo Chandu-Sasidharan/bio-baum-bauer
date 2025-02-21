@@ -78,7 +78,7 @@ export default function TreePage() {
                         height: '16px',
                       }}
                     />
-                    <span>Plant now</span>
+                    <span>Add To Cart</span>
                   </Button>
                 </div>
               </div>
@@ -165,7 +165,7 @@ export default function TreePage() {
                     height: '16px',
                   }}
                 />
-                <span>Plant this tree now</span>
+                <span>Add To Cart</span>
               </Button>
             </div>
           </div>
