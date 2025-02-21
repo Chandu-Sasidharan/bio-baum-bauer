@@ -41,7 +41,7 @@ export default function MobileMenu() {
         }`}
       >
         {/* Close Menu Button */}
-        <div className='absolute right-6 top-6'>
+        <div className='absolute right-10 top-10'>
           <button
             onClick={() => setIsMenuOpen(false)}
             className='h-[25px] w-[25px]'
