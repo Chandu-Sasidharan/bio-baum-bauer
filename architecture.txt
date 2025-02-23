@@ -8,42 +8,46 @@ eslint.config.js
 
 frontend/
     .env
+    .env.example
     .eslintrc.cjs
     Dockerfile
     index.html
     package.json
     postcss.config.js
     public/
+        ...
     README.md
     src/
+        ....
     tailwind.config.js
     vite.config.js
 
 backend/
-    .env
-    .github/
-        ISSUE_TEMPLATE/
-    config/
-        cloudstorage.js
-        newscloudstorage.js
-        treecloudstorage.js
-    controllers/
-        contactController.js
-        faqcontroller.js
-        ...
-    db.js
-    Dockerfile
-    helpers/
-        ...
-    logs/
-        ...
-    middlewares/
-    models/
-    note/
-        3. Creating Structure.md
     package.json
     README.md
-    routes/
-        galleryRoutes.js
+    .env
+    .env.example
+    db.js
+    Dockerfile
+    migrations/
+        create-admins.js
+    scripts/
+        ...
     server.js
-    utils/
+    src/
+        controllers/
+            ... 
+        middlewares/
+            ...
+        models/
+            ...
+        routes/
+            ...
+        templates
+            ...
+        utils/
+            ...
+        validations
+            ...
+
+   
