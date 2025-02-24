@@ -39,7 +39,7 @@
     "multer-storage-cloudinary": "^4.0.0",
     "path": "^0.12.7",
     "resend": "^4.1.1",
-    "stripe": "^14.7.0",
+    "stripe": "^14.25.0",
     "zod": "^3.24.1"
   }
 }

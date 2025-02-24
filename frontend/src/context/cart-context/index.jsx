@@ -160,6 +160,7 @@ export const CartProvider = ({ children }) => {
   };
 
   // Calculate the totalPrice, totalTax and grandTotal of items in the cart
+  // This is for display purposes only, the actual calculation will be done on the server
   const calculatePrice = () => {
     if (!cartTrees) return { totalPrice: 0, totalTax: 0, grandTotal: 0 };
 

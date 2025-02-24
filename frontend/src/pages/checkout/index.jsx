@@ -12,6 +12,7 @@ import backgroundImage from '/images/background/leaves-background.webp';
 import treeIcon from '/images/misc/tree.png';
 import { useCart } from '@/context/cart-context';
 import { useUser } from '@/context/auth-context';
+import usePaymentIntent from '@/hooks/use-payment-intent';
 
 // Define schema with zod
 const schema = z.object({
@@ -21,7 +22,7 @@ const schema = z.object({
 });
 
 export default function Checkout() {
-  const { calculatePrice, isCartLoading } = useCart();
+  const { cartItems, calculatePrice, isCartLoading } = useCart();
   const { totalPrice, totalTax, grandTotal } = calculatePrice();
   const { authUser, isAuthenticated } = useUser();
   const location = useLocation();
@@ -42,29 +43,25 @@ export default function Checkout() {
 
   const isGuest = watch('isGuest');
 
+  // Initialize the payment intent hook mutation
+  const { getPaymentIntent, isPaymentLoading, isPaymentError } =
+    usePaymentIntent();
+
   if (isCartLoading) {
     return <Spinner />;
   }
 
-  const onSubmit = async formData => {
-    try {
-      const response = await fetch('/api/create-checkout-session', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          cartItems,
-          email: formData.email,
-          isGuest: formData.isGuest,
-        }),
-      });
-      const responseData = await response.json();
-
-      // Redirect to Stripe Checkout
-      window.location.href = responseData.url;
-    } catch (error) {
-      console.error('Error during checkout:', error);
-      alert('Checkout failed. Please try again.');
-    }
+  const onSubmit = formData => {
+    const paymentData = { cartItems, ...formData };
+    getPaymentIntent(paymentData, {
+      onSuccess: data => {
+        console.log('Client Secret: ', data.client_secret);
+      },
+      onError: error => {
+        console.error('Error during checkout:', error);
+        alert('Checkout failed. Please try again.');
+      },
+    });
   };
 
   return (
@@ -156,7 +153,7 @@ export default function Checkout() {
                   {/* Billing Details */}
                   <div className='flex flex-col gap-1'>
                     <h2 className='text-stone text-lg font-semibold'>
-                      Billing Adress
+                      Billing Details
                     </h2>
                     {/* Name */}
 
@@ -234,10 +231,10 @@ export default function Checkout() {
                     onClick={handleSubmit(onSubmit)}
                     disabled={!isAuthenticated && !isGuest}
                   >
-                    <p className='flex items-center justify-center gap-1'>
+                    <span className='flex items-center justify-center gap-1'>
                       <RiSecurePaymentFill className='text-lg' />
                       <span>Proceed to Payment</span>
-                    </p>
+                    </span>
                   </Button>
                   <Link to='/trees'>
                     <Button className='w-full' variant='primary' rounded={true}>
