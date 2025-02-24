@@ -1,22 +1,28 @@
 import { StatusCodes } from 'http-status-codes';
-// import formatZodError from '#src/utils/format-zod-error.js';
-// import stripeInstance from '#src/utils/stripe-instance.js';
+import formatZodError from '#src/utils/format-zod-error.js';
+import validatePaymentData from '#src/validations/payment-data-validation.js';
+import stripeInstance from '#src/utils/stripe-instance.js';
 
 export const getPaymentIntent = async (req, res) => {
-  const paymentData = req.body;
-  // eslint-disable-next-line no-console
-  console.log('paymentData', paymentData);
-
-  // Validate the payament data
-
-  // if (!result.success) {
-  //   const errors = formatZodError(result.error);
-
-  //   return res.status(StatusCodes.BAD_REQUEST).json({ errors });
-  // }
-
   try {
-    return res.status(StatusCodes.OK).json({ client_secret: 'nomnomnom' });
+    const paymentData = req.body;
+    const result = validatePaymentData(paymentData);
+    if (!result.success) {
+      const errors = formatZodError(result.error);
+
+      return res
+        .status(StatusCodes.BAD_REQUEST)
+        .json({ errors, message: 'Invalid data' });
+    }
+
+    const intent = await stripeInstance.paymentIntents.create({
+      amount: 1099,
+      currency: 'usd',
+    });
+
+    return res
+      .status(StatusCodes.OK)
+      .json({ client_secret: intent.client_secret });
   } catch (error) {
     throw error;
   }

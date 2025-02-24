@@ -167,7 +167,6 @@ export const AuthProvider = ({ children }) => {
         navigate('/');
       }
     } catch (error) {
-      console.log('errormmm', error);
       showAlert(
         'error',
         'Sign up failed',

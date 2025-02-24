@@ -13,6 +13,7 @@ import treeIcon from '/images/misc/tree.png';
 import { useCart } from '@/context/cart-context';
 import { useUser } from '@/context/auth-context';
 import usePaymentIntent from '@/hooks/use-payment-intent';
+import showAlert from '@/utils/alert';
 
 // Define schema with zod
 const schema = z.object({
@@ -44,8 +45,7 @@ export default function Checkout() {
   const isGuest = watch('isGuest');
 
   // Initialize the payment intent hook mutation
-  const { getPaymentIntent, isPaymentLoading, isPaymentError } =
-    usePaymentIntent();
+  const { getPaymentIntent, isPaymentLoading } = usePaymentIntent();
 
   if (isCartLoading) {
     return <Spinner />;
@@ -58,8 +58,11 @@ export default function Checkout() {
         console.log('Client Secret: ', data.client_secret);
       },
       onError: error => {
-        console.error('Error during checkout:', error);
-        alert('Checkout failed. Please try again.');
+        showAlert(
+          'error',
+          'Checkout Failed',
+          error.response.data.message || 'Something went wrong!'
+        );
       },
     });
   };
