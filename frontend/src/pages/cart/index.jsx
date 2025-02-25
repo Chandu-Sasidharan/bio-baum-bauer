@@ -15,7 +15,7 @@ import showAlert from '@/utils/alert';
 
 export default function Cart() {
   const { authUser, isAuthenticated } = useUser();
-  const [isGuest, setIsGuest] = useState(() => (authUser ? false : true));
+  const [isGuest, setIsGuest] = useState(false);
   const location = useLocation();
   const navigate = useNavigate();
   const {
