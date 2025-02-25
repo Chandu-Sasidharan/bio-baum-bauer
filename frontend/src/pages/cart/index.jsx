@@ -161,7 +161,7 @@ export default function Cart() {
                   )}
 
                   <Button
-                    className='hidden w-full uppercase lg:block'
+                    className='w-full uppercase'
                     disabled={!totalTreeCount || (!isAuthenticated && !isGuest)}
                     onClick={handleSubmit}
                     isProcessing={isPaymentLoading}
