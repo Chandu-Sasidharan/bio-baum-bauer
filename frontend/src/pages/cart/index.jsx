@@ -40,7 +40,7 @@ export default function Cart() {
       onSuccess: data => {
         // Navigate to the payment form page and pass the client secret in state
         navigate('/checkout', {
-          state: { clientSecret: data.client_secret },
+          state: { paymentIntent: data.paymentIntent },
         });
       },
       onError: error => {

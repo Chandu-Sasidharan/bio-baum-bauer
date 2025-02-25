@@ -10,9 +10,12 @@ const stripePromise = loadStripe(import.meta.env.VITE_STRIPE_PUBLIC_KEY);
 
 export default function CheckoutForm() {
   const { state } = useLocation();
-  const clientSecret = state?.clientSecret;
+  const paymentIntent = state?.paymentIntent;
+  const clientSecret = paymentIntent?.client_secret;
+  // Total amount payable by the customer in Euro
+  const totalAmount = (paymentIntent?.metadata.total_amount / 100).toFixed(2);
 
-  if (!clientSecret) {
+  if (!paymentIntent) {
     return <div>Error: Something went wrong!</div>;
   }
 
@@ -56,6 +59,7 @@ export default function CheckoutForm() {
               className='mx-auto max-w-5xl gap-3 rounded-md p-10 shadow-sm md:p-12'
               style={{ backgroundColor: 'rgba(255, 255, 255, 0.9)' }}
             >
+              <h1 className='text-stone ml-4'>{`The total amount to be charged is € ${totalAmount}`}</h1>
               <Elements stripe={stripePromise} options={options}>
                 <StripeForm />
               </Elements>

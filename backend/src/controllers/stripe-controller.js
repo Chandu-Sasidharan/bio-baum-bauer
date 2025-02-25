@@ -49,18 +49,17 @@ export const getPaymentIntent = async (req, res) => {
     }
 
     // Create the payment intent with the calculated amount
-    const intent = await stripeInstance.paymentIntents.create({
+    const paymentIntent = await stripeInstance.paymentIntents.create({
       amount,
       currency: 'eur',
       receipt_email: paymentData?.email,
       metadata: {
         customer_email: paymentData?.email,
+        total_amount: amount,
       },
     });
 
-    return res
-      .status(StatusCodes.OK)
-      .json({ client_secret: intent.client_secret });
+    return res.status(StatusCodes.OK).json({ paymentIntent });
   } catch (error) {
     throw error;
   }
