@@ -10,12 +10,15 @@ export default function StripeForm() {
   const stripe = useStripe();
   const elements = useElements();
   const [errorMessage, setErrorMessage] = useState(null);
+  const [isLoading, setIsLoading] = useState(false);
 
   const handleSubmit = async event => {
     event.preventDefault();
+    setIsLoading(true);
 
     if (!stripe || !elements) {
       // Stripe.js hasn't yet loaded.
+      setIsLoading(false);
       return;
     }
 
@@ -30,13 +33,14 @@ export default function StripeForm() {
     if (error) {
       // This point will only be reached if there is an immediate error when submitting the form.
       setErrorMessage(error.message);
+      setIsLoading(false);
     }
   };
 
   return (
     <form className='mx-auto flex flex-col gap-6 p-4' onSubmit={handleSubmit}>
       <PaymentElement />
-      <Button type='submit' disabled={!stripe}>
+      <Button type='submit' disabled={!stripe} isProcessing={isLoading}>
         Submit
       </Button>
       {errorMessage && <div className='text-red text-sm'>{errorMessage}</div>}
