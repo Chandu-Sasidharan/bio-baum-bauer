@@ -19,7 +19,8 @@ import Profile from '@/pages/account/profile';
 import Sponsorship from '@/pages/account/sponsorship';
 import Privacy from '@/pages/privacy';
 import Terms from '@/pages/terms';
-import Checkout from '@/pages/checkout';
+import CheckoutForm from '@/pages/checkout';
+import ThankYou from '@/pages/thank-you';
 import News from '@/pages/news';
 import Faqs from '@/pages/faqs';
 import Cart from '@/pages/cart';
@@ -49,7 +50,8 @@ function App() {
                 <Route path='/terms' element={<Terms />} />
                 <Route path='/news' element={<News />} />
                 <Route path='/cart' element={<Cart />} />
-                <Route path='/checkout' element={<Checkout />} />
+                <Route path='/checkout' element={<CheckoutForm />} />
+                <Route path='/thank-you' element={<ThankYou />} />
                 <Route
                   path='/account'
                   element={

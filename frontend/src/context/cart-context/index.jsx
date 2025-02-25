@@ -3,7 +3,6 @@ import { useNavigate } from 'react-router-dom';
 import showAlert from '@/utils/alert';
 import axios from '@/utils/axios';
 import { TAX_RATE } from '@/utils/constants';
-
 export const CartContext = createContext({});
 export const useCart = () => {
   return useContext(CartContext);
@@ -157,6 +156,8 @@ export const CartProvider = ({ children }) => {
   // Clear the shopping cart
   const clearCartTrees = () => {
     setCartItems([]);
+    // Clear the cart from local storage
+    lsRef?.removeItem('cart');
   };
 
   // Calculate the totalPrice, totalTax and grandTotal of items in the cart

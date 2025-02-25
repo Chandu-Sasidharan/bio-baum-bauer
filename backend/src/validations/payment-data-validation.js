@@ -8,8 +8,7 @@ const paymentDataSchema = z.object({
       quantity: z.number().min(1),
     })
   ),
-  email: z.string().email(),
-  name: z.string().min(1),
+  email: z.string().email().optional(),
   isGuest: z.boolean(),
 });
 

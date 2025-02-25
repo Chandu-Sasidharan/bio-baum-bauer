@@ -1,4 +1,5 @@
-import { Link } from 'react-router-dom';
+import { useState } from 'react';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { Helmet } from 'react-helmet-async';
 import { PiShoppingCartSimpleFill } from 'react-icons/pi';
 import Button from '@/components/ui/button';
@@ -7,14 +8,50 @@ import Breadcrumbs from '@/components/breadcrumbs';
 import backgroundImage from '/images/background/leaves-background.webp';
 import treeIcon from '/images/misc/tree.png';
 import { useCart } from '@/context/cart-context';
+import { useUser } from '@/context/auth-context';
 import CartItem from './cart-item';
+import usePaymentIntent from '@/hooks/use-payment-intent';
+import showAlert from '@/utils/alert';
 
 export default function Cart() {
-  const { cartTrees, calculatePrice, getTotalTreeCount, isCartLoading } =
-    useCart();
-
+  const { authUser, isAuthenticated } = useUser();
+  const [isGuest, setIsGuest] = useState(() => (authUser ? false : true));
+  const location = useLocation();
+  const navigate = useNavigate();
+  const {
+    cartItems,
+    cartTrees,
+    calculatePrice,
+    getTotalTreeCount,
+    isCartLoading,
+  } = useCart();
   const { totalPrice, totalTax, grandTotal } = calculatePrice();
   const totalTreeCount = getTotalTreeCount();
+  // Initialize the payment intent hook mutation
+  const { getPaymentIntent, isPaymentLoading } = usePaymentIntent();
+
+  const handleSubmit = () => {
+    const paymentData = {
+      cartItems,
+      isGuest,
+      ...(authUser && { email: authUser.email }),
+    };
+    getPaymentIntent(paymentData, {
+      onSuccess: data => {
+        // Navigate to the payment form page and pass the client secret in state
+        navigate('/checkout', {
+          state: { clientSecret: data.client_secret },
+        });
+      },
+      onError: error => {
+        showAlert(
+          'error',
+          'Checkout Failed',
+          error.response.data.message || 'Something went wrong!'
+        );
+      },
+    });
+  };
 
   if (isCartLoading) {
     return <Spinner />;
@@ -40,7 +77,7 @@ export default function Cart() {
           {/* Content */}
           <div className='p-2 sm:my-5 lg:p-5'>
             <div
-              className='mx-auto flex max-w-[500px] flex-col rounded-md p-5 shadow-sm sm:p-10 lg:w-full lg:max-w-5xl lg:p-14'
+              className='mx-auto flex max-w-[500px] flex-col rounded-md p-5 shadow-sm sm:p-10 lg:w-full lg:max-w-7xl lg:p-14'
               style={{
                 backgroundColor: 'rgba(255, 255, 255, 0.9)',
                 minHeight: '50vh',
@@ -60,20 +97,21 @@ export default function Cart() {
                     change and support reforestation efforts.
                   </p>
                 </div>
-                <Link to='/checkout' className='hidden lg:block'>
-                  <Button className='uppercase' disabled={!totalTreeCount}>
-                    <span>
-                      <PiShoppingCartSimpleFill className='text-lg' />
-                    </span>
-                    <span>Checkout</span>
-                  </Button>
-                </Link>
+                <Button
+                  className='hidden uppercase lg:block'
+                  disabled={!totalTreeCount || (!isAuthenticated && !isGuest)}
+                  onClick={handleSubmit}
+                  isProcessing={isPaymentLoading}
+                >
+                  <PiShoppingCartSimpleFill className='mr-1 inline-block text-lg' />
+                  <span>Checkout</span>
+                </Button>
               </div>
 
               {/* Cart Details */}
               <div className='mt-3 flex flex-col gap-4 lg:flex-row'>
                 {/* Left Side */}
-                <div className='mt-3 flex w-[100%] flex-col gap-5 lg:w-[30%]'>
+                <div className='mt-3 flex w-[100%] flex-col gap-5 lg:w-[50%]'>
                   <div className='bg-primary-light flex flex-col gap-2 rounded-sm p-3'>
                     <p className='flex justify-between'>
                       <span className='text-lg'>Total Price:</span>
@@ -90,19 +128,48 @@ export default function Cart() {
                     </p>
                   </div>
 
-                  <Link to='/checkout' className='mt-5'>
-                    <Button
-                      className='w-full uppercase'
-                      disabled={!totalTreeCount}
-                    >
-                      <p className='flex items-center justify-center gap-1'>
-                        <span>
-                          <PiShoppingCartSimpleFill className='text-lg' />
-                        </span>
-                        <span>Checkout</span>
+                  {!isAuthenticated && (
+                    <div className='bg-primary-light space-y-3 rounded-sm p-3'>
+                      <p className='text-stone'>
+                        Please log in or sign up to access a personalized
+                        dashboard.
                       </p>
-                    </Button>
-                  </Link>
+                      <div className='flex flex-col gap-3 lg:flex-row lg:items-center lg:gap-10'>
+                        <Link to='/login' state={{ from: location }}>
+                          <Button
+                            className=''
+                            variant='primary'
+                            rounded={true}
+                            size='sm'
+                            disabled={isGuest}
+                          >
+                            <span>Log In / Sign Up</span>
+                          </Button>
+                        </Link>
+                        {/* Continue as a guest */}
+                        <label htmlFor='checkbox' className='flex items-center'>
+                          <input
+                            type='checkbox'
+                            className='checkbox checkbox-sm'
+                            onChange={() => setIsGuest(!isGuest)}
+                            checked={isGuest}
+                          />
+                          <span className='ml-2'>Continue as a guest</span>
+                        </label>
+                      </div>
+                    </div>
+                  )}
+
+                  <Button
+                    className='hidden w-full uppercase lg:block'
+                    disabled={!totalTreeCount || (!isAuthenticated && !isGuest)}
+                    onClick={handleSubmit}
+                    isProcessing={isPaymentLoading}
+                  >
+                    <PiShoppingCartSimpleFill className='mr-1 inline-block text-lg' />
+                    <span>Checkout</span>
+                  </Button>
+
                   {!!totalTreeCount && (
                     <Link to='/trees'>
                       <Button
@@ -125,7 +192,7 @@ export default function Cart() {
 
                 {/* Right Side */}
                 {!!totalTreeCount && (
-                  <div className='mt-3 flex w-full flex-col items-center gap-3 lg:w-[70%]'>
+                  <div className='mt-3 flex w-full flex-col items-center gap-3 lg:w-[50%]'>
                     {cartTrees.map(tree => (
                       <CartItem key={tree._id} tree={tree} />
                     ))}

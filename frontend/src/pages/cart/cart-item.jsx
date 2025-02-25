@@ -3,7 +3,6 @@ import { LuPlus, LuMinus } from 'react-icons/lu';
 import { MdDelete } from 'react-icons/md';
 import Button from '@/components/ui/button';
 import { useCart } from '@/context/cart-context';
-import treeIcon from '/images/misc/tree.png';
 
 export default function CartItem({ tree }) {
   const {
