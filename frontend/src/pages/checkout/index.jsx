@@ -52,7 +52,7 @@ export default function CheckoutForm() {
           </div>
 
           {/* Content */}
-          <div className='my-16 p-5'>
+          <div className='px-5 py-20'>
             <div
               className='mx-auto max-w-5xl gap-3 rounded-md p-10 shadow-sm md:p-12'
               style={{ backgroundColor: 'rgba(255, 255, 255, 0.9)' }}

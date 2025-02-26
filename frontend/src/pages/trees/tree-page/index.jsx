@@ -45,7 +45,7 @@ export default function TreePage() {
           </div>
 
           {/* Content */}
-          <div className='my-5 w-full p-5'>
+          <div className='w-full px-5 py-10'>
             <div
               className='mx-auto flex w-full max-w-5xl flex-col gap-3 rounded-md p-5 shadow-sm'
               style={{ backgroundColor: 'rgba(255, 255, 255, 0.9)' }}

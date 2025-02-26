@@ -66,7 +66,7 @@ export default function Login() {
           </div>
 
           {/* Content */}
-          <div className='my-16 p-5'>
+          <div className='px-5 py-20'>
             <p className='mx-auto mb-3 w-fit'>Please login to continue.</p>
             <div
               className='mx-auto flex max-w-[500px] flex-col gap-3 rounded-md p-10 shadow-sm md:p-12'

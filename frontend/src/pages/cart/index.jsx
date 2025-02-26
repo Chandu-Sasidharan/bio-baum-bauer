@@ -75,7 +75,7 @@ export default function Cart() {
           </div>
 
           {/* Content */}
-          <div className='p-2 sm:my-5 lg:p-5'>
+          <div className='p-2 sm:py-10 lg:px-5'>
             <div
               className='mx-auto flex max-w-[500px] flex-col rounded-md p-5 shadow-sm sm:p-10 lg:w-full lg:max-w-7xl lg:p-14'
               style={{

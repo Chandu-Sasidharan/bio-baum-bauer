@@ -24,7 +24,7 @@ export default function AboutUs() {
           </div>
 
           {/* Content */}
-          <div className='my-5 p-5'>
+          <div className='px-5 py-10'>
             <div
               className='mx-auto flex w-full max-w-7xl flex-col gap-2 rounded-md p-10 shadow-sm md:p-16'
               style={{ backgroundColor: 'rgba(255, 255, 255, 0.9)' }}
