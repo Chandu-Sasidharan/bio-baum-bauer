@@ -26,7 +26,7 @@ export default function StripeForm() {
       //`Elements` instance that was used to create the Payment Element
       elements,
       confirmParams: {
-        return_url: `${import.meta.env.VITE_FRONTEND_URL}/thank-you`,
+        return_url: `${import.meta.env.VITE_FRONTEND_URL}/payment-status`,
       },
     });
 

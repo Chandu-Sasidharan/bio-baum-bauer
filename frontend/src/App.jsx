@@ -20,7 +20,7 @@ import Sponsorship from '@/pages/account/sponsorship';
 import Privacy from '@/pages/privacy';
 import Terms from '@/pages/terms';
 import CheckoutForm from '@/pages/checkout';
-import ThankYou from '@/pages/thank-you';
+import PaymentStatus from '@/pages/payment-status';
 import News from '@/pages/news';
 import Faqs from '@/pages/faqs';
 import Cart from '@/pages/cart';
@@ -51,7 +51,7 @@ function App() {
                 <Route path='/news' element={<News />} />
                 <Route path='/cart' element={<Cart />} />
                 <Route path='/checkout' element={<CheckoutForm />} />
-                <Route path='/thank-you' element={<ThankYou />} />
+                <Route path='/payment-status' element={<PaymentStatus />} />
                 <Route
                   path='/account'
                   element={
