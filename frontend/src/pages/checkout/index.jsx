@@ -14,7 +14,11 @@ export default function CheckoutForm() {
   const totalAmount = (paymentIntent?.metadata.total_amount / 100).toFixed(2);
 
   if (!paymentIntent) {
-    return <div>Error: Something went wrong!</div>;
+    return (
+      <div className='flex h-screen items-center justify-center'>
+        Error: Something went wrong!
+      </div>
+    );
   }
 
   const options = {
