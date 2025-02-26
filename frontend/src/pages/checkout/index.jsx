@@ -2,11 +2,9 @@ import { useLocation } from 'react-router-dom';
 import { Helmet } from 'react-helmet-async';
 import Breadcrumbs from '@/components/breadcrumbs';
 import backgroundImage from '/images/background/leaves-background.webp';
-import { loadStripe } from '@stripe/stripe-js';
 import { Elements } from '@stripe/react-stripe-js';
+import stripePromise from '@/utils/stripe-instance';
 import StripeForm from './form';
-
-const stripePromise = loadStripe(import.meta.env.VITE_STRIPE_PUBLIC_KEY);
 
 export default function CheckoutForm() {
   const { state } = useLocation();
