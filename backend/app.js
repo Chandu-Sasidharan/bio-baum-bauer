@@ -2,6 +2,7 @@ import express from 'express';
 import morgan from 'morgan';
 import helmet from 'helmet';
 import cookieParser from 'cookie-parser';
+import { postPaymentWebhook } from '#src/controllers/webhook-controller.js';
 import allowCors from '#src/middlewares/allow-cors.js';
 import allRoutes from '#src/routes/all-routes.js';
 
@@ -9,8 +10,17 @@ const app = express();
 
 app.use(helmet()); //provide basic security
 allowCors(app); // allow cors
-app.use(express.json()); // parse json
 app.use(cookieParser()); // parse cookies
+
+// Stripe webhook route, requires raw body
+app.post(
+  '/api/webhook',
+  express.raw({ type: 'application/json' }),
+  postPaymentWebhook
+);
+
+// parse json
+app.use(express.json());
 
 // Log requests to console if in development
 if (app.get('env') === 'development') {

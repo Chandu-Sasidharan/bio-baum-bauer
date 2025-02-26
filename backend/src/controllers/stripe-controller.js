@@ -1,7 +1,7 @@
 import { StatusCodes } from 'http-status-codes';
 import formatZodError from '#src/utils/format-zod-error.js';
 import validatePaymentData from '#src/validations/payment-data-validation.js';
-import stripeInstance from '#src/utils/stripe-instance.js';
+import { stripeInstance } from '#src/utils/stripe.js';
 import Tree from '#src/models/tree.js';
 
 export const getPaymentIntent = async (req, res) => {
