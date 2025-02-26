@@ -16,7 +16,7 @@ export const postPaymentWebhook = async (req, res) => {
       );
     } catch (error) {
       // eslint-disable-next-line no-console
-      console.log(`⚠️  Webhook signature verification failed.`, error.message);
+      console.log(`Webhook signature verification failed.`, error.message);
       return res
         .status(StatusCodes.BAD_REQUEST)
         .json({ message: 'Webhook Error' });

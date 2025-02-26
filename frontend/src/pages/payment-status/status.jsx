@@ -23,6 +23,7 @@ export default function Status({ clientSecret }) {
       // [0]: https://stripe.com/docs/payments/payment-methods#payment-notification
       switch (paymentIntent.status) {
         case 'succeeded':
+          console.log('PaymentIntent metadata:', paymentIntent.metadata);
           clearCartTrees();
           setMessage(
             'Thank you for sponsoring! Your payment has been received.'

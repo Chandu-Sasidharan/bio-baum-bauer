@@ -11,7 +11,7 @@ export default function CheckoutForm() {
   const paymentIntent = state?.paymentIntent;
   const clientSecret = paymentIntent?.client_secret;
   // Total amount payable by the customer in Euro
-  const totalAmount = (paymentIntent?.metadata.total_amount / 100).toFixed(2);
+  const totalAmount = (paymentIntent.amount / 100).toFixed(2);
 
   if (!paymentIntent) {
     return (

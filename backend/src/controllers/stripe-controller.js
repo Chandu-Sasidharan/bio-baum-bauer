@@ -2,6 +2,7 @@ import { StatusCodes } from 'http-status-codes';
 import formatZodError from '#src/utils/format-zod-error.js';
 import validatePaymentData from '#src/validations/payment-data-validation.js';
 import { stripeInstance } from '#src/utils/stripe.js';
+import Sponsorship from '#src/models/sponsorship.js';
 import Tree from '#src/models/tree.js';
 
 export const getPaymentIntent = async (req, res) => {
@@ -48,14 +49,19 @@ export const getPaymentIntent = async (req, res) => {
         .json({ message: 'Invalid Data' });
     }
 
+    // Save the sponsorship data to the db and get the id
+    const sponsorship = await Sponsorship.create({
+      ...paymentData,
+      amount,
+      status: 'pending',
+    });
+
     // Create the payment intent with the calculated amount
     const paymentIntent = await stripeInstance.paymentIntents.create({
       amount,
       currency: 'eur',
-      receipt_email: paymentData?.email,
       metadata: {
-        customer_email: paymentData?.email,
-        total_amount: amount,
+        sponsorshipId: sponsorship._id.toString(),
       },
     });
 

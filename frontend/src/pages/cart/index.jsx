@@ -35,6 +35,7 @@ export default function Cart() {
       cartItems,
       isGuest,
       ...(authUser && { email: authUser.email }),
+      ...(authUser && { userId: authUser.id }),
     };
     getPaymentIntent(paymentData, {
       onSuccess: data => {
