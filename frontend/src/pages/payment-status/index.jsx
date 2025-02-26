@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { useLocation } from 'react-router-dom';
 import { Helmet } from 'react-helmet-async';
+import Spinner from '@/components/spinner';
 import Breadcrumbs from '@/components/breadcrumbs';
 import backgroundImage from '/images/background/leaves-background.webp';
 import { Elements } from '@stripe/react-stripe-js';
@@ -23,7 +24,7 @@ export default function CheckoutForm() {
   }, [location.search]);
 
   if (!clientSecret) {
-    return null;
+    return <Spinner />;
   }
 
   const options = {

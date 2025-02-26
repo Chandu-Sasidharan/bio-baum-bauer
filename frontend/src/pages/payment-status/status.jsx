@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { useStripe } from '@stripe/react-stripe-js';
+import Spinner from '@/components/spinner';
 import { useCart } from '@/context/cart-context';
 import Button from '@/components/ui/button';
 import treeIcon from '/images/misc/tree.png';
@@ -46,8 +47,8 @@ export default function Status({ clientSecret }) {
     });
   }, [stripe, clientSecret]);
 
-  if (!clientSecret) {
-    return null;
+  if (!message) {
+    return <Spinner height='60' />;
   }
 
   return (
