@@ -41,7 +41,7 @@ export default function StripeForm() {
     <form className='mx-auto flex flex-col gap-6 p-4' onSubmit={handleSubmit}>
       <PaymentElement />
       <Button type='submit' disabled={!stripe} isProcessing={isLoading}>
-        Submit
+        Pay Now
       </Button>
       {errorMessage && <div className='text-red text-sm'>{errorMessage}</div>}
     </form>
