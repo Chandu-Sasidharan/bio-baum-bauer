@@ -1,5 +1,6 @@
 import { StatusCodes } from 'http-status-codes';
 import { stripeInstance, endpointSecret } from '#src/utils/stripe.js';
+import Sponsorship from '#src/models/sponsorship.js';
 
 export const postPaymentWebhook = async (req, res) => {
   if (!endpointSecret) return;
@@ -9,14 +10,14 @@ export const postPaymentWebhook = async (req, res) => {
     // Get the signature sent by Stripe
     const signature = req.headers['stripe-signature'];
     try {
+      // Verify that the event posted came from Stripe
+      // Will throw an error if the signature is not valid
       event = stripeInstance.webhooks.constructEvent(
         req.body,
         signature,
         endpointSecret
       );
     } catch (error) {
-      // eslint-disable-next-line no-console
-      console.log(`Webhook signature verification failed.`, error.message);
       return res
         .status(StatusCodes.BAD_REQUEST)
         .json({ message: 'Webhook Error' });
@@ -26,21 +27,18 @@ export const postPaymentWebhook = async (req, res) => {
     switch (event.type) {
       case 'payment_intent.succeeded':
         const paymentIntent = event.data.object;
-        // eslint-disable-next-line
-        console.log(
-          `PaymentIntent for ${paymentIntent.amount} was successful!`
+        await Sponsorship.findByIdAndUpdate(
+          paymentIntent.metadata.sponsorshipId,
+          { status: 'paid' }
         );
-        // Access the metadata
-        const metadata = paymentIntent.metadata;
-        // eslint-disable-next-line
-        console.log('PaymentIntent metadata:', metadata);
-        // Then define and call a method to handle the successful payment intent.
-        // handlePaymentIntentSucceeded(paymentIntent);
         break;
-      default:
-        // Unexpected event type
-        // eslint-disable-next-line no-console
-        console.log(`Unhandled event type ${event.type}.`);
+      case 'payment_intent.payment_failed':
+        const paymentIntentFailed = event.data.object;
+        await Sponsorship.findByIdAndUpdate(
+          paymentIntentFailed.metadata.sponsorshipId,
+          { status: 'failed' }
+        );
+        break;
     }
 
     // Return a 200 response to acknowledge receipt of the event
