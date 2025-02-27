@@ -20,6 +20,10 @@ const sponsorshipValidationSchema = z.object({
   amount: z
     .number({ message: 'Amount must be a number' })
     .min(1, { message: 'Amount must be at least 1' }),
+  currency: z.string({ message: 'Currency must be a string' }),
+  taxRate: z
+    .number({ message: 'Tax rate must be a number' })
+    .min(0, { message: 'Tax rate must be at least 0' }),
   cartItems: z
     .array(
       z.object({

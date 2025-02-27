@@ -7,6 +7,8 @@ const sponsorshipSchema = new Schema(
     email: { type: String, trim: true, lowercase: true },
     isGuest: { type: Boolean, required: true },
     amount: { type: Number, required: true },
+    curency: { type: String, required: true },
+    taxRate: { type: Number, required: true },
     cartItems: [
       {
         productId: { type: Schema.Types.ObjectId, ref: 'Tree' },
