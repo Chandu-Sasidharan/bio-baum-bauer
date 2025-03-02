@@ -12,6 +12,7 @@ import { useUser } from '@/context/auth-context';
 import CartItem from './cart-item';
 import usePaymentIntent from '@/hooks/use-payment-intent';
 import showAlert from '@/utils/alert';
+import { TAX_RATE, CURRENCY } from '@/utils/constants';
 
 export default function Cart() {
   const { authUser, isAuthenticated } = useUser();
@@ -32,9 +33,12 @@ export default function Cart() {
 
   const handleSubmit = () => {
     const paymentData = {
+      currency: CURRENCY,
+      taxRate: TAX_RATE,
       cartItems,
       isGuest,
       ...(authUser && { email: authUser.email }),
+      ...(authUser?.firstName && { firstName: authUser.firstName }),
       ...(authUser && { userId: authUser.id }),
     };
     getPaymentIntent(paymentData, {

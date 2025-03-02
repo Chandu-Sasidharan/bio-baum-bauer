@@ -16,6 +16,10 @@ const sponsorshipValidationSchema = z.object({
     .trim()
     .email({ message: 'Invalid Email' })
     .optional(), // Email is optional as we allow guest sponsorships
+  firstName: z
+    .string({ message: 'First name must be a string' })
+    .min(3, { message: 'First name should have a minimum length of 2' })
+    .optional(), // First name is optional as we allow guest sponsorships
   isGuest: z.boolean({ message: 'isGuest must be a boolean' }),
   amount: z
     .number({ message: 'Amount must be a number' })

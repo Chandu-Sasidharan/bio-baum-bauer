@@ -5,9 +5,10 @@ const sponsorshipSchema = new Schema(
   {
     userId: { type: Schema.Types.ObjectId, ref: 'User' },
     email: { type: String, trim: true, lowercase: true },
+    firstName: { type: String, trim: true },
     isGuest: { type: Boolean, required: true },
     amount: { type: Number, required: true },
-    curency: { type: String, required: true },
+    currency: { type: String, required: true },
     taxRate: { type: Number, required: true },
     cartItems: [
       {

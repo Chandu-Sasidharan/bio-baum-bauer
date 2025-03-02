@@ -4,7 +4,6 @@ import validatePaymentData from '#src/validations/payment-data-validation.js';
 import { stripeInstance } from '#src/utils/stripe.js';
 import Sponsorship from '#src/models/sponsorship.js';
 import Tree from '#src/models/tree.js';
-import { TAX_RATE, CURRENCY } from '#src/utils/constants.js';
 
 export const getPaymentIntent = async (req, res) => {
   try {
@@ -52,17 +51,15 @@ export const getPaymentIntent = async (req, res) => {
 
     // Save the sponsorship data to the db and get the id
     const sponsorship = await Sponsorship.create({
-      ...paymentData,
       amount,
-      currency: CURRENCY,
-      taxRate: TAX_RATE,
+      ...paymentData,
       status: 'pending',
     });
 
     // Create the payment intent with the calculated amount
     const paymentIntent = await stripeInstance.paymentIntents.create({
       amount,
-      currency: CURRENCY,
+      currency: paymentData.currency,
       metadata: {
         sponsorshipId: sponsorship._id.toString(),
       },
