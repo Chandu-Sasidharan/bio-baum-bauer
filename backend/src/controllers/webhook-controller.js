@@ -1,6 +1,22 @@
 import { StatusCodes } from 'http-status-codes';
 import { stripeInstance, endpointSecret } from '#src/utils/stripe.js';
 import Sponsorship from '#src/models/sponsorship.js';
+import sendPaymemtSucceededEmail from '#src/utils/send-payment-succeeded-email.js';
+import sendPaymentFailedEmail from '#src/utils/send-payment-failed-email.js';
+import sendNewSponsorshipEmail from '#src/utils/send-new-sponsorship-email.js';
+
+const getSponsorshipData = async sponsorshipId => {
+  const sponsorship = await Sponsorship.findById(sponsorshipId);
+  if (!sponsorship) {
+    throw new Error('Sponsorship not found');
+  }
+
+  return {
+    email: sponsorship.email,
+    userName: sponsorship.isGuest ? 'Patron' : sponsorship.firstName,
+    amount: sponsorship.amount,
+  };
+};
 
 export const postPaymentWebhook = async (req, res) => {
   if (!endpointSecret) return;
@@ -27,17 +43,39 @@ export const postPaymentWebhook = async (req, res) => {
     switch (event.type) {
       case 'payment_intent.succeeded':
         const paymentIntent = event.data.object;
-        await Sponsorship.findByIdAndUpdate(
-          paymentIntent.metadata.sponsorshipId,
-          { status: 'paid' }
-        );
+        const sponsorshipId = paymentIntent.metadata.sponsorshipId;
+
+        // Update the sponsorship status to 'paid'
+        await Sponsorship.findByIdAndUpdate(sponsorshipId, { status: 'paid' });
+
+        // Retrieve the sponsorship data
+        const sponsorshipData = await getSponsorshipData(sponsorshipId);
+
+        // Send the payment succeeded email to the sponsor
+        if (!sponsorshipData.isGuest) {
+          await sendPaymemtSucceededEmail(sponsorshipData);
+        }
+        // Send email to the team
+        await sendNewSponsorshipEmail(sponsorshipData);
+
         break;
       case 'payment_intent.payment_failed':
         const paymentIntentFailed = event.data.object;
-        await Sponsorship.findByIdAndUpdate(
-          paymentIntentFailed.metadata.sponsorshipId,
-          { status: 'failed' }
-        );
+        const failedSponsorshipId = paymentIntentFailed.metadata.sponsorshipId;
+
+        // Update the sponsorship status to 'failed'
+        await Sponsorship.findByIdAndUpdate(failedSponsorshipId, {
+          status: 'failed',
+        });
+
+        // Retrieve the sponsorship data
+        const failedSponsorshipData =
+          await getSponsorshipData(failedSponsorshipId);
+
+        // Send the payment failed email to the sponsor
+        if (!failedSponsorshipData.isGuest) {
+          await sendPaymentFailedEmail(failedSponsorshipData);
+        }
         break;
     }
 
