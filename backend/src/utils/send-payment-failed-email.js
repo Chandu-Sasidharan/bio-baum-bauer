@@ -8,7 +8,7 @@ const sendPaymentFailedEmail = async sponsorshipData => {
     subject: 'Payment Failed',
     templateName: 'payment-failed',
     templateData: {
-      sponsorshipData,
+      ...sponsorshipData,
     },
   };
 

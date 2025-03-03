@@ -8,7 +8,7 @@ const sendNewSponsorshipEmail = async sponsorshipData => {
     subject: 'New Sponsorship Received',
     templateName: 'new-sponsorship',
     templateData: {
-      sponsorshipData,
+      ...sponsorshipData,
     },
   };
 

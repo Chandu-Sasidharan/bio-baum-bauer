@@ -8,7 +8,7 @@ const sendPaymemtSucceededEmail = async sponsorshipData => {
     subject: 'Payment Confirmation',
     templateName: 'payment-succeeded',
     templateData: {
-      sponsorshipData,
+      ...sponsorshipData,
     },
   };
 
