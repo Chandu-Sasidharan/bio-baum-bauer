@@ -14,7 +14,8 @@ const getSponsorshipData = async sponsorshipId => {
   return {
     email: sponsorship.email,
     userName: sponsorship.isGuest ? 'Patron' : sponsorship.firstName,
-    amount: sponsorship.amount,
+    amount: (sponsorship.amount / 100).toFixed(2),
+    sponsorshipId: sponsorship._id,
   };
 };
 
