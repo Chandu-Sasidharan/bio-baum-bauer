@@ -12,7 +12,7 @@ export default function Impressions() {
   const [displayedImages, setDisplayedImages] = useState([]);
   const [hoveredImage, setHoveredImage] = useState(null);
   const [selectedImage, setSelectedImage] = useState(null);
-  const { impressions, isLoading, isError, error } = useImpressions();
+  const { impressions, isLoading, isError } = useImpressions();
 
   // Check if the screen is small
   useEffect(() => {
