@@ -2,12 +2,16 @@ import { QueryClient } from '@tanstack/react-query';
 
 function createQueryClient() {
   return new QueryClient({
-    retry: 3,
-    cacheTime: 300000,
-    staleTime: 5000,
-    refetchOnWindowFoccus: false,
-    refetchOnReconnect: false,
-    refetchOnMount: false,
+    defaultOptions: {
+      queries: {
+        retry: 3,
+        gcTime: 300000,
+        staleTime: Infinity,
+        refetchOnWindowFocus: false,
+        refetchOnReconnect: false,
+        refetchOnMount: false,
+      },
+    },
   });
 }
 

@@ -26,9 +26,9 @@ import Faqs from '@/pages/faqs';
 import Cart from '@/pages/cart';
 import NotFound from '@/pages/not-found';
 
-function App() {
-  const queryClient = createQueryClient();
+const queryClient = createQueryClient();
 
+function App() {
   return (
     <BrowserRouter>
       <QueryClientProvider client={queryClient}>
