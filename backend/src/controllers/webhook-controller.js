@@ -6,9 +6,21 @@ import sendPaymentFailedEmail from '#src/utils/send-payment-failed-email.js';
 import sendNewSponsorshipEmail from '#src/utils/send-new-sponsorship-email.js';
 
 const getSponsorshipData = async sponsorshipId => {
-  const sponsorship = await Sponsorship.findById(sponsorshipId);
+  const sponsorship = await Sponsorship.findById(sponsorshipId).lean();
   if (!sponsorship) {
     throw new Error('Sponsorship not found');
+  }
+
+  const validation = Sponsorship.validateSponsorship(sponsorship);
+
+  if (!validation.success) {
+    await Sponsorship.findByIdAndUpdate(sponsorshipId, {
+      status: 'needs_review',
+    });
+    const error = new Error('Persisted sponsorship failed validation');
+    error.details = validation.error;
+    //TODO: log error somewhere for review
+    throw error;
   }
 
   return {
@@ -46,12 +58,11 @@ export const postPaymentWebhook = async (req, res, next) => {
       case 'payment_intent.succeeded':
         const paymentIntent = event.data.object;
         const sponsorshipId = paymentIntent.metadata.sponsorshipId;
+        // getSponsorshipData will throw if the data is invalid
+        const sponsorshipData = await getSponsorshipData(sponsorshipId);
 
         // Update the sponsorship status to 'paid'
         await Sponsorship.findByIdAndUpdate(sponsorshipId, { status: 'paid' });
-
-        // Retrieve the sponsorship data
-        const sponsorshipData = await getSponsorshipData(sponsorshipId);
 
         // Send the payment succeeded email to the sponsor
         if (!sponsorshipData.isGuest) {
@@ -64,15 +75,14 @@ export const postPaymentWebhook = async (req, res, next) => {
       case 'payment_intent.payment_failed':
         const paymentIntentFailed = event.data.object;
         const failedSponsorshipId = paymentIntentFailed.metadata.sponsorshipId;
+        // getSponsorshipData will throw if the data is invalid
+        const failedSponsorshipData =
+          await getSponsorshipData(failedSponsorshipId);
 
         // Update the sponsorship status to 'failed'
         await Sponsorship.findByIdAndUpdate(failedSponsorshipId, {
           status: 'failed',
         });
-
-        // Retrieve the sponsorship data
-        const failedSponsorshipData =
-          await getSponsorshipData(failedSponsorshipId);
 
         // Send the payment failed email to the sponsor
         if (!failedSponsorshipData.isGuest) {

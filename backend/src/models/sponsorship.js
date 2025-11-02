@@ -12,13 +12,13 @@ const sponsorshipSchema = new Schema(
     taxRate: { type: Number, required: true },
     cartItems: [
       {
-        treeId: { type: Schema.Types.ObjectId, ref: 'Tree' },
-        quantity: { type: Number },
+        treeId: { type: Schema.Types.ObjectId, ref: 'Tree', required: true },
+        quantity: { type: Number, required: true },
       },
     ],
     status: {
       type: String,
-      enum: ['pending', 'paid', 'failed'],
+      enum: ['pending', 'paid', 'failed', 'needs_review'],
       default: 'pending',
     },
   },

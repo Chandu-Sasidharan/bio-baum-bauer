@@ -38,7 +38,11 @@ const sponsorshipValidationSchema = z.object({
       })
     )
     .min(1, { message: 'Cart items cannot be empty' }),
-  status: z.enum(['pending', 'paid', 'failed'], { message: 'Invalid status' }),
+  status: z
+    .enum(['pending', 'paid', 'failed', 'needs_review'], {
+      message: 'Invalid status',
+    })
+    .optional(),
 });
 
 const validateSponsorshipData = formData => {
