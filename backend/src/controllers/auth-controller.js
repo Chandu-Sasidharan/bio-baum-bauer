@@ -10,7 +10,7 @@ import pickUserPayload from '#src/utils/pick-user-payload.js';
 import User from '#src/models/user.js';
 
 // Sign up user
-export const signUp = async (req, res) => {
+export const signUp = async (req, res, next) => {
   try {
     const formData = req.body;
     // Validate the form data
@@ -74,12 +74,12 @@ export const signUp = async (req, res) => {
       message: 'Please check your inbox to confirm your account.',
     });
   } catch (error) {
-    throw error;
+    next(error);
   }
 };
 
 // Confirm account
-export const confirmAccount = async (req, res) => {
+export const confirmAccount = async (req, res, next) => {
   try {
     const { token } = req.body;
     const user = await User.findOne({
@@ -100,42 +100,36 @@ export const confirmAccount = async (req, res) => {
       });
     }
 
+    const update = {
+      isVerified: true,
+      verificationToken: null,
+      verificationTokenExpiresAt: null,
+    };
+
     // If the user is soft deleted,
     // allow them to sign up again with the same email
     // Retain only the email and password
     // Set other properties to null
     if (user.deletedAt !== null) {
-      await User.updateOne(
-        { verificationToken: token },
-        {
-          deletedAt: null,
-          isVerified: true,
-          verificationToken: null,
-          verificationTokenExpiresAt: null,
-          firstName: null,
-          lastName: null,
-          address: null,
-          phoneNumber: null,
-          avatarUrl: 'dummy',
-          passwordResetToken: null,
-          passwordResetTokenExpiresAt: null,
-        }
-      );
+      Object.assign(update, {
+        deletedAt: null,
+        firstName: null,
+        lastName: null,
+        address: null,
+        phoneNumber: null,
+        avatarUrl: 'dummy',
+        passwordResetToken: null,
+        passwordResetTokenExpiresAt: null,
+      });
     }
 
     // Update the user
-    await User.updateOne(
-      { verificationToken: token },
-      {
-        isVerified: true,
-        verificationToken: null,
-        verificationTokenExpiresAt: null,
-      }
-    );
+    await User.updateOne({ _id: user._id }, update);
 
-    // creatJwt pciks the fields that are needed for the token
-    const jwtToken = createJwt(user);
-    const userPayload = pick(user, ['_id', 'email', 'isVerified']);
+    const verifiedUser = await User.findById(user._id);
+    // createJwt picks only the fields that are needed for the token
+    const jwtToken = createJwt(verifiedUser);
+    const userPayload = pick(verifiedUser, ['_id', 'email', 'isVerified']);
     const isProduction = process.env.NODE_ENV === 'production';
 
     return res
@@ -147,12 +141,12 @@ export const confirmAccount = async (req, res) => {
       .status(StatusCodes.OK)
       .json({ message: 'Account Confirmed!', user: userPayload });
   } catch (error) {
-    throw error;
+    next(error);
   }
 };
 
 // Login user
-export const loginUser = async (req, res) => {
+export const loginUser = async (req, res, next) => {
   try {
     const { email, password } = req.body;
     const user = await User.findOne({ email, isVerified: true });
@@ -187,12 +181,12 @@ export const loginUser = async (req, res) => {
       .status(StatusCodes.OK)
       .json({ message: 'Logged in successfully!', user: userPayload });
   } catch (error) {
-    throw error;
+    next(error);
   }
 };
 
 // Refresh token
-export const refreshToken = async (req, res) => {
+export const refreshToken = async (req, res, next) => {
   const token = req.cookies.jwt;
 
   if (!token) {
@@ -240,8 +234,8 @@ export const refreshToken = async (req, res) => {
         .json({ message: 'Invalid or expired token' });
     }
 
-    // else throw the error
-    throw error;
+    // For other errors, pass to the error handler
+    next(error);
   }
 };
 
