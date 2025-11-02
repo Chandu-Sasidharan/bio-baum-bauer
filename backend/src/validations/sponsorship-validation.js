@@ -31,7 +31,7 @@ const sponsorshipValidationSchema = z.object({
   cartItems: z
     .array(
       z.object({
-        productId: objectIdValidation, // Validate productId as ObjectId
+        treeId: objectIdValidation, // Validate treeId as ObjectId
         quantity: z
           .number({ message: 'Quantity must be a number' })
           .min(1, { message: 'Quantity must be at least 1' }),

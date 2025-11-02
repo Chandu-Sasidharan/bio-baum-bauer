@@ -12,7 +12,7 @@ const sponsorshipSchema = new Schema(
     taxRate: { type: Number, required: true },
     cartItems: [
       {
-        productId: { type: Schema.Types.ObjectId, ref: 'Tree' },
+        treeId: { type: Schema.Types.ObjectId, ref: 'Tree' },
         quantity: { type: Number },
       },
     ],

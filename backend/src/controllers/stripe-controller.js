@@ -5,20 +5,20 @@ import { stripeInstance } from '#src/utils/stripe.js';
 import Sponsorship from '#src/models/sponsorship.js';
 import Tree from '#src/models/tree.js';
 
-export const getPaymentIntent = async (req, res) => {
+export const getPaymentIntent = async (req, res, next) => {
   try {
     const paymentData = req.body;
 
     // Validate the payment data using Zod
-    const result = validatePaymentData(paymentData);
-    if (!result.success) {
-      const errors = formatZodError(result.error);
+    const { success, data, error } = validatePaymentData(paymentData);
+    if (!success) {
+      const errors = formatZodError(error);
       return res
         .status(StatusCodes.BAD_REQUEST)
         .json({ errors, message: 'Invalid Data' });
     }
 
-    const { cartItems } = paymentData;
+    const { cartItems } = data;
     const treeIds = cartItems.map(item => item.treeId);
 
     // Retrieve tree objects from the database
@@ -52,14 +52,14 @@ export const getPaymentIntent = async (req, res) => {
     // Save the sponsorship data to the db and get the id
     const sponsorship = await Sponsorship.create({
       amount,
-      ...paymentData,
+      ...data,
       status: 'pending',
     });
 
     // Create the payment intent with the calculated amount
     const paymentIntent = await stripeInstance.paymentIntents.create({
       amount,
-      currency: paymentData.currency,
+      currency: data.currency,
       metadata: {
         sponsorshipId: sponsorship._id.toString(),
       },
@@ -67,6 +67,6 @@ export const getPaymentIntent = async (req, res) => {
 
     return res.status(StatusCodes.OK).json({ paymentIntent });
   } catch (error) {
-    throw error;
+    next(error);
   }
 };
