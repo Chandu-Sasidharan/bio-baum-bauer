@@ -42,28 +42,37 @@ export const signUp = async (req, res, next) => {
 
     // Generate a verification token
     const verificationToken = createVerificationToken();
+    const verificationTokenExpiresAt = Date.now() + 3600000; // 1 hour
 
-    // If the user exists but is soft deleted
-    // update the user, and wait for the verification
-    if (existingUser && existingUser.deletedAt !== null) {
-      await User.updateOne(
-        { email },
-        {
-          password: hashedPassword,
-          verificationToken,
-          verificationTokenExpiresAt: Date.now() + 3600000, // 1 hour
-          isVerified: false,
-        }
-      );
-    }
+    const baseUpdate = {
+      password: hashedPassword,
+      verificationToken,
+      verificationTokenExpiresAt,
+      isVerified: false,
+      passwordResetToken: null,
+      passwordResetTokenExpiresAt: null,
+    };
 
-    // Create a new user
-    if (!existingUser) {
+    if (existingUser) {
+      const updatePayload = { ...baseUpdate };
+      // If the user exists but is soft deleted
+      // update the user to allow them to sign up again
+      if (existingUser.deletedAt !== null) {
+        Object.assign(updatePayload, {
+          deletedAt: null,
+          firstName: null,
+          lastName: null,
+          address: null,
+          phoneNumber: null,
+          avatarUrl: 'dummy',
+        });
+      }
+
+      await User.updateOne({ _id: existingUser._id }, updatePayload);
+    } else {
       await User.create({
         email,
-        password: hashedPassword,
-        verificationToken,
-        verificationTokenExpiresAt: Date.now() + 3600000, // 1 hour
+        ...baseUpdate,
       });
     }
 
