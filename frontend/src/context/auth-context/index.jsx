@@ -174,7 +174,6 @@ export const AuthProvider = ({ children }) => {
       const response = await axios.post('/api/auth/signup', formData);
 
       if (response.status === 201) {
-        setAuthUser(response.data.user);
         // Display success message
         showAlert(
           'success',
