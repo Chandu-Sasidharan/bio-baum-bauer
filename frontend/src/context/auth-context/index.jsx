@@ -1,4 +1,10 @@
-import { createContext, useEffect, useState, useContext } from 'react';
+import {
+  createContext,
+  useEffect,
+  useState,
+  useContext,
+  useCallback,
+} from 'react';
 import { omit } from 'lodash-es';
 import axios from '@/utils/axios';
 import showAlert from '@/utils/alert';
@@ -16,44 +22,84 @@ export const useUser = () => {
 
 // Auth context provider
 export const AuthProvider = ({ children }) => {
-  // Local storage reference
-  const lsRef = typeof window !== 'undefined' ? window.localStorage : null;
-
-  let initialUserState = null;
-  // Load login session from local storage
-  if (lsRef) {
-    try {
-      const storedSession = lsRef.getItem('userSession');
-      if (storedSession) {
-        const session = JSON.parse(storedSession);
-
-        if (session.expiresAt > Date.now()) {
-          initialUserState = omit(session, ['expiresAt']);
-        } else {
-          // Token is expired, clear the session
-          lsRef.removeItem('userSession');
-        }
-      }
-    } catch (error) {
-      // Do nothing
-    }
-  }
-
-  const [authUser, setAuthUser] = useState(initialUserState);
+  const [authUser, setAuthUser] = useState(null);
   const [isUserLoading, setIsUserLoading] = useState(false);
+  const [isSessionReady, setIsSessionReady] = useState(false);
   const isAuthenticated = !!authUser;
   const navigate = useNavigate();
 
-  // Save user to local storage
-  useEffect(() => {
-    if (authUser) {
-      const updatedAuthUser = {
-        ...authUser,
-        expiresAt: Date.now() + 60 * 60 * 1000, // 1 hour
-      };
-      lsRef.setItem('userSession', JSON.stringify(updatedAuthUser));
+  // Local storage reference
+  const lsRef = typeof window !== 'undefined' ? window.localStorage : null;
+
+  const clearSession = useCallback(() => {
+    setAuthUser(null);
+    if (lsRef) {
+      lsRef.removeItem('userSession');
     }
-  }, [authUser]);
+  }, [lsRef]);
+
+  // Bootstrap session on mount
+  useEffect(() => {
+    let isMounted = true;
+
+    const bootstrapSession = async () => {
+      if (!lsRef) {
+        setIsSessionReady(true);
+        return;
+      }
+
+      let cachedSession = null;
+
+      try {
+        const stored = lsRef.getItem('userSession');
+        if (stored) {
+          const parsed = JSON.parse(stored);
+          if (parsed.expiresAt && parsed.expiresAt > Date.now()) {
+            cachedSession = omit(parsed, ['expiresAt']);
+          } else {
+            lsRef.removeItem('userSession');
+          }
+        }
+      } catch {
+        lsRef.removeItem('userSession');
+      }
+
+      try {
+        await axios.get('/api/auth/refresh-token');
+        if (isMounted && cachedSession) {
+          setAuthUser(cachedSession);
+        }
+      } catch {
+        if (isMounted) {
+          clearSession();
+        }
+      } finally {
+        if (isMounted) {
+          setIsSessionReady(true);
+        }
+      }
+    };
+
+    bootstrapSession();
+
+    return () => {
+      isMounted = false;
+    };
+  }, [lsRef, clearSession]);
+
+  // Update session expiry on authUser change
+  useEffect(() => {
+    if (!lsRef || !authUser || !isSessionReady) {
+      return;
+    }
+
+    const updatedAuthUser = {
+      ...authUser,
+      expiresAt: Date.now() + 60 * 60 * 1000,
+    };
+
+    lsRef.setItem('userSession', JSON.stringify(updatedAuthUser));
+  }, [authUser, isSessionReady, lsRef]);
 
   // Inactivity logout
   useEffect(() => {
@@ -90,17 +136,24 @@ export const AuthProvider = ({ children }) => {
     let refreshInterval;
 
     const refreshToken = async () => {
-      if (isAuthenticated) {
-        try {
-          await axios.get('/api/auth/refresh-token');
-        } catch (error) {
-          // Do nothing
+      if (!isAuthenticated) return;
+
+      try {
+        await axios.get('/api/auth/refresh-token');
+      } catch (error) {
+        const status = error.response?.status;
+        if (status === 401 || status === 419) {
+          clearSession();
+          showAlert(
+            'error',
+            null,
+            'Your session expired. Please log in again.'
+          );
         }
       }
     };
 
     if (isAuthenticated) {
-      // Initialize the token refresh interval
       refreshInterval = setInterval(refreshToken, TOKEN_REFRESH_INTERVAL);
     }
 
@@ -109,7 +162,7 @@ export const AuthProvider = ({ children }) => {
         clearInterval(refreshInterval);
       }
     };
-  }, [isAuthenticated, authUser]);
+  }, [isAuthenticated, clearSession, authUser]);
 
   // SingnUp user
   const signUpUser = async formData => {
@@ -163,7 +216,6 @@ export const AuthProvider = ({ children }) => {
           'Sign up failed',
           response.data.message || 'Something went wrong!'
         );
-        setIsUserLoading(false);
         navigate('/');
       }
     } catch (error) {
@@ -172,8 +224,9 @@ export const AuthProvider = ({ children }) => {
         'Sign up failed',
         error.response.data.message || 'Something went wrong!'
       );
-      setIsUserLoading(false);
       navigate('/');
+    } finally {
+      setIsUserLoading(false);
     }
   };
 
@@ -183,11 +236,9 @@ export const AuthProvider = ({ children }) => {
 
     try {
       const response = await axios.post('/api/auth/login', formData);
-
       if (response.status === 200) {
         setAuthUser(response.data.user);
       } else {
-        // Handle other server response statuses
         showAlert(
           'error',
           'Login Failed',
@@ -195,11 +246,15 @@ export const AuthProvider = ({ children }) => {
         );
       }
     } catch (error) {
+      const status = error.response?.status;
+      if (status === 401 || status === 419) {
+        clearSession();
+      }
       const errorMessage = formatError(error);
       showAlert('error', 'Login Failed', null, errorMessage);
+    } finally {
+      setIsUserLoading(false);
     }
-
-    setIsUserLoading(false);
   };
 
   // Update user
@@ -224,26 +279,26 @@ export const AuthProvider = ({ children }) => {
     } catch (error) {
       const errorMessage = formatError(error);
       showAlert('error', 'Update Failed', null, errorMessage);
+    } finally {
+      setIsUserLoading(false);
     }
-
-    setIsUserLoading(false);
   };
 
   // Handle logout
   const handleLogout = async () => {
     try {
-      await axios.get('/api/auth/logout');
-      setAuthUser(null);
-      // Clear user data from local storage
-      if (typeof window !== 'undefined') {
-        window.localStorage.removeItem('userSession');
-      }
-      // Display success message
-      showAlert('success', null, 'You have been logged out!');
+      await axios.post('/api/auth/logout');
     } catch (error) {
-      const errorMessage = formatError(error);
-      showAlert('error', 'Logout Failed', null, errorMessage);
+      const status = error.response?.status;
+      if (status !== 401 && status !== 419) {
+        const errorMessage = formatError(error);
+        showAlert('error', 'Logout Failed', null, errorMessage);
+        return;
+      }
     }
+
+    clearSession();
+    showAlert('success', null, 'You have been logged out!');
   };
 
   return (
@@ -258,6 +313,7 @@ export const AuthProvider = ({ children }) => {
         isUserLoading,
         setIsUserLoading,
         isAuthenticated,
+        isSessionReady,
         handleLogout,
       }}
     >

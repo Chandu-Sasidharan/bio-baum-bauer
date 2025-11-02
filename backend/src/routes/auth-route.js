@@ -12,7 +12,7 @@ import {
 router.post('/signup', signUp);
 router.post('/confirm-account', confirmAccount);
 router.post('/login', loginUser);
-router.get('/logout', logoutUser);
+router.post('/logout', logoutUser);
 router.get('/refresh-token', refreshToken);
 
 export default router;
