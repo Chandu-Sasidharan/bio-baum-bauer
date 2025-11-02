@@ -96,6 +96,8 @@ bio-baum-bauer/
    ├─ migrations/
    │  └─ create-admins.js
    └─ src/
+      ├─ admin
+      │   └─ index.js
       ├─ controllers/
       │  ├─ auth-controller.js
       │  ├─ contact-controller.js
@@ -110,6 +112,7 @@ bio-baum-bauer/
       │  ├─ is-authenticated.js
       │  └─ is-super-admin.js
       ├─ models/
+      │  ├─ admin.js
       │  ├─ contact.js
       │  ├─ faq.js
       │  ├─ impression.js
