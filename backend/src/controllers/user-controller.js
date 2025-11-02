@@ -1,5 +1,4 @@
 import { StatusCodes } from 'http-status-codes';
-import { pick } from 'lodash-es';
 import formatZodError from '#src/utils/format-zod-error.js';
 import pickUserPayload from '#src/utils/pick-user-payload.js';
 import User from '#src/models/user.js';
@@ -26,16 +25,8 @@ export const updateUser = async (req, res, next) => {
         .json({ message: 'User not found' });
     }
 
-    const userData = pick(data, [
-      'firstName',
-      'lastName',
-      'address',
-      'phoneNumber',
-      'avatarUrl',
-    ]);
-
     // Update the user
-    const updatedUser = await User.findByIdAndUpdate(_id, userData, {
+    const updatedUser = await User.findByIdAndUpdate(_id, data, {
       new: true,
     });
 
