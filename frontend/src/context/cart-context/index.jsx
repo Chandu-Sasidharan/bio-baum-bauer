@@ -101,6 +101,7 @@ export const CartProvider = ({ children }) => {
       return prev.map(tree => {
         if (tree.treeId === treeId) {
           const cartTree = cartTrees.find(t => t._id === treeId);
+          if (!cartTree) return tree;
           if (tree.quantity < cartTree.availableQuantity) {
             return { ...tree, quantity: tree.quantity + 1 };
           } else {
