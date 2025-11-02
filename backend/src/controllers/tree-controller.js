@@ -3,7 +3,7 @@ import { StatusCodes } from 'http-status-codes';
 import Tree from '#src/models/tree.js';
 
 // Get All Trees
-export const getAllTrees = async (req, res) => {
+export const getAllTrees = async (req, res, next) => {
   try {
     const { sort, category, page = 1, limit = 10 } = req.query;
 
@@ -28,23 +28,23 @@ export const getAllTrees = async (req, res) => {
 
     return res.status(StatusCodes.OK).json({ trees, total });
   } catch (error) {
-    throw error;
+    next(error);
   }
 };
 
 // Get All Featured Trees
-export const getAllFeaturedTrees = async (_req, res) => {
+export const getAllFeaturedTrees = async (_req, res, next) => {
   try {
     const featuredTrees = await Tree.find({ isFeatured: true }).limit(4).lean();
 
     return res.status(StatusCodes.OK).json({ featuredTrees });
   } catch (error) {
-    throw error;
+    next(error);
   }
 };
 
 // Get Tree by ID
-export const getTreeById = async (req, res) => {
+export const getTreeById = async (req, res, next) => {
   const { id } = req.params;
 
   // Check if the ID is a valid MongoDB ObjectId
@@ -64,12 +64,12 @@ export const getTreeById = async (req, res) => {
 
     return res.status(StatusCodes.OK).json({ tree });
   } catch (error) {
-    throw error;
+    next(error);
   }
 };
 
 // Get Trees in Cart
-export const getTreesInCart = async (req, res) => {
+export const getTreesInCart = async (req, res, next) => {
   try {
     const { ids } = req.body;
 
@@ -87,6 +87,6 @@ export const getTreesInCart = async (req, res) => {
 
     return res.status(StatusCodes.OK).json({ trees });
   } catch (error) {
-    throw error;
+    next(error);
   }
 };

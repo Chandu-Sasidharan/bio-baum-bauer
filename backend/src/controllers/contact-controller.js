@@ -4,7 +4,7 @@ import formatZodError from '#src/utils/format-zod-error.js';
 import sendContactFeedback from '#src/utils/contact-feedback-email.js';
 import sendContactToTeam from '#src/utils/contact-to-team-email.js';
 
-export const createContact = async (req, res) => {
+export const createContact = async (req, res, next) => {
   const formData = req.body;
 
   // Validate the form data
@@ -28,6 +28,6 @@ export const createContact = async (req, res) => {
       .status(StatusCodes.CREATED)
       .json({ message: 'We have received your message.' });
   } catch (error) {
-    throw error;
+    next(error);
   }
 };
