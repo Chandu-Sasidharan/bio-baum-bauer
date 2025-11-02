@@ -1,17 +1,19 @@
 import { StatusCodes } from 'http-status-codes';
+import { pick } from 'lodash-es';
 import formatZodError from '#src/utils/format-zod-error.js';
 import pickUserPayload from '#src/utils/pick-user-payload.js';
 import User from '#src/models/user.js';
 
 // Update user
-export const updateUser = async (req, res) => {
+export const updateUser = async (req, res, next) => {
   try {
     const formData = req.body;
     const { _id } = req.user;
     // Validate the form data
-    const result = User.validateUpdateFormData(formData);
-    if (!result.success) {
-      const errors = formatZodError(result.error);
+    const { success, data, error } = User.validateUpdateFormData(formData);
+
+    if (!success) {
+      const errors = formatZodError(error);
 
       return res.status(StatusCodes.BAD_REQUEST).json({ errors });
     }
@@ -24,8 +26,16 @@ export const updateUser = async (req, res) => {
         .json({ message: 'User not found' });
     }
 
+    const userData = pick(data, [
+      'firstName',
+      'lastName',
+      'address',
+      'phoneNumber',
+      'avatarUrl',
+    ]);
+
     // Update the user
-    const updatedUser = await User.findByIdAndUpdate(_id, formData, {
+    const updatedUser = await User.findByIdAndUpdate(_id, userData, {
       new: true,
     });
 
@@ -36,6 +46,6 @@ export const updateUser = async (req, res) => {
       .status(StatusCodes.OK)
       .json({ user: userPayload, message: 'User updated' });
   } catch (error) {
-    throw error;
+    next(error);
   }
 };

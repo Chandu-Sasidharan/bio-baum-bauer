@@ -62,6 +62,7 @@ const updateFormDataSchema = z.object({
         .optional(),
     })
     .optional(),
+  avatarUrl: z.string().trim().optional(),
 });
 
 const validateUpdateFormData = formData => {
