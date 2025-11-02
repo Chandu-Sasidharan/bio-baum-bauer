@@ -13,13 +13,14 @@ const getSponsorshipData = async sponsorshipId => {
 
   return {
     email: sponsorship.email,
+    isGuest: sponsorship.isGuest,
     userName: sponsorship.isGuest ? 'Patron' : sponsorship.firstName,
     amount: (sponsorship.amount / 100).toFixed(2),
     sponsorshipId: sponsorship._id,
   };
 };
 
-export const postPaymentWebhook = async (req, res) => {
+export const postPaymentWebhook = async (req, res, next) => {
   if (!endpointSecret) return;
 
   try {
@@ -83,6 +84,6 @@ export const postPaymentWebhook = async (req, res) => {
     // Return a 200 response to acknowledge receipt of the event
     return res.status(StatusCodes.OK).json({ received: true });
   } catch (error) {
-    throw error;
+    next(error);
   }
 };
