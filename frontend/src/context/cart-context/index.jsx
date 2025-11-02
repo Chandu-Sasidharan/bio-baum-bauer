@@ -11,6 +11,7 @@ export const useCart = () => {
 export const CartProvider = ({ children }) => {
   // Local Storage Reference
   const lsRef = typeof window !== 'undefined' ? window.localStorage : null;
+  const [isCartLoading, setIsCartLoading] = useState(false);
   // Cart item is an array of objects with treeId and quantity
   const [cartItems, setCartItems] = useState([]);
   // Cart trees is an array of tree objects
@@ -36,11 +37,23 @@ export const CartProvider = ({ children }) => {
 
   // Update cartTrees on Initial Load and when cartItems change
   useEffect(() => {
+    let isMounted = true;
+
     const updateCartTrees = async () => {
-      if (cartItems.length > 0) {
+      if (!cartItems.length) {
+        if (isMounted) {
+          setCartTrees([]);
+          setIsCartLoading(false);
+        }
+        return;
+      }
+
+      setIsCartLoading(true);
+      try {
         const response = await axios.post('/api/trees/cart', {
           ids: cartItems.map(item => item.treeId),
         });
+        if (!isMounted) return;
 
         const updatedCartTrees = response.data.trees.map(tree => {
           const cartItem = cartItems.find(item => item.treeId === tree._id);
@@ -48,12 +61,26 @@ export const CartProvider = ({ children }) => {
         });
 
         setCartTrees(updatedCartTrees);
-      } else {
-        setCartTrees([]);
+      } catch (error) {
+        if (isMounted) {
+          setCartTrees([]);
+          showAlert(
+            'error',
+            'Cart refresh failed',
+            'We could not load the latest cart info.'
+          );
+        }
+      } finally {
+        if (isMounted) {
+          setIsCartLoading(false);
+        }
       }
     };
 
     updateCartTrees();
+    return () => {
+      isMounted = false;
+    };
   }, [cartItems]);
 
   // Save cartItems to Local Storage
@@ -187,6 +214,7 @@ export const CartProvider = ({ children }) => {
       value={{
         cartItems,
         cartTrees,
+        isCartLoading,
         addTreeToCart,
         removeTreeFromCart,
         clearCartTrees,
