@@ -144,6 +144,7 @@ export const confirmAccount = async (req, res, next) => {
     return res
       .cookie('jwt', jwtToken, {
         secure: isProduction,
+        sameSite: isProduction ? 'none' : 'lax',
         httpOnly: true,
         maxAge: 1200000, // 20 minutes
       })
@@ -184,6 +185,7 @@ export const loginUser = async (req, res, next) => {
     return res
       .cookie('jwt', jwtToken, {
         secure: isProduction,
+        sameSite: isProduction ? 'none' : 'lax',
         httpOnly: true,
         maxAge: 1200000, // 20 minutes
       })
@@ -221,6 +223,7 @@ export const refreshToken = async (req, res, next) => {
     return res
       .cookie('jwt', newJwtToken, {
         secure: isProduction,
+        sameSite: isProduction ? 'none' : 'lax',
         httpOnly: true,
         maxAge: 1200000, // 20 minutes
       })
@@ -237,6 +240,7 @@ export const refreshToken = async (req, res, next) => {
       return res
         .clearCookie('jwt', {
           httpOnly: true,
+          sameSite: isProduction ? 'none' : 'lax',
           secure: isProduction,
         })
         .status(StatusCodes.UNAUTHORIZED)
@@ -255,6 +259,7 @@ export const logoutUser = async (_req, res) => {
   return res
     .clearCookie('jwt', {
       httpOnly: true,
+      sameSite: isProduction ? 'none' : 'lax',
       secure: isProduction,
     })
     .status(StatusCodes.OK)
