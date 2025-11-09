@@ -9,12 +9,14 @@
   },
   "scripts": {
     "dev": "node --watch server.js",
-    "start": "node server.js",
-    "build": "npm ci",
+    "start": "NODE_ENV=production node server.js",
+    "bundle:admin": "node scripts/bundle-admin.js",
+    "build": "npm run bundle:admin",
     "migrate": "migrate-mongo up",
     "modify-db": "node scripts/modify-db.js"
   },
   "dependencies": {
+    "@adminjs/bundler": "^3.0.0",
     "@adminjs/express": "^6.1.1",
     "@adminjs/mongoose": "^4.0.1",
     "adminjs": "^7.4.1",
