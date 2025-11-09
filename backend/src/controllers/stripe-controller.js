@@ -30,14 +30,16 @@ export const getPaymentIntent = async (req, res, next) => {
       return acc;
     }, {});
 
-    // Calculate the total amount (in euro cents)
-    // Convert the Decimal128 price to a number (in euros) then convert to cents
+    // Calculate the total amount (in euro cents). Prices are stored as Decimal128 values,
+    // so convert them to floats (euros) before converting to cents.
     const amount = cartItems.reduce((sum, item) => {
       const tree = treeMap[item.treeId];
       if (tree && tree.price) {
         const priceEuros = parseFloat(tree.price.toString());
-        const priceCents = Math.round(priceEuros * 100);
-        return sum + priceCents * item.quantity;
+        if (!Number.isNaN(priceEuros)) {
+          const priceCents = Math.round(priceEuros * 100);
+          return sum + priceCents * item.quantity;
+        }
       }
       return sum;
     }, 0);
