@@ -1,5 +1,7 @@
-import AdminJS from 'adminjs';
+import AdminJS, { ComponentLoader } from 'adminjs';
 import * as AdminJSMongoose from '@adminjs/mongoose';
+import path from 'node:path';
+import { fileURLToPath } from 'node:url';
 import Tree from '#src/models/tree.js';
 import Faq from '#src/models/faq.js';
 import User from '#src/models/user.js';
@@ -9,7 +11,14 @@ import Contact from '#src/models/contact.js';
 import {
   afterHookConvertPrice,
   beforeHookNormalizePrice,
-} from '#src/admin/price-hooks.js';
+} from '#src/admin/utils/price-hooks.js';
+
+const __dirname = path.dirname(fileURLToPath(import.meta.url));
+const componentLoader = new ComponentLoader();
+const DashboardComponent = componentLoader.add(
+  'ResourceCardsDashboard',
+  path.join(__dirname, 'components/dashboard.jsx')
+);
 
 AdminJS.registerAdapter({
   Resource: AdminJSMongoose.Resource,
@@ -19,9 +28,34 @@ AdminJS.registerAdapter({
 const createAdmin = () =>
   new AdminJS({
     rootPath: '/admin',
+    componentLoader,
     branding: {
       companyName: 'Bio Baum Bauer Admin',
       softwareBrothers: false,
+    },
+    dashboard: {
+      component: DashboardComponent,
+      handler: async () => {
+        const resources = [
+          { label: 'Trees', resource: Tree, icon: 'Tree' },
+          { label: 'FAQs', resource: Faq, icon: 'HelpCircle' },
+          { label: 'Impressions', resource: Impression, icon: 'Star' },
+          { label: 'Sponsorships', resource: Sponsorship, icon: 'Gift' },
+          { label: 'Contacts', resource: Contact, icon: 'MessageSquare' },
+          { label: 'Users', resource: User, icon: 'User' },
+        ];
+
+        const cards = await Promise.all(
+          resources.map(async ({ label, resource, icon }) => ({
+            label,
+            icon,
+            resourceId: resource.modelName, // used to build links on the client
+            count: await resource.countDocuments(),
+          }))
+        );
+
+        return { cards };
+      },
     },
     resources: [
       {
