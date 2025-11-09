@@ -5,7 +5,6 @@ import cookieParser from 'cookie-parser';
 import { postPaymentWebhook } from '#src/controllers/webhook-controller.js';
 import allowCors from '#src/middlewares/allow-cors.js';
 import allRoutes from '#src/routes/all-routes.js';
-import { admin, buildAdminRouter } from '#src/admin/index.js';
 
 const app = express();
 
@@ -41,9 +40,6 @@ if (app.get('env') === 'development') {
 app.get('/', (_, res) => {
   res.send('<h1>Backend is running!!!</h1>');
 });
-
-// AdminJS panel
-app.use(admin.options.rootPath, buildAdminRouter());
 
 // All routes
 app.use('/api', allRoutes);
