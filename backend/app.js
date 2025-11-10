@@ -1,6 +1,5 @@
 import express from 'express';
 import morgan from 'morgan';
-import helmet from 'helmet';
 import cookieParser from 'cookie-parser';
 import { postPaymentWebhook } from '#src/controllers/webhook-controller.js';
 import allowCors from '#src/middlewares/allow-cors.js';
@@ -15,16 +14,6 @@ if (process.env.NODE_ENV === 'production') {
 
 app.use('/admin-assets', express.static('./src/admin/assets'));
 
-app.use(
-  helmet({
-    contentSecurityPolicy: {
-      directives: {
-        ...helmet.contentSecurityPolicy.getDefaultDirectives(),
-        'script-src': ["'self'", "'unsafe-inline'"],
-      },
-    },
-  })
-); //provide basic security
 allowCors(app); // allow cors
 app.use(cookieParser()); // parse cookies
 
