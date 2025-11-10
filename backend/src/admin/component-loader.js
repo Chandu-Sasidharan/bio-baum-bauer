@@ -8,4 +8,3 @@ const DashboardComponent = componentLoader.add(
 );
 
 export { componentLoader, DashboardComponent };
-export default componentLoader;

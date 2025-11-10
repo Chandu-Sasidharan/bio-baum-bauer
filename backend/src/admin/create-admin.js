@@ -10,7 +10,8 @@ import {
   afterHookConvertPrice,
   beforeHookNormalizePrice,
 } from '#src/admin/utils/price-hooks.js';
-import componentLoader, {
+import {
+  componentLoader,
   DashboardComponent,
 } from '#src/admin/component-loader.js';
 
