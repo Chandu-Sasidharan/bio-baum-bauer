@@ -1,7 +1,5 @@
-import AdminJS, { ComponentLoader } from 'adminjs';
+import AdminJS from 'adminjs';
 import * as AdminJSMongoose from '@adminjs/mongoose';
-import path from 'node:path';
-import { fileURLToPath } from 'node:url';
 import Tree from '#src/models/tree.js';
 import Faq from '#src/models/faq.js';
 import User from '#src/models/user.js';
@@ -12,13 +10,9 @@ import {
   afterHookConvertPrice,
   beforeHookNormalizePrice,
 } from '#src/admin/utils/price-hooks.js';
-
-const __dirname = path.dirname(fileURLToPath(import.meta.url));
-const componentLoader = new ComponentLoader();
-const DashboardComponent = componentLoader.add(
-  'ResourceCardsDashboard',
-  path.join(__dirname, 'components/dashboard.jsx')
-);
+import componentLoader, {
+  DashboardComponent,
+} from '#src/admin/component-loader.js';
 
 AdminJS.registerAdapter({
   Resource: AdminJSMongoose.Resource,

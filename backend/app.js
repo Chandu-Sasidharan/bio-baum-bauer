@@ -8,6 +8,11 @@ import allRoutes from '#src/routes/all-routes.js';
 
 const app = express();
 
+// Trust first proxy in production (e.g., when behind caddy)
+if (process.env.NODE_ENV === 'production') {
+  app.set('trust proxy', 1);
+}
+
 app.use(
   helmet({
     contentSecurityPolicy: {

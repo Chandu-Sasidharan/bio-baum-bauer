@@ -1,10 +1,18 @@
 import AdminJSExpress from '@adminjs/express';
+import MongoStore from 'connect-mongo';
 import bcrypt from 'bcryptjs';
 import Admin from '#src/models/admin.js';
 
 const buildAdminRouter = admin => {
+  const mongoUri = process.env.MONGODB_URI;
   const cookieSecret =
     process.env.ADMIN_JWT_SECRET_KEY || process.env.JWT_SECRET_KEY || 'admin';
+
+  const sessionStore = MongoStore.create({
+    mongoUrl: mongoUri,
+    collectionName: 'adminSessions',
+    ttl: 60 * 60 * 24, // 1 day; adjust as needed
+  });
 
   return AdminJSExpress.buildAuthenticatedRouter(
     admin,
@@ -34,6 +42,12 @@ const buildAdminRouter = admin => {
       resave: false,
       saveUninitialized: false,
       secret: cookieSecret,
+      store: sessionStore,
+      cookie: {
+        secure: process.env.NODE_ENV === 'production',
+        sameSite: 'lax',
+        maxAge: 60 * 60 * 24 * 1000,
+      },
     }
   );
 };

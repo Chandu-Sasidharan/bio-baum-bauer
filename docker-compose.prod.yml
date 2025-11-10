@@ -4,23 +4,21 @@ services:
   frontend:
     build:
       context: ./frontend
+      dockerfile: Dockerfile.prod
     ports:
-      - 3000:3000
-    volumes:
-      - ./frontend:/app
-      - /app/node_modules
+      - "3000:443"
     env_file:
-      - ./frontend/.env
+      - ./frontend/.env.prod
+    volumes:
+      - ./frontend/certs:/certs:ro
     restart: unless-stopped
 
   backend:
     build:
       context: ./backend
+      dockerfile: Dockerfile.prod
     ports:
-      - 4000:4000
-    volumes:
-      - ./backend:/app
-      - /app/node_modules
+      - '4000'
     env_file:
-      - ./backend/.env
+      - ./backend/.env.prod
     restart: unless-stopped
