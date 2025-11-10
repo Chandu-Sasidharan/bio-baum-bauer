@@ -25,9 +25,42 @@ const createAdmin = () =>
     rootPath: '/admin',
     componentLoader,
     branding: {
-      companyName: 'Bio Baum Bauer Admin',
+      companyName: 'Bio Baum Bauer Console',
+      logo: null,
+      favicon: '/admin-assets/favicon.ico',
       softwareBrothers: false,
+      theme: {
+        colors: {
+          primary100: '#5a6448',
+          bgLogin: '#F5FFF2', // login page background
+          textOnPrimary: '#FFFFFF',
+        },
+        fonts: {
+          base: '"Inter", sans-serif',
+        },
+      },
     },
+    assets: {
+      styles: ['/admin-assets/css/login-overrides.css'],
+    },
+    locale: {
+      language: 'en',
+      translations: {
+        en: {
+          components: {
+            Login: {
+              welcomeHeader: 'Welcome.',
+              welcomeMessage: 'Enter your admin credentials to continue',
+              loginButton: 'Sign in',
+            },
+          },
+          messages: {
+            invalidCredentials: 'That email/password pair was not found',
+          },
+        },
+      },
+    },
+
     dashboard: {
       component: DashboardComponent,
       handler: async () => {
