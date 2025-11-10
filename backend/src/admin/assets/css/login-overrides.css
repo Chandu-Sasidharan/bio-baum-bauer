@@ -4,6 +4,7 @@
     format('truetype');
 }
 
+/* Login page overrides */
 .login__Wrapper form h5 {
   font-family: 'Chicle';
   font-size: 24px;
@@ -23,4 +24,14 @@
   margin-top: 16px;
   color: #4f4f4f;
   font-size: 13px;
+}
+
+/* push all action footers left */
+[data-css$='drawer-footer'] {
+  display: flex;
+  justify-content: flex-start !important;
+}
+
+[data-css$='drawer-footer'] .adminjs_Button {
+  margin-left: 0 !important;
 }
