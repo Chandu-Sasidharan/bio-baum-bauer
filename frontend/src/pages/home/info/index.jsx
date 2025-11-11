@@ -20,8 +20,8 @@ export default function Info() {
             link='/news'
           />
           <InfoItem
-            title='Gallery'
-            description='Explore our gallery to see a collection of images showcasing our farm.'
+            title='Impressions'
+            description='Explore our impressions to see a collection of images showcasing our farm.'
             link='/impressions'
           />
           <InfoItem

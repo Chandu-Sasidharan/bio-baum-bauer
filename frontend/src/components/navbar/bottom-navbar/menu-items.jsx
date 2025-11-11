@@ -19,9 +19,9 @@ const menuItems = [
   },
   {
     to: '/impressions',
-    pageName: 'Gallery',
+    pageName: 'Impressions',
     icon: <FaImages />,
-    ariaLabel: 'Gallery page',
+    ariaLabel: 'Impressions page',
   },
   {
     to: '/contact',
