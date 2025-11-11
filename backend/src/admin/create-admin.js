@@ -14,6 +14,12 @@ import {
   componentLoader,
   DashboardComponent,
 } from '#src/admin/component-loader.js';
+import treeImageUpload from '#src/admin/utils/image-upload.js';
+import {
+  syncImageUrlAfterHook,
+  restoreStoredImageUrl,
+  restoreStoredImageUrls,
+} from '#src/admin/utils/image-url-hooks.js';
 
 AdminJS.registerAdapter({
   Resource: AdminJSMongoose.Resource,
@@ -105,7 +111,7 @@ const createAdmin = () =>
             'availableQuantity',
             'shortDescription',
             'description',
-            'imageUrl',
+            'imageFile',
             'status',
             'tags',
             'isFeatured',
@@ -124,20 +130,68 @@ const createAdmin = () =>
             tags: { isArray: true },
             description: { type: 'richtext' },
             shortDescription: { type: 'textarea' },
+            imageUrl: {
+              isVisible: { list: true, show: true, filter: false, edit: false },
+            },
+            imageFile: {
+              isVisible: {
+                list: false,
+                show: false,
+                filter: false,
+                edit: true,
+              },
+            },
+            imageKey: {
+              isVisible: {
+                list: false,
+                show: false,
+                filter: false,
+                edit: false,
+              },
+            },
+            imageBucket: {
+              isVisible: {
+                list: false,
+                show: false,
+                filter: false,
+                edit: false,
+              },
+            },
+            imageFilename: {
+              isVisible: {
+                list: false,
+                show: false,
+                filter: false,
+                edit: false,
+              },
+            },
+            imageMimeType: {
+              isVisible: {
+                list: false,
+                show: false,
+                filter: false,
+                edit: false,
+              },
+            },
           },
           actions: {
-            list: { after: afterHookConvertPrice },
-            show: { after: afterHookConvertPrice },
+            list: {
+              after: [restoreStoredImageUrls, afterHookConvertPrice],
+            },
+            show: {
+              after: [restoreStoredImageUrl, afterHookConvertPrice],
+            },
             edit: {
               before: beforeHookNormalizePrice,
-              after: afterHookConvertPrice,
+              after: [syncImageUrlAfterHook, afterHookConvertPrice],
             },
             new: {
               before: beforeHookNormalizePrice,
-              after: afterHookConvertPrice,
+              after: [syncImageUrlAfterHook, afterHookConvertPrice],
             },
           },
         },
+        features: [treeImageUpload],
       },
       {
         resource: Faq,

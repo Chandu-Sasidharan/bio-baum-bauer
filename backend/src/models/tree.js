@@ -42,9 +42,13 @@ const treeSchema = new Schema(
     },
     imageUrl: {
       type: String,
-      required: true,
       trim: true,
     },
+    imageKey: { type: String, trim: true },
+    imageBucket: { type: String, trim: true },
+    imageFilename: { type: String, trim: true },
+    imageMimeType: { type: String, trim: true },
+    imageFilesize: { type: Number, min: 0 },
     status: {
       type: String,
       enum: ['Available', 'Sold Out', 'Backorder'],
