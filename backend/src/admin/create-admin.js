@@ -27,6 +27,7 @@ const createAdmin = () =>
     componentLoader,
     branding: {
       companyName: 'Bio Baum Bauer Console',
+      withMadeWithLove: false,
       logo: null,
       favicon: '/admin-assets/favicon.ico',
       softwareBrothers: false,
@@ -42,7 +43,7 @@ const createAdmin = () =>
       },
     },
     assets: {
-      styles: ['/admin-assets/css/login-overrides.css'],
+      styles: ['/admin-assets/css/admin-overrides.css'],
     },
     locale: {
       language: 'en',

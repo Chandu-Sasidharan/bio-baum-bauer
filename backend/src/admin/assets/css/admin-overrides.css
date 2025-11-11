@@ -26,6 +26,16 @@
   font-size: 13px;
 }
 
+/* Sidebar footer customization */
+[data-css='sidebar-footer']::after {
+  content: 'Made with \2665  by Solawi team';
+  display: flex;
+  justify-content: center;
+  margin: 8px 0;
+  color: #6b7280;
+  font-size: 12px;
+}
+
 /* push all action footers left */
 [data-css$='drawer-footer'] {
   display: flex;
