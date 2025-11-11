@@ -15,7 +15,7 @@
   text-align: center;
 }
 
-.login__Wrapper > .adminjs_Box:last-child {
+.login__Wrapper > .adminjs_Box:last-child .adminjs_MadeWithLove {
   display: none;
 }
 
