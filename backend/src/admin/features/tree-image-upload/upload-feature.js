@@ -2,7 +2,7 @@ import { randomUUID } from 'node:crypto';
 import uploadFeature from '@adminjs/upload';
 import { componentLoader } from '#src/admin/component-loader.js';
 
-const treeImageUpload = uploadFeature({
+const treeImageUploadFeature = uploadFeature({
   componentLoader,
   provider: {
     aws: {
@@ -32,4 +32,4 @@ const treeImageUpload = uploadFeature({
   },
 });
 
-export default treeImageUpload;
+export default treeImageUploadFeature;
