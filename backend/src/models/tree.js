@@ -40,10 +40,7 @@ const treeSchema = new Schema(
       required: true,
       trim: true,
     },
-    imageUrl: {
-      type: String,
-      trim: true,
-    },
+    imageUrl: { type: String, trim: true },
     imageKey: { type: String, trim: true },
     imageBucket: { type: String, trim: true },
     imageFilename: { type: String, trim: true },

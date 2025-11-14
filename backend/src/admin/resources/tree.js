@@ -1,14 +1,14 @@
 import Tree from '#src/models/tree.js';
+import { createImageUploadFeature } from '#src/admin/features/image-upload/index.js';
+import { createImageUrlHooks } from '#src/admin/hooks/image-url.js';
 import {
   afterHookConvertPrice,
   beforeHookNormalizePrice,
 } from '#src/admin/hooks/price.js';
-import {
-  treeImageUploadFeature,
-  syncImageUrlAfterHook,
-  restoreStoredImageUrl,
-  restoreStoredImageUrls,
-} from '#src/admin/features/tree-image-upload/index.js';
+
+const treeImageUploadFeature = createImageUploadFeature({ folder: 'trees' });
+const { syncImageUrlAfterHook, restoreStoredImageUrl, restoreStoredImageUrls } =
+  createImageUrlHooks({ model: Tree });
 
 const treeActions = {
   list: {
@@ -69,44 +69,19 @@ const treeResource = {
         isVisible: { list: true, show: true, filter: false, edit: false },
       },
       imageFile: {
-        isVisible: {
-          list: false,
-          show: false,
-          filter: false,
-          edit: true,
-        },
+        isVisible: { list: false, show: false, filter: false, edit: true },
       },
       imageKey: {
-        isVisible: {
-          list: false,
-          show: false,
-          filter: false,
-          edit: false,
-        },
+        isVisible: { list: false, show: false, filter: false, edit: false },
       },
       imageBucket: {
-        isVisible: {
-          list: false,
-          show: false,
-          filter: false,
-          edit: false,
-        },
+        isVisible: { list: false, show: false, filter: false, edit: false },
       },
       imageFilename: {
-        isVisible: {
-          list: false,
-          show: false,
-          filter: false,
-          edit: false,
-        },
+        isVisible: { list: false, show: false, filter: false, edit: false },
       },
       imageMimeType: {
-        isVisible: {
-          list: false,
-          show: false,
-          filter: false,
-          edit: false,
-        },
+        isVisible: { list: false, show: false, filter: false, edit: false },
       },
     },
     actions: treeActions,
