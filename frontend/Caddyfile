@@ -1,5 +1,4 @@
-https://localhost {
-    tls /certs/localhost+2.pem /certs/localhost+2-key.pem
+https://biobaumbauer.de {
     root * /srv/frontend
     encode gzip zstd
 
