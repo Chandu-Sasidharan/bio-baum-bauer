@@ -1,6 +1,7 @@
 import express from 'express';
 import morgan from 'morgan';
 import helmet from 'helmet';
+import rateLimit from 'express-rate-limit';
 import cookieParser from 'cookie-parser';
 import { postPaymentWebhook } from '#src/controllers/webhook-controller.js';
 import allowCors from '#src/middlewares/allow-cors.js';
@@ -13,6 +14,15 @@ if (process.env.NODE_ENV === 'production') {
   app.set('trust proxy', 1);
 }
 
+// Rate limiting middleware 500 requests per 15 minutes per IP
+const apiLimiter = rateLimit({
+  windowMs: 15 * 60 * 1000,
+  max: 500,
+  standardHeaders: true,
+  legacyHeaders: false,
+});
+
+// Provide basic security
 app.use(
   helmet({
     contentSecurityPolicy: {
@@ -22,12 +32,12 @@ app.use(
       },
     },
   })
-); //provide basic security
+);
 
+app.use(apiLimiter);
 app.use('/admin-assets', express.static('./src/admin/assets'));
-
-allowCors(app); // allow cors
-app.use(cookieParser()); // parse cookies
+app.use(cookieParser());
+allowCors(app);
 
 // Stripe webhook route, requires raw body
 app.post(
@@ -43,11 +53,6 @@ app.use(express.json());
 if (app.get('env') === 'development') {
   app.use(morgan('tiny'));
 }
-
-// Home route for testing
-app.get('/', (_, res) => {
-  res.send('<h1>Backend is running!!!</h1>');
-});
 
 // All routes
 app.use('/api', allRoutes);
