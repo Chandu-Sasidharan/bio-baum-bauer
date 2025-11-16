@@ -54,6 +54,8 @@ jobs:
           file: frontend/Dockerfile.prod
           build-args: |
             VITE_STRIPE_PUBLIC_KEY=${{ secrets.STRIPE_PUBLISHABLE_KEY }}
+            VITE_FRONTEND_URL=${{ secrets.FRONTEND_PUBLIC_URL }}
+            VITE_API_BASE_URL=${{ secrets.API_BASE_URL }}
           push: true
           platforms: linux/amd64
           tags: ${{ steps.meta_frontend.outputs.tags }}

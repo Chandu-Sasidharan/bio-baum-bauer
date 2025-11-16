@@ -49,7 +49,7 @@ Copy the provided `.env.example` files inside `frontend/` and `backend/`, then f
 | Frontend | `VITE_FRONTEND_URL`                                  | Used in Stripe redirect URLs and SEO tags.                          |
 | Frontend | `VITE_STRIPE_PUBLIC_KEY`                             | Publishable key injected into Stripe Elements.                      |
 
-Maintain separate `.env.prod` files when deploying with `docker-compose.prod.yml`—the production compose file mounts those explicitly. In production the frontend’s Stripe publishable key is injected at build time via the `VITE_STRIPE_PUBLIC_KEY` Docker build arg (wired up in `.github/workflows/build-push-deploy.yml`), so you don’t need to keep it in `frontend/.env.prod` unless you are building images manually on the server.
+Maintain separate `.env.prod` files when deploying with `docker-compose.prod.yml`—the production compose file mounts those explicitly. In production the frontend envs are injected at build time via the `VITE_STRIPE_PUBLIC_KEY`, `VITE_FRONTEND_URL`, and `VITE_API_BASE_URL` Docker build args (wired up in `.github/workflows/build-push-deploy.yml`), so you don’t need to keep those values in `frontend/.env.prod` unless you are building images manually on the server.
 
 ## Quick Start (Docker Compose)
 
