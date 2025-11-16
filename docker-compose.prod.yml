@@ -2,9 +2,7 @@ version: '3.8'
 
 services:
   frontend:
-    build:
-      context: ./frontend
-      dockerfile: Dockerfile.prod
+    image: ghcr.io/chandu-sasidharan/bio-baum-bauer-frontend:latest
     ports:
       - '80:80'
       - '443:443'
@@ -13,9 +11,7 @@ services:
     restart: unless-stopped
 
   backend:
-    build:
-      context: ./backend
-      dockerfile: Dockerfile.prod
+    image: ghcr.io/chandu-sasidharan/bio-baum-bauer-backend:latest
     ports:
       - '4000:4000'
     env_file:
