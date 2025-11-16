@@ -1,4 +1,7 @@
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+import { render } from '@testing-library/react';
+import { MemoryRouter } from 'react-router-dom';
+import { HelmetProvider } from 'react-helmet-async';
 
 export const createTestQueryClient = () =>
   new QueryClient({
@@ -22,4 +25,14 @@ export const createQueryClientWrapper = () => {
   return ({ children }) => (
     <QueryClientProvider client={queryClient}>{children}</QueryClientProvider>
   );
+};
+
+export const renderWithRouter = (ui, { initialEntries = ['/'] } = {}) => {
+  const Wrapper = ({ children }) => (
+    <HelmetProvider>
+      <MemoryRouter initialEntries={initialEntries}>{children}</MemoryRouter>
+    </HelmetProvider>
+  );
+
+  return render(ui, { wrapper: Wrapper });
 };
