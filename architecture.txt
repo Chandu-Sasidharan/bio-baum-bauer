@@ -2,11 +2,15 @@ bio-baum-bauer/
 ├─ README.md
 ├─ architecture.txt
 ├─ docker-compose.yml
+├─ docker-compose.prod.yml
 ├─ eslint.config.js
 ├─ package.json
 ├─ package-lock.json
 ├─ trees.example.txt
 ├─ .gitignore
+├─ .github/
+│  └─ workflows/
+│     └─ build-push-deploy.yml
 ├─ .prettierrc
 ├─ .prettierignore
 ├─ .husky/
