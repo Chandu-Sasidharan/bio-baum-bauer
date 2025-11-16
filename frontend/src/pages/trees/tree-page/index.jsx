@@ -143,7 +143,7 @@ export default function TreePage() {
                   </h3>
                 </div>
                 <div
-                  className='prose md:prose-lg -mt-3 max-w-none'
+                  className='prose md:prose-lg max-w-none'
                   dangerouslySetInnerHTML={{
                     __html: tree.description,
                   }}
