@@ -64,10 +64,30 @@ export const AuthProvider = ({ children }) => {
         lsRef.removeItem('userSession');
       }
 
+      if (!cachedSession) {
+        if (isMounted) {
+          setIsSessionReady(true);
+        }
+        return;
+      }
+
       try {
-        await axios.get('/api/auth/refresh-token');
-        if (isMounted && cachedSession) {
-          setAuthUser(cachedSession);
+        const response = await axios.get('/api/auth/refresh-token', {
+          validateStatus: () => true,
+        });
+
+        if (response.status === 200) {
+          if (isMounted && cachedSession) {
+            setAuthUser(cachedSession);
+          }
+        } else if (
+          response.status === 401 ||
+          response.status === 419 ||
+          response.status === 403
+        ) {
+          if (isMounted) {
+            clearSession();
+          }
         }
       } catch {
         if (isMounted) {
