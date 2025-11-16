@@ -6,7 +6,6 @@ const sponsorshipResource = {
     navigation: { name: 'Content', icon: 'Gift' },
     actions: {
       new: { isAccessible: false },
-      delete: { isAccessible: false },
     },
   },
   meta: {

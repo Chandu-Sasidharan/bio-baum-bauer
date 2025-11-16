@@ -6,7 +6,6 @@ const contactResource = {
     navigation: { name: 'Content', icon: 'MessageSquare' },
     actions: {
       new: { isAccessible: false },
-      delete: { isAccessible: false },
     },
   },
   meta: {

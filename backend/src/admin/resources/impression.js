@@ -52,7 +52,6 @@ const impressionResource = {
         isAccessible: false,
         after: [syncImageUrlAfterHook],
       },
-      delete: { isAccessible: false },
     },
   },
   features: [impressionImageUploadFeature],

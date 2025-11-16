@@ -18,7 +18,6 @@ const userResource = {
     ],
     actions: {
       new: { isAccessible: false },
-      delete: { isAccessible: false },
       edit: {
         isAccessible: ({ currentAdmin }) => currentAdmin?.role === 'super',
       },
