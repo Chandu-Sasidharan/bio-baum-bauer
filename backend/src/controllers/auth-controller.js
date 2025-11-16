@@ -2,7 +2,6 @@ import bcrypt from 'bcryptjs';
 import jwt from 'jsonwebtoken';
 import { pick } from 'lodash-es';
 import { StatusCodes } from 'http-status-codes';
-import { z } from 'zod';
 import createJwt from '#src/utils/create-jwt.js';
 import formatZodError from '#src/utils/format-zod-error.js';
 import createVerificationToken from '#src/utils/create-verification-token.js';
@@ -10,18 +9,10 @@ import sendVerificationEmail from '#src/utils/send-verification-email.js';
 import sendPasswordResetEmail from '#src/utils/send-password-reset-email.js';
 import pickUserPayload from '#src/utils/pick-user-payload.js';
 import User from '#src/models/user.js';
-
-const requestPasswordResetSchema = z.object({
-  email: z.string().email({ message: 'Email must be a valid email' }),
-});
-
-const resetPasswordSchema = z.object({
-  token: z.string(),
-  password: z
-    .string()
-    .min(5, { message: 'Password should have a minimum length of 5' })
-    .max(128, { message: 'Password should have a maximum length of 128' }),
-});
+import {
+  requestPasswordResetSchema,
+  resetPasswordSchema,
+} from '#src/validations/auth-validation.js';
 
 // Sign up user
 export const signUp = async (req, res, next) => {
