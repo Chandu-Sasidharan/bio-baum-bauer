@@ -9,9 +9,6 @@ import StripeForm from './form';
 export default function CheckoutForm() {
   const { state } = useLocation();
   const paymentIntent = state?.paymentIntent;
-  const clientSecret = paymentIntent?.client_secret;
-  // Total amount payable by the customer in Euro
-  const totalAmount = (paymentIntent.amount / 100).toFixed(2);
 
   if (!paymentIntent) {
     return (
@@ -20,6 +17,10 @@ export default function CheckoutForm() {
       </div>
     );
   }
+
+  const clientSecret = paymentIntent.client_secret;
+  // Total amount payable by the customer in Euro
+  const totalAmount = (paymentIntent.amount / 100).toFixed(2);
 
   const options = {
     clientSecret,
