@@ -1,87 +1,138 @@
 # Bio Baum Bauer Webapp
 
-Welcome to the Bio Baum Bauer website repository! This project is a Docker-based, full-stack web application. It includes a modern React frontend (built with Vite and Tailwind CSS) and a Node.js/Express backend for business logic and MongoDB data persistence.
+A dockerized, production-ready web experience for Bio Baum Bauer that pairs a marketing/e-commerce React frontend with a Node.js/Express API, MongoDB-backed persistence, Stripe-powered checkout, and an AdminJS dashboard for on-site content management. The repository is structured as a lightweight monorepo so shared tooling (linting, Husky hooks, Docker Compose orchestration) can live at the root while each service keeps its own package.json.
 
-## Table of Contents
+## Highlights
 
-1. [Project Overview](#project-overview)
-2. [Requirements](#requirements)
-3. [Setup & Installation](#setup--installation)
-4. [Development Workflow](#development-workflow)
-5. [Testing](#testing)
-6. [Contributing](#contributing)
+- **Modern storefront** – Vite + React 18 + Tailwind CSS, React Router 6, TanStack Query, Stripe Elements, react-hook-form, and DaisyUI build the interactive customer experience.
+- **Robust backend** – Express routes, MongoDB models, Zod validations, AdminJS UI, email (Resend) + media storage (AWS S3) helpers, and Stripe webhooks cover the operational needs.
+- **Docker-first workflow** – Local containers (dev) and multi-stage production images (served via Caddy in front) make it easy to keep parity between environments.
+- **Continuous deployment** – GitHub Actions build tagged images, push to GHCR, and redeploy the remote droplet using `docker-compose.prod.yml`.
+- **Strict tooling** – ESLint flat config, Prettier + Tailwind plugin, Husky + lint-staged keep code quality consistent across frontend and backend sources.
 
-## Project Overview
+## Repository Layout
 
-- **Frontend**: A modern React application bundled with [Vite](https://vitejs.dev/) and styled using [Tailwind CSS](https://tailwindcss.com/).
-- **Backend**: A [Node.js](https://nodejs.org/) and [Express](https://expressjs.com/) RESTful API connecting to MongoDB via [Mongoose](https://mongoosejs.com/).
-- **Docker Integration**: Both frontend and backend are containerized via Docker and orchestrated with Docker Compose.
+```
+bio-baum-bauer/
+├── backend/                # Express API, AdminJS bundle, migrations, utility scripts
+├── frontend/               # Vite React app, Tailwind + DaisyUI styling, Stripe checkout
+├── docker-compose*.yml     # Service orchestration for dev & prod
+├── eslint.config.js        # Flat config that lints backend sources
+├── architecture.txt        # High-level directory guide
+├── trees.example.txt       # Sample content taxonomy for seeding/reference
+└── README.md               # (this file)
+```
 
-This setup enables a cohesive local development environment and straightforward deployment strategy.
+Each service also ships its own README stub plus `Dockerfile` + `Dockerfile.prod` for local vs production builds.
 
-## Requirements
+## Prerequisites
 
-- **Node.js** (version 22.12.0 or higher recommended)
-- **Docker** and **Docker Compose**
-- A code editor (e.g., Visual Studio Code)
+- **Node.js 22.x** and **npm 10+** (required for running scripts or developing outside Docker).
+- **Docker Desktop** (or Docker Engine + Compose v2) for the recommended workflow.
+- **MongoDB** instance reachable from the backend container.
+- Accounts/keys for **Stripe**, **Resend**, and **AWS S3** (or compatible storage) if you plan to exercise payments, transactional email, or media uploads locally.
 
-## Setup & Installation
+## Environment Variables
 
-1. **Clone the Repository**
+Copy the provided `.env.example` files inside `frontend/` and `backend/`, then fill in the values that apply to the environment you are running. The most important keys are listed below:
 
-   ```bash
-   git clone https://github.com/mindfull-projects/bio-baum-bauer.git
-   cd bio-baum-bauer
-   ```
+| Service  | Key                                                  | Purpose                                                             |
+| -------- | ---------------------------------------------------- | ------------------------------------------------------------------- |
+| Backend  | `PORT`                                               | Port the Express API listens on (defaults to 4000).                 |
+| Backend  | `FRONTEND_URL`                                       | Public-facing URL used for CORS + email templates.                  |
+| Backend  | `MONGODB_URI`, `MONGO_DB_NAME`                       | Mongo connection string and optional db override for Migrate-Mongo. |
+| Backend  | `JWT_SECRET_KEY`, `SUPER_PASSWORD`, `ADMIN_PASSWORD` | Auth, super-admin, and initial admin credentials.                   |
+| Backend  | `RESEND_API_KEY`                                     | Transactional emails.                                               |
+| Backend  | `STRIPE_API_SECRET_KEY`, `STRIPE_WEBHOOK_SECRET`     | Stripe server secret + webhook signature validation.                |
+| Backend  | `AWS_*` keys, `AWS_S3_PUBLIC_BASE_URL`               | Media upload destinations for AdminJS forms.                        |
+| Frontend | `VITE_API_BASE_URL`                                  | Base URL for the axios client.                                      |
+| Frontend | `VITE_FRONTEND_URL`                                  | Used in Stripe redirect URLs and SEO tags.                          |
+| Frontend | `VITE_STRIPE_PUBLIC_KEY`                             | Publishable key injected into Stripe Elements.                      |
 
-2. **Install Root Dependencies**  
-   You’ll find project-level scripts and tooling in the root `package.json`. Install them with:
+Maintain separate `.env.prod` files when deploying with `docker-compose.prod.yml`—the production compose file mounts those explicitly.
 
+## Quick Start (Docker Compose)
+
+1. **Install root tooling** (optional but recommended for Husky/lint scripts):
    ```bash
    npm install
    ```
-
-3. **Configure Environment Variables**
-
-   - Create a `.env` file in both the frontend and backend directories if needed.
-   - Refer to the `.env.example` files for guidance on required variables.
-
-4. **Start the Project with Docker Compose**  
-   From the project root, build and run the frontend and backend containers:
+2. **Copy env files** inside `frontend/` and `backend/` (`cp .env.example .env`) and provide real credentials.
+3. **Build and start both services**:
    ```bash
-   npm run start
+   npm run start:dev
+   # or: docker compose up -d --build
    ```
-   This command leverages the `docker-compose.yml` file to orchestrate both services.
+4. Navigate to `http://localhost:3000` for the storefront and `http://localhost:4000/admin` for AdminJS.
+5. When you are done, stop and clean containers/images/volumes with:
+   ```bash
+   npm run stop:dev
+   ```
 
-## Development Workflow
+The dev compose file mounts the local source folders into the containers, so Vite and the backend pick up filesystem changes instantly without manual rebuilds.
 
-1. **Frontend**
+## Running Without Docker
 
-   - The React application resides in the `frontend` folder.
-   - Use Vite’s development server for hot reloading.
-   - Tailwind CSS is set up for styling; make changes in `src` and the Tailwind config.
+If you prefer to run the apps directly on your machine:
 
-2. **Backend**
+### Backend (Express API)
 
-   - The backend code lives in the `backend` folder.
-   - It uses Express for the RESTful API, Mongoose for MongoDB operations, and organizes logic into controllers, models, middleware, and routes.
+```bash
+cd backend
+npm ci
+cp .env.example .env   # fill secrets
+npm run dev            # uses node --watch
+```
 
-3. **Linting & Formatting**
+The backend expects MongoDB to be reachable via `MONGODB_URI`. Production mode runs `npm run start`, which respects `NODE_ENV=production` and bundles AdminJS assets beforehand via `npm run bundle:admin`.
 
-   - [ESLint](https://eslint.org/) and [Prettier](https://prettier.io/) configurations are provided at the root level.
-   - [Husky](https://typicode.github.io/husky/) is used to enforce linting on commits to maintain code quality.
+### Frontend (Vite + React)
 
-4. **Hot Reloading & Automatic Rebuilds**
-   - During development, updates to frontend and backend files should trigger automatic rebuilds or hot reloads within their respective containers.
+```bash
+cd frontend
+npm ci
+cp .env.example .env
+npm run dev            # starts Vite on :3000
+```
+
+`npm run build` emits static assets to `dist/` which the production Dockerfile serves with Caddy.
+
+## Database, Migrations & Admin
+
+- **Migrations** – The backend uses [migrate-mongo](https://github.com/seppevs/migrate-mongo). Set `MONGODB_URI`/`MONGO_DB_NAME`, then run `npm run migrate` inside `backend/`.
+- **Modify scripts** – `backend/scripts/modify-db.js` shows how to run targeted maintenance tasks (connect, execute logic, disconnect). Use as a template for other one-off scripts.
+- **AdminJS** – Admin resources live under `backend/src/admin`. `npm run bundle:admin` bundles the AdminJS frontend; the production Docker build runs it automatically. In dev mode AdminJS watches for changes and rebuilds in memory.
+
+## Tooling & Useful Scripts
+
+| Location | Script                              | Description                                                                  |
+| -------- | ----------------------------------- | ---------------------------------------------------------------------------- |
+| Root     | `npm run start:dev` / `stop:dev`    | Wrap `docker compose up/down` for local containers.                          |
+| Root     | `npm run start:prod` / `stop:prod`  | Use the production compose file and GHCR images to mimic deployment locally. |
+| Backend  | `npm run dev` / `start`             | Start Express in watch mode or production mode.                              |
+| Backend  | `npm run bundle:admin`              | Builds AdminJS assets (also run during Docker production builds).            |
+| Backend  | `npm run migrate`                   | Apply pending Migrate-Mongo migrations.                                      |
+| Frontend | `npm run dev` / `build` / `preview` | Standard Vite lifecycle commands.                                            |
+| Frontend | `npm run lint`                      | ESLint with React and React Hooks plugins.                                   |
+
+Linting is enforced through Husky’s pre-commit hook (`.husky/pre-commit`) which leverages `lint-staged` to format/lint backend sources. Frontend linting can be added to the config if desired.
 
 ## Testing
 
-There are currently no automated tests included. However, feel free to add tests (e.g., Jest, Cypress) for new or existing features to ensure the application’s reliability and maintainability.
+There are currently no automated tests (`npm test` is a placeholder in the root).
 
-## Contributing
+## Deployment Pipeline
 
-Contributions are welcome! Whether it’s improving documentation, adding tests, or refactoring existing code:
+`.github/workflows/build-push-deploy.yml` performs the following whenever `main` is updated:
 
-1. Fork the repository and create a new branch for your feature or fix.
-2. Commit changes with clear, concise messages.
-3. Submit a pull request and provide relevant details or instructions.
+1. Build frontend and backend production images using the respective `Dockerfile.prod` files.
+2. Push tagged images (`latest` + commit SHA) to GitHub Container Registry under `ghcr.io/<owner>/bio-baum-bauer-(frontend|backend)`.
+3. SSH into the target droplet, pull the new images, and restart the services with `docker-compose.prod.yml`.
+
+To deploy manually outside CI, log in to GHCR, pull the images referenced in `docker-compose.prod.yml`, and run `docker compose -f docker-compose.prod.yml up -d` on your server.
+
+## Additional Resources
+
+- `architecture.txt` for a terse directory walkthrough.
+- `trees.example.txt` as a content taxonomy reference when seeding data.
+- `frontend/public/` for shared media (fonts, images) referenced by the marketing pages.
