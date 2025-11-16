@@ -1,31 +1,37 @@
-import { useState } from 'react';
-import { Link, Navigate, useNavigate, useLocation } from 'react-router-dom';
-import { useForm } from 'react-hook-form';
-import { zodResolver } from '@hookform/resolvers/zod';
-import { z } from 'zod';
+import { useEffect } from 'react';
 import { Helmet } from 'react-helmet-async';
-import Button from '@/components/ui/button';
-import { HiEye, HiEyeOff } from 'react-icons/hi';
+import { useForm } from 'react-hook-form';
+import { z } from 'zod';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { useNavigate, useSearchParams, Link } from 'react-router-dom';
 import Breadcrumbs from '@/components/breadcrumbs';
+import Button from '@/components/ui/button';
 import backgroundImage from '/images/background/leaves-background.webp';
 import treeIcon from '/images/misc/tree.png';
 import { useUser } from '@/context/auth-context';
+import showAlert from '@/utils/alert';
 
-// Define schema with zod
-const schema = z.object({
-  email: z.string().email({ message: 'Please enter a valid email address.' }),
-  password: z.string().min(5, { message: 'Please use at least 5 characters.' }),
-});
+const schema = z
+  .object({
+    password: z
+      .string()
+      .min(5, { message: 'Please use at least 5 characters.' }),
+    confirmPassword: z.string(),
+  })
+  .refine(data => data.password === data.confirmPassword, {
+    message: 'Passwords do not match.',
+    path: ['confirmPassword'],
+  });
 
-export default function Login() {
-  const { isAuthenticated, loginUser, isUserLoading } = useUser();
-  const [showPassword, setShowPassword] = useState(false);
+export default function ResetPassword() {
+  const { resetPassword, isUserLoading } = useUser();
+  const [searchParams] = useSearchParams();
   const navigate = useNavigate();
-  const location = useLocation();
-
+  const token = searchParams.get('token');
   const {
     register,
     handleSubmit,
+    reset,
     formState: { errors },
   } = useForm({
     resolver: zodResolver(schema),
@@ -33,41 +39,42 @@ export default function Login() {
     reValidateMode: 'onChange',
   });
 
-  const togglePasswordVisibility = () => {
-    setShowPassword(!showPassword);
-  };
+  useEffect(() => {
+    if (!token) {
+      showAlert('error', 'Invalid Link', 'Token is missing or invalid');
+      navigate('/forgot-password');
+    }
+  }, [token, navigate]);
 
-  // Submit form data
   const onSubmit = async formData => {
-    await loginUser(formData);
-    const from = location.state?.from?.pathname;
-    if (from) navigate(from);
+    if (!token) return;
+    const isSuccess = await resetPassword({
+      token,
+      password: formData.password,
+    });
+    if (isSuccess) {
+      reset();
+      navigate('/login');
+    }
   };
-
-  if (isAuthenticated) {
-    return <Navigate to='/account' />;
-  }
 
   return (
     <>
       <Helmet>
-        <title>Login | Bio Baum Bauer</title>
+        <title>Reset Password | Bio Baum Bauer</title>
       </Helmet>
 
-      {/* Container */}
       <section
         style={{ backgroundImage: `url(${backgroundImage})` }}
         className='bg-cover bg-center bg-no-repeat'
       >
         <div style={{ backgroundColor: 'rgba(255, 255, 255, 0.7)' }}>
-          {/* Breadcrumbs */}
           <div className='w-full px-5'>
             <Breadcrumbs />
           </div>
 
-          {/* Content */}
           <div className='px-5 py-20'>
-            <p className='mx-auto mb-3 w-fit'>Please login to continue.</p>
+            <p className='mx-auto mb-3 w-fit'>Choose a new password.</p>
             <div
               className='mx-auto flex max-w-[500px] flex-col gap-3 rounded-md p-10 shadow-sm md:p-12'
               style={{ backgroundColor: 'rgba(255, 255, 255, 0.9)' }}
@@ -79,50 +86,13 @@ export default function Login() {
                   className='mr-2 h-[30px] w-[30px]'
                 />
                 <h3 className='text-accent font-chicle inline-block text-3xl tracking-wide'>
-                  Login
+                  New Password
                 </h3>
-              </div>
-              <div className='flex items-center'>
-                <span className='mr-2 inline-block'>New to the farm?</span>
-                <Link to='/signup' className='text-accent font-bold underline'>
-                  Sign Up
-                </Link>
               </div>
               <form
                 onSubmit={handleSubmit(onSubmit)}
                 className='w-full space-y-3'
               >
-                {/* Email Field */}
-                <div className='relative'>
-                  <label className='absolute left-3 top-4'>
-                    <svg
-                      xmlns='http://www.w3.org/2000/svg'
-                      viewBox='0 0 16 16'
-                      fill='currentColor'
-                      className='h-4 w-4 opacity-70'
-                    >
-                      <path d='M2.5 3A1.5 1.5 0 0 0 1 4.5v.793c.026.009.051.02.076.032L7.674 8.51c.206.1.446.1.652 0l6.598-3.185A.755.755 0 0 1 15 5.293V4.5A1.5 1.5 0 0 0 13.5 3h-11Z' />
-                      <path d='M15 6.954 8.978 9.86a2.25 2.25 0 0 1-1.956 0L1 6.954V11.5A1.5 1.5 0 0 0 2.5 13h11a1.5 1.5 0 0 0 1.5-1.5V6.954Z' />
-                    </svg>
-                  </label>
-                  <input
-                    type='email'
-                    name='email'
-                    {...register('email')}
-                    placeholder='Your Email'
-                    className={`input input-bordered input-light w-full pl-10 focus:outline-none lg:flex-1 ${
-                      errors.email
-                        ? 'border-red focus:border-red'
-                        : 'focus:border-primary'
-                    }`}
-                  />
-                  <div className='mt-[2px] h-4'>
-                    {errors.email && (
-                      <p className='text-red text-sm'>{errors.email.message}</p>
-                    )}
-                  </div>
-                </div>
-                {/* Password Field */}
                 <div className='relative'>
                   <label className='absolute left-3 top-[16px]'>
                     <svg
@@ -139,9 +109,9 @@ export default function Login() {
                     </svg>
                   </label>
                   <input
-                    type={showPassword ? 'text' : 'password'}
+                    type='password'
                     {...register('password')}
-                    placeholder='Your Password'
+                    placeholder='New Password'
                     className={`input input-bordered input-light w-full pl-10 focus:outline-none lg:flex-1 ${
                       errors.password
                         ? 'border-red focus:border-red'
@@ -155,30 +125,48 @@ export default function Login() {
                       </p>
                     )}
                   </div>
-                  <div
-                    className='absolute right-3 top-[13px] cursor-pointer'
-                    onClick={togglePasswordVisibility}
-                  >
-                    {showPassword ? (
-                      <HiEyeOff className='text-2xl' />
-                    ) : (
-                      <HiEye className='text-2xl' />
+                </div>
+
+                <div className='relative'>
+                  <label className='absolute left-3 top-[16px]'>
+                    <svg
+                      xmlns='http://www.w3.org/2000/svg'
+                      viewBox='0 0 16 16'
+                      fill='currentColor'
+                      className='h-4 w-4 opacity-70'
+                    >
+                      <path
+                        fillRule='evenodd'
+                        d='M14 6a4 4 0 0 1-4.899 3.899l-1.955 1.955a.5.5 0 0 1-.353.146H5v1.5a.5.5 0 0 1-.5.5h-2a.5.5 0 0 1-.5-.5v-2.293a.5.5 0 0 1 .146-.353l3.955-3.955A4 4 0 1 1 14 6Zm-4-2a.75.75 0 0 0 0 1.5.5.5 0 0 1 .5.5.75.75 0 0 0 1.5 0 2 2 0 0 0-2-2Z'
+                        clipRule='evenodd'
+                      />
+                    </svg>
+                  </label>
+                  <input
+                    type='password'
+                    {...register('confirmPassword')}
+                    placeholder='Confirm Password'
+                    className={`input input-bordered input-light w-full pl-10 focus:outline-none lg:flex-1 ${
+                      errors.confirmPassword
+                        ? 'border-red focus:border-red'
+                        : 'focus:border-primary'
+                    }`}
+                  />
+                  <div className='mt-[2px] h-4'>
+                    {errors.confirmPassword && (
+                      <p className='text-red text-sm'>
+                        {errors.confirmPassword.message}
+                      </p>
                     )}
                   </div>
                 </div>
-                {/* Forget Password */}
-                <div className='flex items-center gap-2'>
-                  <Link to='/forgot-password' className='text-accent underline'>
-                    Forgot Password?
-                  </Link>
-                </div>
-                {/* Submit Button */}
+
                 <Button
                   type='submit'
-                  isProcessing={isUserLoading}
                   className='w-full'
+                  isProcessing={isUserLoading}
                 >
-                  Login
+                  Update Password
                 </Button>
               </form>
             </div>

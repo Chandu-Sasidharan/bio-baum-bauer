@@ -2,12 +2,26 @@ import bcrypt from 'bcryptjs';
 import jwt from 'jsonwebtoken';
 import { pick } from 'lodash-es';
 import { StatusCodes } from 'http-status-codes';
+import { z } from 'zod';
 import createJwt from '#src/utils/create-jwt.js';
 import formatZodError from '#src/utils/format-zod-error.js';
 import createVerificationToken from '#src/utils/create-verification-token.js';
 import sendVerificationEmail from '#src/utils/send-verification-email.js';
+import sendPasswordResetEmail from '#src/utils/send-password-reset-email.js';
 import pickUserPayload from '#src/utils/pick-user-payload.js';
 import User from '#src/models/user.js';
+
+const requestPasswordResetSchema = z.object({
+  email: z.string().email({ message: 'Email must be a valid email' }),
+});
+
+const resetPasswordSchema = z.object({
+  token: z.string(),
+  password: z
+    .string()
+    .min(5, { message: 'Password should have a minimum length of 5' })
+    .max(128, { message: 'Password should have a maximum length of 128' }),
+});
 
 // Sign up user
 export const signUp = async (req, res, next) => {
@@ -191,6 +205,90 @@ export const loginUser = async (req, res, next) => {
       })
       .status(StatusCodes.OK)
       .json({ message: 'Logged in successfully!', user: userPayload });
+  } catch (error) {
+    next(error);
+  }
+};
+
+// Request password reset
+export const requestPasswordReset = async (req, res, next) => {
+  try {
+    const result = requestPasswordResetSchema.safeParse(req.body);
+
+    if (!result.success) {
+      const errors = formatZodError(result.error);
+
+      return res.status(StatusCodes.BAD_REQUEST).json({ errors });
+    }
+
+    const { email } = result.data;
+    const user = await User.findOne({
+      email,
+      isVerified: true,
+      deletedAt: null,
+    });
+
+    const responseMessage =
+      'If that email is registered, a reset link will be sent shortly.';
+
+    if (!user) {
+      return res.status(StatusCodes.OK).json({ message: responseMessage });
+    }
+
+    const passwordResetToken = createVerificationToken();
+    const passwordResetTokenExpiresAt = Date.now() + 3600000; // 1 hour
+
+    user.passwordResetToken = passwordResetToken;
+    user.passwordResetTokenExpiresAt = passwordResetTokenExpiresAt;
+
+    await user.save();
+    await sendPasswordResetEmail(email, passwordResetToken);
+
+    return res.status(StatusCodes.OK).json({ message: responseMessage });
+  } catch (error) {
+    next(error);
+  }
+};
+
+// Reset password
+export const resetPassword = async (req, res, next) => {
+  try {
+    const result = resetPasswordSchema.safeParse(req.body);
+
+    if (!result.success) {
+      const errors = formatZodError(result.error);
+
+      return res.status(StatusCodes.BAD_REQUEST).json({ errors });
+    }
+
+    const { token, password } = result.data;
+
+    const user = await User.findOne({
+      passwordResetToken: token,
+      passwordResetTokenExpiresAt: { $gt: Date.now() },
+      isVerified: true,
+      deletedAt: null,
+    });
+
+    if (!user) {
+      return res.status(StatusCodes.NOT_FOUND).json({
+        message: 'Invalid or expired password reset token',
+      });
+    }
+
+    const salt = await bcrypt.genSalt(10);
+    const hashedPassword = await bcrypt.hash(password, salt);
+
+    user.password = hashedPassword;
+    user.passwordResetToken = null;
+    user.passwordResetTokenExpiresAt = null;
+
+    await user.save();
+
+    return res.status(StatusCodes.OK).json({
+      message:
+        'Password updated successfully. Please log in with your new password.',
+    });
   } catch (error) {
     next(error);
   }

@@ -14,6 +14,8 @@ import Contact from '@/pages/contact';
 import Login from '@/pages/auth/login';
 import Signup from './pages/auth/signup';
 import ConfirmAccount from '@/pages/auth/confirm-account';
+import ForgotPassword from '@/pages/auth/forgot-password';
+import ResetPassword from '@/pages/auth/reset-password';
 import AccountLayout from '@/pages/account';
 import Profile from '@/pages/account/profile';
 import Sponsorship from '@/pages/account/sponsorship';
@@ -40,6 +42,8 @@ function App() {
                 <Route path='/login' element={<Login />} />
                 <Route path='/signup' element={<Signup />} />
                 <Route path='/confirm-account' element={<ConfirmAccount />} />
+                <Route path='/forgot-password' element={<ForgotPassword />} />
+                <Route path='/reset-password' element={<ResetPassword />} />
                 <Route path='/about' element={<About />} />
                 <Route path='/trees' element={<Trees />} />
                 <Route path='/trees/:id' element={<TreePage />} />

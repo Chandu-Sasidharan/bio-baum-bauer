@@ -257,6 +257,61 @@ export const AuthProvider = ({ children }) => {
     }
   };
 
+  // Request password reset
+  const requestPasswordReset = async email => {
+    setIsUserLoading(true);
+    let isError = false;
+
+    try {
+      const response = await axios.post('/api/auth/forgot-password', {
+        email,
+      });
+
+      showAlert(
+        'success',
+        null,
+        response.data.message ||
+          'If that email is registered, a reset link will be sent shortly.'
+      );
+    } catch (error) {
+      const errorMessage = formatError(error);
+      showAlert('error', 'Password Reset Failed', null, errorMessage);
+      isError = true;
+    } finally {
+      setIsUserLoading(false);
+    }
+
+    return !isError;
+  };
+
+  // Reset password
+  const resetPassword = async ({ token, password }) => {
+    setIsUserLoading(true);
+    let isError = false;
+
+    try {
+      const response = await axios.post('/api/auth/reset-password', {
+        token,
+        password,
+      });
+
+      showAlert(
+        'success',
+        null,
+        response.data.message ||
+          'Password updated successfully. Please log in with your new password.'
+      );
+    } catch (error) {
+      const errorMessage = formatError(error);
+      showAlert('error', 'Password Reset Failed', null, errorMessage);
+      isError = true;
+    } finally {
+      setIsUserLoading(false);
+    }
+
+    return !isError;
+  };
+
   // Update user
   const updateUser = async formData => {
     setIsUserLoading(true);
@@ -310,6 +365,8 @@ export const AuthProvider = ({ children }) => {
         confirmAccount,
         updateUser,
         loginUser,
+        requestPasswordReset,
+        resetPassword,
         isUserLoading,
         setIsUserLoading,
         isAuthenticated,
