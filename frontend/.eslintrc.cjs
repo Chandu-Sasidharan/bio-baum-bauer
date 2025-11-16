@@ -22,5 +22,6 @@ module.exports = {
         argsIgnorePattern: '^_', // Ignore unused args starting with _
       },
     ],
+    'no-console': 'warn',
   },
 };

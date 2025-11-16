@@ -2,7 +2,6 @@ import Button from '@/components/ui/button';
 import styles from './featured.module.css';
 
 export default function Card({ imageUrl, name, price, children }) {
-  console.log(imageUrl);
   return (
     <div className={styles.card}>
       <div className={styles.imageWrapper}>
