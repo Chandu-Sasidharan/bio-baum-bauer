@@ -52,6 +52,8 @@ jobs:
         with:
           context: frontend
           file: frontend/Dockerfile.prod
+          build-args: |
+            VITE_STRIPE_PUBLIC_KEY=${{ secrets.STRIPE_PUBLISHABLE_KEY }}
           push: true
           platforms: linux/amd64
           tags: ${{ steps.meta_frontend.outputs.tags }}
