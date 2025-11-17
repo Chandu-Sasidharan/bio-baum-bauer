@@ -2,6 +2,7 @@ import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { render } from '@testing-library/react';
 import { MemoryRouter } from 'react-router-dom';
 import { HelmetProvider } from 'react-helmet-async';
+import { LanguageProvider } from '@/context/language-context';
 
 export const createTestQueryClient = () =>
   new QueryClient({
@@ -29,9 +30,11 @@ export const createQueryClientWrapper = () => {
 
 export const renderWithRouter = (ui, { initialEntries = ['/'] } = {}) => {
   const Wrapper = ({ children }) => (
-    <HelmetProvider>
-      <MemoryRouter initialEntries={initialEntries}>{children}</MemoryRouter>
-    </HelmetProvider>
+    <LanguageProvider>
+      <HelmetProvider>
+        <MemoryRouter initialEntries={initialEntries}>{children}</MemoryRouter>
+      </HelmetProvider>
+    </LanguageProvider>
   );
 
   return render(ui, { wrapper: Wrapper });

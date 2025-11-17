@@ -1,8 +1,20 @@
 import { Link } from 'react-router-dom';
 import Card from './card';
 import styles from './trees.module.css';
+import useCopy from '@/hooks/use-copy';
+
+const copy = {
+  de: {
+    button: 'In den Warenkorb',
+  },
+  en: {
+    button: 'Add To Cart',
+  },
+};
 
 export default function CardGrid({ trees }) {
+  const text = useCopy(copy);
+
   return (
     <div className={styles.gridContainer}>
       {trees.map(tree => (
@@ -12,7 +24,7 @@ export default function CardGrid({ trees }) {
             name={tree.name}
             price={tree.price.$numberDecimal}
           >
-            Add To Cart
+            {text.button}
           </Card>
         </Link>
       ))}

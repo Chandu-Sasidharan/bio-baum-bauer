@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useMemo, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
@@ -7,21 +7,89 @@ import axios from '@/utils/axios';
 import Button from '@/components/ui/button';
 import showAlert from '@/utils/alert';
 import formatError from '@/utils/format-error';
+import useCopy from '@/hooks/use-copy';
 
-// Define schema with zod
-const schema = z.object({
-  userName: z
-    .string()
-    .min(3, { message: 'Name should have a minimum length of 3' })
-    .max(50, { message: 'Name should have a maximum length of 50' }),
-  email: z.string().email({ message: 'Please enter a valid email address.' }),
-  message: z.string().min(1, { message: 'Message is required' }),
-  agreeToPolicies: z.boolean().refine(val => val === true, {
-    message: 'please agree to the terms and conditions',
-  }),
-});
+const copy = {
+  de: {
+    labels: {
+      name: 'Name *',
+      email: 'E-Mail-Adresse *',
+      message: 'Deine Nachricht *',
+      checkbox: 'Ich stimme den',
+      checkboxSuffix: 'zu',
+    },
+    placeholders: {
+      name: 'Dein Name',
+      email: 'email@example.com',
+      message: 'Schreibe deine Nachricht...',
+    },
+    button: {
+      idle: 'Nachricht senden',
+      processing: 'Wird gesendet...',
+    },
+    errors: {
+      nameMin: 'Der Name muss mindestens 3 Zeichen lang sein.',
+      nameMax: 'Der Name darf höchstens 50 Zeichen lang sein.',
+      email: 'Bitte eine gültige E-Mail-Adresse eingeben.',
+      message: 'Bitte gib eine Nachricht ein.',
+      policies: 'Bitte stimme den AGB zu.',
+      default: 'Etwas ist schiefgelaufen.',
+    },
+    alert: {
+      successTitle: 'Vielen Dank!',
+      errorTitle: 'Nachricht nicht gesendet',
+    },
+    checkboxLink: 'Allgemeinen Geschäftsbedingungen',
+  },
+  en: {
+    labels: {
+      name: 'Name *',
+      email: 'Email Address *',
+      message: 'Your message *',
+      checkbox: 'I agree with the',
+      checkboxSuffix: 'terms and conditions',
+    },
+    placeholders: {
+      name: 'Your name',
+      email: 'email@example.com',
+      message: 'Write your message here...',
+    },
+    button: {
+      idle: 'Send your message',
+      processing: 'Processing...',
+    },
+    errors: {
+      nameMin: 'Name should have a minimum length of 3',
+      nameMax: 'Name should have a maximum length of 50',
+      email: 'Please enter a valid email address.',
+      message: 'Message is required',
+      policies: 'Please agree to the terms and conditions',
+      default: 'Something went wrong!',
+    },
+    alert: {
+      successTitle: 'Thank you!',
+      errorTitle: 'Message Failed',
+    },
+    checkboxLink: 'terms and conditions',
+  },
+};
+
+const createSchema = texts =>
+  z.object({
+    userName: z
+      .string()
+      .min(3, { message: texts.errors.nameMin })
+      .max(50, { message: texts.errors.nameMax }),
+    email: z.string().email({ message: texts.errors.email }),
+    message: z.string().min(1, { message: texts.errors.message }),
+    agreeToPolicies: z.boolean().refine(val => val === true, {
+      message: texts.errors.policies,
+    }),
+  });
 
 export default function Form() {
+  const text = useCopy(copy);
+  const schema = useMemo(() => createSchema(text), [text]);
   const [isProcessing, setIsProcessing] = useState(false);
   const {
     register,
@@ -40,20 +108,21 @@ export default function Form() {
       const response = await axios.post('/api/contact/create', formData);
 
       if (response.status === 201) {
-        showAlert('success', 'Thank you!', response.data.message);
+        showAlert('success', text.alert.successTitle, response.data.message);
         // Clear the form
         reset();
       } else {
         // Handle other server response statuses
-        showAlert(
-          'error',
-          'Message Failed',
-          response.data.message || 'Something went wrong!'
-        );
+        showAlert('error', text.alert.errorTitle, response.data.message);
       }
     } catch (error) {
       const errorMessage = formatError(error);
-      showAlert('error', 'Message Failed', null, errorMessage);
+      showAlert(
+        'error',
+        text.alert.errorTitle,
+        null,
+        errorMessage || text.errors.default
+      );
     } finally {
       setIsProcessing(false);
     }
@@ -70,12 +139,12 @@ export default function Form() {
           htmlFor='userName'
           className='text-primary-dark mb-1 ml-1 block text-sm'
         >
-          Name *
+          {text.labels.name}
         </label>
         <input
           type='text'
           name='userName'
-          placeholder='Your name'
+          placeholder={text.placeholders.name}
           {...register('userName')}
           className={`input text-stone input-bordered w-full cursor-pointer focus:outline-none lg:flex-1 ${
             errors.userName
@@ -96,12 +165,12 @@ export default function Form() {
           htmlFor='emailAddress'
           className='text-primary-dark mb-2 ml-1 block text-sm'
         >
-          Email Address *
+          {text.labels.email}
         </label>
         <input
           type='email'
           name='email'
-          placeholder='email@example.com'
+          placeholder={text.placeholders.email}
           {...register('email')}
           className={`input text-stone input-bordered input-light input-light w-full cursor-pointer focus:outline-none lg:flex-1 ${
             errors.email
@@ -123,11 +192,11 @@ export default function Form() {
             htmlFor='message'
             className='text-gray-dark mb-1 ml-1 block text-sm'
           >
-            Your message *
+            {text.labels.message}
           </label>
         </div>
         <textarea
-          placeholder='Write your message here...'
+          placeholder={text.placeholders.message}
           rows='4'
           name='message'
           {...register('message')}
@@ -154,10 +223,15 @@ export default function Form() {
             className='checkbox checkbox-sm checkbox-aloe input-light'
           />
           <label htmlFor='checkbox'>
-            <span className='text-stone'>I agree with the&nbsp;</span>
+            <span className='text-stone'>
+              {text.labels.checkbox}&nbsp;
+            </span>
             <Link to='/terms' className='text-accent font-semibold underline'>
-              terms and conditions
+              {text.checkboxLink}
             </Link>
+            {text.labels.checkboxSuffix && (
+              <span className='text-stone'>&nbsp;{text.labels.checkboxSuffix}</span>
+            )}
           </label>
         </div>
         <div className='mt-[3px] h-4'>
@@ -169,7 +243,7 @@ export default function Form() {
 
       {/* Submit Button */}
       <Button type='submit' isProcessing={isProcessing}>
-        {isProcessing ? 'Processing...' : 'Send your message'}
+        {isProcessing ? text.button.processing : text.button.idle}
       </Button>
     </form>
   );

@@ -5,11 +5,36 @@ import Spinner from '@/components/spinner';
 import { useCart } from '@/context/cart-context';
 import Button from '@/components/ui/button';
 import treeIcon from '/images/misc/tree.png';
+import useCopy from '@/hooks/use-copy';
+
+const copy = {
+  de: {
+    messages: {
+      succeeded: 'Vielen Dank für deine Patenschaft! Deine Zahlung ist eingegangen.',
+      processing: 'Die Zahlung wird verarbeitet. Wir informieren dich, sobald sie bestätigt ist.',
+      requiresPaymentMethod:
+        'Die Zahlung ist fehlgeschlagen. Bitte versuche es mit einer anderen Zahlungsmethode.',
+      default: 'Etwas ist schiefgelaufen.',
+    },
+    home: 'Zur Startseite',
+  },
+  en: {
+    messages: {
+      succeeded: 'Thank you for sponsoring! Your payment has been received.',
+      processing: "Payment processing. We'll update you when payment is received.",
+      requiresPaymentMethod:
+        'Payment failed. Please try another payment method.',
+      default: 'Something went wrong!',
+    },
+    home: 'Back to Home',
+  },
+};
 
 export default function Status({ clientSecret }) {
   const [message, setMessage] = useState('');
   const { clearCartTrees } = useCart();
   const stripe = useStripe();
+  const text = useCopy(copy);
 
   useEffect(() => {
     if (!stripe || !clientSecret) {
@@ -25,28 +50,24 @@ export default function Status({ clientSecret }) {
         case 'succeeded':
           console.log('PaymentIntent metadata:', paymentIntent.metadata);
           clearCartTrees();
-          setMessage(
-            'Thank you for sponsoring! Your payment has been received.'
-          );
+          setMessage(text.messages.succeeded);
           break;
 
         case 'processing':
           clearCartTrees();
-          setMessage(
-            "Payment processing. We'll update you when payment is received."
-          );
+          setMessage(text.messages.processing);
           break;
 
         case 'requires_payment_method':
-          setMessage('Payment failed. Please try another payment method.');
+          setMessage(text.messages.requiresPaymentMethod);
           break;
 
         default:
-          setMessage('Something went wrong!');
+          setMessage(text.messages.default);
           break;
       }
     });
-  }, [stripe, clientSecret]);
+  }, [stripe, clientSecret, text]);
 
   if (!message) {
     return <Spinner height='60' />;
@@ -58,7 +79,7 @@ export default function Status({ clientSecret }) {
       <p className='text-center text-xl'>{message}</p>
       <Link to='/'>
         <Button variant='primary' rounded>
-          Back to Home
+          {text.home}
         </Button>
       </Link>
     </div>

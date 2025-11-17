@@ -7,8 +7,19 @@ import backgroundImage from '/images/background/leaves-background.webp';
 import { Elements } from '@stripe/react-stripe-js';
 import stripePromise from '@/utils/stripe-instance';
 import Status from './status';
+import useCopy from '@/hooks/use-copy';
+
+const copy = {
+  de: {
+    metaTitle: 'Zahlungsstatus | Bio Baum Bauer',
+  },
+  en: {
+    metaTitle: 'Payment Status | Bio Baum Bauer',
+  },
+};
 
 export default function CheckoutForm() {
+  const text = useCopy(copy);
   const [clientSecret, setClientSecret] = useState('');
   const location = useLocation();
 
@@ -34,7 +45,7 @@ export default function CheckoutForm() {
   return (
     <>
       <Helmet>
-        <title>Payment Status | Bio Baum Bauer</title>
+        <title>{text.metaTitle}</title>
       </Helmet>
 
       {/* Container */}

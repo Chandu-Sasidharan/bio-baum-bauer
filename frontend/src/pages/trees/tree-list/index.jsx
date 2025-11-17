@@ -9,8 +9,21 @@ import SortFilterPanel from './sort-filter-panel';
 import CardGrid from './card-grid';
 import PaginationControls from './pagination-controls';
 import styles from './trees.module.css';
+import useCopy from '@/hooks/use-copy';
+
+const copy = {
+  de: {
+    metaTitle: 'Bäume | Bio Baum Bauer',
+    error: 'Fehler beim Laden der Bäume.',
+  },
+  en: {
+    metaTitle: 'Trees | Bio Baum Bauer',
+    error: 'Error fetching data!',
+  },
+};
 
 export default function Trees() {
+  const text = useCopy(copy);
   const [sort, setSort] = useState('');
   const [category, setCategory] = useState('');
   const [page, setPage] = useState(1);
@@ -33,13 +46,13 @@ export default function Trees() {
   }
 
   if (error) {
-    return <div>Error fetching data!</div>;
+    return <div>{text.error}</div>;
   }
 
   return (
     <>
       <Helmet>
-        <title>Trees | Bio Baum Bauer</title>
+        <title>{text.metaTitle}</title>
       </Helmet>
 
       {/* Outer Container */}

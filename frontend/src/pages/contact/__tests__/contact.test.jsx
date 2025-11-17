@@ -11,7 +11,7 @@ describe('Contact page', () => {
     renderContact();
 
     expect(
-      screen.getByRole('heading', { name: /get in touch/i })
+      screen.getByRole('heading', { name: /kontakt/i })
     ).toBeInTheDocument();
 
     expect(screen.getByText(/Schulgasse 9/i)).toBeVisible();
@@ -32,15 +32,15 @@ describe('Contact page', () => {
     renderContact();
 
     expect(
-      screen.getByRole('link', { name: /terms and conditions/i })
+      screen.getByRole('link', { name: /allgemeinen geschäftsbedingungen/i })
     ).toHaveAttribute('href', '/terms');
 
     const submitButton = screen.getByRole('button', {
-      name: /send your message/i,
+      name: /nachricht senden/i,
     });
     expect(submitButton).toBeEnabled();
 
-    const map = screen.getByLabelText(/google map to the address/i);
+    const map = screen.getByLabelText(/google maps standort/i);
     expect(map).toBeInTheDocument();
 
     const agreementCheckbox = screen.getByRole('checkbox');

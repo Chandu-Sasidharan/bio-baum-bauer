@@ -4,12 +4,23 @@ import Breadcrumbs from '@/components/breadcrumbs';
 import Map from '@/pages/contact/map';
 import Form from '@/pages/contact/form';
 import Details from '@/pages/contact/details';
+import useCopy from '@/hooks/use-copy';
+
+const copy = {
+  de: {
+    metaTitle: 'Kontakt | Bio Baum Bauer',
+  },
+  en: {
+    metaTitle: 'Contact Us | Bio Baum Bauer',
+  },
+};
 
 export default function ContactUs() {
+  const text = useCopy(copy);
   return (
     <>
       <Helmet>
-        <title>Contact Us | Bio Baum Bauer</title>
+        <title>{text.metaTitle}</title>
       </Helmet>
 
       {/* Container */}

@@ -63,8 +63,10 @@ describe('Cart page', () => {
 
     renderCart();
 
-    expect(screen.getByText(/your cart is empty/i)).toBeInTheDocument();
-    expect(screen.getByRole('button', { name: /add trees/i })).toBeInTheDocument();
+    expect(screen.getByText(/dein warenkorb ist leer/i)).toBeInTheDocument();
+    expect(
+      screen.getByRole('button', { name: /bäume hinzufügen/i })
+    ).toBeInTheDocument();
   });
 
   it('renders totals and guards checkout until a visitor logs in', () => {
@@ -94,7 +96,7 @@ describe('Cart page', () => {
     expect(screen.getAllByTestId('cart-item')).toHaveLength(1);
 
     const checkoutButtons = screen.getAllByRole('button', {
-      name: /checkout/i,
+      name: /zur kasse/i,
     });
     checkoutButtons.forEach(button => expect(button).toBeDisabled());
 
@@ -106,7 +108,7 @@ describe('Cart page', () => {
     rerender(<Cart />);
 
     screen
-      .getAllByRole('button', { name: /checkout/i })
+      .getAllByRole('button', { name: /zur kasse/i })
       .forEach(button => expect(button).toBeEnabled());
   });
 });

@@ -8,6 +8,27 @@ import { useUser } from '@/context/auth-context';
 import logoImage from '/images/logo/bbb-logo.svg';
 import treeIcon from '/images/misc/tree.png';
 import { useCart } from '@/context/cart-context';
+import LanguageSelector from '@/components/navbar/language-selector';
+import useCopy from '@/hooks/use-copy';
+
+const copy = {
+  de: {
+    plantTree: 'Baum pflanzen',
+    login: 'Anmelden',
+    more: 'Mehr',
+    account: 'Mein Konto',
+    logout: 'Abmelden',
+    cartAria: 'Warenkorb öffnen',
+  },
+  en: {
+    plantTree: 'Plant a Tree',
+    login: 'Login',
+    more: 'More',
+    account: 'My Account',
+    logout: 'Logout',
+    cartAria: 'Open cart',
+  },
+};
 
 export default function TopNavBar({
   isNavbarFixed,
@@ -19,6 +40,7 @@ export default function TopNavBar({
   const dropdownRef = useRef(null);
   const navigate = useNavigate();
   const totalTreeCount = getTotalTreeCount();
+  const text = useCopy(copy);
 
   useEffect(() => {
     if (isNavbarFixed) {
@@ -76,16 +98,17 @@ export default function TopNavBar({
 
         {/* Right Side */}
         <div className='flex items-center gap-3'>
+          <LanguageSelector />
           <Link to='/trees' className='hidden items-center gap-3 md:flex'>
             <Button>
               <img src={treeIcon} alt='Tree Icon' className='mr-2 h-5 w-5' />
-              <span>Plant a Tree</span>
+              <span>{text.plantTree}</span>
             </Button>
           </Link>
           {!isAuthenticated && (
             <Link to='/login'>
               <Button>
-                <span>Login</span>
+                <span>{text.login}</span>
               </Button>
             </Link>
           )}
@@ -107,7 +130,7 @@ export default function TopNavBar({
                     </div>
                   ) : (
                     <span className='font-open-sans text-primary-light mr-2 inline-block text-lg'>
-                      More
+                      {text.more}
                     </span>
                   )}
                   {isTopNavDropdownOpen ? (
@@ -129,7 +152,7 @@ export default function TopNavBar({
                   >
                     <span className='flex items-center gap-3 px-5 py-4 transition-transform duration-75 ease-linear'>
                       <CgProfile className='text-accent text-xl' />
-                      <span className='text-nowrap'>My Account</span>
+                      <span className='text-nowrap'>{text.account}</span>
                     </span>
                   </li>
                   <li
@@ -138,7 +161,7 @@ export default function TopNavBar({
                   >
                     <span className='flex items-center justify-start gap-3 px-5 py-4 transition-transform duration-75 ease-linear'>
                       <IoMdLogOut className='text-accent text-xl' />
-                      <span>Logout</span>
+                      <span>{text.logout}</span>
                     </span>
                   </li>
                 </ul>
@@ -147,7 +170,7 @@ export default function TopNavBar({
           )}
 
           {/* Shopping Cart */}
-          <Link to='/cart' aria-label='Cart page'>
+          <Link to='/cart' aria-label={text.cartAria}>
             <span className='bg-primary-light text-accent relative flex h-[40px] w-[40px] items-center justify-center rounded-full text-xl'>
               <PiShoppingCartSimpleFill />
               {!!totalTreeCount && (

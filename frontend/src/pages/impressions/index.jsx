@@ -6,8 +6,27 @@ import Button from '@/components/ui/button';
 import backgroundImage from '/images/background/leaves-background.webp';
 import useImpressions from '@/hooks/use-impressions';
 import ImageModal from './modal';
+import useCopy from '@/hooks/use-copy';
+
+const copy = {
+  de: {
+    metaTitle: 'Eindrücke | Bio Baum Bauer',
+    error: 'Bilder konnten nicht geladen werden.',
+    note: 'Die folgenden Bilder sind KI-generiert und dienen nur zur Veranschaulichung.',
+    showAll: 'Alle Bilder anzeigen',
+    showLess: 'Weniger Fotos anzeigen',
+  },
+  en: {
+    metaTitle: 'Impressions | Bio Baum Bauer',
+    error: 'Error fetching images',
+    note: 'Images are AI-generated and are for representative purposes only.',
+    showAll: 'Show All Images',
+    showLess: 'Show Fewer Photos',
+  },
+};
 
 export default function Impressions() {
+  const text = useCopy(copy);
   const [isSmallScreen, setIsSmallScreen] = useState(false);
   const [displayedImages, setDisplayedImages] = useState([]);
   const [hoveredImage, setHoveredImage] = useState(null);
@@ -47,7 +66,7 @@ export default function Impressions() {
   }
 
   if (isError) {
-    return <div>Error fetching images</div>;
+    return <div>{text.error}</div>;
   }
 
   /* Handle Close Image */
@@ -58,7 +77,7 @@ export default function Impressions() {
   return (
     <>
       <Helmet>
-        <title>Impressions | Bio Baum Bauer</title>
+        <title>{text.metaTitle}</title>
       </Helmet>
 
       {/* Container */}
@@ -71,9 +90,7 @@ export default function Impressions() {
           className='md:py-15 px-5 py-10 md:px-10'
         >
           <div className='mx-auto max-w-7xl space-y-5'>
-            <h1 className='text-lg'>
-              Images are AI-generated and are for representative purposes only.
-            </h1>
+            <h1 className='text-lg'>{text.note}</h1>
             {/* Image Grid */}
             <Fade delay={100} cascade damping={0.1} duration={3000}>
               <div className='grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-4'>
@@ -118,9 +135,7 @@ export default function Impressions() {
                 rounded={true}
                 className='w-full'
               >
-                {displayedImages.length === 6
-                  ? 'Show All Images'
-                  : 'Show Fewer Photos'}
+                {displayedImages.length === 6 ? text.showAll : text.showLess}
               </Button>
             )}
           </div>

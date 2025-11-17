@@ -13,6 +13,52 @@ import CartItem from './cart-item';
 import usePaymentIntent from '@/hooks/use-payment-intent';
 import showAlert from '@/utils/alert';
 import { TAX_RATE, CURRENCY } from '@/utils/constants';
+import useCopy from '@/hooks/use-copy';
+
+const copy = {
+  de: {
+    metaTitle: 'Warenkorb | Bio Baum Bauer',
+    header: 'Dein Warenkorb',
+    subheader:
+      'Schließe den Kauf ab, um diese Bäume zu unterstützen und aktiv zur Aufforstung beizutragen.',
+    checkout: 'Zur Kasse',
+    totals: {
+      totalPrice: 'Zwischensumme:',
+      tax: 'Steuer:',
+      grand: 'Gesamtsumme:',
+    },
+    guestPrompt:
+      'Bitte melde dich an oder registriere dich, um dein persönliches Dashboard zu sehen.',
+    login: 'Anmelden / Registrieren',
+    continueAsGuest: 'Als Gast fortfahren',
+    addMore: 'Weitere Bäume hinzufügen',
+    empty: 'Dein Warenkorb ist leer.',
+    addTrees: 'Bäume hinzufügen',
+    alertTitle: 'Checkout fehlgeschlagen',
+    alertFallback: 'Etwas ist schiefgelaufen!',
+  },
+  en: {
+    metaTitle: 'Cart | Bio Baum Bauer',
+    header: 'Your Cart',
+    subheader:
+      'Checkout to sponsor these trees to help combat climate change and support reforestation efforts.',
+    checkout: 'Checkout',
+    totals: {
+      totalPrice: 'Total Price:',
+      tax: 'Tax:',
+      grand: 'Grand Total:',
+    },
+    guestPrompt:
+      'Please log in or sign up to access a personalized dashboard.',
+    login: 'Log In / Sign Up',
+    continueAsGuest: 'Continue as a guest',
+    addMore: 'Add More Trees',
+    empty: 'Your cart is empty.',
+    addTrees: 'Add Trees',
+    alertTitle: 'Checkout Failed',
+    alertFallback: 'Something went wrong!',
+  },
+};
 
 export default function Cart() {
   const { authUser, isAuthenticated } = useUser();
@@ -28,6 +74,7 @@ export default function Cart() {
   } = useCart();
   const { totalPrice, totalTax, grandTotal } = calculatePrice();
   const totalTreeCount = getTotalTreeCount();
+  const text = useCopy(copy);
   // Initialize the payment intent hook mutation
   const { getPaymentIntent, isPaymentLoading } = usePaymentIntent();
 
@@ -51,8 +98,8 @@ export default function Cart() {
       onError: error => {
         showAlert(
           'error',
-          'Checkout Failed',
-          error.response.data.message || 'Something went wrong!'
+          text.alertTitle,
+          error.response.data.message || text.alertFallback
         );
       },
     });
@@ -65,7 +112,7 @@ export default function Cart() {
   return (
     <>
       <Helmet>
-        <title>Cart | Bio Baum Bauer</title>
+        <title>{text.metaTitle}</title>
       </Helmet>
 
       {/* Container */}
@@ -94,12 +141,11 @@ export default function Cart() {
                   <div className='flex items-center gap-2'>
                     <PiShoppingCartSimpleFill className='text-2xl md:text-3xl' />
                     <h1 className='font-chicle text-2xl tracking-wide md:text-3xl'>
-                      Your Cart
+                      {text.header}
                     </h1>
                   </div>
                   <p className='text-primary-dark text-sm'>
-                    Checkout to sponsor these trees to help combat climate
-                    change and support reforestation efforts.
+                    {text.subheader}
                   </p>
                 </div>
                 <Button
@@ -109,7 +155,7 @@ export default function Cart() {
                   isProcessing={isPaymentLoading}
                 >
                   <PiShoppingCartSimpleFill className='mr-1 inline-block text-lg' />
-                  <span>Checkout</span>
+                  <span>{text.checkout}</span>
                 </Button>
               </div>
 
@@ -119,26 +165,23 @@ export default function Cart() {
                 <div className='mt-3 flex w-[100%] flex-col gap-5 lg:w-[50%]'>
                   <div className='bg-primary-light flex flex-col gap-2 rounded-sm p-3'>
                     <p className='flex justify-between'>
-                      <span className='text-lg'>Total Price:</span>
+                      <span className='text-lg'>{text.totals.totalPrice}</span>
                       <span className='text-lg'>€ {totalPrice}</span>
                     </p>
                     <p className='flex justify-between'>
-                      <span className='text-lg'>Tax:</span>
+                      <span className='text-lg'>{text.totals.tax}</span>
                       <span className='text-lg'>€ {totalTax}</span>
                     </p>
                     <hr className='border-primary border-t-1 mx-auto my-2 w-[70%]' />
                     <p className='flex justify-between text-nowrap'>
-                      <span className='text-lg'>Grand Total:</span>
+                      <span className='text-lg'>{text.totals.grand}</span>
                       <span className='text-lg'>€ {grandTotal}</span>
                     </p>
                   </div>
 
                   {!isAuthenticated && (
                     <div className='bg-primary-light space-y-3 rounded-sm p-3'>
-                      <p className='text-stone'>
-                        Please log in or sign up to access a personalized
-                        dashboard.
-                      </p>
+                      <p className='text-stone'>{text.guestPrompt}</p>
                       <div className='flex flex-col gap-3 lg:flex-row lg:items-center lg:gap-10'>
                         <Link to='/login' state={{ from: location }}>
                           <Button
@@ -148,7 +191,7 @@ export default function Cart() {
                             size='sm'
                             disabled={isGuest}
                           >
-                            <span>Log In / Sign Up</span>
+                            <span>{text.login}</span>
                           </Button>
                         </Link>
                         {/* Continue as a guest */}
@@ -159,7 +202,7 @@ export default function Cart() {
                             onChange={() => setIsGuest(!isGuest)}
                             checked={isGuest}
                           />
-                          <span className='ml-2'>Continue as a guest</span>
+                          <span className='ml-2'>{text.continueAsGuest}</span>
                         </label>
                       </div>
                     </div>
@@ -172,7 +215,7 @@ export default function Cart() {
                     isProcessing={isPaymentLoading}
                   >
                     <PiShoppingCartSimpleFill className='mr-1 inline-block text-lg' />
-                    <span>Checkout</span>
+                    <span>{text.checkout}</span>
                   </Button>
 
                   {!!totalTreeCount && (
@@ -188,7 +231,7 @@ export default function Cart() {
                             alt='Tree Icon'
                             className='h-[16px] w-[16px]'
                           />
-                          <span className='text-nowrap'>Add More Trees</span>
+                          <span className='text-nowrap'>{text.addMore}</span>
                         </div>
                       </Button>
                     </Link>
@@ -214,7 +257,7 @@ export default function Cart() {
                         className='h-[25px] w-[25px]'
                       />
                       <h2 className='font-chicle text-2xl tracking-wide md:text-3xl'>
-                        Your cart is empty.
+                        {text.empty}
                       </h2>
                     </div>
                     <Link to='/trees'>
@@ -224,7 +267,7 @@ export default function Cart() {
                         rounded={true}
                       >
                         <PiShoppingCartSimpleFill className='text-lg' />
-                        <span>Add Trees</span>
+                        <span>{text.addTrees}</span>
                       </Button>
                     </Link>
                   </div>

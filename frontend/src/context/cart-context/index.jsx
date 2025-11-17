@@ -3,7 +3,9 @@ import { useNavigate } from 'react-router-dom';
 import showAlert from '@/utils/alert';
 import axios from '@/utils/axios';
 import { TAX_RATE } from '@/utils/constants';
+
 export const CartContext = createContext({});
+
 export const useCart = () => {
   return useContext(CartContext);
 };

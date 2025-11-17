@@ -5,9 +5,27 @@ import closeIcon from '/images/misc/close-icon.svg';
 import hamburgerIcon from '/images/misc/hamburger-icon.svg';
 import menuItems from '@/components/navbar/bottom-navbar/menu-items';
 import treeIcon from '/images/misc/tree.png';
+import { useLanguage } from '@/context/language-context';
+import useCopy from '@/hooks/use-copy';
+import LanguageSelector from '@/components/navbar/language-selector';
+
+const copy = {
+  de: {
+    hamburgerLabel: 'Menü öffnen',
+    closeLabel: 'Menü schließen',
+    plantTree: 'Baum pflanzen',
+  },
+  en: {
+    hamburgerLabel: 'Open menu',
+    closeLabel: 'Close menu',
+    plantTree: 'Plant a Tree',
+  },
+};
 
 export default function MobileMenu() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const { language } = useLanguage();
+  const text = useCopy(copy);
 
   const handleLinkClick = () => {
     setIsMenuOpen(false);
@@ -21,7 +39,7 @@ export default function MobileMenu() {
         <button
           onClick={() => setIsMenuOpen(true)}
           className='h-[50px] w-[50px]'
-          aria-label='Hambuger Menu'
+          aria-label={text.hamburgerLabel}
         >
           <img src={hamburgerIcon} alt='Hamburger Icon' />
         </button>
@@ -29,7 +47,7 @@ export default function MobileMenu() {
         <Link to='/trees'>
           <Button size='sm' variant='primary' className='bg-primary-light'>
             <img src={treeIcon} alt='Tree Icon' className='mr-2 h-5 w-5' />
-            <span>Plant a Tree</span>
+            <span>{text.plantTree}</span>
           </Button>
         </Link>
       </div>
@@ -45,23 +63,24 @@ export default function MobileMenu() {
           <button
             onClick={() => setIsMenuOpen(false)}
             className='h-[25px] w-[25px]'
-            aria-label='Close menu'
+            aria-label={text.closeLabel}
           >
             <img src={closeIcon} alt='Close Menu' />
           </button>
         </div>
 
         {/* Menu Links */}
-        <div className='mt-[100px] flex flex-col items-center'>
+        <div className='mt-[100px] flex flex-col items-center gap-5'>
+          <LanguageSelector compact />
           {menuItems.map(item => (
             <Link
               key={item.to}
               to={item.to}
               onClick={handleLinkClick}
-              aria-label={item.ariaLabel}
+              aria-label={item.ariaLabel[language]}
               className='text-stone border-primary-light py-4 text-xl'
             >
-              {item.pageName}
+              {item.labels[language]}
             </Link>
           ))}
         </div>

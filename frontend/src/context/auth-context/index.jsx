@@ -14,8 +14,8 @@ import { useNavigate } from 'react-router-dom';
 const INACTIVITY_TIMEOUT_INTERVAL = 60 * 60 * 1000; // 1 hour
 const TOKEN_REFRESH_INTERVAL = 15 * 60 * 1000; // 15 minutes
 
-// To be refactored step by step
 export const AuthContext = createContext({});
+
 export const useUser = () => {
   return useContext(AuthContext);
 };
