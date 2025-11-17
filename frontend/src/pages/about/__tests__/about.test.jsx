@@ -1,6 +1,8 @@
 import { screen } from '@testing-library/react';
 import About from '@/pages/about';
 import { renderWithRouter } from '@/test-utils';
+import { DEFAULT_LANGUAGE } from '@/context/language-context';
+import { buildPathForLocale } from '@/utils/routes';
 
 describe('About page', () => {
   const renderAbout = () =>
@@ -20,7 +22,10 @@ describe('About page', () => {
     const ctaLink = screen.getByRole('link', {
       name: /jetzt einen baum pflanzen/i,
     });
-    expect(ctaLink).toHaveAttribute('href', '/trees');
+    expect(ctaLink).toHaveAttribute(
+      'href',
+      buildPathForLocale(DEFAULT_LANGUAGE, 'trees')
+    );
   });
 
   it('highlights the three program pillars visitors can explore', () => {

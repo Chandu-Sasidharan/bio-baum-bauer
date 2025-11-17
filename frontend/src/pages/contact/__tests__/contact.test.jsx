@@ -2,6 +2,8 @@ import { screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import Contact from '@/pages/contact';
 import { renderWithRouter } from '@/test-utils';
+import { DEFAULT_LANGUAGE } from '@/context/language-context';
+import { buildPathForLocale } from '@/utils/routes';
 
 describe('Contact page', () => {
   const renderContact = () =>
@@ -33,7 +35,10 @@ describe('Contact page', () => {
 
     expect(
       screen.getByRole('link', { name: /allgemeinen geschäftsbedingungen/i })
-    ).toHaveAttribute('href', '/terms');
+    ).toHaveAttribute(
+      'href',
+      buildPathForLocale(DEFAULT_LANGUAGE, 'terms')
+    );
 
     const submitButton = screen.getByRole('button', {
       name: /nachricht senden/i,

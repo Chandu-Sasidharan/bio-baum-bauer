@@ -2,16 +2,22 @@ import { describe, it, expect } from 'vitest';
 import { render, screen } from '@testing-library/react';
 import { MemoryRouter } from 'react-router-dom';
 import Breadcrumbs from '../index.jsx';
-import { LanguageProvider } from '@/context/language-context';
+import { LanguageProvider, DEFAULT_LANGUAGE } from '@/context/language-context';
+import { ROUTES } from '@/utils/routes';
 
-const renderBreadcrumbs = path =>
-  render(
-    <LanguageProvider>
-      <MemoryRouter initialEntries={[path]}>
+const renderBreadcrumbs = path => {
+  const localePath =
+    path === '/'
+      ? `/${DEFAULT_LANGUAGE}`
+      : `/${DEFAULT_LANGUAGE}${path}`;
+  return render(
+    <LanguageProvider initialLanguage={DEFAULT_LANGUAGE}>
+      <MemoryRouter initialEntries={[localePath]}>
         <Breadcrumbs />
       </MemoryRouter>
-    </LanguageProvider>,
+    </LanguageProvider>
   );
+};
 
 describe('Breadcrumbs', () => {
   it('renders the home link always', () => {
@@ -20,9 +26,13 @@ describe('Breadcrumbs', () => {
   });
 
   it('builds intermediate links for each path segment', () => {
-    renderBreadcrumbs('/trees/featured');
+    const treesPath = ROUTES[DEFAULT_LANGUAGE].trees;
+    renderBreadcrumbs(`/${treesPath}/sapling-01`);
 
-    expect(screen.getByText('Bäume')).toHaveAttribute('href', '/trees');
-    expect(screen.getByText('Featured')).toBeInTheDocument();
+    expect(screen.getByText('Bäume')).toHaveAttribute(
+      'href',
+      `/${DEFAULT_LANGUAGE}/${treesPath}`
+    );
+    expect(screen.getByText('Baumdetails')).toBeInTheDocument();
   });
 });

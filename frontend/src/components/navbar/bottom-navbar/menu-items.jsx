@@ -5,7 +5,11 @@ import treeIcon from '/images/misc/tree.png';
 
 const menuItems = [
   {
-    to: '/',
+    key: 'home',
+    paths: {
+      de: '',
+      en: '',
+    },
     labels: {
       de: 'Startseite',
       en: 'Home',
@@ -17,7 +21,7 @@ const menuItems = [
     },
   },
   {
-    to: '/about',
+    key: 'about',
     labels: {
       de: 'Über uns',
       en: 'About',
@@ -29,7 +33,7 @@ const menuItems = [
     },
   },
   {
-    to: '/trees',
+    key: 'trees',
     labels: {
       de: 'Bäume',
       en: 'Trees',
@@ -41,7 +45,7 @@ const menuItems = [
     },
   },
   {
-    to: '/impressions',
+    key: 'impressions',
     labels: {
       de: 'Eindrücke',
       en: 'Impressions',
@@ -53,7 +57,7 @@ const menuItems = [
     },
   },
   {
-    to: '/contact',
+    key: 'contact',
     labels: {
       de: 'Kontakt',
       en: 'Contact',

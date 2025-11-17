@@ -28,8 +28,16 @@ const getInitialLanguage = () => {
   return localStorage.getItem(STORAGE_KEY) || DEFAULT_LANGUAGE;
 };
 
-export function LanguageProvider({ children }) {
-  const [language, setLanguage] = useState(getInitialLanguage);
+export function LanguageProvider({ children, initialLanguage }) {
+  const [language, setLanguage] = useState(
+    initialLanguage || getInitialLanguage
+  );
+
+  useEffect(() => {
+    if (initialLanguage && initialLanguage !== language) {
+      setLanguage(initialLanguage);
+    }
+  }, [initialLanguage]);
 
   useEffect(() => {
     if (typeof window === 'undefined') {

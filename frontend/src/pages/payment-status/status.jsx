@@ -5,6 +5,7 @@ import Spinner from '@/components/spinner';
 import { useCart } from '@/context/cart-context';
 import Button from '@/components/ui/button';
 import treeIcon from '/images/misc/tree.png';
+import useLocalizedPath from '@/hooks/use-localized-path';
 import useCopy from '@/hooks/use-copy';
 
 const copy = {
@@ -34,6 +35,7 @@ export default function Status({ clientSecret }) {
   const [message, setMessage] = useState('');
   const { clearCartTrees } = useCart();
   const stripe = useStripe();
+  const { buildPath } = useLocalizedPath();
   const text = useCopy(copy);
 
   useEffect(() => {
@@ -77,7 +79,7 @@ export default function Status({ clientSecret }) {
     <div className='flex flex-col items-center justify-center gap-10 p-5'>
       <img src={treeIcon} alt='Tree Icon' className='h-[100px] w-[100px]' />
       <p className='text-center text-xl'>{message}</p>
-      <Link to='/'>
+      <Link to={buildPath('home')}>
         <Button variant='primary' rounded>
           {text.home}
         </Button>

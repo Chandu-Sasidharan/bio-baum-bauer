@@ -2,6 +2,8 @@ import { describe, it, expect, vi, beforeEach } from 'vitest';
 import { renderHook, act, waitFor } from '@testing-library/react';
 import { MemoryRouter } from 'react-router-dom';
 import { CartProvider, useCart } from '../index.jsx';
+import { DEFAULT_LANGUAGE } from '@/context/language-context';
+import { buildPathForLocale } from '@/utils/routes';
 
 vi.mock('@/utils/axios', () => ({
   default: {
@@ -83,7 +85,9 @@ describe('CartContext', () => {
     expect(result.current.cartItems).toEqual([
       { treeId: 'tree-2', quantity: 1 },
     ]);
-    expect(navigateMock).toHaveBeenCalledWith('/cart');
+    expect(navigateMock).toHaveBeenCalledWith(
+      buildPathForLocale(DEFAULT_LANGUAGE, 'cart')
+    );
   });
 
   it('calculatePrice derives totals from cartTrees', async () => {

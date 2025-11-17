@@ -5,6 +5,7 @@ import visionImage from '/images/more/vision.webp';
 import treeIcon from '/images/misc/tree.png';
 import styles from './more.module.css';
 import useCopy from '@/hooks/use-copy';
+import useLocalizedPath from '@/hooks/use-localized-path';
 
 const copy = {
   de: {
@@ -26,6 +27,7 @@ const copy = {
 };
 
 export default function Mission() {
+  const { buildPath } = useLocalizedPath();
   const text = useCopy(copy);
   return (
     <div className='mx-auto my-7 flex max-w-7xl flex-col items-center justify-center gap-10 p-5 md:my-20 md:flex-row md:gap-16'>
@@ -37,7 +39,7 @@ export default function Mission() {
           {text.titleLineTwo}
         </h3>
         <p className='text-lg'>{text.body}</p>
-        <Link to='/trees' className='mt-2'>
+        <Link to={buildPath('trees')} className='mt-2'>
           <Button variant='primary' rounded={true}>
             <span className='flex items-center gap-2'>
               <span>{text.learnMore}</span>
@@ -58,7 +60,7 @@ export default function Mission() {
           className={`${styles.overlay} flex flex-col items-center justify-center`}
         >
           {/* Overlay Button */}
-          <Link to='/trees'>
+          <Link to={buildPath('trees')}>
             <Button variant='primary' rounded={true}>
               <span className='flex items-center gap-2'>
                 <img src={treeIcon} alt='Tree Icon' className='h-5 w-5' />

@@ -5,6 +5,7 @@ import Breadcrumbs from '@/components/breadcrumbs';
 import backgroundImage from '/images/background/leaves-background.webp';
 import treeIcon from '/images/misc/tree.png';
 import useCopy from '@/hooks/use-copy';
+import useLocalizedPath from '@/hooks/use-localized-path';
 
 const copy = {
   de: {
@@ -81,6 +82,7 @@ const copy = {
 
 export default function AboutUs() {
   const text = useCopy(copy);
+  const { buildPath } = useLocalizedPath();
   return (
     <>
       <Helmet>
@@ -135,7 +137,7 @@ export default function AboutUs() {
                 {text.join.title}
               </h2>
               <p className='text-stone leading-7'>{text.join.body}</p>
-              <Link to='/trees'>
+              <Link to={buildPath('trees')}>
                 <Button
                   variant='primary'
                   className='bg-primary-light mt-5 w-fit'

@@ -11,11 +11,11 @@ import { useUser } from '@/context/auth-context';
 
 const renderWithRoutes = () =>
   render(
-    <MemoryRouter initialEntries={['/account']}>
+    <MemoryRouter initialEntries={['/de/konto']}>
       <Routes>
-        <Route path='/' element={<div>Home</div>} />
+        <Route path='/de' element={<div>Home</div>} />
         <Route
-          path='/account'
+          path='/de/konto'
           element={
             <ProtectedRoute>
               <div>Private</div>
@@ -23,7 +23,7 @@ const renderWithRoutes = () =>
           }
         />
       </Routes>
-    </MemoryRouter>,
+    </MemoryRouter>
   );
 
 describe('ProtectedRoute', () => {

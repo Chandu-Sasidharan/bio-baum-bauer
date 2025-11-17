@@ -1,4 +1,4 @@
-import { BrowserRouter, Route, Routes } from 'react-router-dom';
+import { BrowserRouter, Navigate, Route, Routes } from 'react-router-dom';
 import { QueryClientProvider } from '@tanstack/react-query';
 import createQueryClient from '@/utils/create-query-client';
 import { CartProvider } from '@/context/cart-context';
@@ -27,6 +27,8 @@ import News from '@/pages/news';
 import Faqs from '@/pages/faqs';
 import Cart from '@/pages/cart';
 import NotFound from '@/pages/not-found';
+import { DEFAULT_LANGUAGE } from '@/context/language-context';
+import { ROUTES, SUPPORTED_LANGUAGES } from '@/utils/routes';
 
 const queryClient = createQueryClient();
 
@@ -37,38 +39,76 @@ function App() {
         <AuthProvider>
           <CartProvider>
             <Routes>
-              <Route path='/' element={<Layout />}>
-                <Route index element={<Home />} />
-                <Route path='/login' element={<Login />} />
-                <Route path='/signup' element={<Signup />} />
-                <Route path='/confirm-account' element={<ConfirmAccount />} />
-                <Route path='/forgot-password' element={<ForgotPassword />} />
-                <Route path='/reset-password' element={<ResetPassword />} />
-                <Route path='/about' element={<About />} />
-                <Route path='/trees' element={<Trees />} />
-                <Route path='/trees/:id' element={<TreePage />} />
-                <Route path='/impressions' element={<Impressions />} />
-                <Route path='/contact' element={<Contact />} />
-                <Route path='/privacy' element={<Privacy />} />
-                <Route path='/faqs' element={<Faqs />} />
-                <Route path='/terms' element={<Terms />} />
-                <Route path='/news' element={<News />} />
-                <Route path='/cart' element={<Cart />} />
-                <Route path='/checkout' element={<CheckoutForm />} />
-                <Route path='/payment-status' element={<PaymentStatus />} />
+              <Route
+                index
+                element={<Navigate to={`/${DEFAULT_LANGUAGE}`} replace />}
+              />
+              {SUPPORTED_LANGUAGES.map(locale => (
                 <Route
-                  path='/account'
-                  element={
-                    <ProtectedRoute>
-                      <AccountLayout />
-                    </ProtectedRoute>
-                  }
+                  key={locale}
+                  path={`/${locale}`}
+                  element={<Layout locale={locale} />}
                 >
-                  <Route index element={<Profile />} />
-                  <Route path='sponsorships' element={<Sponsorship />} />
+                  <Route index element={<Home />} />
+                  <Route path={ROUTES[locale].login} element={<Login />} />
+                  <Route path={ROUTES[locale].signup} element={<Signup />} />
+                  <Route
+                    path={ROUTES[locale].confirmAccount}
+                    element={<ConfirmAccount />}
+                  />
+                  <Route
+                    path={ROUTES[locale].forgotPassword}
+                    element={<ForgotPassword />}
+                  />
+                  <Route
+                    path={ROUTES[locale].resetPassword}
+                    element={<ResetPassword />}
+                  />
+                  <Route path={ROUTES[locale].about} element={<About />} />
+                  <Route path={ROUTES[locale].trees} element={<Trees />} />
+                  <Route
+                    path={ROUTES[locale].treeDetails}
+                    element={<TreePage />}
+                  />
+                  <Route
+                    path={ROUTES[locale].impressions}
+                    element={<Impressions />}
+                  />
+                  <Route path={ROUTES[locale].contact} element={<Contact />} />
+                  <Route path={ROUTES[locale].privacy} element={<Privacy />} />
+                  <Route path={ROUTES[locale].faqs} element={<Faqs />} />
+                  <Route path={ROUTES[locale].terms} element={<Terms />} />
+                  <Route path={ROUTES[locale].news} element={<News />} />
+                  <Route path={ROUTES[locale].cart} element={<Cart />} />
+                  <Route
+                    path={ROUTES[locale].checkout}
+                    element={<CheckoutForm />}
+                  />
+                  <Route
+                    path={ROUTES[locale].paymentStatus}
+                    element={<PaymentStatus />}
+                  />
+                  <Route
+                    path={ROUTES[locale].account}
+                    element={
+                      <ProtectedRoute>
+                        <AccountLayout />
+                      </ProtectedRoute>
+                    }
+                  >
+                    <Route index element={<Profile />} />
+                    <Route
+                      path={ROUTES[locale].sponsorships}
+                      element={<Sponsorship />}
+                    />
+                  </Route>
+                  <Route path='*' element={<NotFound />} />
                 </Route>
-                <Route path='*' element={<NotFound />} />
-              </Route>
+              ))}
+              <Route
+                path='*'
+                element={<Navigate to={`/${DEFAULT_LANGUAGE}`} replace />}
+              />
             </Routes>
           </CartProvider>
         </AuthProvider>

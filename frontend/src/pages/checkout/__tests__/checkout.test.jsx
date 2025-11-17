@@ -36,7 +36,9 @@ describe('Checkout page', () => {
 
     renderCheckout();
 
-    expect(screen.getByText(/something went wrong/i)).toBeInTheDocument();
+    expect(
+      screen.getByText(/etwas ist schiefgelaufen/i)
+    ).toBeInTheDocument();
   });
 
   it('displays the total amount and renders the Stripe form when the payment intent exists', () => {

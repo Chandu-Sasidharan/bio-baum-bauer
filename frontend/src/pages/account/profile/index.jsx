@@ -4,9 +4,32 @@ import { useUser } from '@/context/auth-context';
 import Button from '@/components/ui/button';
 import ViewMode from '@/pages/account/profile/view-mode';
 import EditMode from '@/pages/account/profile/edit-mode';
+import useCopy from '@/hooks/use-copy';
+
+const copy = {
+  de: {
+    metaTitle: 'Mein Profil | Bio Baum Bauer',
+    heading: 'Mein Profil',
+    actions: {
+      save: 'Speichern',
+      edit: 'Bearbeiten',
+      cancel: 'Abbrechen',
+    },
+  },
+  en: {
+    metaTitle: 'My Profile | Bio Baum Bauer',
+    heading: 'My Profile',
+    actions: {
+      save: 'Save',
+      edit: 'Edit',
+      cancel: 'Cancel',
+    },
+  },
+};
 
 export default function Profile() {
   const { authUser, updateUser, isUserLoading } = useUser();
+  const text = useCopy(copy);
   const { firstName, lastName, phoneNumber, address = {} } = authUser || {};
   const { street, houseNumber, zipCode, city, country } = address;
   const [isEditing, setIsEditing] = useState(false);
@@ -31,13 +54,13 @@ export default function Profile() {
   return (
     <>
       <Helmet>
-        <title>My Profile | Bio Baum Bauer</title>
+        <title>{text.metaTitle}</title>
       </Helmet>
 
       <div className='w-full'>
         {/* Profile Header */}
         <div className='flex items-center justify-between'>
-          <h2 className='text-2xl font-bold'>My Profile</h2>
+          <h2 className='text-2xl font-bold'>{text.heading}</h2>
           <div className='flex items-center gap-2'>
             {isEditing && (
               <Button
@@ -45,7 +68,7 @@ export default function Profile() {
                 size='sm'
                 isProcessing={isUserLoading}
               >
-                Save
+                {text.actions.save}
               </Button>
             )}
 
@@ -54,7 +77,7 @@ export default function Profile() {
               variant='primary'
               size='sm'
             >
-              {isEditing ? 'Cancel' : 'Edit'}
+              {isEditing ? text.actions.cancel : text.actions.edit}
             </Button>
           </div>
         </div>

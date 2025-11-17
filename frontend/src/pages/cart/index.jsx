@@ -13,6 +13,7 @@ import CartItem from './cart-item';
 import usePaymentIntent from '@/hooks/use-payment-intent';
 import showAlert from '@/utils/alert';
 import { TAX_RATE, CURRENCY } from '@/utils/constants';
+import useLocalizedPath from '@/hooks/use-localized-path';
 import useCopy from '@/hooks/use-copy';
 
 const copy = {
@@ -65,6 +66,7 @@ export default function Cart() {
   const [isGuest, setIsGuest] = useState(false);
   const location = useLocation();
   const navigate = useNavigate();
+  const { buildPath } = useLocalizedPath();
   const {
     cartItems,
     cartTrees,
@@ -90,8 +92,7 @@ export default function Cart() {
     };
     getPaymentIntent(paymentData, {
       onSuccess: data => {
-        // Navigate to the payment form page and pass the client secret in state
-        navigate('/checkout', {
+        navigate(buildPath('checkout'), {
           state: { paymentIntent: data.paymentIntent },
         });
       },
@@ -183,7 +184,10 @@ export default function Cart() {
                     <div className='bg-primary-light space-y-3 rounded-sm p-3'>
                       <p className='text-stone'>{text.guestPrompt}</p>
                       <div className='flex flex-col gap-3 lg:flex-row lg:items-center lg:gap-10'>
-                        <Link to='/login' state={{ from: location }}>
+                        <Link
+                          to={buildPath('login')}
+                          state={{ from: location }}
+                        >
                           <Button
                             className=''
                             variant='primary'
@@ -219,7 +223,7 @@ export default function Cart() {
                   </Button>
 
                   {!!totalTreeCount && (
-                    <Link to='/trees'>
+                    <Link to={buildPath('trees')}>
                       <Button
                         className='w-full'
                         variant='primary'
@@ -260,7 +264,7 @@ export default function Cart() {
                         {text.empty}
                       </h2>
                     </div>
-                    <Link to='/trees'>
+                    <Link to={buildPath('trees')}>
                       <Button
                         className='uppercase'
                         variant='primary'

@@ -10,6 +10,7 @@ import treeIcon from '/images/misc/tree.png';
 import { useCart } from '@/context/cart-context';
 import LanguageSelector from '@/components/navbar/language-selector';
 import useCopy from '@/hooks/use-copy';
+import useLocalizedPath from '@/hooks/use-localized-path';
 
 const copy = {
   de: {
@@ -41,6 +42,7 @@ export default function TopNavBar({
   const navigate = useNavigate();
   const totalTreeCount = getTotalTreeCount();
   const text = useCopy(copy);
+  const { buildPath } = useLocalizedPath();
 
   useEffect(() => {
     if (isNavbarFixed) {
@@ -74,7 +76,7 @@ export default function TopNavBar({
     setTopNavDropdownOpen(false);
 
     if (type === 'account') {
-      navigate('/account');
+      navigate(buildPath('account'));
     } else if (type === 'logout') {
       handleLogout();
     }
@@ -84,7 +86,7 @@ export default function TopNavBar({
     <nav className='bg-accent relative z-[1] flex h-20 w-full items-center justify-between px-5 shadow-md md:px-8'>
       <div className='flex h-full w-full grow items-center justify-between'>
         {/* Left Side */}
-        <Link to='/' className='flex items-center gap-3'>
+        <Link to={buildPath('home')} className='flex items-center gap-3'>
           <img
             src={logoImage}
             className='h-16 w-16 rounded-full shadow-lg'
@@ -99,14 +101,14 @@ export default function TopNavBar({
         {/* Right Side */}
         <div className='flex items-center gap-3'>
           <LanguageSelector />
-          <Link to='/trees' className='hidden items-center gap-3 md:flex'>
+          <Link to={buildPath('trees')} className='hidden items-center gap-3 md:flex'>
             <Button>
               <img src={treeIcon} alt='Tree Icon' className='mr-2 h-5 w-5' />
               <span>{text.plantTree}</span>
             </Button>
           </Link>
           {!isAuthenticated && (
-            <Link to='/login'>
+            <Link to={buildPath('login')}>
               <Button>
                 <span>{text.login}</span>
               </Button>
@@ -170,7 +172,7 @@ export default function TopNavBar({
           )}
 
           {/* Shopping Cart */}
-          <Link to='/cart' aria-label={text.cartAria}>
+          <Link to={buildPath('cart')} aria-label={text.cartAria}>
             <span className='bg-primary-light text-accent relative flex h-[40px] w-[40px] items-center justify-center rounded-full text-xl'>
               <PiShoppingCartSimpleFill />
               {!!totalTreeCount && (

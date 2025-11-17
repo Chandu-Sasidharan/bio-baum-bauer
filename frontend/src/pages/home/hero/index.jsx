@@ -6,6 +6,7 @@ import style from '@/pages/home/hero/hero.module.css';
 import Button from '@/components/ui/button';
 import treeIcon from '/images/misc/tree.png';
 import useCopy from '@/hooks/use-copy';
+import useLocalizedPath from '@/hooks/use-localized-path';
 
 const copy = {
   de: {
@@ -29,7 +30,9 @@ const copy = {
 };
 
 export default function Hero() {
+  const { buildPath } = useLocalizedPath();
   const text = useCopy(copy);
+
   return (
     <section
       className={`flex flex-col items-center justify-center gap-5 ${style.hero}`}
@@ -49,7 +52,7 @@ export default function Hero() {
           ))}
         </div>
         <div className='flex gap-4'>
-          <Link to='/trees'>
+          <Link to={buildPath('trees')}>
             <Button variant='primary' className='border-none'>
               <img src={treeIcon} alt='Tree Icon' className='h-5 w-5' />
               <span>{text.plant}</span>

@@ -19,7 +19,7 @@ describe('Account Profile', () => {
 
     renderWithRouter(<Profile />);
 
-    expect(screen.getByText(/my profile/i)).toBeInTheDocument();
+    expect(screen.getByText(/mein profil/i)).toBeInTheDocument();
     expect(screen.getByText(/alice/i)).toBeInTheDocument();
     expect(screen.getByText(/evergreen/i)).toBeInTheDocument();
   });
@@ -35,11 +35,11 @@ describe('Account Profile', () => {
     renderWithRouter(<Profile />);
 
     const user = userEvent.setup();
-    await user.click(screen.getByRole('button', { name: /edit/i }));
+    await user.click(screen.getByRole('button', { name: /bearbeiten/i }));
     const firstNameInput = screen.getByDisplayValue('Alice');
     await user.clear(firstNameInput);
     await user.type(firstNameInput, 'Alicia');
-    await user.click(screen.getByRole('button', { name: /save/i }));
+    await user.click(screen.getByRole('button', { name: /speichern/i }));
 
     await waitFor(() =>
       expect(updateUser).toHaveBeenCalledWith(

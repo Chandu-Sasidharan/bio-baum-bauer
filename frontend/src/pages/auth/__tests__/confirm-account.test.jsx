@@ -2,6 +2,8 @@ import { screen } from '@testing-library/react';
 import ConfirmAccount from '@/pages/auth/confirm-account';
 import { renderWithRouter } from '@/test-utils';
 import showAlert from '@/utils/alert';
+import { DEFAULT_LANGUAGE } from '@/context/language-context';
+import { buildPathForLocale } from '@/utils/routes';
 
 const mockUseUser = vi.fn();
 const mockUseSearchParams = vi.fn();
@@ -68,9 +70,11 @@ describe('ConfirmAccount page', () => {
 
     expect(showAlert).toHaveBeenCalledWith(
       'error',
-      'Invalid Link',
-      'Token is missing or invalid'
+      'Ungültiger Link',
+      'Token fehlt oder ist ungültig'
     );
-    expect(mockUseNavigate).toHaveBeenCalledWith('/');
+    expect(mockUseNavigate).toHaveBeenCalledWith(
+      buildPathForLocale(DEFAULT_LANGUAGE, 'home')
+    );
   });
 });

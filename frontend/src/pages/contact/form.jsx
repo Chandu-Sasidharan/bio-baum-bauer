@@ -8,6 +8,7 @@ import Button from '@/components/ui/button';
 import showAlert from '@/utils/alert';
 import formatError from '@/utils/format-error';
 import useCopy from '@/hooks/use-copy';
+import useLocalizedPath from '@/hooks/use-localized-path';
 
 const copy = {
   de: {
@@ -101,6 +102,7 @@ export default function Form() {
     mode: 'onTouched',
     reValidateMode: 'onChange',
   });
+  const { buildPath } = useLocalizedPath();
 
   const onSubmit = async formData => {
     setIsProcessing(true);
@@ -226,7 +228,10 @@ export default function Form() {
             <span className='text-stone'>
               {text.labels.checkbox}&nbsp;
             </span>
-            <Link to='/terms' className='text-accent font-semibold underline'>
+            <Link
+              to={buildPath('terms')}
+              className='text-accent font-semibold underline'
+            >
               {text.checkboxLink}
             </Link>
             {text.labels.checkboxSuffix && (

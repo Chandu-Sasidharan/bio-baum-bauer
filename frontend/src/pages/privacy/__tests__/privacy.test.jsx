@@ -7,10 +7,12 @@ describe('Privacy page', () => {
     renderWithRouter(<Privacy />, { initialEntries: ['/privacy'] });
 
     expect(
-      screen.getByRole('heading', { name: /privacy policy of biobaumbauer/i })
+      screen.getByRole('heading', { name: /datenschutzerklärung von/i })
     ).toBeInTheDocument();
 
-    expect(screen.getByText(/ccpa privacy rights/i)).toBeInTheDocument();
-    expect(screen.getByText(/gdpr data protection rights/i)).toBeInTheDocument();
+    expect(
+      screen.getByText(/ccpa-datenschutzrechte/i)
+    ).toBeInTheDocument();
+    expect(screen.getByText(/dsgvo-rechte/i)).toBeInTheDocument();
   });
 });

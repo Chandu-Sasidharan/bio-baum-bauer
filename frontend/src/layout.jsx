@@ -8,7 +8,7 @@ import ScrollToTopButton from '@/components/scroll-to-top';
 import AutoScrollToTop from '@/components/auto-scroll';
 import { LanguageProvider } from '@/context/language-context';
 
-export default function Layout() {
+export default function Layout({ locale }) {
   const [isNavbarFixed, setIsNavbarFixed] = useState(false);
   const [isTopNavDropdownOpen, setTopNavDropdownOpen] = useState(false);
 
@@ -39,7 +39,7 @@ export default function Layout() {
 
   return (
     <div className='text-accent'>
-      <LanguageProvider>
+      <LanguageProvider initialLanguage={locale}>
         <HelmetProvider>
           <header>
             <Navbar

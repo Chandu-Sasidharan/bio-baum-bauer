@@ -8,6 +8,7 @@ import treeIcon from '/images/misc/tree.png';
 import { useLanguage } from '@/context/language-context';
 import useCopy from '@/hooks/use-copy';
 import LanguageSelector from '@/components/navbar/language-selector';
+import useLocalizedPath from '@/hooks/use-localized-path';
 
 const copy = {
   de: {
@@ -26,6 +27,7 @@ export default function MobileMenu() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const { language } = useLanguage();
   const text = useCopy(copy);
+  const { buildPath } = useLocalizedPath();
 
   const handleLinkClick = () => {
     setIsMenuOpen(false);
@@ -44,7 +46,7 @@ export default function MobileMenu() {
           <img src={hamburgerIcon} alt='Hamburger Icon' />
         </button>
         {/* Plant a Tree Button */}
-        <Link to='/trees'>
+        <Link to={buildPath('trees')}>
           <Button size='sm' variant='primary' className='bg-primary-light'>
             <img src={treeIcon} alt='Tree Icon' className='mr-2 h-5 w-5' />
             <span>{text.plantTree}</span>
@@ -74,8 +76,8 @@ export default function MobileMenu() {
           <LanguageSelector compact />
           {menuItems.map(item => (
             <Link
-              key={item.to}
-              to={item.to}
+              key={item.key}
+              to={buildPath(item.key)}
               onClick={handleLinkClick}
               aria-label={item.ariaLabel[language]}
               className='text-stone border-primary-light py-4 text-xl'

@@ -1,8 +1,10 @@
 import { createContext, useEffect, useState, useContext } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 import showAlert from '@/utils/alert';
 import axios from '@/utils/axios';
 import { TAX_RATE } from '@/utils/constants';
+import { DEFAULT_LANGUAGE } from '@/context/language-context';
+import { SUPPORTED_LANGUAGES, buildPathForLocale } from '@/utils/routes';
 
 export const CartContext = createContext({});
 
@@ -19,6 +21,13 @@ export const CartProvider = ({ children }) => {
   // Cart trees is an array of tree objects
   const [cartTrees, setCartTrees] = useState([]);
   const navigate = useNavigate();
+  const location = useLocation();
+  const localeFromPath = location.pathname.split('/')[1];
+  const activeLocale = SUPPORTED_LANGUAGES.includes(localeFromPath)
+    ? localeFromPath
+    : DEFAULT_LANGUAGE;
+  const buildLocalizedPath = (...keys) =>
+    buildPathForLocale(activeLocale, keys);
 
   // Get CartItems from Local Storage
   useEffect(() => {
@@ -121,7 +130,7 @@ export const CartProvider = ({ children }) => {
       });
     }
 
-    navigate('/cart');
+    navigate(buildLocalizedPath('cart'));
   };
 
   // Increment tree count in the cart

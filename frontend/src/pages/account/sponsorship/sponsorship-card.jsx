@@ -1,8 +1,49 @@
+import useCopy from '@/hooks/use-copy';
+
 const STATUS_STYLES = {
   paid: 'bg-green-100 text-green-800 border-green-200',
   pending: 'bg-yellow-100 text-yellow-800 border-yellow-200',
   failed: 'bg-red-100 text-red-800 border-red-200',
   needs_review: 'bg-orange-100 text-orange-800 border-orange-200',
+};
+
+const copy = {
+  de: {
+    summary: 'Gesamtbetrag',
+    stats: {
+      trees: 'Gesponserte Bäume',
+      created: 'Erstellt am',
+      tax: 'Steuersatz',
+    },
+    listTitle: 'Bäume in dieser Patenschaft',
+    missingTree: 'Baum nicht mehr verfügbar',
+    quantityLabel: 'Anzahl:',
+    status: {
+      paid: 'Bezahlt',
+      pending: 'Ausstehend',
+      failed: 'Fehlgeschlagen',
+      needs_review: 'Prüfung nötig',
+      unknown: 'Unbekannt',
+    },
+  },
+  en: {
+    summary: 'Total amount charged',
+    stats: {
+      trees: 'Trees sponsored',
+      created: 'Created on',
+      tax: 'Tax rate',
+    },
+    listTitle: 'Trees in this sponsorship',
+    missingTree: 'Tree no longer available',
+    quantityLabel: 'Qty:',
+    status: {
+      paid: 'Paid',
+      pending: 'Pending',
+      failed: 'Failed',
+      needs_review: 'Needs review',
+      unknown: 'Unknown',
+    },
+  },
 };
 
 const formatCurrency = (amount = 0, currency = 'EUR') => {
@@ -40,17 +81,18 @@ export default function SponsorshipCard({ sponsorship }) {
     taxRate,
     cartItems = [],
   } = sponsorship;
+  const text = useCopy(copy);
   const totalTrees = cartItems.reduce((acc, item) => acc + item.quantity, 0);
   const statusStyle =
     STATUS_STYLES[status] || 'bg-slate-100 text-slate-800 border-slate-200';
-  const statusLabel = status?.replace('_', ' ') || 'unknown';
+  const statusLabel = text.status[status] || text.status.unknown;
 
   return (
     <div className='rounded-md border border-primary/10 bg-white p-5 shadow-sm'>
       <div className='flex flex-col gap-3 md:flex-row md:items-center md:justify-between'>
         <div>
           <p className='text-xs uppercase tracking-wide text-stone'>
-            Total amount charged
+            {text.summary}
           </p>
           <p className='text-2xl font-semibold text-primary-dark'>
             {formatCurrency(amount, currency)}
@@ -66,20 +108,22 @@ export default function SponsorshipCard({ sponsorship }) {
       <div className='mt-5 grid gap-4 text-sm sm:grid-cols-3'>
         <div>
           <p className='text-xs uppercase tracking-wide text-stone'>
-            Trees sponsored
+            {text.stats.trees}
           </p>
           <p className='text-lg font-semibold text-primary-dark'>{totalTrees}</p>
         </div>
         <div>
           <p className='text-xs uppercase tracking-wide text-stone'>
-            Created on
+            {text.stats.created}
           </p>
           <p className='text-lg font-semibold text-primary-dark'>
             {formatDate(createdAt)}
           </p>
         </div>
         <div>
-          <p className='text-xs uppercase tracking-wide text-stone'>Tax rate</p>
+          <p className='text-xs uppercase tracking-wide text-stone'>
+            {text.stats.tax}
+          </p>
           <p className='text-lg font-semibold text-primary-dark'>
             {formatTaxRate(taxRate)}
           </p>
@@ -91,7 +135,7 @@ export default function SponsorshipCard({ sponsorship }) {
           <hr className='my-5 border-dashed border-primary/30' />
           <div className='space-y-3'>
             <p className='text-xs uppercase tracking-wide text-stone'>
-              Trees in this sponsorship
+              {text.listTitle}
             </p>
             <ul className='space-y-2'>
               {cartItems.map((item, index) => {
@@ -104,7 +148,7 @@ export default function SponsorshipCard({ sponsorship }) {
                   >
                     <div>
                       <p className='font-semibold text-primary-dark'>
-                        {tree?.name || 'Tree no longer available'}
+                        {tree?.name || text.missingTree}
                       </p>
                       {tree?.category && (
                         <p className='text-xs uppercase tracking-wide text-stone'>
@@ -114,7 +158,7 @@ export default function SponsorshipCard({ sponsorship }) {
                     </div>
                     <div className='text-right text-stone'>
                       <p className='font-semibold text-primary-dark'>
-                        Qty: {item.quantity}
+                        {text.quantityLabel} {item.quantity}
                       </p>
                     </div>
                   </li>

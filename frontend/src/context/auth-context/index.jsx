@@ -9,7 +9,9 @@ import { omit } from 'lodash-es';
 import axios from '@/utils/axios';
 import showAlert from '@/utils/alert';
 import formatError from '@/utils/format-error';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
+import { DEFAULT_LANGUAGE } from '@/context/language-context';
+import { SUPPORTED_LANGUAGES, buildPathForLocale } from '@/utils/routes';
 
 const INACTIVITY_TIMEOUT_INTERVAL = 60 * 60 * 1000; // 1 hour
 const TOKEN_REFRESH_INTERVAL = 15 * 60 * 1000; // 15 minutes
@@ -27,6 +29,13 @@ export const AuthProvider = ({ children }) => {
   const [isSessionReady, setIsSessionReady] = useState(false);
   const isAuthenticated = !!authUser;
   const navigate = useNavigate();
+  const location = useLocation();
+  const localeFromPath = location.pathname.split('/')[1];
+  const activeLocale = SUPPORTED_LANGUAGES.includes(localeFromPath)
+    ? localeFromPath
+    : DEFAULT_LANGUAGE;
+  const buildLocalizedPath = (...keys) =>
+    buildPathForLocale(activeLocale, keys);
 
   // Local storage reference
   const lsRef = typeof window !== 'undefined' ? window.localStorage : null;
@@ -229,14 +238,14 @@ export const AuthProvider = ({ children }) => {
       if (response.status === 200) {
         setAuthUser(response.data.user);
         setIsUserLoading(false);
-        navigate('/account');
+        navigate(buildLocalizedPath('account'));
       } else {
         showAlert(
           'error',
           'Sign up failed',
           response.data.message || 'Something went wrong!'
         );
-        navigate('/');
+        navigate(buildLocalizedPath('home'));
       }
     } catch (error) {
       showAlert(
@@ -244,7 +253,7 @@ export const AuthProvider = ({ children }) => {
         'Sign up failed',
         error.response.data.message || 'Something went wrong!'
       );
-      navigate('/');
+      navigate(buildLocalizedPath('home'));
     } finally {
       setIsUserLoading(false);
     }

@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useMemo, useState } from 'react';
 import { Link, useNavigate, Navigate } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
@@ -10,26 +10,68 @@ import Button from '@/components/ui/button';
 import backgroundImage from '/images/background/leaves-background.webp';
 import treeIcon from '/images/misc/tree.png';
 import { useUser } from '@/context/auth-context';
+import useCopy from '@/hooks/use-copy';
+import useLocalizedPath from '@/hooks/use-localized-path';
 
-// Define schema with zod
-const schema = z
-  .object({
-    email: z.string().email({ message: 'Please enter a valid email address.' }),
-    password: z
-      .string()
-      .min(5, { message: 'Please use at least 5 characters.' }),
-    confirmPassword: z
-      .string()
-      .min(5, { message: 'Please use at least 5 characters.' }),
-  })
-  .refine(data => data.password === data.confirmPassword, {
-    message: "Passwords don't match",
-    path: ['confirmPassword'],
-  });
+const copy = {
+  de: {
+    metaTitle: 'Registrieren | Bio Baum Bauer',
+    heading: 'Registrieren',
+    existingPrompt: 'Schon ein Konto?',
+    login: 'Anmelden',
+    button: 'Registrieren',
+    fields: {
+      emailPlaceholder: 'Deine E-Mail-Adresse',
+      passwordPlaceholder: 'Dein Passwort',
+      confirmPlaceholder: 'Passwort bestätigen',
+    },
+    errors: {
+      email: 'Bitte gib eine gültige E-Mail-Adresse ein.',
+      password: 'Bitte verwende mindestens 5 Zeichen.',
+      mismatch: 'Passwörter stimmen nicht überein.',
+    },
+  },
+  en: {
+    metaTitle: 'Signup | Bio Baum Bauer',
+    heading: 'Sign Up',
+    existingPrompt: 'Already have an account?',
+    login: 'Login',
+    button: 'Sign Up',
+    fields: {
+      emailPlaceholder: 'Your Email',
+      passwordPlaceholder: 'Your Password',
+      confirmPlaceholder: 'Confirm Your Password',
+    },
+    errors: {
+      email: 'Please enter a valid email address.',
+      password: 'Please use at least 5 characters.',
+      mismatch: "Passwords don't match",
+    },
+  },
+};
+
+const createSchema = texts =>
+  z
+    .object({
+      email: z.string().email({ message: texts.errors.email }),
+      password: z
+        .string()
+        .min(5, { message: texts.errors.password }),
+      confirmPassword: z
+        .string()
+        .min(5, { message: texts.errors.password }),
+    })
+    .refine(data => data.password === data.confirmPassword, {
+      message: texts.errors.mismatch,
+      path: ['confirmPassword'],
+    });
 
 export default function Signup() {
   const { isAuthenticated, signUpUser, isUserLoading } = useUser();
+  const text = useCopy(copy);
+  const schema = useMemo(() => createSchema(text), [text]);
   const navigate = useNavigate();
+  const { buildPath } = useLocalizedPath();
   const [showPassword, setShowPassword] = useState(false);
   const {
     register,
@@ -50,18 +92,18 @@ export default function Signup() {
     const error = await signUpUser(formData);
 
     if (!error) {
-      navigate('/');
+      navigate(buildPath('home'));
     }
   };
 
   if (isAuthenticated) {
-    return <Navigate to='/account' />;
+    return <Navigate to={buildPath('account')} replace />;
   }
 
   return (
     <>
       <Helmet>
-        <title>Signup | Bio Baum Bauer</title>
+        <title>{text.metaTitle}</title>
       </Helmet>
 
       {/* Container */}
@@ -88,15 +130,18 @@ export default function Signup() {
                   className='mr-2 h-[30px] w-[30px]'
                 />
                 <h3 className='text-accent font-chicle inline-block text-3xl tracking-wide'>
-                  Sign Up
+                  {text.heading}
                 </h3>
               </div>
               <div className='flex items-center'>
                 <span className='mr-2 inline-block'>
-                  Already have an account?
+                  {text.existingPrompt}
                 </span>
-                <Link to='/login' className='text-accent font-bold underline'>
-                  Login
+                <Link
+                  to={buildPath('login')}
+                  className='text-accent font-bold underline'
+                >
+                  {text.login}
                 </Link>
               </div>
               <form
@@ -120,7 +165,7 @@ export default function Signup() {
                     type='email'
                     name='email'
                     {...register('email')}
-                    placeholder='Your Email'
+                    placeholder={text.fields.emailPlaceholder}
                     className={`input input-bordered input-light w-full pl-10 focus:outline-none lg:flex-1 ${
                       errors.email
                         ? 'border-red focus:border-red'
@@ -152,7 +197,7 @@ export default function Signup() {
                   <input
                     type={showPassword ? 'text' : 'password'}
                     {...register('password')}
-                    placeholder='Your Password'
+                    placeholder={text.fields.passwordPlaceholder}
                     className={`input input-bordered input-light w-full pl-10 focus:outline-none lg:flex-1 ${
                       errors.password
                         ? 'border-red focus:border-red'
@@ -196,7 +241,7 @@ export default function Signup() {
                   <input
                     type={showPassword ? 'text' : 'password'}
                     {...register('confirmPassword')}
-                    placeholder='Confirm Your Password'
+                    placeholder={text.fields.confirmPlaceholder}
                     className={`input input-bordered input-light w-full pl-10 focus:outline-none lg:flex-1 ${
                       errors.confirmPassword
                         ? 'border-red focus:border-red'
@@ -227,7 +272,7 @@ export default function Signup() {
                   isProcessing={isUserLoading}
                   className='w-full'
                 >
-                  Sign Up
+                  {text.button}
                 </Button>
               </form>
             </div>
