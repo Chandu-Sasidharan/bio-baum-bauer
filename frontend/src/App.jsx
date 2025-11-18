@@ -20,6 +20,7 @@ import AccountLayout from '@/pages/account';
 import Profile from '@/pages/account/profile';
 import Sponsorship from '@/pages/account/sponsorship';
 import Privacy from '@/pages/privacy';
+import Impressum from '@/pages/impressum';
 import Terms from '@/pages/terms';
 import CheckoutForm from '@/pages/checkout';
 import PaymentStatus from '@/pages/payment-status';
@@ -50,6 +51,7 @@ function App() {
                 <Route path='/impressions' element={<Impressions />} />
                 <Route path='/contact' element={<Contact />} />
                 <Route path='/privacy' element={<Privacy />} />
+                <Route path='/impressum' element={<Impressum />} />
                 <Route path='/faqs' element={<Faqs />} />
                 <Route path='/terms' element={<Terms />} />
                 <Route path='/news' element={<News />} />

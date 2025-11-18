@@ -68,6 +68,7 @@ export default function Upper() {
                 <MenuLink to='/news' pageName='News' />
                 <MenuLink to='/terms' pageName='Terms' />
                 <MenuLink to='/privacy' pageName='Privacy' />
+                <MenuLink to='/impressum' pageName='Impressum' />
               </div>
             </div>
           </div>
