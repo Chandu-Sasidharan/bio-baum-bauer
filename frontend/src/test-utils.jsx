@@ -2,7 +2,7 @@ import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { render } from '@testing-library/react';
 import { MemoryRouter } from 'react-router-dom';
 import { HelmetProvider } from 'react-helmet-async';
-import { LanguageProvider } from '@/context/language-context';
+import { LanguageProvider } from '@/context/lang-context';
 import { DEFAULT_LANGUAGE } from '@/constants';
 import {
   SUPPORTED_LANGUAGES,

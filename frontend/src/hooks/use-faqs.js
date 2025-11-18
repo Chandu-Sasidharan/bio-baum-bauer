@@ -1,6 +1,6 @@
 import { useQuery } from '@tanstack/react-query';
 import axios from '@/utils/axios';
-import { useLanguage } from '@/context/language-context';
+import { useLanguage } from '@/context/lang-context';
 
 const fetchFaqs = async () => {
   const response = await axios.get('/api/faqs');

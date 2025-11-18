@@ -1,4 +1,4 @@
-import { useLanguage } from '@/context/language-context';
+import { useLanguage } from '@/context/lang-context';
 import { useLocation, useNavigate } from 'react-router-dom';
 import useCopy from '@/hooks/use-copy';
 import {

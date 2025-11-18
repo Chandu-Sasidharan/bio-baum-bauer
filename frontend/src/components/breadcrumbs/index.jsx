@@ -1,6 +1,6 @@
 import { Link, useLocation } from 'react-router-dom';
 import { HiHome } from 'react-icons/hi';
-import { useLanguage } from '@/context/language-context';
+import { useLanguage } from '@/context/lang-context';
 import useLocalizedPath from '@/hooks/use-localized-path';
 import { SUPPORTED_LANGUAGES, matchRouteKey } from '@/utils/routes';
 

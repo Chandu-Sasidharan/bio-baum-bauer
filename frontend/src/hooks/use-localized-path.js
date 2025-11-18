@@ -1,4 +1,4 @@
-import { useLanguage } from '@/context/language-context';
+import { useLanguage } from '@/context/lang-context';
 import { SUPPORTED_LANGUAGES, buildPathForLocale } from '@/utils/routes';
 import { DEFAULT_LANGUAGE } from '@/constants';
 

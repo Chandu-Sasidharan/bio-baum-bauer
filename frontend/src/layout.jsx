@@ -6,7 +6,7 @@ import Navbar from '@/components/navbar';
 import Footer from '@/components/footer';
 import ScrollToTopButton from '@/components/scroll-to-top';
 import AutoScrollToTop from '@/components/auto-scroll';
-import { LanguageProvider } from '@/context/language-context';
+import { LanguageProvider } from '@/context/lang-context';
 
 export default function Layout({ locale }) {
   const [isNavbarFixed, setIsNavbarFixed] = useState(false);

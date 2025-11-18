@@ -1,6 +1,6 @@
 import { useMemo } from 'react';
 import { DEFAULT_LANGUAGE } from '@/constants';
-import { useLanguage } from '@/context/language-context';
+import { useLanguage } from '@/context/lang-context';
 
 export default function useCopy(copy = {}) {
   const { language } = useLanguage();

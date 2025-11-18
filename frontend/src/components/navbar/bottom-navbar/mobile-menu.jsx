@@ -5,7 +5,7 @@ import closeIcon from '/images/misc/close-icon.svg';
 import hamburgerIcon from '/images/misc/hamburger-icon.svg';
 import menuItems from '@/components/navbar/bottom-navbar/menu-items';
 import treeIcon from '/images/misc/tree.png';
-import { useLanguage } from '@/context/language-context';
+import { useLanguage } from '@/context/lang-context';
 import useCopy from '@/hooks/use-copy';
 import LanguageSelector from '@/components/navbar/lang-selector';
 import useLocalizedPath from '@/hooks/use-localized-path';

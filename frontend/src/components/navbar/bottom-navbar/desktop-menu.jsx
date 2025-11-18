@@ -2,7 +2,7 @@ import { Fragment } from 'react';
 import { NavLink, useParams } from 'react-router-dom';
 import VerticalDivider from '@/components/navbar/bottom-navbar/vertical-divider';
 import menuItems from '@/components/navbar/bottom-navbar/menu-items';
-import { useLanguage } from '@/context/language-context';
+import { useLanguage } from '@/context/lang-context';
 import useLocalizedPath from '@/hooks/use-localized-path';
 
 export default function DesktopMenu() {
