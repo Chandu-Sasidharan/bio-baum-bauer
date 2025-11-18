@@ -29,7 +29,9 @@ export const createTestQueryClient = () =>
 export const createQueryClientWrapper = () => {
   const queryClient = createTestQueryClient();
   return ({ children }) => (
-    <QueryClientProvider client={queryClient}>{children}</QueryClientProvider>
+    <LanguageProvider>
+      <QueryClientProvider client={queryClient}>{children}</QueryClientProvider>
+    </LanguageProvider>
   );
 };
 

@@ -1,5 +1,6 @@
 import { keepPreviousData, useQuery } from '@tanstack/react-query';
 import axios from '@/utils/axios';
+import { useLanguage } from '@/context/language-context';
 
 const fetchTrees = async ({ queryKey }) => {
   const [_key, { sort, category, page, limit }] = queryKey;
@@ -10,8 +11,9 @@ const fetchTrees = async ({ queryKey }) => {
 };
 
 export default function useTrees({ sort, category, page, limit }) {
+  const { language } = useLanguage();
   const { data, isLoading, isError } = useQuery({
-    queryKey: ['trees', { sort, category, page, limit }],
+    queryKey: ['trees', { sort, category, page, limit, locale: language }],
     queryFn: fetchTrees,
     placeholderData: keepPreviousData,
   });
