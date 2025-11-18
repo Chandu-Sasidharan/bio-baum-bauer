@@ -2,7 +2,7 @@ import { screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import Contact from '@/pages/contact';
 import { renderWithRouter } from '@/test-utils';
-import { DEFAULT_LANGUAGE } from '@/context/language-context';
+import { DEFAULT_LANGUAGE } from '@/constants';
 import { buildPathForLocale } from '@/utils/routes';
 
 describe('Contact page', () => {

@@ -27,7 +27,7 @@ import News from '@/pages/news';
 import Faqs from '@/pages/faqs';
 import Cart from '@/pages/cart';
 import NotFound from '@/pages/not-found';
-import { DEFAULT_LANGUAGE } from '@/context/language-context';
+import { DEFAULT_LANGUAGE } from '@/constants';
 import { ROUTES, SUPPORTED_LANGUAGES } from '@/utils/routes';
 
 const queryClient = createQueryClient();

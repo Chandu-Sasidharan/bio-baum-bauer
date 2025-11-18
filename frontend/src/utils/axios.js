@@ -1,7 +1,5 @@
 import axios from 'axios';
-
-const DEFAULT_LANGUAGE = 'de';
-const LANGUAGE_STORAGE_KEY = 'bbb-language';
+import { DEFAULT_LANGUAGE, LANGUAGE_STORAGE_KEY } from '@/constants';
 
 const getPreferredLanguage = () => {
   if (typeof window === 'undefined') {

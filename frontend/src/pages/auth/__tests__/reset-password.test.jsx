@@ -3,7 +3,7 @@ import userEvent from '@testing-library/user-event';
 import ResetPassword from '@/pages/auth/reset-password';
 import { renderWithRouter } from '@/test-utils';
 import showAlert from '@/utils/alert';
-import { DEFAULT_LANGUAGE } from '@/context/language-context';
+import { DEFAULT_LANGUAGE } from '@/constants';
 import { buildPathForLocale } from '@/utils/routes';
 
 const mockUseUser = vi.fn();

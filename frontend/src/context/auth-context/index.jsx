@@ -10,7 +10,7 @@ import axios from '@/utils/axios';
 import showAlert from '@/utils/alert';
 import formatError from '@/utils/format-error';
 import { useNavigate, useLocation } from 'react-router-dom';
-import { DEFAULT_LANGUAGE } from '@/context/language-context';
+import { DEFAULT_LANGUAGE } from '@/constants';
 import { SUPPORTED_LANGUAGES, buildPathForLocale } from '@/utils/routes';
 
 const INACTIVITY_TIMEOUT_INTERVAL = 60 * 60 * 1000; // 1 hour

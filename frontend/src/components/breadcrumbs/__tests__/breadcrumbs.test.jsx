@@ -2,7 +2,8 @@ import { describe, it, expect } from 'vitest';
 import { render, screen } from '@testing-library/react';
 import { MemoryRouter } from 'react-router-dom';
 import Breadcrumbs from '../index.jsx';
-import { LanguageProvider, DEFAULT_LANGUAGE } from '@/context/language-context';
+import { LanguageProvider } from '@/context/language-context';
+import { DEFAULT_LANGUAGE } from '@/constants';
 import { ROUTES } from '@/utils/routes';
 
 const renderBreadcrumbs = path => {

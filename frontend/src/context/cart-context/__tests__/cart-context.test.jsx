@@ -2,7 +2,7 @@ import { describe, it, expect, vi, beforeEach } from 'vitest';
 import { renderHook, act, waitFor } from '@testing-library/react';
 import { MemoryRouter } from 'react-router-dom';
 import { CartProvider, useCart } from '../index.jsx';
-import { DEFAULT_LANGUAGE } from '@/context/language-context';
+import { DEFAULT_LANGUAGE } from '@/constants';
 import { buildPathForLocale } from '@/utils/routes';
 
 vi.mock('@/utils/axios', () => ({

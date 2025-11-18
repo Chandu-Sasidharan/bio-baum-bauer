@@ -2,7 +2,7 @@ import { screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import Signup from '@/pages/auth/signup';
 import { renderWithRouter } from '@/test-utils';
-import { DEFAULT_LANGUAGE } from '@/context/language-context';
+import { DEFAULT_LANGUAGE } from '@/constants';
 import { buildPathForLocale } from '@/utils/routes';
 
 const mockUseUser = vi.fn();

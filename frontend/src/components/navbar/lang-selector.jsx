@@ -1,4 +1,4 @@
-import { LANGUAGES, useLanguage } from '@/context/language-context';
+import { useLanguage } from '@/context/language-context';
 import { useLocation, useNavigate } from 'react-router-dom';
 import useCopy from '@/hooks/use-copy';
 import {
@@ -6,6 +6,7 @@ import {
   buildPathForLocale,
   resolveRouteFromPath,
 } from '@/utils/routes';
+import { LANGUAGES } from '@/constants';
 
 const copy = {
   de: {

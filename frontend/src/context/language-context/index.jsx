@@ -1,12 +1,9 @@
 import { createContext, useContext, useEffect, useMemo, useState } from 'react';
-
-export const LANGUAGES = [
-  { code: 'de', label: 'Deutsch' },
-  { code: 'en', label: 'English' },
-];
-
-export const DEFAULT_LANGUAGE = LANGUAGES[0].code;
-const STORAGE_KEY = 'bbb-language';
+import {
+  LANGUAGES,
+  DEFAULT_LANGUAGE,
+  LANGUAGE_STORAGE_KEY,
+} from '@/constants';
 
 const LanguageContext = createContext(null);
 
@@ -25,7 +22,7 @@ const getInitialLanguage = () => {
     return DEFAULT_LANGUAGE;
   }
 
-  return localStorage.getItem(STORAGE_KEY) || DEFAULT_LANGUAGE;
+  return localStorage.getItem(LANGUAGE_STORAGE_KEY) || DEFAULT_LANGUAGE;
 };
 
 export function LanguageProvider({ children, initialLanguage }) {
@@ -45,7 +42,7 @@ export function LanguageProvider({ children, initialLanguage }) {
     }
 
     document.documentElement.lang = language;
-    localStorage.setItem(STORAGE_KEY, language);
+    localStorage.setItem(LANGUAGE_STORAGE_KEY, language);
   }, [language]);
 
   const value = useMemo(() => ({ language, setLanguage }), [language]);

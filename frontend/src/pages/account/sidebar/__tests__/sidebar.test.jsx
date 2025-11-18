@@ -1,7 +1,7 @@
 import { screen } from '@testing-library/react';
 import Sidebar from '@/pages/account/sidebar';
 import { renderWithRouter } from '@/test-utils';
-import { DEFAULT_LANGUAGE } from '@/context/language-context';
+import { DEFAULT_LANGUAGE } from '@/constants';
 import { buildPathForLocale } from '@/utils/routes';
 
 describe('Account Sidebar', () => {

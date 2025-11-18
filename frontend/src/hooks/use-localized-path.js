@@ -1,6 +1,6 @@
 import { useLanguage } from '@/context/language-context';
 import { SUPPORTED_LANGUAGES, buildPathForLocale } from '@/utils/routes';
-import { DEFAULT_LANGUAGE } from '@/context/language-context';
+import { DEFAULT_LANGUAGE } from '@/constants';
 
 export default function useLocalizedPath() {
   const { language } = useLanguage();

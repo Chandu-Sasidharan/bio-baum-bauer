@@ -2,7 +2,7 @@ import { screen } from '@testing-library/react';
 import ConfirmAccount from '@/pages/auth/confirm-account';
 import { renderWithRouter } from '@/test-utils';
 import showAlert from '@/utils/alert';
-import { DEFAULT_LANGUAGE } from '@/context/language-context';
+import { DEFAULT_LANGUAGE } from '@/constants';
 import { buildPathForLocale } from '@/utils/routes';
 
 const mockUseUser = vi.fn();

@@ -12,7 +12,7 @@ import { useUser } from '@/context/auth-context';
 import CartItem from './cart-item';
 import usePaymentIntent from '@/hooks/use-payment-intent';
 import showAlert from '@/utils/alert';
-import { TAX_RATE, CURRENCY } from '@/utils/constants';
+import { TAX_RATE, CURRENCY } from '@/constants';
 import useLocalizedPath from '@/hooks/use-localized-path';
 import useCopy from '@/hooks/use-copy';
 

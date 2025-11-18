@@ -1,6 +1,6 @@
 import { Navigate, useLocation } from 'react-router-dom';
 import { useUser } from '@/context/auth-context';
-import { DEFAULT_LANGUAGE } from '@/context/language-context';
+import { DEFAULT_LANGUAGE } from '@/constants';
 
 export default function ProtectedRoute({ children }) {
   const { isAuthenticated, isSessionReady } = useUser();

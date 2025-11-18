@@ -2,8 +2,8 @@ import { createContext, useEffect, useState, useContext } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import showAlert from '@/utils/alert';
 import axios from '@/utils/axios';
-import { TAX_RATE } from '@/utils/constants';
-import { DEFAULT_LANGUAGE } from '@/context/language-context';
+import { TAX_RATE } from '@/constants';
+import { DEFAULT_LANGUAGE } from '@/constants';
 import { SUPPORTED_LANGUAGES, buildPathForLocale } from '@/utils/routes';
 
 export const CartContext = createContext({});
