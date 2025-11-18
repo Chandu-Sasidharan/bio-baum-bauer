@@ -7,7 +7,7 @@ import menuItems from '@/components/navbar/bottom-navbar/menu-items';
 import treeIcon from '/images/misc/tree.png';
 import { useLanguage } from '@/context/language-context';
 import useCopy from '@/hooks/use-copy';
-import LanguageSelector from '@/components/navbar/language-selector';
+import LanguageSelector from '@/components/navbar/lang-selector';
 import useLocalizedPath from '@/hooks/use-localized-path';
 
 const copy = {

@@ -8,7 +8,7 @@ import { useUser } from '@/context/auth-context';
 import logoImage from '/images/logo/bbb-logo.svg';
 import treeIcon from '/images/misc/tree.png';
 import { useCart } from '@/context/cart-context';
-import LanguageSelector from '@/components/navbar/language-selector';
+import LanguageSelector from '@/components/navbar/lang-selector';
 import useCopy from '@/hooks/use-copy';
 import useLocalizedPath from '@/hooks/use-localized-path';
 
@@ -101,7 +101,10 @@ export default function TopNavBar({
         {/* Right Side */}
         <div className='flex items-center gap-3'>
           <LanguageSelector />
-          <Link to={buildPath('trees')} className='hidden items-center gap-3 md:flex'>
+          <Link
+            to={buildPath('trees')}
+            className='hidden items-center gap-3 md:flex'
+          >
             <Button>
               <img src={treeIcon} alt='Tree Icon' className='mr-2 h-5 w-5' />
               <span>{text.plantTree}</span>

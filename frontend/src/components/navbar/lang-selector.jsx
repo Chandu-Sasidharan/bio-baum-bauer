@@ -12,21 +12,21 @@ const copy = {
     label: 'Sprache',
     ariaLabel: 'Sprache auswählen',
     options: {
-      de: 'Deutsch',
-      en: 'Englisch',
+      de: 'DE',
+      en: 'EN',
     },
   },
   en: {
     label: 'Language',
     ariaLabel: 'Select language',
     options: {
-      de: 'German',
-      en: 'English',
+      de: 'DE',
+      en: 'EN',
     },
   },
 };
 
-export default function LanguageSelector({ compact = false }) {
+export default function LanguageSelector() {
   const { language, setLanguage } = useLanguage();
   const text = useCopy(copy);
   const navigate = useNavigate();
@@ -59,20 +59,17 @@ export default function LanguageSelector({ compact = false }) {
   };
 
   return (
-    <label className='flex items-center gap-2 text-xs uppercase tracking-wide'>
-      {!compact && <span>{text.label}</span>}
-      <select
-        value={language}
-        onChange={handleChange}
-        aria-label={text.ariaLabel}
-        className='bg-primary-light text-accent rounded-lg border border-primary px-2 py-1 text-xs font-semibold uppercase focus:outline-none'
-      >
-        {LANGUAGES.map(item => (
-          <option key={item.code} value={item.code}>
-            {text.options[item.code]}
-          </option>
-        ))}
-      </select>
-    </label>
+    <select
+      value={language}
+      onChange={handleChange}
+      aria-label={text.ariaLabel}
+      className='select select-sm input-light text-accent border-primary w-16 rounded-lg border font-semibold uppercase focus:outline-none'
+    >
+      {LANGUAGES.map(item => (
+        <option key={item.code} value={item.code}>
+          {text.options[item.code]}
+        </option>
+      ))}
+    </select>
   );
 }
