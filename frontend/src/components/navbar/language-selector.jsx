@@ -1,7 +1,11 @@
 import { LANGUAGES, useLanguage } from '@/context/language-context';
-import { useNavigate } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import useCopy from '@/hooks/use-copy';
-import { buildPathForLocale } from '@/utils/routes';
+import {
+  SUPPORTED_LANGUAGES,
+  buildPathForLocale,
+  resolveRouteFromPath,
+} from '@/utils/routes';
 
 const copy = {
   de: {
@@ -26,11 +30,32 @@ export default function LanguageSelector({ compact = false }) {
   const { language, setLanguage } = useLanguage();
   const text = useCopy(copy);
   const navigate = useNavigate();
+  const location = useLocation();
+
+  const getRelativePath = () => {
+    const segments = location.pathname.split('/').filter(Boolean);
+    const possibleLocale = segments[0];
+    if (SUPPORTED_LANGUAGES.includes(possibleLocale)) {
+      return segments.slice(1).join('/');
+    }
+    return segments.join('/');
+  };
 
   const handleChange = event => {
     const newLanguage = event.target.value;
     setLanguage(newLanguage);
-    navigate(buildPathForLocale(newLanguage, ['home']), { replace: true });
+
+    const currentLocaleSegment = location.pathname.split('/')[1];
+    const activeLocale = SUPPORTED_LANGUAGES.includes(currentLocaleSegment)
+      ? currentLocaleSegment
+      : language;
+    const relativePath = getRelativePath();
+    const match = resolveRouteFromPath(activeLocale, relativePath);
+    const nextPath = match
+      ? buildPathForLocale(newLanguage, match.keys, match.params)
+      : buildPathForLocale(newLanguage, ['home']);
+
+    navigate(nextPath, { replace: true });
   };
 
   return (

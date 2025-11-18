@@ -48,7 +48,7 @@ const copy = {
       email: 'Email Address *',
       message: 'Your message *',
       checkbox: 'I agree with the',
-      checkboxSuffix: 'terms and conditions',
+      checkboxSuffix: '',
     },
     placeholders: {
       name: 'Your name',
@@ -217,7 +217,7 @@ export default function Form() {
 
       {/* Checkbox */}
       <div>
-        <div className='flex items-center gap-2'>
+        <div className='flex items-center gap-2 text-sm'>
           <input
             type='checkbox'
             name='agreeToPolicies'
@@ -225,9 +225,7 @@ export default function Form() {
             className='checkbox checkbox-sm checkbox-aloe input-light'
           />
           <label htmlFor='checkbox'>
-            <span className='text-stone'>
-              {text.labels.checkbox}&nbsp;
-            </span>
+            <span className='text-stone'>{text.labels.checkbox}&nbsp;</span>
             <Link
               to={buildPath('terms')}
               className='text-accent font-semibold underline'
@@ -235,7 +233,9 @@ export default function Form() {
               {text.checkboxLink}
             </Link>
             {text.labels.checkboxSuffix && (
-              <span className='text-stone'>&nbsp;{text.labels.checkboxSuffix}</span>
+              <span className='text-stone'>
+                &nbsp;{text.labels.checkboxSuffix}
+              </span>
             )}
           </label>
         </div>

@@ -85,3 +85,57 @@ export const matchRouteKey = (locale, relativePath = '') => {
 
   return null;
 };
+
+const getTokens = pattern =>
+  [...pattern.matchAll(tokenRegex)].map(group => group[1]);
+
+export const resolveRouteFromPath = (locale, path = '') => {
+  const routes = ROUTES[locale] || {};
+  const normalizedPath = path.replace(/^\/+/, '');
+
+  if (!normalizedPath) {
+    return { keys: ['home'], params: {} };
+  }
+
+  const attemptMatch = (remainingPath, collectedKeys = [], collectedParams = {}) => {
+    if (!remainingPath) {
+      return { keys: collectedKeys, params: collectedParams };
+    }
+
+    for (const [key, pattern] of Object.entries(routes)) {
+      const regexPattern = pattern.replace(tokenRegex, '([^/]+)');
+      const regex = new RegExp(`^${regexPattern}$`);
+      const match = regex.exec(remainingPath);
+
+      if (match) {
+        const params = { ...collectedParams };
+        const tokens = getTokens(pattern);
+        tokens.forEach((token, index) => {
+          params[token] = match[index + 1];
+        });
+
+        return { keys: [...collectedKeys, key], params };
+      }
+
+      if (pattern.includes(':')) {
+        continue;
+      }
+
+      if (remainingPath.startsWith(`${pattern}/`)) {
+        const nextPath = remainingPath.slice(pattern.length + 1);
+        const nextMatch = attemptMatch(
+          nextPath,
+          [...collectedKeys, key],
+          collectedParams
+        );
+        if (nextMatch) {
+          return nextMatch;
+        }
+      }
+    }
+
+    return null;
+  };
+
+  return attemptMatch(normalizedPath);
+};

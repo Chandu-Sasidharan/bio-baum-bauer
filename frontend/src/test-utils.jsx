@@ -4,9 +4,9 @@ import { MemoryRouter } from 'react-router-dom';
 import { HelmetProvider } from 'react-helmet-async';
 import { LanguageProvider, DEFAULT_LANGUAGE } from '@/context/language-context';
 import {
-  ROUTES,
   SUPPORTED_LANGUAGES,
   buildPathForLocale,
+  resolveRouteFromPath,
 } from '@/utils/routes';
 
 export const createTestQueryClient = () =>
@@ -33,46 +33,6 @@ export const createQueryClientWrapper = () => {
   );
 };
 
-const tokenRegex = /:([^/]+)/g;
-
-const matchPathForLocale = (locale, path) => {
-  const routes = ROUTES[locale] || {};
-
-  const attemptMatch = (remainingPath, collectedKeys = [], collectedParams = {}) => {
-    for (const [key, pattern] of Object.entries(routes)) {
-      const regexPattern = pattern.replace(tokenRegex, '([^/]+)');
-      const fullMatchRegex = new RegExp(`^${regexPattern}$`);
-      const fullMatch = fullMatchRegex.exec(remainingPath);
-
-      if (fullMatch) {
-        const params = { ...collectedParams };
-        const tokens = [...pattern.matchAll(tokenRegex)].map(group => group[1]);
-        tokens.forEach((token, index) => {
-          params[token] = fullMatch[index + 1];
-        });
-
-        return { keys: [...collectedKeys, key], params };
-      }
-
-      if (pattern.includes(':')) {
-        continue;
-      }
-
-      if (remainingPath.startsWith(`${pattern}/`)) {
-        const nextPath = remainingPath.slice(pattern.length + 1);
-        const nextMatch = attemptMatch(nextPath, [...collectedKeys, key], collectedParams);
-        if (nextMatch) {
-          return nextMatch;
-        }
-      }
-    }
-
-    return null;
-  };
-
-  return attemptMatch(path);
-};
-
 const getLocaleFromPath = path => {
   const segments = path.split('/').filter(Boolean);
   const possibleLocale = segments[0];
@@ -96,9 +56,9 @@ const normalizeEntries = (entries, locale = DEFAULT_LANGUAGE) =>
     }
 
     const match =
-      matchPathForLocale(locale, relativePath) ||
-      matchPathForLocale(DEFAULT_LANGUAGE, relativePath) ||
-      matchPathForLocale('en', relativePath);
+      resolveRouteFromPath(locale, relativePath) ||
+      resolveRouteFromPath(DEFAULT_LANGUAGE, relativePath) ||
+      resolveRouteFromPath('en', relativePath);
 
     if (match) {
       return buildPathForLocale(locale, match.keys, match.params);
