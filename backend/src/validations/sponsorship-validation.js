@@ -3,10 +3,14 @@ import mongoose from 'mongoose';
 
 // Custom validation for ObjectId
 const objectIdValidation = z
-  .string()
-  .refine(val => mongoose.Types.ObjectId.isValid(val), {
-    message: 'Invalid ObjectId',
-  });
+  .union([z.string(), z.instanceof(mongoose.Types.ObjectId)])
+  .refine(
+    val => {
+      const value = typeof val === 'string' ? val : val.toString();
+      return mongoose.Types.ObjectId.isValid(value);
+    },
+    { message: 'Invalid ObjectId' }
+  );
 
 // Zod validation schema
 const sponsorshipValidationSchema = z.object({
