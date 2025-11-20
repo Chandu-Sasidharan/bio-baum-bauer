@@ -12,7 +12,7 @@ describe('Faqs page', () => {
 
     renderWithRouter(<Faqs />, { initialEntries: ['/faqs'] });
 
-    expect(screen.getByText(/loading/i)).toBeInTheDocument();
+    expect(screen.getByText(/lade faqs/i)).toBeInTheDocument();
   });
 
   it('displays an error message when the FAQ query fails', () => {
@@ -20,7 +20,9 @@ describe('Faqs page', () => {
 
     renderWithRouter(<Faqs />, { initialEntries: ['/faqs'] });
 
-    expect(screen.getByText(/error loading faqs/i)).toBeInTheDocument();
+    expect(
+      screen.getByText(/faqs konnten nicht geladen werden/i)
+    ).toBeInTheDocument();
   });
 
   it('lets visitors read the answers to individual questions', async () => {
@@ -40,7 +42,7 @@ describe('Faqs page', () => {
     renderWithRouter(<Faqs />, { initialEntries: ['/faqs'] });
 
     expect(
-      screen.getByRole('heading', { name: /frequently asked questions/i })
+      screen.getByRole('heading', { name: /häufig gestellte fragen/i })
     ).toBeInTheDocument();
 
     // First item is open by default

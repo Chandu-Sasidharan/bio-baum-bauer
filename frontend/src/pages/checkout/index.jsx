@@ -5,15 +5,30 @@ import backgroundImage from '/images/background/leaves-background.webp';
 import { Elements } from '@stripe/react-stripe-js';
 import stripePromise from '@/utils/stripe-instance';
 import StripeForm from './form';
+import useCopy from '@/hooks/use-copy';
+
+const copy = {
+  de: {
+    metaTitle: 'Zur Kasse | Bio Baum Bauer',
+    error: 'Fehler: Etwas ist schiefgelaufen.',
+    totalLabel: betrag => `Der zu zahlende Gesamtbetrag beträgt € ${betrag}`,
+  },
+  en: {
+    metaTitle: 'Checkout | Bio Baum Bauer',
+    error: 'Error: Something went wrong!',
+    totalLabel: amount => `The total amount to be charged is € ${amount}`,
+  },
+};
 
 export default function CheckoutForm() {
   const { state } = useLocation();
   const paymentIntent = state?.paymentIntent;
+  const text = useCopy(copy);
 
   if (!paymentIntent) {
     return (
       <div className='flex h-screen items-center justify-center'>
-        Error: Something went wrong!
+        {text.error}
       </div>
     );
   }
@@ -42,7 +57,7 @@ export default function CheckoutForm() {
   return (
     <>
       <Helmet>
-        <title>Checkout | Bio Baum Bauer</title>
+        <title>{text.metaTitle}</title>
       </Helmet>
 
       {/* Container */}
@@ -62,7 +77,9 @@ export default function CheckoutForm() {
               className='mx-auto max-w-5xl gap-3 rounded-md p-10 shadow-sm md:p-12'
               style={{ backgroundColor: 'rgba(255, 255, 255, 0.9)' }}
             >
-              <h1 className='text-stone ml-4'>{`The total amount to be charged is € ${totalAmount}`}</h1>
+              <h1 className='text-stone ml-4'>
+                {text.totalLabel(totalAmount)}
+              </h1>
               <Elements stripe={stripePromise} options={options}>
                 <StripeForm />
               </Elements>

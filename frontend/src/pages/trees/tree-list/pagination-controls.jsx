@@ -1,13 +1,30 @@
 import styles from './trees.module.css';
+import useCopy from '@/hooks/use-copy';
+
+const copy = {
+  de: {
+    showing: 'Zeige',
+    of: 'von',
+    items: 'Einträgen',
+    page: 'Seite',
+  },
+  en: {
+    showing: 'Showing',
+    of: 'of',
+    items: 'items',
+    page: 'Page',
+  },
+};
 
 export default function PaginationControls({ page, setPage, total, limit }) {
+  const text = useCopy(copy);
   const startItem = (page - 1) * limit + 1;
   const endItem = Math.min(page * limit, total);
 
   return (
     <div className={styles.paginationContainer}>
       <span className='text-sm'>
-        Showing {startItem} to {endItem} of {total} items
+        {text.showing} {startItem}-{endItem} {text.of} {total} {text.items}
       </span>
       <div className='join'>
         <button
@@ -18,7 +35,7 @@ export default function PaginationControls({ page, setPage, total, limit }) {
           «
         </button>
         <span className={`join-item btn btn-sm ${styles.noHover}`}>
-          Page {page}
+          {text.page} {page}
         </span>
         <button
           className='join-item btn btn-sm'

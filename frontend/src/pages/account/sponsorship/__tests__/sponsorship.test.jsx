@@ -46,7 +46,7 @@ describe('Sponsorship page', () => {
     renderWithRouter(<Sponsorship />);
 
     expect(
-      screen.getByText(/could not load your sponsorships/i)
+      screen.getByText(/wir konnten deine patenschaften/i)
     ).toBeInTheDocument();
   });
 

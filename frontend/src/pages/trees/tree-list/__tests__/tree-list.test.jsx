@@ -54,7 +54,7 @@ describe('Trees listing page', () => {
 
     renderTrees();
 
-    expect(screen.getByText(/Error fetching data/i)).toBeInTheDocument();
+    expect(screen.getByText(/fehler beim laden der bäume/i)).toBeInTheDocument();
   });
 
   it('shows filters, breadcrumbs, and pagination controls with results', () => {

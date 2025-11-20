@@ -44,9 +44,7 @@ describe('Payment Status message component', () => {
     renderStatus({ clientSecret: 'pi_123_secret' });
 
     await waitFor(() =>
-      expect(
-        screen.getByText(/thank you for sponsoring/i)
-      ).toBeInTheDocument()
+      expect(screen.getByText(/vielen dank/i)).toBeInTheDocument()
     );
     expect(clearCartTrees).toHaveBeenCalled();
   });
@@ -61,7 +59,7 @@ describe('Payment Status message component', () => {
     renderStatus({ clientSecret: 'pi_123_secret' });
 
     await waitFor(() =>
-      expect(screen.getByText(/payment failed/i)).toBeInTheDocument()
+      expect(screen.getByText(/zahlung ist fehlgeschlagen/i)).toBeInTheDocument()
     );
   });
 });

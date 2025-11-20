@@ -3,6 +3,20 @@ import { LuPlus, LuMinus } from 'react-icons/lu';
 import { MdDelete } from 'react-icons/md';
 import Button from '@/components/ui/button';
 import { useCart } from '@/context/cart-context';
+import useCopy from '@/hooks/use-copy';
+
+const copy = {
+  de: {
+    quantity: 'Menge',
+    price: 'Preis',
+    each: 'pro Stück',
+  },
+  en: {
+    quantity: 'Quantity',
+    price: 'Price',
+    each: 'each',
+  },
+};
 
 export default function CartItem({ tree }) {
   const {
@@ -12,6 +26,7 @@ export default function CartItem({ tree }) {
     decrementTreeCount,
   } = useCart();
   const treeCount = getTreeCount(tree._id);
+  const text = useCopy(copy);
 
   return (
     <div className='bg-primary-light relative flex w-full flex-col justify-between gap-2 rounded-sm p-4 lg:flex-row lg:items-end lg:p-6'>
@@ -31,7 +46,7 @@ export default function CartItem({ tree }) {
       <div className='flex flex-col gap-3'>
         {/* Tree Qty */}
         <div className='flex items-center justify-between gap-3'>
-          <span className='text-lg font-semibold'>Quantity</span>
+          <span className='text-lg font-semibold'>{text.quantity}</span>
           <div className='flex items-center'>
             <Button
               onClick={() => decrementTreeCount(tree._id)}
@@ -54,11 +69,11 @@ export default function CartItem({ tree }) {
         </div>
         {/* Tree Price */}
         <div className='flex items-center justify-between gap-3'>
-          <span>Price</span>
+          <span>{text.price}</span>
           <span>
             <span className='mr-1 inline-block'>€</span>
             <span>{tree.price.$numberDecimal}</span>
-            <span className='ml-1 inline-block'>each</span>
+            <span className='ml-1 inline-block'>{text.each}</span>
           </span>
         </div>
       </div>

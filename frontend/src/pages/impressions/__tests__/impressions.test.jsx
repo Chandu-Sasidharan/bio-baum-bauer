@@ -50,7 +50,7 @@ describe('Impressions page', () => {
     renderImpressions();
 
     expect(
-      screen.getByText(/Error fetching images/i)
+      screen.getByText(/bilder konnten nicht geladen werden/i)
     ).toBeInTheDocument();
   });
 
@@ -71,13 +71,13 @@ describe('Impressions page', () => {
     renderImpressions();
 
     const toggleButton = await screen.findByRole('button', {
-      name: /show all images/i,
+      name: /alle bilder anzeigen/i,
     });
     expect(toggleButton).toBeInTheDocument();
 
     await user.click(toggleButton);
     expect(
-      await screen.findByRole('button', { name: /show fewer photos/i })
+      await screen.findByRole('button', { name: /weniger fotos anzeigen/i })
     ).toBeInTheDocument();
 
     await user.click(screen.getByRole('img', { name: /image 1/i }));

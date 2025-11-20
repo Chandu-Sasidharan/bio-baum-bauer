@@ -1,6 +1,8 @@
 import { screen } from '@testing-library/react';
 import About from '@/pages/about';
 import { renderWithRouter } from '@/test-utils';
+import { DEFAULT_LANGUAGE } from '@/constants';
+import { buildPathForLocale } from '@/utils/routes';
 
 describe('About page', () => {
   const renderAbout = () =>
@@ -10,28 +12,33 @@ describe('About page', () => {
     renderAbout();
 
     expect(
-      screen.getByRole('heading', { name: /about biobaumbauer/i })
+      screen.getByRole('heading', { name: /über biobaumbauer/i })
     ).toBeInTheDocument();
 
     expect(
-      screen.getByText(/Empowering Growth, Nurturing Sustainability/i)
+      screen.getByText(/wachstum fördern, nachhaltigkeit stärken/i)
     ).toBeInTheDocument();
 
-    const ctaLink = screen.getByRole('link', { name: /plant a tree today/i });
-    expect(ctaLink).toHaveAttribute('href', '/trees');
+    const ctaLink = screen.getByRole('link', {
+      name: /jetzt einen baum pflanzen/i,
+    });
+    expect(ctaLink).toHaveAttribute(
+      'href',
+      buildPathForLocale(DEFAULT_LANGUAGE, 'trees')
+    );
   });
 
   it('highlights the three program pillars visitors can explore', () => {
     renderAbout();
 
     expect(
-      screen.getByRole('heading', { name: /sustainable farming/i })
+      screen.getByRole('heading', { name: /nachhaltige landwirtschaft/i })
     ).toBeVisible();
     expect(
-      screen.getByRole('heading', { name: /community engagement/i })
+      screen.getByRole('heading', { name: /gemeinschaft stärken/i })
     ).toBeVisible();
     expect(
-      screen.getByRole('heading', { name: /sponsor a tree/i })
+      screen.getByRole('heading', { name: /baumpatenschaft/i })
     ).toBeVisible();
   });
 });

@@ -1,19 +1,283 @@
 import { Helmet } from 'react-helmet-async';
 import backgroundImage from '/images/background/leaves-background.webp';
+import useCopy from '@/hooks/use-copy';
+
+const copy = {
+  de: {
+    metaTitle: 'AGB | Bio Baum Bauer',
+    heroTitle: 'Willkommen bei Bio Baum Bauer!',
+    intro: [
+      'Diese Allgemeinen Geschäftsbedingungen beschreiben die Regeln für die Nutzung der Website von Solawi Zabergäu unter www.biobaumbauer.com.',
+      'Mit dem Zugriff auf unsere Website erklärst du dich mit allen Bedingungen einverstanden. Bitte nutze Bio Baum Bauer nicht weiter, wenn du diesen Bestimmungen nicht zustimmst.',
+      'Die Begriffe „Kunde“, „du“ und „dein“ beziehen sich auf dich als Nutzerin oder Nutzer der Website. „Wir“, „uns“ und „unser“ beziehen sich auf Bio Baum Bauer. Die Begriffe gelten unabhängig von Singular/Plural oder der gewählten Ansprache.',
+    ],
+    sections: [
+      {
+        title: 'Cookies',
+        paragraphs: [
+          'Wir verwenden Cookies. Mit der Nutzung unserer Website stimmst du der Verwendung gemäß unserer Datenschutzerklärung zu.',
+          'Viele interaktive Websites nutzen Cookies, um wiederkehrende Besucher zu erkennen und Funktionen bereitzustellen. Einige unserer Partner im Bereich Werbung oder Affiliates setzen ebenfalls Cookies ein.',
+        ],
+      },
+      {
+        title: 'Lizenz',
+        paragraphs: [
+          'Sofern nicht anders angegeben, liegen alle geistigen Eigentumsrechte an den Inhalten von Bio Baum Bauer bei Solawi Zabergäu bzw. Lizenzgebern. Du darfst Inhalte nur für den persönlichen Gebrauch verwenden und musst folgende Einschränkungen beachten:',
+        ],
+        lists: [
+          {
+            items: [
+              'Inhalte nicht erneut veröffentlichen',
+              'Inhalte nicht verkaufen, vermieten oder unterlizenzieren',
+              'Inhalte nicht reproduzieren oder duplizieren',
+              'Inhalte nicht weiterverbreiten',
+            ],
+          },
+        ],
+        closing:
+          'Diese Vereinbarung tritt mit dem Datum deines ersten Website-Besuchs in Kraft. Unsere Bedingungen wurden mit Hilfe eines AGB-Generators erstellt.',
+      },
+      {
+        title: 'Kommentare',
+        paragraphs: [
+          'In einigen Bereichen der Website können Nutzer Kommentare hinterlassen. Diese spiegeln nicht zwingend die Meinung von Solawi Zabergäu wider. Wir übernehmen keine Haftung für Kommentare oder daraus entstehende Schäden.',
+          'Wir behalten uns vor, Kommentare zu prüfen und diejenigen zu entfernen, die unangemessen, beleidigend oder rechtswidrig sind.',
+          'Du versicherst und gewährleistest, dass:',
+        ],
+        lists: [
+          {
+            items: [
+              'du berechtigt bist, Kommentare zu veröffentlichen und alle nötigen Rechte besitzt',
+              'Kommentare keine Rechte Dritter verletzen (z. B. Urheberrecht, Markenrecht)',
+              'Kommentare nicht verleumderisch, beleidigend, obszön oder gesetzeswidrig sind',
+              'Kommentare nicht zur Werbung oder zu illegalen Aktivitäten genutzt werden',
+            ],
+          },
+        ],
+        closing:
+          'Du gewährst Solawi Zabergäu eine nicht-exklusive Lizenz, Kommentare in allen Medien zu nutzen, zu bearbeiten und weiterzugeben.',
+      },
+      {
+        title: 'Verlinkung auf unsere Inhalte',
+        paragraphs: [
+          'Folgende Organisationen dürfen ohne vorherige schriftliche Zustimmung auf unsere Website verlinken:',
+        ],
+        lists: [
+          {
+            items: [
+              'Behörden',
+              'Suchmaschinen',
+              'Nachrichtenorganisationen',
+              'Online-Verzeichnisse in gleicher Weise wie bei anderen Unternehmen',
+              'Anerkannte Unternehmen (ausgenommen werbende Non-Profit-Organisationen)',
+            ],
+          },
+          {
+            intro:
+              'Wir können weitere Anfragen folgender Organisationen prüfen und genehmigen:',
+            items: [
+              'allgemein bekannte Verbraucher- oder Wirtschaftsquellen',
+              'Community-Portale',
+              'Verbände oder Gruppen mit gemeinnützigem Fokus',
+              'Online-Verzeichnisanbieter',
+              'Internet-Portale',
+              'Steuerberater, Rechts- und Beratungsfirmen',
+              'Bildungs- und Branchenverbände',
+            ],
+          },
+        ],
+        closing:
+          'Links müssen sachlich richtig sein, dürfen keine falsche Unterstützung suggerieren und müssen zum Kontext der verlinkenden Seite passen. Anfragen bitte per E-Mail mit Angabe der URLs, die verlinkt werden sollen. Genehmigte Organisationen dürfen unseren Firmennamen, die URL oder eine passende Beschreibung verwenden. Die Nutzung unseres Logos bedarf einer gesonderten Lizenz.',
+      },
+      {
+        title: 'iFrames',
+        paragraphs: [
+          'Ohne vorherige schriftliche Genehmigung darfst du keine Frames erstellen, die das Erscheinungsbild unserer Website verändern.',
+        ],
+      },
+      {
+        title: 'Haftung für Inhalte',
+        paragraphs: [
+          'Wir übernehmen keine Verantwortung für Inhalte, die auf deiner Website erscheinen. Du verpflichtest dich, uns vor Ansprüchen aus solchen Inhalten zu schützen. Es dürfen keine Links platziert werden, die als beleidigend, strafbar oder rechtsverletzend ausgelegt werden könnten.',
+        ],
+      },
+      {
+        title: 'Vorbehalt von Rechten',
+        paragraphs: [
+          'Wir können verlangen, dass du Links zu unserer Website entfernst. Nach Aufforderung musst du Links umgehend löschen. Wir können diese Bedingungen und unsere Link-Richtlinie jederzeit ändern. Durch das fortgesetzte Verlinken erklärst du dich mit den Änderungen einverstanden.',
+        ],
+      },
+      {
+        title: 'Entfernung von Links',
+        paragraphs: [
+          'Solltest du einen Link auf unserer Website als anstößig empfinden, informiere uns bitte. Wir prüfen dein Anliegen, sind jedoch nicht verpflichtet, Links zu entfernen oder direkt zu antworten.',
+          'Wir garantieren weder die Richtigkeit noch die Vollständigkeit der Inhalte und sichern auch nicht zu, dass die Website dauerhaft verfügbar ist.',
+        ],
+      },
+      {
+        title: 'Haftungsausschluss',
+        paragraphs: [
+          'Soweit gesetzlich zulässig, schließen wir alle Zusicherungen und Gewährleistungen in Bezug auf unsere Website aus. Nichts in diesem Haftungsausschluss soll unsere oder deine Haftung beschränken oder ausschließen für:',
+        ],
+        lists: [
+          {
+            items: [
+              'Tod oder Personenschaden durch Fahrlässigkeit',
+              'Betrug oder arglistige Täuschung',
+              'sonstige Haftungen, die gesetzlich nicht beschränkt werden dürfen',
+            ],
+          },
+        ],
+        closing:
+          'Solange die Website sowie Informationen und Dienste unentgeltlich bereitgestellt werden, haften wir nicht für Verluste oder Schäden irgendeiner Art.',
+      },
+    ],
+  },
+  en: {
+    metaTitle: 'Terms and Conditions | Bio Baum Bauer',
+    heroTitle: 'Welcome to Bio Baum Bauer!',
+    intro: [
+      'These terms and conditions outline the rules and regulations for the use of Solawi Zabergäu’s website at www.biobaumbauer.com.',
+      'By accessing this site we assume you accept these terms. Do not continue to use Bio Baum Bauer if you do not agree to all of the conditions stated here.',
+      'The terminology “Client”, “You”, “Your”, “We”, “Ourselves”, “Our” and “Us” refers to the client and to Bio Baum Bauer respectively.',
+    ],
+    sections: [
+      {
+        title: 'Cookies',
+        paragraphs: [
+          'We employ the use of cookies. By accessing Bio Baum Bauer, you agreed to use cookies in agreement with our Privacy Policy.',
+          'Most interactive websites use cookies to let us retrieve user details for each visit. Cookies enable certain areas of the website to function properly, and some partners may also use cookies.',
+        ],
+      },
+      {
+        title: 'License',
+        paragraphs: [
+          'Unless otherwise stated, Solawi Zabergäu and/or its licensors own the intellectual property rights for all material on Bio Baum Bauer. All rights are reserved. You may access the site for personal use subject to the following restrictions:',
+        ],
+        lists: [
+          {
+            items: [
+              'Republish material from Bio Baum Bauer',
+              'Sell, rent, or sub-license material',
+              'Reproduce, duplicate, or copy material',
+              'Redistribute content',
+            ],
+          },
+        ],
+        closing:
+          'This agreement begins on the date hereof. Our Terms and Conditions were created with the help of a generator.',
+      },
+      {
+        title: 'Comments',
+        paragraphs: [
+          'Parts of this website offer users the opportunity to post comments. Comments do not reflect the views of Solawi Zabergäu, and we are not liable for them.',
+          'We reserve the right to monitor and remove comments we consider inappropriate, offensive, or in breach of these terms.',
+          'You warrant that:',
+        ],
+        lists: [
+          {
+            items: [
+              'You have the right to post the comments',
+              'The comments do not infringe intellectual property rights',
+              'The comments are not defamatory, libelous, offensive, or unlawful',
+              'The comments are not used to solicit or promote business or illegal activity',
+            ],
+          },
+        ],
+        closing:
+          'You grant Solawi Zabergäu a non-exclusive license to use, reproduce, and edit any of your comments in all media.',
+      },
+      {
+        title: 'Hyperlinking to our Content',
+        paragraphs: [
+          'The following organizations may link to our Website without prior approval:',
+        ],
+        lists: [
+          {
+            items: [
+              'Government agencies',
+              'Search engines',
+              'News organizations',
+              'Online directory distributors',
+              'Accredited businesses (excluding soliciting non-profits)',
+            ],
+          },
+          {
+            intro: 'We may also consider link requests from the following:',
+            items: [
+              'Consumer and/or business information sources',
+              'Dot.com community sites',
+              'Charitable associations',
+              'Online directories',
+              'Internet portals',
+              'Accounting, law, and consulting firms',
+              'Educational institutions and trade associations',
+            ],
+          },
+        ],
+        closing:
+          'Links must not be deceptive or falsely imply sponsorship. Requests can be sent via email with details of the URLs to be linked.',
+      },
+      {
+        title: 'iFrames',
+        paragraphs: [
+          'Without prior approval, you may not create frames around our webpages that alter the visual presentation of our site.',
+        ],
+      },
+      {
+        title: 'Content Liability',
+        paragraphs: [
+          'We will not be held responsible for content that appears on your website. You agree to defend us against claims arising from your content.',
+        ],
+      },
+      {
+        title: 'Reservation of Rights',
+        paragraphs: [
+          'We reserve the right to request the removal of any link to our website. By linking to us, you agree to follow these linking terms and conditions.',
+        ],
+      },
+      {
+        title: 'Removal of links from our website',
+        paragraphs: [
+          'If you find any link offensive, please contact us. We will consider requests but are not obligated to remove links or respond directly.',
+          'We do not guarantee that the information on this website is correct or complete, nor that the site remains available.',
+        ],
+      },
+      {
+        title: 'Disclaimer',
+        paragraphs: [
+          'To the maximum extent permitted by law, we exclude all representations and warranties relating to our website. Nothing in this disclaimer will:',
+        ],
+        lists: [
+          {
+            items: [
+              'Limit or exclude liability for death or personal injury',
+              'Limit or exclude liability for fraud or fraudulent misrepresentation',
+              'Limit liabilities not permitted under applicable law',
+              'Exclude liabilities that may not be excluded under applicable law',
+            ],
+          },
+        ],
+        closing:
+          'As long as the website and services are provided free of charge, we will not be liable for any loss or damage of any nature.',
+      },
+    ],
+  },
+};
 
 export default function Terms() {
+  const text = useCopy(copy);
+
   return (
     <>
       <Helmet>
-        <title>Terms and Conditions | Bio Baum Bauer</title>
+        <title>{text.metaTitle}</title>
       </Helmet>
 
-      {/* Container */}
       <section
         style={{ backgroundImage: `url(${backgroundImage})` }}
         className='text-stone bg-cover bg-center bg-no-repeat leading-7'
       >
-        {/* Semi-transparent background */}
         <div
           style={{ backgroundColor: 'rgba(255, 255, 255, 0.7)' }}
           className='p-5 md:py-12'
@@ -23,309 +287,33 @@ export default function Terms() {
             style={{ backgroundColor: 'rgba(255, 255, 255, 0.9)' }}
           >
             <h1 className='text-accent font-chicle text-3xl tracking-wide md:text-4xl'>
-              Welcome to Bio Baum Bauer!
+              {text.heroTitle}
             </h1>
-            <p>
-              These terms and conditions outline the rules and regulations for
-              the use of{' '}
-              <span className='text-accent font-semibold'>
-                Solawi Zabergäu's
-              </span>{' '}
-              Website, located at{' '}
-              <span className='text-accent font-semibold'>
-                www.biobaumbauer.com.
-              </span>
-            </p>
-            <p>
-              By accessing this website, we assume you accept these terms and
-              conditions. Do not continue to use Bio Baum Bauer if you do not
-              agree to take all of the terms and conditions stated on this page.
-            </p>
-            <p>
-              The following terminology applies to these Terms and Conditions,
-              Privacy Statement, and Disclaimer Notice and all Agreements:
-              <span className='text-accent font-semibold'>"Client"</span>,
-              <span className='text-accent font-semibold'>"You"</span>, and
-              <span className='text-accent font-semibold'>"Your"</span> refer to
-              you, the person logging on to this website and compliant with the
-              Company's terms and conditions.{' '}
-              <span className='text-accent font-semibold'>"The Company"</span>,
-              <span className='text-accent font-semibold'>"Ourselves"</span>,
-              <span className='text-accent font-semibold'>"We"</span>,
-              <span className='text-accent font-semibold'>"Our"</span>, and
-              <span className='text-accent font-semibold'>"Us"</span>
-              refer to BioBaumBauer.{' '}
-              <span className='text-accent font-semibold'>"Party"</span>,
-              <span className='text-accent font-semibold'>"Parties"</span>, or
-              <span className='text-accent font-semibold'>"Us"</span> refer to
-              both the Client and ourselves. All terms refer to the offer,
-              acceptance, and consideration of payment necessary to undertake
-              the process of our assistance to the Client in the most
-              appropriate manner for the express purpose of meeting the Client's
-              needs in respect of provision of the Company's stated services, in
-              accordance with and subject to, prevailing law of de. Any use of
-              the above terminology or other words in the singular, plural,
-              capitalization and/or he/she or they, are taken as interchangeable
-              and therefore as referring to the same.
-            </p>
-            <h2 className='mt-6 text-3xl font-semibold'>
-              <strong>Cookies</strong>
-            </h2>
-            <p>
-              We employ the use of cookies. By accessing Bio Baum Bauer, you
-              agreed to use cookies in agreement with Solawi Zabergäu's Privacy
-              Policy.
-            </p>
-            <p>
-              Most interactive websites use cookies to let us retrieve the
-              user's details for each visit. Cookies are used by our website to
-              enable the functionality of certain areas to make it easier for
-              people visiting our website. Some of our affiliate/advertising
-              partners may also use cookies.
-            </p>
-            <h2 className='mt-6 text-3xl font-semibold'>
-              <strong>License</strong>
-            </h2>
-            <p>
-              Unless otherwise stated, Solawi Zabergäu and/or its licensors own
-              the intellectual property rights for all material on Bio Baum
-              Bauer. All intellectual property rights are reserved. You may
-              access this from Bio Baum Bauer for your own personal use
-              subjected to restrictions set in these terms and conditions.
-            </p>
-            <p>You must not:</p>
-            <ul className='list-disc space-y-2 pl-5'>
-              <li>Republish material from Bio Baum Bauer</li>
-              <li>Sell, rent, or sub-license material from Bio Baum Bauer</li>
-              <li>
-                Reproduce, duplicate, or copy material from Bio Baum Bauer
-              </li>
-              <li>Redistribute content from Bio Baum Bauer</li>
-            </ul>
-            <p>
-              This Agreement shall begin on the date hereof. Our Terms and
-              Conditions were created with the help of the{' '}
-              <a href='https://www.termsandconditionsgenerator.com/'>
-                Free Terms and Conditions Generator
-              </a>
-              .
-            </p>
-            <p>
-              Parts of this website offer an opportunity for users to post and
-              exchange opinions and information in certain areas of the website.
-              Solawi Zabergäu does not filter, edit, publish, or review Comments
-              prior to their presence on the website. Comments do not reflect
-              the views and opinions of Solawi Zabergäu, its agents, and/or
-              affiliates. Comments reflect the views and opinions of the person
-              who posts their views and opinions. To the extent permitted by
-              applicable laws, Solawi Zabergäu shall not be liable for the
-              Comments or for any liability, damages, or expenses caused and/or
-              suffered as a result of any use of and/or posting of and/or
-              appearance of the Comments on this website.
-            </p>
-            <p>
-              Solawi Zabergäu reserves the right to monitor all Comments and to
-              remove any Comments which can be considered inappropriate,
-              offensive, or causes breach of these Terms and Conditions.
-            </p>
-            <p>You warrant and represent that:</p>
-            <ul className='list-disc space-y-2 pl-5'>
-              <li>
-                You are entitled to post the Comments on our website and have
-                all necessary licenses and consents to do so;
-              </li>
-              <li>
-                The Comments do not invade any intellectual property right,
-                including without limitation copyright, patent, or trademark of
-                any third party;
-              </li>
-              <li>
-                The Comments do not contain any defamatory, libelous, offensive,
-                indecent, or otherwise unlawful material which is an invasion of
-                privacy;
-              </li>
-              <li>
-                The Comments will not be used to solicit or promote business or
-                custom or present commercial activities or unlawful activity.
-              </li>
-            </ul>
-            <p>
-              You hereby grant Solawi Zabergäu a non-exclusive license to use,
-              reproduce, edit and authorize others to use, reproduce and edit
-              any of your Comments in any and all forms, formats, or media.
-            </p>
-            <h2 className='mt-6 text-3xl font-semibold'>
-              <strong>Hyperlinking to our Content</strong>
-            </h2>
-            <p>
-              The following organizations may link to our Website without prior
-              written approval:
-            </p>
-            <ul className='list-disc space-y-2 pl-5'>
-              <li>Government agencies;</li>
-              <li>Search engines;</li>
-              <li>News organizations;</li>
-              <li>
-                Online directory distributors may link to our Website in the
-                same manner as they hyperlink to the Websites of other listed
-                businesses; and
-              </li>
-              <li>
-                System-wide Accredited Businesses except soliciting non-profit
-                organizations, charity shopping malls, and charity fundraising
-                groups which may not hyperlink to our Website.
-              </li>
-            </ul>
-            <p>
-              These organizations may link to our home page, to publications, or
-              to other Website information so long as the link: (a) is not in
-              any way deceptive; (b) does not falsely imply sponsorship,
-              endorsement, or approval of the linking party and its products
-              and/or services; and (c) fits within the context of the linking
-              party's site.
-            </p>
-            <p>
-              We may consider and approve other link requests from the following
-              types of organizations:
-            </p>
-            <ul className='list-disc space-y-2 pl-5'>
-              <li>
-                commonly-known consumer and/or business information sources;
-              </li>
-              <li>dot.com community sites;</li>
-              <li>associations or other groups representing charities;</li>
-              <li>online directory distributors;</li>
-              <li>internet portals;</li>
-              <li>accounting, law, and consulting firms; and</li>
-              <li>educational institutions and trade associations.</li>
-            </ul>
-            <p>
-              We will approve link requests from these organizations if we
-              decide that: (a) the link would not make us look unfavorably to
-              ourselves or to our accredited businesses; (b) the organization
-              does not have any negative records with us; (c) the benefit to us
-              from the visibility of the hyperlink compensates the absence of
-              Solawi Zabergäu; and (d) the link is in the context of general
-              resource information.
-            </p>
-            <p>
-              These organizations may link to our home page so long as the link:
-              (a) is not in any way deceptive; (b) does not falsely imply
-              sponsorship, endorsement, or approval of the linking party and its
-              products or services; and (c) fits within the context of the
-              linking party's site.
-            </p>
-            <p>
-              If you are one of the organizations listed in paragraph 2 above
-              and are interested in linking to our website, you must inform us
-              by sending an e-mail to Solawi Zabergäu. Please include your name,
-              your organization name, contact information as well as the URL of
-              your site, a list of any URLs from which you intend to link to our
-              Website, and a list of the URLs on our site to which you would
-              like to link. Wait 2-3 weeks for a response.
-            </p>
-            <p>
-              Approved organizations may hyperlink to our Website as follows:
-            </p>
-            <ul className='list-disc space-y-2 pl-5'>
-              <li>By use of our corporate name; or</li>
-              <li>
-                By use of the uniform resource locator being linked to; or
-              </li>
-              <li>
-                By use of any other description of our Website being linked to
-                that makes sense within the context and format of content on the
-                linking party's site.
-              </li>
-            </ul>
-            <p>
-              No use of Solawi Zabergäu's logo or other artwork will be allowed
-              for linking absent a trademark license agreement.
-            </p>
-            <h2 className='mt-6 text-3xl font-semibold'>
-              <strong>iFrames</strong>
-            </h2>
-            <p>
-              Without prior approval and written permission, you may not create
-              frames around our Webpages that alter in any way the visual
-              presentation or appearance of our Website.
-            </p>
-            <h2 className='mt-6 text-3xl font-semibold'>
-              <strong>Content Liability</strong>
-            </h2>
-            <p>
-              We shall not be held responsible for any content that appears on
-              your Website. You agree to protect and defend us against all
-              claims that are rising on your Website. No link(s) should appear
-              on any Website that may be interpreted as libelous, obscene, or
-              criminal, or which infringes, otherwise violates, or advocates the
-              infringement or other violation of, any third-party rights.
-            </p>
-            <h2 className='mt-6 text-3xl font-semibold'>
-              <strong>Reservation of Rights</strong>
-            </h2>
-            <p>
-              We reserve the right to request that you remove all links or any
-              particular link to our Website. You approve to immediately remove
-              all links to our Website upon request. We also reserve the right
-              to amend these terms and conditions and its linking policy at any
-              time. By continuously linking to our Website, you agree to be
-              bound to and follow these linking terms and conditions.
-            </p>
-            <h2 className='mt-6 text-3xl font-semibold'>
-              <strong>Removal of links from our website</strong>
-            </h2>
-            <p>
-              If you find any link on our Website that is offensive for any
-              reason, you are free to contact and inform us at any moment. We
-              will consider requests to remove links but we are not obligated to
-              or so or to respond to you directly.
-            </p>
-            <p>
-              We do not ensure that the information on this website is correct,
-              we do not warrant its completeness or accuracy; nor do we promise
-              to ensure that the website remains available or that the material
-              on the website is kept up to date.
-            </p>
-            <h2 className='mt-6 text-3xl font-semibold'>
-              <strong>Disclaimer</strong>
-            </h2>
-            <p>
-              To the maximum extent permitted by applicable law, we exclude all
-              representations, warranties, and conditions relating to our
-              website and the use of this website. Nothing in this disclaimer
-              will:
-            </p>
-            <ul className='list-disc space-y-2 pl-5'>
-              <li>
-                limit or exclude our or your liability for death or personal
-                injury;
-              </li>
-              <li>
-                limit or exclude our or your liability for fraud or fraudulent
-                misrepresentation;
-              </li>
-              <li>
-                limit any of our or your liabilities in any way that is not
-                permitted under applicable law; or
-              </li>
-              <li>
-                exclude any of our or your liabilities that may not be excluded
-                under applicable law.
-              </li>
-            </ul>
-            <p>
-              The limitations and prohibitions of liability set in this Section
-              and elsewhere in this disclaimer: (a) are subject to the preceding
-              paragraph; and (b) govern all liabilities arising under the
-              disclaimer, including liabilities arising in contract, in tort,
-              and for breach of statutory duty.
-            </p>
-            <p>
-              As long as the website and the information and services on the
-              website are provided free of charge, we will not be liable for any
-              loss or damage of any nature.
-            </p>
+            {text.intro.map(paragraph => (
+              <p key={paragraph}>{paragraph}</p>
+            ))}
+
+            {text.sections.map(section => (
+              <div key={section.title}>
+                <h2 className='mt-6 text-3xl font-semibold'>
+                  <strong>{section.title}</strong>
+                </h2>
+                {section.paragraphs?.map(paragraph => (
+                  <p key={paragraph}>{paragraph}</p>
+                ))}
+                {section.lists?.map(list => (
+                  <div key={list.intro || list.items[0]}>
+                    {list.intro && <p>{list.intro}</p>}
+                    <ul className='list-disc space-y-2 pl-5'>
+                      {list.items.map(item => (
+                        <li key={item}>{item}</li>
+                      ))}
+                    </ul>
+                  </div>
+                ))}
+                {section.closing && <p>{section.closing}</p>}
+              </div>
+            ))}
           </div>
         </div>
       </section>

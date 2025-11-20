@@ -24,10 +24,10 @@ describe('Forgot password page', () => {
     renderWithRouter(<ForgotPassword />);
 
     const user = userEvent.setup();
-    const emailInput = screen.getByPlaceholderText(/your email/i);
+    const emailInput = screen.getByPlaceholderText(/deine e-mail/i);
     await user.type(emailInput, 'reset@bbb.de');
     await user.click(
-      screen.getByRole('button', { name: /send reset link/i })
+      screen.getByRole('button', { name: /link zum zurücksetzen senden/i })
     );
 
     await waitFor(() =>
@@ -46,14 +46,14 @@ describe('Forgot password page', () => {
     renderWithRouter(<ForgotPassword />);
 
     const user = userEvent.setup();
-    const emailInput = screen.getByPlaceholderText(/your email/i);
+    const emailInput = screen.getByPlaceholderText(/deine e-mail/i);
     await user.type(emailInput, 'not-an-email');
     await user.click(
-      screen.getByRole('button', { name: /send reset link/i })
+      screen.getByRole('button', { name: /link zum zurücksetzen senden/i })
     );
 
     expect(
-      await screen.findByText(/please enter a valid email address/i)
+      await screen.findByText(/bitte gib eine gültige e-mail-adresse ein/i)
     ).toBeInTheDocument();
     expect(requestPasswordReset).not.toHaveBeenCalled();
   });

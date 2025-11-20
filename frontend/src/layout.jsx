@@ -6,8 +6,9 @@ import Navbar from '@/components/navbar';
 import Footer from '@/components/footer';
 import ScrollToTopButton from '@/components/scroll-to-top';
 import AutoScrollToTop from '@/components/auto-scroll';
+import { LanguageProvider } from '@/context/lang-context';
 
-export default function Layout() {
+export default function Layout({ locale }) {
   const [isNavbarFixed, setIsNavbarFixed] = useState(false);
   const [isTopNavDropdownOpen, setTopNavDropdownOpen] = useState(false);
 
@@ -38,23 +39,25 @@ export default function Layout() {
 
   return (
     <div className='text-accent'>
-      <HelmetProvider>
-        <header>
-          <Navbar
-            isNavbarFixed={isNavbarFixed}
-            isTopNavDropdownOpen={isTopNavDropdownOpen}
-            setTopNavDropdownOpen={setTopNavDropdownOpen}
-          />
-        </header>
-        <main className={mainClasses}>
-          <Outlet />
-        </main>
-        <footer className={footerClasses}>
-          <Footer />
-        </footer>
-        <ScrollToTopButton />
-        <AutoScrollToTop />
-      </HelmetProvider>
+      <LanguageProvider initialLanguage={locale}>
+        <HelmetProvider>
+          <header>
+            <Navbar
+              isNavbarFixed={isNavbarFixed}
+              isTopNavDropdownOpen={isTopNavDropdownOpen}
+              setTopNavDropdownOpen={setTopNavDropdownOpen}
+            />
+          </header>
+          <main className={mainClasses}>
+            <Outlet />
+          </main>
+          <footer className={footerClasses}>
+            <Footer />
+          </footer>
+          <ScrollToTopButton />
+          <AutoScrollToTop />
+        </HelmetProvider>
+      </LanguageProvider>
     </div>
   );
 }

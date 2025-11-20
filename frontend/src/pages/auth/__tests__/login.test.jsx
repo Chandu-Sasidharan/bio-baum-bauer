@@ -2,6 +2,8 @@ import { screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import Login from '@/pages/auth/login';
 import { renderWithRouter } from '@/test-utils';
+import { DEFAULT_LANGUAGE } from '@/constants';
+import { buildPathForLocale } from '@/utils/routes';
 
 const mockUseUser = vi.fn();
 const mockNavigate = vi.fn();
@@ -40,7 +42,7 @@ describe('Login page', () => {
 
     expect(screen.getByTestId('navigate')).toHaveAttribute(
       'data-to',
-      '/account'
+      buildPathForLocale(DEFAULT_LANGUAGE, 'account')
     );
   });
 
@@ -51,19 +53,27 @@ describe('Login page', () => {
       loginUser,
       isUserLoading: false,
     });
+    const returnPath = buildPathForLocale(
+      DEFAULT_LANGUAGE,
+      'treeDetails',
+      { id: 'rare' }
+    );
     mockUseLocation.mockReturnValue({
-      state: { from: { pathname: '/trees/rare' } },
+      state: { from: { pathname: returnPath } },
     });
 
     renderWithRouter(<Login />);
 
     const user = userEvent.setup();
-    await user.type(screen.getByPlaceholderText(/your email/i), 'farm@bbb.de');
     await user.type(
-      screen.getByPlaceholderText(/your password/i),
+      screen.getByPlaceholderText(/deine e-mail/i),
+      'farm@bbb.de'
+    );
+    await user.type(
+      screen.getByPlaceholderText(/dein passwort/i),
       'secret123'
     );
-    await user.click(screen.getByRole('button', { name: /login/i }));
+    await user.click(screen.getByRole('button', { name: /anmelden/i }));
 
     await waitFor(() =>
       expect(loginUser).toHaveBeenCalledWith({
@@ -71,6 +81,6 @@ describe('Login page', () => {
         password: 'secret123',
       })
     );
-    expect(mockNavigate).toHaveBeenCalledWith('/trees/rare');
+    expect(mockNavigate).toHaveBeenCalledWith(returnPath);
   });
 });

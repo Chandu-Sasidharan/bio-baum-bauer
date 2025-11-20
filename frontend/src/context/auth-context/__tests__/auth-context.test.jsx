@@ -2,6 +2,8 @@ import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest';
 import { renderHook, act, waitFor } from '@testing-library/react';
 import { MemoryRouter } from 'react-router-dom';
 import { AuthProvider, useUser } from '../index.jsx';
+import { DEFAULT_LANGUAGE } from '@/constants';
+import { buildPathForLocale } from '@/utils/routes';
 
 vi.mock('@/utils/axios', () => ({
   default: {
@@ -131,7 +133,9 @@ beforeEach(() => {
       _id: 'user-1',
       email: 'confirm@example.com',
     });
-    expect(navigateMock).toHaveBeenCalledWith('/account');
+    expect(navigateMock).toHaveBeenCalledWith(
+      buildPathForLocale(DEFAULT_LANGUAGE, 'account')
+    );
   });
 
   it('updateUser shows success toast and updates authUser', async () => {

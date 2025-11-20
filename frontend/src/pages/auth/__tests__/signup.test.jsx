@@ -2,6 +2,8 @@ import { screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import Signup from '@/pages/auth/signup';
 import { renderWithRouter } from '@/test-utils';
+import { DEFAULT_LANGUAGE } from '@/constants';
+import { buildPathForLocale } from '@/utils/routes';
 
 const mockUseUser = vi.fn();
 const mockNavigate = vi.fn();
@@ -37,7 +39,7 @@ describe('Signup page', () => {
 
     expect(screen.getByTestId('navigate')).toHaveAttribute(
       'data-to',
-      '/account'
+      buildPathForLocale(DEFAULT_LANGUAGE, 'account')
     );
   });
 
@@ -53,18 +55,20 @@ describe('Signup page', () => {
 
     const user = userEvent.setup();
     await user.type(
-      screen.getByPlaceholderText(/your email/i),
+      screen.getByPlaceholderText(/deine e-mail-adresse/i),
       'sprout@bbb.de'
     );
     await user.type(
-      screen.getByPlaceholderText('Your Password'),
+      screen.getByPlaceholderText(/dein passwort/i),
       'secret123'
     );
     await user.type(
-      screen.getByPlaceholderText('Confirm Your Password'),
+      screen.getByPlaceholderText(/passwort bestätigen/i),
       'secret123'
     );
-    await user.click(screen.getByRole('button', { name: /sign up/i }));
+    await user.click(
+      screen.getByRole('button', { name: /registrieren/i })
+    );
 
     await waitFor(() =>
       expect(signUpUser).toHaveBeenCalledWith({
@@ -73,6 +77,8 @@ describe('Signup page', () => {
         confirmPassword: 'secret123',
       })
     );
-    expect(mockNavigate).toHaveBeenCalledWith('/');
+    expect(mockNavigate).toHaveBeenCalledWith(
+      buildPathForLocale(DEFAULT_LANGUAGE, 'home')
+    );
   });
 });

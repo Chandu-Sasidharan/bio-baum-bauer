@@ -1,33 +1,58 @@
 import { Helmet } from 'react-helmet-async';
-import { useParams, useNavigate } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
 import Button from '@/components/ui/button';
 import Breadcrumbs from '@/components/breadcrumbs';
 import useOneTree from '@/hooks/use-one-tree';
 import backgroundImage from '/images/background/leaves-background.webp';
 import treeIcon from '/images/misc/tree.png';
 import { useCart } from '@/context/cart-context';
+import useCopy from '@/hooks/use-copy';
+
+const copy = {
+  de: {
+    loading: 'Lade...',
+    error: 'Etwas ist schiefgelaufen...',
+    price: 'Preis:',
+    addToCart: 'In den Warenkorb',
+    plantNow: 'Jetzt pflanzen',
+    category: 'Kategorie:',
+    stock: 'Bestand:',
+    about: 'Über',
+  },
+  en: {
+    loading: 'Loading...',
+    error: 'Something went wrong...',
+    price: 'Price:',
+    addToCart: 'Add To Cart',
+    plantNow: 'Plant now',
+    category: 'Category:',
+    stock: 'Stock:',
+    about: 'About',
+  },
+};
 
 export default function TreePage() {
   const { id } = useParams();
   const { addTreeToCart } = useCart();
   const { tree, isLoading, isError } = useOneTree(id);
+  const text = useCopy(copy);
 
   const handleAddToCart = () => {
     addTreeToCart(tree);
   };
 
   if (isLoading) {
-    return <p>Loading...</p>;
+    return <p>{text.loading}</p>;
   }
 
   if (isError) {
-    return <p>Something went wrong...</p>;
+    return <p>{text.error}</p>;
   }
 
   return (
     <div className='w-full'>
       <Helmet>
-        <title>About Us | Bio Baum Bauer</title>
+        <title>{tree.name} | Bio Baum Bauer</title>
       </Helmet>
 
       {/* Container */}
@@ -67,7 +92,7 @@ export default function TreePage() {
                 </div>
                 <div className='hidden items-center gap-3 sm:flex'>
                   <p className='bg-mint text-accent rounded-full px-3 py-1'>
-                    Price:&nbsp;{tree.price.$numberDecimal}&nbsp;€
+                    {text.price}&nbsp;{tree.price.$numberDecimal}&nbsp;€
                   </p>
                   <Button onClick={handleAddToCart} size='sm'>
                     <img
@@ -78,7 +103,7 @@ export default function TreePage() {
                         height: '16px',
                       }}
                     />
-                    <span>Add To Cart</span>
+                    <span>{text.addToCart}</span>
                   </Button>
                 </div>
               </div>
@@ -88,7 +113,7 @@ export default function TreePage() {
                 <div className='flex items-center gap-3'>
                   <p>
                     <span className='text-primary-dark font-semibold'>
-                      Category:
+                      {text.category}
                     </span>
                     <span className='ml-2 inline-block font-semibold'>
                       {tree.category}
@@ -96,7 +121,7 @@ export default function TreePage() {
                   </p>
                   <p>
                     <span className='text-primary-dark font-semibold'>
-                      Stock:
+                      {text.stock}
                     </span>
                     <span className='ml-2 inline-block font-semibold'>
                       {tree.availableQuantity}
@@ -105,7 +130,7 @@ export default function TreePage() {
                 </div>
                 <div className='flex w-full items-center justify-end gap-3 sm:hidden'>
                   <p className='bg-mint text-accent rounded-full px-3 py-1'>
-                    Price:&nbsp;{tree.price.$numberDecimal}&nbsp;€
+                    {text.price}&nbsp;{tree.price.$numberDecimal}&nbsp;€
                   </p>
                   <Button onClick={handleAddToCart} size='sm'>
                     <img
@@ -116,7 +141,7 @@ export default function TreePage() {
                         height: '16px',
                       }}
                     />
-                    <span>Plant now</span>
+                    <span>{text.plantNow}</span>
                   </Button>
                 </div>
               </div>
@@ -139,7 +164,7 @@ export default function TreePage() {
                     className='h-[25px] w-[25px]'
                   />
                   <h3 className='text-accent font-chicle text-3xl tracking-wide'>
-                    About {tree.name}
+                    {text.about} {tree.name}
                   </h3>
                 </div>
                 <div
@@ -165,7 +190,7 @@ export default function TreePage() {
                     height: '16px',
                   }}
                 />
-                <span>Add To Cart</span>
+                <span>{text.addToCart}</span>
               </Button>
             </div>
           </div>

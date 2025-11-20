@@ -7,7 +7,7 @@ describe('Terms page', () => {
     renderWithRouter(<Terms />, { initialEntries: ['/terms'] });
 
     expect(
-      screen.getByRole('heading', { name: /welcome to bio baum bauer/i })
+      screen.getByRole('heading', { name: /willkommen bei bio baum bauer/i })
     ).toBeInTheDocument();
 
     expect(
@@ -15,7 +15,7 @@ describe('Terms page', () => {
     ).toBeInTheDocument();
 
     expect(
-      screen.getByRole('heading', { name: /license/i })
-    ).toBeInTheDocument();
+      screen.getAllByRole('heading', { name: /lizenz/i }).length
+    ).toBeGreaterThan(0);
   });
 });

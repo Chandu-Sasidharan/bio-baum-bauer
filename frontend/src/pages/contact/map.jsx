@@ -1,4 +1,17 @@
+import useCopy from '@/hooks/use-copy';
+
+const copy = {
+  de: {
+    aria: 'Google Maps Standort von Bio Baum Bauer',
+  },
+  en: {
+    aria: 'Google map showing the Bio Baum Bauer address',
+  },
+};
+
 export default function LocationMap() {
+  const text = useCopy(copy);
+
   return (
     <div className='w-full'>
       <iframe
@@ -6,7 +19,7 @@ export default function LocationMap() {
         className='borde h-[650px] w-full'
         allowFullScreen={true}
         loading='lazy'
-        aria-label='Google map to the address!'
+        aria-label={text.aria}
       ></iframe>
     </div>
   );

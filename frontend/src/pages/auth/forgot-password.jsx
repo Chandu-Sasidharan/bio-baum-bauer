@@ -8,13 +8,52 @@ import Button from '@/components/ui/button';
 import backgroundImage from '/images/background/leaves-background.webp';
 import treeIcon from '/images/misc/tree.png';
 import { useUser } from '@/context/auth-context';
+import useCopy from '@/hooks/use-copy';
+import useLocalizedPath from '@/hooks/use-localized-path';
 
-const schema = z.object({
-  email: z.string().email({ message: 'Please enter a valid email address.' }),
-});
+const copy = {
+  de: {
+    metaTitle: 'Passwort vergessen | Bio Baum Bauer',
+    prompt: 'Gib deine E-Mail-Adresse ein, um dein Passwort zurückzusetzen.',
+    heading: 'Passwort vergessen',
+    hint: 'Wir senden dir einen Link, wenn wir ein passendes Konto finden.',
+    button: 'Link zum Zurücksetzen senden',
+    bottom: 'Passwort doch gemerkt?',
+    backToLogin: 'Zurück zum Login',
+    fields: {
+      emailPlaceholder: 'Deine E-Mail-Adresse',
+    },
+    errors: {
+      email: 'Bitte gib eine gültige E-Mail-Adresse ein.',
+    },
+  },
+  en: {
+    metaTitle: 'Forgot Password | Bio Baum Bauer',
+    prompt: 'Enter your email to reset your password.',
+    heading: 'Forgot Password',
+    hint: 'We will send you a reset link if we find a matching account.',
+    button: 'Send Reset Link',
+    bottom: 'Remembered your password?',
+    backToLogin: 'Go back to login',
+    fields: {
+      emailPlaceholder: 'Your Email',
+    },
+    errors: {
+      email: 'Please enter a valid email address.',
+    },
+  },
+};
+
+const createSchema = texts =>
+  z.object({
+    email: z.string().email({ message: texts.errors.email }),
+  });
 
 export default function ForgotPassword() {
   const { requestPasswordReset, isUserLoading } = useUser();
+  const { buildPath } = useLocalizedPath();
+  const text = useCopy(copy);
+  const schema = createSchema(text);
   const {
     register,
     handleSubmit,
@@ -36,7 +75,7 @@ export default function ForgotPassword() {
   return (
     <>
       <Helmet>
-        <title>Forgot Password | Bio Baum Bauer</title>
+        <title>{text.metaTitle}</title>
       </Helmet>
 
       <section
@@ -49,9 +88,7 @@ export default function ForgotPassword() {
           </div>
 
           <div className='px-5 py-20'>
-            <p className='mx-auto mb-3 w-fit'>
-              Enter your email to reset your password.
-            </p>
+            <p className='mx-auto mb-3 w-fit'>{text.prompt}</p>
             <div
               className='mx-auto flex max-w-[500px] flex-col gap-3 rounded-md p-10 shadow-sm md:p-12'
               style={{ backgroundColor: 'rgba(255, 255, 255, 0.9)' }}
@@ -63,12 +100,10 @@ export default function ForgotPassword() {
                   className='mr-2 h-[30px] w-[30px]'
                 />
                 <h3 className='text-accent font-chicle inline-block text-3xl tracking-wide'>
-                  Forgot Password
+                  {text.heading}
                 </h3>
               </div>
-              <p className='text-sm text-primary'>
-                We will send you a reset link if we find a matching account.
-              </p>
+              <p className='text-sm text-primary'>{text.hint}</p>
               <form
                 onSubmit={handleSubmit(onSubmit)}
                 className='w-full space-y-3'
@@ -88,7 +123,7 @@ export default function ForgotPassword() {
                   <input
                     type='email'
                     {...register('email')}
-                    placeholder='Your Email'
+                    placeholder={text.fields.emailPlaceholder}
                     className={`input input-bordered input-light w-full pl-10 focus:outline-none lg:flex-1 ${
                       errors.email
                         ? 'border-red focus:border-red'
@@ -107,14 +142,17 @@ export default function ForgotPassword() {
                   className='w-full'
                   isProcessing={isUserLoading}
                 >
-                  Send Reset Link
+                  {text.button}
                 </Button>
               </form>
 
               <div className='text-center text-sm'>
-                Remembered your password?{' '}
-                <Link to='/login' className='text-accent font-bold underline'>
-                  Go back to login
+                {text.bottom}{' '}
+                <Link
+                  to={buildPath('login')}
+                  className='text-accent font-bold underline'
+                >
+                  {text.backToLogin}
                 </Link>
               </div>
             </div>

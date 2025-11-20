@@ -31,11 +31,11 @@ describe('TreePage', () => {
   it('shows loading and error states during fetch', () => {
     mockUseOneTree.mockReturnValue({ tree: null, isLoading: true, isError: false });
     renderTreePage();
-    expect(screen.getByText(/loading/i)).toBeInTheDocument();
+    expect(screen.getByText(/lade/i)).toBeInTheDocument();
 
     mockUseOneTree.mockReturnValue({ tree: null, isLoading: false, isError: true });
     renderTreePage();
-    expect(screen.getByText(/something went wrong/i)).toBeInTheDocument();
+    expect(screen.getByText(/etwas ist schiefgelaufen/i)).toBeInTheDocument();
   });
 
   it('renders the tree details and allows adding the tree to the cart', async () => {
@@ -64,15 +64,17 @@ describe('TreePage', () => {
       screen.getByRole('heading', { level: 1, name: /blue spruce/i })
     ).toBeInTheDocument();
     expect(screen.getByText(/evergreen/i)).toBeInTheDocument();
-    const detailRow = screen.getByText(/category:/i).closest('div');
-    const stockLabel = within(detailRow).getByText(/stock:/i);
+    const detailRow = screen.getByText(/kategorie:/i).closest('div');
+    const stockLabel = within(detailRow).getByText(/bestand:/i);
     expect(stockLabel.nextSibling).toHaveTextContent('7');
     expect(
-      screen.getByRole('heading', { name: /about blue spruce/i })
+      screen.getByRole('heading', { name: /über blue spruce/i })
     ).toBeInTheDocument();
     expect(screen.getByText(/deep roots/i)).toBeInTheDocument();
 
-    const addButtons = screen.getAllByRole('button', { name: /add to cart/i });
+    const addButtons = screen.getAllByRole('button', {
+      name: /in den warenkorb/i,
+    });
     await user.click(addButtons[0]);
     expect(addTreeToCart).toHaveBeenCalledWith(mockTree);
   });

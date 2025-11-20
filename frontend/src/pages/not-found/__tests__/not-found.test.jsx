@@ -22,14 +22,14 @@ describe('NotFound page', () => {
     renderWithRouter(<NotFound />, { initialEntries: ['/missing'] });
 
     expect(screen.getByText(/404/i)).toBeInTheDocument();
-    expect(screen.getByText(/does not exist/i)).toBeInTheDocument();
+    expect(screen.getByText('Die gesuchte Seite existiert nicht.')).toBeInTheDocument();
   });
 
   it('lets visitors go back to the previous page', async () => {
     const user = userEvent.setup();
     renderWithRouter(<NotFound />, { initialEntries: ['/missing'] });
 
-    await user.click(screen.getByRole('button', { name: /go back/i }));
+    await user.click(screen.getByRole('button', { name: /zurück/i }));
 
     expect(mockNavigate).toHaveBeenCalledWith(-1);
   });

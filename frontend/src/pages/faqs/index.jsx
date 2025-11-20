@@ -2,22 +2,39 @@ import { Helmet } from 'react-helmet-async';
 import Accordion from './accordion';
 import backgroundImage from '/images/background/leaves-background.webp';
 import useFaqs from '@/hooks/use-faqs';
+import useCopy from '@/hooks/use-copy';
+
+const copy = {
+  de: {
+    metaTitle: 'FAQs | Bio Baum Bauer',
+    heading: 'Häufig gestellte Fragen',
+    loading: 'Lade FAQs...',
+    error: 'FAQs konnten nicht geladen werden.',
+  },
+  en: {
+    metaTitle: 'FAQs | Bio Baum Bauer',
+    heading: 'Frequently Asked Questions',
+    loading: 'Loading...',
+    error: 'Error loading FAQs',
+  },
+};
 
 export default function Faqs() {
+  const text = useCopy(copy);
   const { faqs, isLoading, isError } = useFaqs();
 
   if (isLoading) {
-    return <div>Loading...</div>;
+    return <div>{text.loading}</div>;
   }
 
   if (isError) {
-    return <div>Error loading FAQs</div>;
+    return <div>{text.error}</div>;
   }
 
   return (
     <>
       <Helmet>
-        <title>About Us | Bio Baum Bauer</title>
+        <title>{text.metaTitle}</title>
       </Helmet>
 
       {/* Container */}
@@ -35,7 +52,7 @@ export default function Faqs() {
             style={{ backgroundColor: 'rgba(255, 255, 255, 0.9)' }}
           >
             <h1 className='text-accent font-chicle mb-3 text-3xl tracking-wide md:text-4xl'>
-              Frequently Asked Questions
+              {text.heading}
             </h1>
 
             {/* Accordion */}

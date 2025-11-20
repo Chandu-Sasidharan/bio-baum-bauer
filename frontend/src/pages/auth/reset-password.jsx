@@ -1,4 +1,4 @@
-import { useEffect } from 'react';
+import { useEffect, useMemo } from 'react';
 import { Helmet } from 'react-helmet-async';
 import { useForm } from 'react-hook-form';
 import { z } from 'zod';
@@ -10,23 +10,68 @@ import backgroundImage from '/images/background/leaves-background.webp';
 import treeIcon from '/images/misc/tree.png';
 import { useUser } from '@/context/auth-context';
 import showAlert from '@/utils/alert';
+import useCopy from '@/hooks/use-copy';
+import useLocalizedPath from '@/hooks/use-localized-path';
 
-const schema = z
-  .object({
-    password: z
-      .string()
-      .min(5, { message: 'Please use at least 5 characters.' }),
-    confirmPassword: z.string(),
-  })
-  .refine(data => data.password === data.confirmPassword, {
-    message: 'Passwords do not match.',
-    path: ['confirmPassword'],
-  });
+const copy = {
+  de: {
+    metaTitle: 'Passwort zurücksetzen | Bio Baum Bauer',
+    prompt: 'Wähle ein neues Passwort.',
+    heading: 'Neues Passwort',
+    button: 'Passwort aktualisieren',
+    fields: {
+      passwordPlaceholder: 'Neues Passwort',
+      confirmPlaceholder: 'Passwort bestätigen',
+    },
+    errors: {
+      password: 'Bitte verwende mindestens 5 Zeichen.',
+      mismatch: 'Passwörter stimmen nicht überein.',
+    },
+    alert: {
+      title: 'Ungültiger Link',
+      body: 'Token fehlt oder ist ungültig',
+    },
+  },
+  en: {
+    metaTitle: 'Reset Password | Bio Baum Bauer',
+    prompt: 'Choose a new password.',
+    heading: 'New Password',
+    button: 'Update Password',
+    fields: {
+      passwordPlaceholder: 'New Password',
+      confirmPlaceholder: 'Confirm Password',
+    },
+    errors: {
+      password: 'Please use at least 5 characters.',
+      mismatch: 'Passwords do not match.',
+    },
+    alert: {
+      title: 'Invalid Link',
+      body: 'Token is missing or invalid',
+    },
+  },
+};
+
+const createSchema = texts =>
+  z
+    .object({
+      password: z
+        .string()
+        .min(5, { message: texts.errors.password }),
+      confirmPassword: z.string(),
+    })
+    .refine(data => data.password === data.confirmPassword, {
+      message: texts.errors.mismatch,
+      path: ['confirmPassword'],
+    });
 
 export default function ResetPassword() {
   const { resetPassword, isUserLoading } = useUser();
+  const text = useCopy(copy);
+  const schema = useMemo(() => createSchema(text), [text]);
   const [searchParams] = useSearchParams();
   const navigate = useNavigate();
+  const { buildPath } = useLocalizedPath();
   const token = searchParams.get('token');
   const {
     register,
@@ -41,10 +86,10 @@ export default function ResetPassword() {
 
   useEffect(() => {
     if (!token) {
-      showAlert('error', 'Invalid Link', 'Token is missing or invalid');
-      navigate('/forgot-password');
+      showAlert('error', text.alert.title, text.alert.body);
+      navigate(buildPath('forgotPassword'));
     }
-  }, [token, navigate]);
+  }, [token, navigate, text.alert.body, text.alert.title, buildPath]);
 
   const onSubmit = async formData => {
     if (!token) return;
@@ -54,14 +99,14 @@ export default function ResetPassword() {
     });
     if (isSuccess) {
       reset();
-      navigate('/login');
+      navigate(buildPath('login'));
     }
   };
 
   return (
     <>
       <Helmet>
-        <title>Reset Password | Bio Baum Bauer</title>
+        <title>{text.metaTitle}</title>
       </Helmet>
 
       <section
@@ -74,7 +119,7 @@ export default function ResetPassword() {
           </div>
 
           <div className='px-5 py-20'>
-            <p className='mx-auto mb-3 w-fit'>Choose a new password.</p>
+            <p className='mx-auto mb-3 w-fit'>{text.prompt}</p>
             <div
               className='mx-auto flex max-w-[500px] flex-col gap-3 rounded-md p-10 shadow-sm md:p-12'
               style={{ backgroundColor: 'rgba(255, 255, 255, 0.9)' }}
@@ -86,7 +131,7 @@ export default function ResetPassword() {
                   className='mr-2 h-[30px] w-[30px]'
                 />
                 <h3 className='text-accent font-chicle inline-block text-3xl tracking-wide'>
-                  New Password
+                  {text.heading}
                 </h3>
               </div>
               <form
@@ -111,7 +156,7 @@ export default function ResetPassword() {
                   <input
                     type='password'
                     {...register('password')}
-                    placeholder='New Password'
+                    placeholder={text.fields.passwordPlaceholder}
                     className={`input input-bordered input-light w-full pl-10 focus:outline-none lg:flex-1 ${
                       errors.password
                         ? 'border-red focus:border-red'
@@ -145,7 +190,7 @@ export default function ResetPassword() {
                   <input
                     type='password'
                     {...register('confirmPassword')}
-                    placeholder='Confirm Password'
+                    placeholder={text.fields.confirmPlaceholder}
                     className={`input input-bordered input-light w-full pl-10 focus:outline-none lg:flex-1 ${
                       errors.confirmPassword
                         ? 'border-red focus:border-red'
@@ -166,7 +211,7 @@ export default function ResetPassword() {
                   className='w-full'
                   isProcessing={isUserLoading}
                 >
-                  Update Password
+                  {text.button}
                 </Button>
               </form>
             </div>

@@ -3,6 +3,8 @@ import userEvent from '@testing-library/user-event';
 import ResetPassword from '@/pages/auth/reset-password';
 import { renderWithRouter } from '@/test-utils';
 import showAlert from '@/utils/alert';
+import { DEFAULT_LANGUAGE } from '@/constants';
+import { buildPathForLocale } from '@/utils/routes';
 
 const mockUseUser = vi.fn();
 const mockUseNavigate = vi.fn();
@@ -44,10 +46,12 @@ describe('ResetPassword page', () => {
 
     expect(showAlert).toHaveBeenCalledWith(
       'error',
-      'Invalid Link',
-      'Token is missing or invalid'
+      'Ungültiger Link',
+      'Token fehlt oder ist ungültig'
     );
-    expect(mockUseNavigate).toHaveBeenCalledWith('/forgot-password');
+    expect(mockUseNavigate).toHaveBeenCalledWith(
+      buildPathForLocale(DEFAULT_LANGUAGE, 'forgotPassword')
+    );
   });
 
   it('submits the new password when a token exists', async () => {
@@ -61,13 +65,16 @@ describe('ResetPassword page', () => {
     renderWithRouter(<ResetPassword />);
 
     const user = userEvent.setup();
-    await user.type(screen.getByPlaceholderText('New Password'), 'secret45');
     await user.type(
-      screen.getByPlaceholderText('Confirm Password'),
+      screen.getByPlaceholderText(/neues passwort/i),
+      'secret45'
+    );
+    await user.type(
+      screen.getByPlaceholderText(/passwort bestätigen/i),
       'secret45'
     );
     await user.click(
-      screen.getByRole('button', { name: /update password/i })
+      screen.getByRole('button', { name: /passwort aktualisieren/i })
     );
 
     await waitFor(() =>
@@ -76,6 +83,8 @@ describe('ResetPassword page', () => {
         password: 'secret45',
       })
     );
-    expect(mockUseNavigate).toHaveBeenCalledWith('/login');
+    expect(mockUseNavigate).toHaveBeenCalledWith(
+      buildPathForLocale(DEFAULT_LANGUAGE, 'login')
+    );
   });
 });

@@ -4,30 +4,69 @@ import { MdContacts } from 'react-icons/md';
 import treeIcon from '/images/misc/tree.png';
 
 const menuItems = [
-  { to: '/', pageName: 'Home', icon: <FaHome />, ariaLabel: 'Home page' },
   {
-    to: '/about',
-    pageName: 'About',
+    key: 'home',
+    paths: {
+      de: '',
+      en: '',
+    },
+    labels: {
+      de: 'Startseite',
+      en: 'Home',
+    },
+    icon: <FaHome />,
+    ariaLabel: {
+      de: 'Zur Startseite',
+      en: 'Home page',
+    },
+  },
+  {
+    key: 'about',
+    labels: {
+      de: 'Über uns',
+      en: 'About',
+    },
     icon: <RiFileInfoFill />,
-    ariaLabel: 'About page',
+    ariaLabel: {
+      de: 'Über-uns-Seite',
+      en: 'About page',
+    },
   },
   {
-    to: '/trees',
-    pageName: 'Trees',
+    key: 'trees',
+    labels: {
+      de: 'Bäume',
+      en: 'Trees',
+    },
     icon: <img src={treeIcon} alt='Tree Icon' className='h-4 w-4' />,
-    ariaLabel: 'Trees page',
+    ariaLabel: {
+      de: 'Seite Bäume',
+      en: 'Trees page',
+    },
   },
   {
-    to: '/impressions',
-    pageName: 'Impressions',
+    key: 'impressions',
+    labels: {
+      de: 'Eindrücke',
+      en: 'Impressions',
+    },
     icon: <FaImages />,
-    ariaLabel: 'Impressions page',
+    ariaLabel: {
+      de: 'Seite Eindrücke',
+      en: 'Impressions page',
+    },
   },
   {
-    to: '/contact',
-    pageName: 'Contact',
+    key: 'contact',
+    labels: {
+      de: 'Kontakt',
+      en: 'Contact',
+    },
     icon: <MdContacts />,
-    ariaLabel: 'Contact page',
+    ariaLabel: {
+      de: 'Kontaktseite',
+      en: 'Contact page',
+    },
   },
 ];
 

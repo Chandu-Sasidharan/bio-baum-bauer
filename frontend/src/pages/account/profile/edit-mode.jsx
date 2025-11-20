@@ -1,4 +1,36 @@
+import useCopy from '@/hooks/use-copy';
+
+const copy = {
+  de: {
+    labels: {
+      firstName: 'Vorname',
+      lastName: 'Nachname',
+      phoneNumber: 'Telefonnummer',
+      address: 'Adresse',
+      street: 'Straße',
+      houseNumber: 'Hausnummer',
+      postalCode: 'Postleitzahl',
+      city: 'Stadt',
+      country: 'Land',
+    },
+  },
+  en: {
+    labels: {
+      firstName: 'First Name',
+      lastName: 'Last Name',
+      phoneNumber: 'Phone Number',
+      address: 'Address',
+      street: 'Street Name',
+      houseNumber: 'House Number',
+      postalCode: 'Postal Code',
+      city: 'City',
+      country: 'Country',
+    },
+  },
+};
+
 export default function EditMode({ updatedUser, setUpdatedUser }) {
+  const text = useCopy(copy);
   const handleChange = e => {
     const { name, value } = e.target;
     setUpdatedUser(prev => ({
@@ -22,7 +54,7 @@ export default function EditMode({ updatedUser, setUpdatedUser }) {
     <form className='space-y-4'>
       <div>
         <label className='text-primary-dark ml-1 inline-block text-sm font-medium'>
-          First Name
+          {text.labels.firstName}
         </label>
         <input
           type='text'
@@ -34,7 +66,7 @@ export default function EditMode({ updatedUser, setUpdatedUser }) {
       </div>
       <div>
         <label className='text-primary-dark ml-1 inline-block text-sm font-medium'>
-          Last Name
+          {text.labels.lastName}
         </label>
         <input
           type='text'
@@ -46,7 +78,7 @@ export default function EditMode({ updatedUser, setUpdatedUser }) {
       </div>
       <div>
         <label className='text-primary-dark ml-1 inline-block text-sm font-medium'>
-          Phone Number
+          {text.labels.phoneNumber}
         </label>
         <input
           type='text'
@@ -58,12 +90,14 @@ export default function EditMode({ updatedUser, setUpdatedUser }) {
       </div>
 
       {/* Address */}
-      <span className='mt-4 inline-block text-sm font-medium'>Address</span>
+      <span className='mt-4 inline-block text-sm font-medium'>
+        {text.labels.address}
+      </span>
       <div className='mt-2 space-y-4'>
         <div className='flex items-center gap-5'>
           <div className='flex w-full flex-col'>
             <label className='text-primary-dark ml-1 inline-block text-xs'>
-              Street Name
+              {text.labels.street}
             </label>
             <input
               type='text'
@@ -75,7 +109,7 @@ export default function EditMode({ updatedUser, setUpdatedUser }) {
           </div>
           <div className='flex w-full max-w-[200px] flex-col'>
             <label className='text-primary-dark ml-1 inline-block text-xs'>
-              House Number
+              {text.labels.houseNumber}
             </label>
             <input
               type='text'
@@ -89,7 +123,7 @@ export default function EditMode({ updatedUser, setUpdatedUser }) {
         <div className='flex items-center gap-5'>
           <div className='flex w-full max-w-[200px] flex-col'>
             <label className='text-primary-dark ml-1 inline-block text-xs'>
-              Postal Code
+              {text.labels.postalCode}
             </label>
             <input
               type='text'
@@ -101,7 +135,7 @@ export default function EditMode({ updatedUser, setUpdatedUser }) {
           </div>
           <div className='flex w-full flex-col'>
             <label className='text-primary-dark ml-1 inline-block text-xs'>
-              City
+              {text.labels.city}
             </label>
             <input
               type='text'
@@ -114,7 +148,7 @@ export default function EditMode({ updatedUser, setUpdatedUser }) {
         </div>
         <div className='flex flex-col'>
           <label className='text-primary-dark ml-1 inline-block text-xs'>
-            Country
+            {text.labels.country}
           </label>
           <input
             type='text'

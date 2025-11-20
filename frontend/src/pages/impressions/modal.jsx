@@ -1,7 +1,21 @@
 import { Fade } from 'react-awesome-reveal';
 import closeIcon from '/images/misc/close-icon.svg';
+import useCopy from '@/hooks/use-copy';
+
+const copy = {
+  de: {
+    closeAria: 'Modal schließen',
+    closeAlt: 'Schließen',
+  },
+  en: {
+    closeAria: 'Close modal',
+    closeAlt: 'Close',
+  },
+};
 
 export default function ImageModal({ image, closeImage }) {
+  const text = useCopy(copy);
+
   return (
     <div
       className='fixed inset-0 z-[99] flex items-center justify-center bg-black bg-opacity-50 pt-32'
@@ -12,10 +26,10 @@ export default function ImageModal({ image, closeImage }) {
           <button
             onClick={closeImage}
             className='mb-2 h-[25px] w-[25px] self-end'
-            aria-label='Close Modal'
+            aria-label={text.closeAria}
           >
             {/* Close Icon */}
-            <img src={closeIcon} alt='Close Menu' />
+            <img src={closeIcon} alt={text.closeAlt} />
           </button>
           <div className='flex flex-col items-center'>
             {/* Image */}

@@ -4,8 +4,70 @@ import { MdEmail } from 'react-icons/md';
 import SocialLink from '@/components/ui/social-link';
 import MenuLink from '@/components/footer/menu-link';
 import logoFooter from '/images/logo/bbb-logo-footer.svg';
+import useCopy from '@/hooks/use-copy';
+
+const copy = {
+  de: {
+    tagline: 'Wir lassen eine grünere Zukunft wachsen.',
+    sponsor: 'Pate werden und Hoffnung pflanzen.',
+    followUs: 'Folge uns',
+    explore: 'Entdecken',
+    addressHeading: 'Adresse',
+    address: [
+      'Schulgasse 9',
+      '74336 Brackenheim',
+      'Baden-Württemberg, Deutschland',
+    ],
+    menuColumns: [
+      [
+        { to: '/', label: 'Startseite' },
+        { to: '/about', label: 'Über uns' },
+        { to: '/trees', label: 'Bäume' },
+        { to: '/impressions', label: 'Eindrücke' },
+        { to: '/contact', label: 'Kontakt' },
+      ],
+      [
+        { to: '/faqs', label: 'FAQs' },
+        { to: '/news', label: 'News' },
+        { to: '/terms', label: 'AGB' },
+        { to: '/privacy', label: 'Datenschutz' },
+        { to: '/impressum', label: 'Impressum' },
+      ],
+    ],
+  },
+  en: {
+    tagline: 'Growing a greener tomorrow.',
+    sponsor: 'Sponsor a tree and nurture hope.',
+    followUs: 'Follow Us',
+    explore: 'Explore',
+    addressHeading: 'Address',
+    address: [
+      'Schulgasse 9',
+      '74336 Brackenheim',
+      'Baden-Württemberg, Germany',
+    ],
+    menuColumns: [
+      [
+        { to: '/', label: 'Home' },
+        { to: '/about', label: 'About' },
+        { to: '/trees', label: 'Trees' },
+        { to: '/impressions', label: 'Impressions' },
+        { to: '/contact', label: 'Contact' },
+      ],
+      [
+        { to: '/faqs', label: 'FAQs' },
+        { to: '/news', label: 'News' },
+        { to: '/terms', label: 'Terms' },
+        { to: '/privacy', label: 'Privacy' },
+        { to: '/impressum', label: 'Impressum' },
+      ],
+    ],
+  },
+};
 
 export default function Upper() {
+  const text = useCopy(copy);
+
   return (
     <section className='bg-primary'>
       <div className='mx-auto flex max-w-7xl flex-col items-start gap-10 px-10 py-10 lg:flex-row'>
@@ -23,17 +85,11 @@ export default function Upper() {
                   Bio Baum Bauer
                 </span>
               </p>
-              <p className='mt-3 font-sans text-lg'>
-                Growing a greener tomorrow.
-              </p>
+              <p className='mt-3 font-sans text-lg'>{text.tagline}</p>
             </div>
-            <p className='mt-3 font-sans text-lg'>
-              Sponsor a tree with BioBaumBauer
-              <br />
-              and nurture hope.
-            </p>
+            <p className='mt-3 font-sans text-lg'>{text.sponsor}</p>
             <div className='space-y-3'>
-              <p className='text-lg font-bold'>Follow Us</p>
+              <p className='text-lg font-bold'>{text.followUs}</p>
               <div className='flex gap-5 text-base'>
                 <SocialLink>
                   <FaLinkedin />
@@ -53,23 +109,20 @@ export default function Upper() {
         <div className='flex w-full lg:mt-10 lg:w-1/3 lg:justify-center'>
           <div className='space-y-5'>
             <h3 className='flex items-baseline gap-3 font-sans text-lg font-bold uppercase'>
-              Explore
+              {text.explore}
             </h3>
             <div className='flex gap-16'>
-              <div className='space-y-3'>
-                <MenuLink to='/' pageName='Home' />
-                <MenuLink to='/about' pageName='About' />
-                <MenuLink to='/trees' pageName='Trees' />
-                <MenuLink to='/impressions' pageName='Impressions' />
-                <MenuLink to='/contact' pageName='Contact' />
-              </div>
-              <div className='space-y-3'>
-                <MenuLink to='/faqs' pageName='FAQs' />
-                <MenuLink to='/news' pageName='News' />
-                <MenuLink to='/terms' pageName='Terms' />
-                <MenuLink to='/privacy' pageName='Privacy' />
-                <MenuLink to='/impressum' pageName='Impressum' />
-              </div>
+              {text.menuColumns.map(column => (
+                <div key={column[0].to} className='space-y-3'>
+                  {column.map(link => (
+                    <MenuLink
+                      key={link.to}
+                      to={link.to}
+                      pageName={link.label}
+                    />
+                  ))}
+                </div>
+              ))}
             </div>
           </div>
         </div>
@@ -78,13 +131,17 @@ export default function Upper() {
         <div className='flex w-full flex-col gap-5 lg:mt-10 lg:w-1/3 lg:items-center'>
           <div className='space-y-5'>
             <h3 className='flex items-center gap-3 font-sans text-lg font-bold uppercase'>
-              Address
+              {text.addressHeading}
             </h3>
             <div className='flex items-start gap-3'>
               <FaLocationDot />
               <p className='-mt-1'>
-                Schulgasse 9, <br /> 74336 Brackenheim, <br />{' '}
-                Baden-Württemberg, Germany
+                {text.address.map((line, index) => (
+                  <span key={line}>
+                    {line}
+                    {index < text.address.length - 1 && <br />}
+                  </span>
+                ))}
               </p>
             </div>
             <a
