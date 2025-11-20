@@ -78,6 +78,10 @@ function App() {
                   <Route path={ROUTES[locale].contact} element={<Contact />} />
                   <Route path={ROUTES[locale].privacy} element={<Privacy />} />
                   <Route path={ROUTES[locale].faqs} element={<Faqs />} />
+                  <Route
+                    path={ROUTES[locale].impressum}
+                    element={<Impressum />}
+                  />
                   <Route path={ROUTES[locale].terms} element={<Terms />} />
                   <Route path={ROUTES[locale].news} element={<News />} />
                   <Route path={ROUTES[locale].cart} element={<Cart />} />
