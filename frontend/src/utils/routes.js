@@ -49,8 +49,6 @@ export const ROUTES = {
 
 export const SUPPORTED_LANGUAGES = Object.keys(ROUTES);
 
-const tokenRegex = /:([^/]+)/g;
-
 export const buildPathForLocale = (locale, keys = [], params = {}) => {
   const normalizedKeys = Array.isArray(keys) ? keys : [keys];
   const segments = normalizedKeys
@@ -66,22 +64,17 @@ export const buildPathForLocale = (locale, keys = [], params = {}) => {
   return `/${locale}${suffix}`;
 };
 
+const tokenRegex = /:([^/]+)/g;
+
 export const matchRouteKey = (locale, relativePath = '') => {
   const routes = ROUTES[locale] || {};
 
   for (const [key, pattern] of Object.entries(routes)) {
     const regexPattern = pattern.replace(tokenRegex, '([^/]+)');
     const regex = new RegExp(`^${regexPattern}$`);
-    const match = regex.exec(relativePath);
 
-    if (match) {
-      const params = {};
-      const tokens = [...pattern.matchAll(tokenRegex)].map(group => group[1]);
-      tokens.forEach((token, index) => {
-        params[token] = match[index + 1];
-      });
-
-      return { key, params };
+    if (regex.test(relativePath)) {
+      return key;
     }
   }
 
@@ -99,7 +92,11 @@ export const resolveRouteFromPath = (locale, path = '') => {
     return { keys: ['home'], params: {} };
   }
 
-  const attemptMatch = (remainingPath, collectedKeys = [], collectedParams = {}) => {
+  const attemptMatch = (
+    remainingPath,
+    collectedKeys = [],
+    collectedParams = {}
+  ) => {
     if (!remainingPath) {
       return { keys: collectedKeys, params: collectedParams };
     }

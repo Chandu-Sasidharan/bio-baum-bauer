@@ -69,21 +69,23 @@ export default function Breadcrumbs() {
 
   const formatSegment = (segment, index) => {
     const relativePath = trailSegments.slice(0, index + 1).join('/');
-    const matchedRoute = matchRouteKey(language, relativePath);
-    const translation =
-      (matchedRoute?.key &&
-        segmentTranslations[language]?.[matchedRoute.key]) ||
-      segmentTranslations[language]?.[segment] ||
-      segmentTranslations[language]?.[segment.toLowerCase()];
+    const matchedKey = matchRouteKey(language, relativePath);
 
-    if (translation) {
-      return translation;
+    if (matchedKey) {
+      return segmentTranslations[language][matchedKey];
     }
 
-    return segment
-      .split('-')
-      .map(capitalizeFirstLetter)
-      .join(' ');
+    // Fallback: Pretty format the segment
+    return segment.split('-').map(capitalizeFirstLetter).join(' ');
+  };
+
+  const getHrefForSegment = index => {
+    return (
+      '/' +
+      [...localePrefix, ...trailSegments.slice(0, index + 1)]
+        .filter(Boolean)
+        .join('/')
+    );
   };
 
   return (
@@ -98,21 +100,16 @@ export default function Breadcrumbs() {
           </Link>
         </li>
         {trailSegments.map((segment, index) => {
-          const href =
-            '/' +
-            [...localePrefix, ...trailSegments.slice(0, index + 1)]
-              .filter(Boolean)
-              .join('/');
           const isLast = index === trailSegments.length - 1;
           const label = formatSegment(segment, index);
           return (
-            <li key={href} className='flex items-center'>
+            <li key={getHrefForSegment(index)} className='flex items-center'>
               <span className='mx-2'>/</span>
               {isLast ? (
                 <span className='text-gray-500'>{label}</span>
               ) : (
                 <Link
-                  to={href}
+                  to={getHrefForSegment(index)}
                   className='text-accent hover:text-golden-red duration-100'
                 >
                   {label}
