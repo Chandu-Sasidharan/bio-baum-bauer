@@ -1,0 +1,46 @@
+version: '3.8'
+
+services:
+  frontend-prod:
+    image: ghcr.io/chandu-sasidharan/bio-baum-bauer-frontend:latest
+    expose:
+      - '80'
+    env_file:
+      - ./frontend/.env.prod
+    networks:
+      - edge_net
+    restart: unless-stopped
+
+  backend-prod:
+    image: ghcr.io/chandu-sasidharan/bio-baum-bauer-backend:latest
+    expose:
+      - '4000'
+    env_file:
+      - ./backend/.env.prod
+    networks:
+      - edge_net
+    restart: unless-stopped
+
+  frontend-staging:
+    image: ghcr.io/chandu-sasidharan/bio-baum-bauer-frontend:staging
+    expose:
+      - '80'
+    env_file:
+      - ./frontend/.env.staging
+    networks:
+      - edge_net
+    restart: unless-stopped
+
+  backend-staging:
+    image: ghcr.io/chandu-sasidharan/bio-baum-bauer-backend:staging
+    expose:
+      - '4000'
+    env_file:
+      - ./backend/.env.staging
+    networks:
+      - edge_net
+    restart: unless-stopped
+
+networks:
+  edge_net:
+    external: true

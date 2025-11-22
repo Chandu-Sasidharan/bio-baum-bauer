@@ -2,7 +2,7 @@ bio-baum-bauer/
 ├─ README.md
 ├─ architecture.txt
 ├─ docker-compose.yml
-├─ docker-compose.prod.yml
+├─ docker-compose.deploy.yml
 ├─ eslint.config.js
 ├─ package.json
 ├─ package-lock.json

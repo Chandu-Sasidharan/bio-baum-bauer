@@ -2,9 +2,9 @@ name: Build, Push, and Deploy
 
 on:
   push:
-    branches: [main]
+    branches: [prod, stage]
   pull_request:
-    branches: [main]
+    branches: [prod, stage]
   workflow_dispatch:
 
 env:
@@ -50,7 +50,8 @@ jobs:
         working-directory: frontend
         run: npm test
 
-  docker:
+  build-prod:
+    if: github.event_name == 'push' && github.ref == 'refs/heads/prod'
     needs: [backend-tests, frontend-tests]
     runs-on: ubuntu-latest
     permissions:
@@ -68,8 +69,8 @@ jobs:
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: Frontend metadata
-        id: meta_frontend
+      - name: Frontend metadata (prod)
+        id: meta_frontend_prod
         uses: docker/metadata-action@v5
         with:
           images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAMESPACE }}-frontend
@@ -77,8 +78,8 @@ jobs:
             type=raw,value=latest
             type=sha
 
-      - name: Backend metadata
-        id: meta_backend
+      - name: Backend metadata (prod)
+        id: meta_backend_prod
         uses: docker/metadata-action@v5
         with:
           images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAMESPACE }}-backend
@@ -86,38 +87,99 @@ jobs:
             type=raw,value=latest
             type=sha
 
-      - name: Build & push frontend
+      - name: Build & push frontend (prod)
         uses: docker/build-push-action@v6
         with:
           context: frontend
-          file: frontend/Dockerfile.prod
+          file: frontend/Dockerfile.deploy
           build-args: |
             VITE_STRIPE_PUBLIC_KEY=${{ secrets.STRIPE_PUBLISHABLE_KEY }}
             VITE_FRONTEND_URL=${{ secrets.FRONTEND_PUBLIC_URL }}
             VITE_API_BASE_URL=${{ secrets.API_BASE_URL }}
           push: true
           platforms: linux/amd64
-          tags: ${{ steps.meta_frontend.outputs.tags }}
-          labels: ${{ steps.meta_frontend.outputs.labels }}
+          tags: ${{ steps.meta_frontend_prod.outputs.tags }}
+          labels: ${{ steps.meta_frontend_prod.outputs.labels }}
 
-      - name: Build & push backend
+      - name: Build & push backend (prod)
         uses: docker/build-push-action@v6
         with:
           context: backend
-          file: backend/Dockerfile.prod
+          file: backend/Dockerfile.deploy
           push: true
           platforms: linux/amd64
-          tags: ${{ steps.meta_backend.outputs.tags }}
-          labels: ${{ steps.meta_backend.outputs.labels }}
+          tags: ${{ steps.meta_backend_prod.outputs.tags }}
+          labels: ${{ steps.meta_backend_prod.outputs.labels }}
 
-  deploy:
-    needs: docker
-    if: github.ref == 'refs/heads/main' && github.event_name == 'push'
+  build-stage:
+    if: github.event_name == 'push' && github.ref == 'refs/heads/stage'
+    needs: [backend-tests, frontend-tests]
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      packages: write
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: docker/setup-buildx-action@v3
+
+      - name: Log in to GHCR
+        uses: docker/login-action@v3
+        with:
+          registry: ${{ env.REGISTRY }}
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Frontend metadata (staging)
+        id: meta_frontend_stage
+        uses: docker/metadata-action@v5
+        with:
+          images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAMESPACE }}-frontend
+          tags: |
+            type=raw,value=staging
+            type=sha,prefix=staging-
+
+      - name: Backend metadata (staging)
+        id: meta_backend_stage
+        uses: docker/metadata-action@v5
+        with:
+          images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAMESPACE }}-backend
+          tags: |
+            type=raw,value=staging
+            type=sha,prefix=staging-
+
+      - name: Build & push frontend (staging)
+        uses: docker/build-push-action@v6
+        with:
+          context: frontend
+          file: frontend/Dockerfile.deploy
+          build-args: |
+            VITE_STRIPE_PUBLIC_KEY=${{ secrets.STAGING_STRIPE_PUBLISHABLE_KEY }}
+            VITE_FRONTEND_URL=${{ secrets.STAGING_FRONTEND_PUBLIC_URL }}
+            VITE_API_BASE_URL=${{ secrets.STAGING_API_BASE_URL }}
+          push: true
+          platforms: linux/amd64
+          tags: ${{ steps.meta_frontend_stage.outputs.tags }}
+          labels: ${{ steps.meta_frontend_stage.outputs.labels }}
+
+      - name: Build & push backend (staging)
+        uses: docker/build-push-action@v6
+        with:
+          context: backend
+          file: backend/Dockerfile.deploy
+          push: true
+          platforms: linux/amd64
+          tags: ${{ steps.meta_backend_stage.outputs.tags }}
+          labels: ${{ steps.meta_backend_stage.outputs.labels }}
+
+  deploy-prod:
+    needs: build-prod
+    if: github.ref == 'refs/heads/prod' && github.event_name == 'push'
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
 
-      - name: SSH deploy
+      - name: SSH deploy (prod)
         uses: appleboy/ssh-action@v1
         with:
           host: ${{ secrets.DROPLET_HOST }}
@@ -128,7 +190,30 @@ jobs:
             export GHCR_TOKEN=${{ secrets.GHCR_PAT }}
             docker login ghcr.io -u "$GHCR_USER" -p "$GHCR_TOKEN"
             cd /opt/bio-baum-bauer
-            git pull origin main
-            docker compose -f docker-compose.prod.yml pull
-            docker compose -f docker-compose.prod.yml up -d
+            git pull origin prod
+            docker compose -f docker-compose.deploy.yml pull
+            docker compose -f docker-compose.deploy.yml up -d
+            docker image prune -f
+
+  deploy-stage:
+    needs: build-stage
+    if: github.ref == 'refs/heads/stage' && github.event_name == 'push'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: SSH deploy (staging)
+        uses: appleboy/ssh-action@v1
+        with:
+          host: ${{ secrets.STAGING_DROPLET_HOST }}
+          username: ${{ secrets.STAGING_DROPLET_USER }}
+          key: ${{ secrets.STAGING_DROPLET_SSH_KEY }}
+          script: |
+            export GHCR_USER=${{ github.actor }}
+            export GHCR_TOKEN=${{ secrets.STAGING_GHCR_PAT }}
+            docker login ghcr.io -u "$GHCR_USER" -p "$GHCR_TOKEN"
+            cd /opt/bio-baum-bauer
+            git pull origin stage
+            docker compose -f docker-compose.deploy.yml pull
+            docker compose -f docker-compose.deploy.yml up -d
             docker image prune -f
