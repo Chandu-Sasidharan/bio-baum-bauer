@@ -33,25 +33,20 @@ export default function LanguageSelector() {
   const navigate = useNavigate();
   const location = useLocation();
 
-  const getRelativePath = () => {
-    const segments = location.pathname.split('/').filter(Boolean);
-    const possibleLocale = segments[0];
-    if (SUPPORTED_LANGUAGES.includes(possibleLocale)) {
-      return segments.slice(1).join('/');
-    }
-    return segments.join('/');
-  };
-
   const handleChange = event => {
     const newLanguage = event.target.value;
     setLanguage(newLanguage);
 
-    const currentLocaleSegment = location.pathname.split('/')[1];
-    const activeLocale = SUPPORTED_LANGUAGES.includes(currentLocaleSegment)
-      ? currentLocaleSegment
-      : language;
-    const relativePath = getRelativePath();
-    const match = resolveRouteFromPath(activeLocale, relativePath);
+    // Get current path without locale
+    const segments = location.pathname.split('/').filter(Boolean);
+    const hasLocale = SUPPORTED_LANGUAGES.includes(segments[0]);
+    const currentLocale = hasLocale ? segments[0] : language;
+    const relativePath = hasLocale
+      ? segments.slice(1).join('/')
+      : segments.join('/');
+
+    // Find route and build new path
+    const match = resolveRouteFromPath(currentLocale, relativePath);
     const nextPath = match
       ? buildPathForLocale(newLanguage, match.keys, match.params)
       : buildPathForLocale(newLanguage, ['home']);

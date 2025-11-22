@@ -49,23 +49,10 @@ export const ROUTES = {
 
 export const SUPPORTED_LANGUAGES = Object.keys(ROUTES);
 
-export const buildPathForLocale = (locale, keys = [], params = {}) => {
-  const normalizedKeys = Array.isArray(keys) ? keys : [keys];
-  const segments = normalizedKeys
-    .map(key => ROUTES[locale]?.[key] ?? key)
-    .filter(segment => segment !== undefined);
-
-  let path = segments.join('/');
-  Object.entries(params).forEach(([param, value]) => {
-    path = path.replace(new RegExp(`:${param}`, 'g'), value ?? '');
-  });
-
-  const suffix = path ? `/${path}` : '';
-  return `/${locale}${suffix}`;
-};
-
+// Regex to identify route parameters like :id, :slug
 const tokenRegex = /:([^/]+)/g;
 
+// Function to match a relative path to a route key
 export const matchRouteKey = (locale, relativePath = '') => {
   const routes = ROUTES[locale] || {};
 
@@ -81,60 +68,47 @@ export const matchRouteKey = (locale, relativePath = '') => {
   return null;
 };
 
-const getTokens = pattern =>
-  [...pattern.matchAll(tokenRegex)].map(group => group[1]);
-
+// Function to resolve route keys and parameters from a given path
 export const resolveRouteFromPath = (locale, path = '') => {
   const routes = ROUTES[locale] || {};
-  const normalizedPath = path.replace(/^\/+/, '');
+  const normalizedPath = path.replace(/^\/+/, '') || 'home';
 
-  if (!normalizedPath) {
-    return { keys: ['home'], params: {} };
+  // Try exact match
+  for (const [key, pattern] of Object.entries(routes)) {
+    if (pattern === normalizedPath) {
+      return { keys: [key], params: {} };
+    }
   }
 
-  const attemptMatch = (
-    remainingPath,
-    collectedKeys = [],
-    collectedParams = {}
-  ) => {
-    if (!remainingPath) {
-      return { keys: collectedKeys, params: collectedParams };
+  // Try pattern match with parameters
+  for (const [key, pattern] of Object.entries(routes)) {
+    const tokens = [...pattern.matchAll(tokenRegex)].map(g => g[1]);
+    if (tokens.length === 0) continue;
+
+    const regexPattern = pattern.replace(tokenRegex, '([^/]+)');
+    const match = new RegExp(`^${regexPattern}$`).exec(normalizedPath);
+
+    if (match) {
+      const params = {};
+      tokens.forEach((token, i) => (params[token] = match[i + 1]));
+      return { keys: [key], params };
     }
+  }
 
-    for (const [key, pattern] of Object.entries(routes)) {
-      const regexPattern = pattern.replace(tokenRegex, '([^/]+)');
-      const regex = new RegExp(`^${regexPattern}$`);
-      const match = regex.exec(remainingPath);
+  return null;
+};
 
-      if (match) {
-        const params = { ...collectedParams };
-        const tokens = getTokens(pattern);
-        tokens.forEach((token, index) => {
-          params[token] = match[index + 1];
-        });
+// Function to build a path for a given locale, route keys, and parameters
+export const buildPathForLocale = (locale, keys = [], params = {}) => {
+  const keyArray = Array.isArray(keys) ? keys : [keys];
 
-        return { keys: [...collectedKeys, key], params };
-      }
+  // Build path from route keys
+  let path = keyArray.map(key => ROUTES[locale]?.[key] ?? key).join('/');
 
-      if (pattern.includes(':')) {
-        continue;
-      }
+  // Replace params
+  for (const [param, value] of Object.entries(params)) {
+    path = path.replace(`:${param}`, value ?? '');
+  }
 
-      if (remainingPath.startsWith(`${pattern}/`)) {
-        const nextPath = remainingPath.slice(pattern.length + 1);
-        const nextMatch = attemptMatch(
-          nextPath,
-          [...collectedKeys, key],
-          collectedParams
-        );
-        if (nextMatch) {
-          return nextMatch;
-        }
-      }
-    }
-
-    return null;
-  };
-
-  return attemptMatch(normalizedPath);
+  return path ? `/${locale}/${path}` : `/${locale}`;
 };
