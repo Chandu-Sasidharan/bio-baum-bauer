@@ -190,7 +190,9 @@ jobs:
             export GHCR_TOKEN=${{ secrets.GHCR_PAT }}
             docker login ghcr.io -u "$GHCR_USER" -p "$GHCR_TOKEN"
             cd /opt/bio-baum-bauer
-            git pull origin prod
+            git fetch origin
+            git checkout prod
+            git pull --ff-only origin prod
             docker compose -f docker-compose.deploy.yml pull
             docker compose -f docker-compose.deploy.yml up -d
             docker image prune -f
@@ -212,8 +214,10 @@ jobs:
             export GHCR_USER=${{ github.actor }}
             export GHCR_TOKEN=${{ secrets.STAGING_GHCR_PAT }}
             docker login ghcr.io -u "$GHCR_USER" -p "$GHCR_TOKEN"
-            cd /opt/bio-baum-bauer
-            git pull origin stage
+            cd /opt/staging-bio-baum-bauer
+            git fetch origin
+            git checkout stage
+            git pull --ff-only origin stage
             docker compose -f docker-compose.deploy.yml pull
             docker compose -f docker-compose.deploy.yml up -d
             docker image prune -f
