@@ -6,8 +6,8 @@ A dockerized, production-ready web experience for Bio Baum Bauer that pairs a ma
 
 - **Modern storefront** – Vite + React 18 + Tailwind CSS, React Router 6, TanStack Query, Stripe Elements, react-hook-form, and DaisyUI build the interactive customer experience.
 - **Robust backend** – Express routes, MongoDB models, Zod validations, AdminJS UI, email (Resend) + media storage (AWS S3) helpers, and Stripe webhooks cover the operational needs.
-- **Docker-first workflow** – Local containers (dev) and multi-stage production images (served via Caddy in front) make it easy to keep parity between environments.
-- **Continuous deployment** – GitHub Actions build tagged images, push to GHCR, and redeploy the remote droplet using `docker-compose.deploy.yml`.
+- **Docker-first workflow** – Local containers (dev) and multi-stage production images (nginx for frontend, slim Node for backend) keep parity between environments.
+- **Split deployments** – Dedicated GitHub Actions workflows for stage/prod build the images, push to GHCR with environment-specific tags, and redeploy the respective droplet via their compose files.
 - **Strict tooling** – ESLint flat config, Prettier + Tailwind plugin, Husky + lint-staged keep code quality consistent across frontend and backend sources.
 
 ## Repository Layout
@@ -16,14 +16,16 @@ A dockerized, production-ready web experience for Bio Baum Bauer that pairs a ma
 bio-baum-bauer/
 ├── backend/                # Express API, AdminJS bundle, migrations, utility scripts
 ├── frontend/               # Vite React app, Tailwind + DaisyUI styling, Stripe checkout
-├── docker-compose*.yml     # Service orchestration for dev & prod/staging
+├── docker-compose.yml      # Local dev (builds from source)
+├── docker-compose.stage.yml# Staging deploy (GHCR :staging images + backend env file)
+├── docker-compose.prod.yml # Production deploy (GHCR :latest images + backend env file)
 ├── eslint.config.js        # Flat config that lints backend sources
 ├── architecture.txt        # High-level directory guide
 ├── trees.example.txt       # Sample content taxonomy for seeding/reference
 └── README.md               # (this file)
 ```
 
-Each service also ships its own README stub plus `Dockerfile` (local) + `Dockerfile.deploy` (deployment) for production/staging builds.
+Each service also ships its own README stub plus `Dockerfile` (local dev) and `Dockerfile.deploy` (deployment) for production/staging builds.
 
 ## Prerequisites
 
@@ -49,7 +51,15 @@ Copy the provided `.env.example` files inside `frontend/` and `backend/`, then f
 | Frontend | `VITE_FRONTEND_URL`                                  | Used in Stripe redirect URLs and SEO tags.                          |
 | Frontend | `VITE_STRIPE_PUBLIC_KEY`                             | Publishable key injected into Stripe Elements.                      |
 
-Maintain separate `.env.prod` and `.env.staging` files when deploying with `docker-compose.deploy.yml`—the compose file mounts those explicitly. In production/staging the frontend envs are injected at build time via the `VITE_STRIPE_PUBLIC_KEY`, `VITE_FRONTEND_URL`, and `VITE_API_BASE_URL` Docker build args (wired up in the GitHub Actions workflows), so you don’t need to keep those values in `frontend/.env.*` unless you are building images manually on the server.
+Maintain dedicated `backend/.env.stage` and `backend/.env.prod` files for the staging/production compose files. In production/staging the frontend envs are injected at build time via the `VITE_STRIPE_PUBLIC_KEY`, `VITE_FRONTEND_URL`, and `VITE_API_BASE_URL` Docker build args (wired up in the GitHub Actions workflows), so you don’t need to keep those values in `frontend/.env.*` unless you are building images manually on the server.
+
+## Environments
+
+- **Development (local)** – `docker-compose.yml` builds from local sources, mounts the repo for hot reload, and uses `frontend/.env` + `backend/.env`. Ports: frontend `3000`, backend `4000`.
+- **Staging** – `docker-compose.stage.yml` pulls GHCR images tagged `:staging` for both services, loads backend config from `backend/.env.stage`, and joins the external `edge_net` network. Frontend env is baked in at image build via CI secrets.
+- **Production** – `docker-compose.prod.yml` pulls GHCR images tagged `:latest`, loads backend config from `backend/.env.prod`, and also uses the shared `edge_net` network.
+
+To mimic stage/prod locally you can `docker login ghcr.io` and run the relevant compose file (after creating the `edge_net` network with `docker network create edge_net || true` and adding the correct backend env file). No frontend env file is needed for those images because their values are compiled at build time.
 
 ## Quick Start (Docker Compose)
 
@@ -60,13 +70,13 @@ Maintain separate `.env.prod` and `.env.staging` files when deploying with `dock
 2. **Copy env files** inside `frontend/` and `backend/` (`cp .env.example .env`) and provide real credentials.
 3. **Build and start both services**:
    ```bash
-   npm run start:dev
+   npm run start
    # or: docker compose up -d --build
    ```
 4. Navigate to `http://localhost:3000` for the storefront and `http://localhost:4000/admin` for AdminJS.
 5. When you are done, stop and clean containers/images/volumes with:
    ```bash
-   npm run stop:dev
+   npm run stop
    ```
 
 The dev compose file mounts the local source folders into the containers, so Vite and the backend pick up filesystem changes instantly without manual rebuilds.
@@ -95,7 +105,7 @@ cp .env.example .env
 npm run dev            # starts Vite on :3000
 ```
 
-`npm run build` emits static assets to `dist/` which the production Dockerfile serves with Caddy.
+`npm run build` emits static assets to `dist/` which the production Dockerfile serves with nginx.
 
 ## Database, Migrations & Admin
 
@@ -107,8 +117,8 @@ npm run dev            # starts Vite on :3000
 
 | Location | Script                              | Description                                                                  |
 | -------- | ----------------------------------- | ---------------------------------------------------------------------------- |
-| Root     | `npm run start:dev` / `stop:dev`    | Wrap `docker compose up/down` for local containers.                          |
-| Root     | `npm run start:prod` / `stop:prod`  | Use the deployment compose file and GHCR images to mimic deployment locally. |
+| Root     | `npm run start` / `stop`            | Wrap `docker compose up/down` for local dev containers.                      |
+| Root     | `npm test`                          | Runs backend + frontend test suites.                                         |
 | Backend  | `npm run dev` / `start`             | Start Express in watch mode or production mode.                              |
 | Backend  | `npm run bundle:admin`              | Builds AdminJS assets (also run during Docker production builds).            |
 | Backend  | `npm run migrate`                   | Apply pending Migrate-Mongo migrations.                                      |
@@ -117,13 +127,12 @@ npm run dev            # starts Vite on :3000
 
 Linting is enforced through Husky’s pre-commit hook (`.husky/pre-commit`) which leverages `lint-staged` to format/lint backend sources. Frontend linting can be added to the config if desired.
 
-## Testing
-
-There are currently no automated tests (`npm test` is a placeholder in the root).
-
 ## Deployment Pipeline
 
-One workflow handles both deployments (`.github/workflows/build-push-deploy.yml`): branch `prod` builds/pushes `:latest` and deploys; branch `stage` builds/pushes `:staging` and deploys. Both run frontend/backend tests before building. To deploy manually outside CI, log in to GHCR, pull the images referenced in `docker-compose.deploy.yml`, and run `docker compose -f docker-compose.deploy.yml up -d` on your server.
+- **Stage** – `.github/workflows/build-push-deploy-stage.yml` runs on the `stage` branch. It executes backend/frontend tests, builds images with the `:staging` tag (and a `staging-<sha>` tag), injects staging frontend env via build args, pushes to GHCR, then SSHes to the staging droplet. The remote step logs into GHCR, pulls with `docker-compose.stage.yml`, ensures `edge_net` exists, and restarts containers using `backend/.env.stage`.
+- **Prod** – `.github/workflows/build-push-deploy-prod.yml` runs on the `prod` branch. It mirrors the staging flow but tags images as `:latest` (and `<sha>`), uses production build args for the frontend, and redeploys on the production droplet with `docker-compose.prod.yml` and `backend/.env.prod`.
+
+To deploy manually outside CI, log in to GHCR, pull the images referenced in the relevant compose file, and run `docker compose -f docker-compose.stage.yml up -d` (or `docker-compose.prod.yml up -d`) on your server. Ensure the backend env file for that environment is present and `edge_net` exists (`docker network create edge_net || true`).
 
 ## Additional Resources
 

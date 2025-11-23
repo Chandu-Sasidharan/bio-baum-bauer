@@ -1,8 +1,9 @@
 bio-baum-bauer/
 ├─ README.md
 ├─ architecture.txt
-├─ docker-compose.yml
-├─ docker-compose.deploy.yml
+├─ docker-compose.yml            # Local dev compose (builds frontend/backend from source)
+├─ docker-compose.stage.yml      # Staging deploy compose (pulls GHCR :staging images, backend env file)
+├─ docker-compose.prod.yml       # Production deploy compose (pulls GHCR :latest images, backend env file)
 ├─ eslint.config.js
 ├─ package.json
 ├─ package-lock.json
@@ -10,9 +11,8 @@ bio-baum-bauer/
 ├─ .gitignore
 ├─ .github/
 │  └─ workflows/
-│     └─ build-push-deploy.yml
-├─ .prettierrc
-├─ .prettierignore
+│     ├─ build-push-deploy-prod.yml
+│     └─ build-push-deploy-stage.yml
 ├─ .husky/
 │  ├─ _/
 │  │  └─ ...
@@ -22,143 +22,28 @@ bio-baum-bauer/
 ├─ frontend/
 │  ├─ .env
 │  ├─ .env.example
-│  ├─ .eslintrc.cjs
-│  ├─ .vscode/
-│  │  └─ settings.json
-│  ├─ Dockerfile
-│  ├─ README.md
-│  ├─ index.html
-│  ├─ package.json
-│  ├─ package-lock.json
-│  ├─ postcss.config.js
-│  ├─ tailwind.config.js
-│  ├─ vite.config.js
+│  ├─ Dockerfile                  # Dev image for docker-compose.yml
+│  ├─ Dockerfile.deploy           # Production/staging build (nginx runtime)
+│  ├─ nginx.conf                  # Nginx site config for the built assets
 │  ├─ public/
-│  │  ├─ fonts/
-│  │  └─ images/
-│  └─ src/
-│     ├─ App.jsx
-│     ├─ layout.jsx
-│     ├─ main.jsx
-│     ├─ components/
-│     │  ├─ auto-scroll/
-│     │  ├─ breadcrumbs/
-│     │  ├─ footer/
-│     │  ├─ navbar/
-│     │  ├─ protected-route/
-│     │  ├─ scroll-to-top/
-│     │  ├─ spinner/
-│     │  └─ ui/
-│     ├─ context/
-│     │  ├─ auth-context/
-│     │  └─ cart-context/
-│     ├─ hooks/
-│     │  ├─ use-faqs.js
-│     │  ├─ use-featured-trees.js
-│     │  ├─ use-impressions.js
-│     │  ├─ use-one-tree.js
-│     │  ├─ use-payment-intent.js
-│     │  └─ use-trees.js
-│     ├─ pages/
-│     │  ├─ about/
-│     │  ├─ account/
-│     │  ├─ auth/
-│     │  ├─ cart/
-│     │  ├─ checkout/
-│     │  ├─ contact/
-│     │  ├─ faqs/
-│     │  ├─ home/
-│     │  ├─ impressions/
-│     │  ├─ news/
-│     │  ├─ not-found/
-│     │  ├─ payment-status/
-│     │  ├─ privacy/
-│     │  ├─ terms/
-│     │  └─ trees/
-│     └─ utils/
-│        ├─ alert.js
-│        ├─ axios.js
-│        ├─ constants.js
-│        ├─ create-query-client.js
-│        ├─ format-error.js
-│        └─ stripe-instance.js
+│  ├─ src/
+│  └─ package.json
 └─ backend/
    ├─ .env
    ├─ .env.example
-   ├─ .vscode/
-   │  └─ settings.json
-   ├─ Dockerfile
-   ├─ README.md
-   ├─ app.js
-   ├─ db.js
+   ├─ .env.prod
+   ├─ .env.stage
+   ├─ Dockerfile                  # Dev image for docker-compose.yml
+   ├─ Dockerfile.deploy           # Production/staging build (bundles AdminJS)
    ├─ migrate-mongo-config.js
-   ├─ package.json
-   ├─ package-lock.json
    ├─ scripts/
-   │  └─ modify-db.js
-   ├─ server.js
    ├─ migrations/
-   │  └─ create-admins.js
    └─ src/
-      ├─ admin
-      │   └─ index.js
+      ├─ admin/
       ├─ controllers/
-      │  ├─ auth-controller.js
-      │  ├─ contact-controller.js
-      │  ├─ faq-controller.js
-      │  ├─ impression-controller.js
-      │  ├─ stripe-controller.js
-      │  ├─ tree-controller.js
-      │  └─ user-controller.js
       ├─ middlewares/
-      │  ├─ allow-cors.js
-      │  ├─ is-admin.js
-      │  ├─ is-authenticated.js
-      │  └─ is-super-admin.js
       ├─ models/
-      │  ├─ admin.js
-      │  ├─ contact.js
-      │  ├─ faq.js
-      │  ├─ impression.js
-      │  ├─ sponsorship.js
-      │  ├─ tree.js
-      │  └─ user.js
       ├─ routes/
-      │  ├─ all-routes.js
-      │  ├─ auth-route.js
-      │  ├─ contact-route.js
-      │  ├─ faq-route.js
-      │  ├─ impression-route.js
-      │  ├─ payment-route.js
-      │  ├─ tree-route.js
-      │  └─ user-route.js
       ├─ templates/
-      │  ├─ contact-form-feedback.html
-      │  ├─ contact-form-to-team.html
-      │  ├─ new-sponsorship.html
-      │  ├─ payment-failed.html
-      │  ├─ payment-succeeded.html
-      │  └─ verification-email.html
       ├─ utils/
-      │  ├─ contact-feedback-email.js
-      │  ├─ contact-to-team-email.js
-      │  ├─ create-jwt.js
-      │  ├─ create-verification-token.js
-      │  ├─ format-zod-error.js
-      │  ├─ pick-user-payload.js
-      │  ├─ send-email.js
-      │  ├─ send-new-sponsorship-email.js
-      │  ├─ send-payment-failed-email.js
-      │  ├─ send-payment-succeeded-email.js
-      │  ├─ send-verification-email.js
-      │  └─ stripe.js
       └─ validations/
-         ├─ contact-form-validation.js
-         ├─ faq-validation.js
-         ├─ impression-validation.js
-         ├─ payment-data-validation.js
-         ├─ signup-form-validation.js
-         ├─ sponsorship-validation.js
-         ├─ tree-validation.js
-         ├─ update-form-validation.js
-         └─ user-validation.js
