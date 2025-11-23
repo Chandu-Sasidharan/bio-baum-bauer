@@ -39,6 +39,7 @@ const treeResource = {
       'status',
       'isFeatured',
     ],
+    sort: { sortBy: 'name.en', direction: 'asc' },
     editProperties: [
       'name.en',
       'name.de',
