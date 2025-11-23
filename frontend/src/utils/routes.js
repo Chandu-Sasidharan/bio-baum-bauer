@@ -95,6 +95,24 @@ export const resolveRouteFromPath = (locale, path = '') => {
     }
   }
 
+  // Fallback: map each segment to a known route key (e.g., account/sponsorships)
+  const segments = normalizedPath.split('/').filter(Boolean);
+  if (segments.length > 1) {
+    const keys = [];
+    for (const segment of segments) {
+      const entry = Object.entries(routes).find(
+        ([, pattern]) => pattern === segment
+      );
+      if (!entry) {
+        return null;
+      }
+      keys.push(entry[0]);
+    }
+    if (keys.length) {
+      return { keys, params: {} };
+    }
+  }
+
   return null;
 };
 
