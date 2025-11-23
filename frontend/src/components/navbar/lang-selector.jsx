@@ -51,7 +51,9 @@ export default function LanguageSelector() {
       ? buildPathForLocale(newLanguage, match.keys, match.params)
       : buildPathForLocale(newLanguage, ['home']);
 
-    navigate(nextPath, { replace: true });
+    // Preserve any in-flight navigation state (e.g., Stripe paymentIntent) and query params
+    const nextUrl = `${nextPath}${location.search || ''}`;
+    navigate(nextUrl, { replace: true, state: location.state });
   };
 
   return (

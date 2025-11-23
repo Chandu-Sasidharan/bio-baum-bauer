@@ -1,3 +1,4 @@
+import { useMemo } from 'react';
 import { useLocation } from 'react-router-dom';
 import { Helmet } from 'react-helmet-async';
 import Breadcrumbs from '@/components/breadcrumbs';
@@ -6,6 +7,7 @@ import { Elements } from '@stripe/react-stripe-js';
 import stripePromise from '@/utils/stripe-instance';
 import StripeForm from './form';
 import useCopy from '@/hooks/use-copy';
+import { useLanguage } from '@/context/lang-context';
 
 const copy = {
   de: {
@@ -24,6 +26,7 @@ export default function CheckoutForm() {
   const { state } = useLocation();
   const paymentIntent = state?.paymentIntent;
   const text = useCopy(copy);
+  const { language } = useLanguage();
 
   if (!paymentIntent) {
     return (
@@ -37,22 +40,26 @@ export default function CheckoutForm() {
   // Total amount payable by the customer in Euro
   const totalAmount = (paymentIntent.amount / 100).toFixed(2);
 
-  const options = {
-    clientSecret,
-    appearance: {
-      theme: 'stripe',
-      variables: {
-        colorPrimary: '#5a6448',
-        colorBackground: '#fcfcfc',
-        colorText: '#82817e',
-        colorDanger: '#ff6961',
-        fontFamily: 'Open Sans, system-ui, sans-serif',
-        spacingUnit: '4px',
-        borderRadius: '4px',
-        iconColor: '#5a6448',
+  const options = useMemo(
+    () => ({
+      clientSecret,
+      locale: language,
+      appearance: {
+        theme: 'stripe',
+        variables: {
+          colorPrimary: '#5a6448',
+          colorBackground: '#fcfcfc',
+          colorText: '#82817e',
+          colorDanger: '#ff6961',
+          fontFamily: 'Open Sans, system-ui, sans-serif',
+          spacingUnit: '4px',
+          borderRadius: '4px',
+          iconColor: '#5a6448',
+        },
       },
-    },
-  };
+    }),
+    [clientSecret, language]
+  );
 
   return (
     <>

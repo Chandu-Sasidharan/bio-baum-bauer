@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useMemo } from 'react';
 import { useLocation } from 'react-router-dom';
 import { Helmet } from 'react-helmet-async';
 import Spinner from '@/components/spinner';
@@ -8,6 +8,7 @@ import { Elements } from '@stripe/react-stripe-js';
 import stripePromise from '@/utils/stripe-instance';
 import Status from './status';
 import useCopy from '@/hooks/use-copy';
+import { useLanguage } from '@/context/lang-context';
 
 const copy = {
   de: {
@@ -22,6 +23,7 @@ export default function CheckoutForm() {
   const text = useCopy(copy);
   const [clientSecret, setClientSecret] = useState('');
   const location = useLocation();
+  const { language } = useLanguage();
 
   useEffect(() => {
     // Retrieve the "payment_intent_client_secret" query parameter from the URL
@@ -34,13 +36,17 @@ export default function CheckoutForm() {
     setClientSecret(secret);
   }, [location.search]);
 
+  const options = useMemo(
+    () => ({
+      clientSecret,
+      locale: language,
+    }),
+    [clientSecret, language]
+  );
+
   if (!clientSecret) {
     return <Spinner />;
   }
-
-  const options = {
-    clientSecret,
-  };
 
   return (
     <>
