@@ -1,29 +1,21 @@
 import 'dotenv/config';
 
-const dbUrl = process.env.MONGODB_URI;
-const dbName = process.env.MONGO_DB_NAME;
-
-const config = {
-  mongodb: {
-    url: dbUrl,
-    databaseName: dbName,
-  },
-
-  // The migrations dir, can be an relative or absolute path. Only edit this when really necessary.
-  migrationsDir: 'migrations',
-
-  // The mongodb collection where the applied changes are stored. Only edit this when really necessary.
-  changelogCollectionName: 'changelog',
-
-  // The file extension to create migrations and search for in migration dir
-  migrationFileExtension: '.js',
-
-  // Enable the algorithm to create a checksum of the file contents and use that in the comparison to determin
-  // if the file should be run.  Requires that scripts are coded to be run multiple times.
-  useFileHash: false,
-
-  // Don't change this, unless you know what you're doing
-  moduleSystem: 'esm',
+export const mongodb = {
+  url: process.env.MONGODB_URI,
+  databaseName: process.env.MONGO_DB_NAME,
 };
 
-export default config;
+export const migrationsDir = 'migrations';
+export const changelogCollectionName = 'changelog';
+export const migrationFileExtension = '.js';
+export const useFileHash = false;
+export const moduleSystem = 'esm';
+
+export default {
+  mongodb,
+  migrationsDir,
+  changelogCollectionName,
+  migrationFileExtension,
+  useFileHash,
+  moduleSystem,
+};
