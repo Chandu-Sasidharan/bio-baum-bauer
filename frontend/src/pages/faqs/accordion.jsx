@@ -20,7 +20,9 @@ export default function Accordion({ data }) {
           >
             <span>
               <span className='text-lg font-semibold'>{index + 1}.&nbsp;</span>
-              <span className='text-lg font-semibold'>{item.question}</span>
+              <span className='text-lg font-semibold'>
+                <span dangerouslySetInnerHTML={{ __html: item.question }} />
+              </span>
             </span>
             <span>
               {openIndex === index ? (
@@ -31,8 +33,8 @@ export default function Accordion({ data }) {
             </span>
           </button>
           {openIndex === index && (
-            <div className='text-stone px-4 py-3 pt-0 text-lg'>
-              {item.answer}
+            <div className='text-stone prose max-w-none px-4 py-3 pt-0 text-lg'>
+              <div dangerouslySetInnerHTML={{ __html: item.answer }} />
             </div>
           )}
         </div>
