@@ -1,12 +1,17 @@
 import { useQuery } from '@tanstack/react-query';
 import axios from '@/utils/axios';
+import { useLanguage } from '@/context/lang-context';
 
-const fetchSponsorships = async () => {
-  const response = await axios.get('/api/sponsorships');
+const fetchSponsorships = async ({ queryKey }) => {
+  const [, locale] = queryKey;
+  const response = await axios.get('/api/sponsorships', {
+    params: { lang: locale },
+  });
   return response.data.sponsorships;
 };
 
 export default function useSponsorships() {
+  const { language } = useLanguage();
   const {
     data: sponsorships = [],
     isLoading,
@@ -14,7 +19,7 @@ export default function useSponsorships() {
     error,
     refetch,
   } = useQuery({
-    queryKey: ['sponsorships'],
+    queryKey: ['sponsorships', language],
     queryFn: fetchSponsorships,
   });
 

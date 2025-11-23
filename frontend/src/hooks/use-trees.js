@@ -3,9 +3,9 @@ import axios from '@/utils/axios';
 import { useLanguage } from '@/context/lang-context';
 
 const fetchTrees = async ({ queryKey }) => {
-  const [_key, { sort, category, page, limit }] = queryKey;
+  const [_key, { sort, category, page, limit, locale }] = queryKey;
   const response = await axios.get('/api/trees', {
-    params: { sort, category, page, limit },
+    params: { sort, category, page, limit, lang: locale },
   });
   return response.data;
 };

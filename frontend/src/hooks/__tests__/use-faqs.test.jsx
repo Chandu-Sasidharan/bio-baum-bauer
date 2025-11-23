@@ -29,7 +29,9 @@ describe('useFaqs', () => {
 
     expect(result.current.faqs).toEqual(faqs);
     expect(result.current.isError).toBe(false);
-    expect(axios.get).toHaveBeenCalledWith('/api/faqs');
+    expect(axios.get).toHaveBeenCalledWith('/api/faqs', {
+      params: { lang: 'de' },
+    });
   });
 
   it('marks the query as errored when the request fails', async () => {

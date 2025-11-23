@@ -35,6 +35,8 @@ describe('useOneTree', () => {
 
     await waitFor(() => expect(result.current.isLoading).toBe(false));
     expect(result.current.tree).toEqual(tree);
-    expect(axios.get).toHaveBeenCalledWith('/api/trees/1');
+    expect(axios.get).toHaveBeenCalledWith('/api/trees/1', {
+      params: { lang: 'de' },
+    });
   });
 });

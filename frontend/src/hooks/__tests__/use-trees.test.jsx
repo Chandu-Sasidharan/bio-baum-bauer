@@ -31,7 +31,7 @@ describe('useTrees', () => {
     expect(result.current.trees).toEqual(responseData.trees);
     expect(result.current.total).toBe(10);
     expect(axios.get).toHaveBeenCalledWith('/api/trees', {
-      params,
+      params: { ...params, lang: 'de' },
     });
   });
 

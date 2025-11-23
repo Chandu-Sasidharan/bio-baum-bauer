@@ -28,6 +28,8 @@ describe('useImpressions', () => {
     await waitFor(() => expect(result.current.isLoading).toBe(false));
     expect(result.current.impressions).toEqual(impressions);
     expect(result.current.isError).toBe(false);
-    expect(axios.get).toHaveBeenCalledWith('/api/impressions');
+    expect(axios.get).toHaveBeenCalledWith('/api/impressions', {
+      params: { lang: 'de' },
+    });
   });
 });

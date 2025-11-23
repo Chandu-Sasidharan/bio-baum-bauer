@@ -28,6 +28,8 @@ describe('useFeaturedTrees', () => {
     await waitFor(() => expect(result.current.isLoading).toBe(false));
 
     expect(result.current.featuredTrees).toEqual(featuredTrees);
-    expect(axios.get).toHaveBeenCalledWith('/api/trees/featured');
+    expect(axios.get).toHaveBeenCalledWith('/api/trees/featured', {
+      params: { lang: 'de' },
+    });
   });
 });

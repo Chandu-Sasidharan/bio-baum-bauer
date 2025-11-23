@@ -25,15 +25,10 @@ axiosApiInstance.interceptors.request.use(config => {
     'Accept-Language': lang,
   };
 
-  const params =
-    config.params && config.params.lang !== undefined
-      ? config.params
-      : { ...(config.params || {}), lang };
-
   return {
     ...config,
     headers,
-    params,
+    params: { ...(config.params || {}) },
   };
 });
 

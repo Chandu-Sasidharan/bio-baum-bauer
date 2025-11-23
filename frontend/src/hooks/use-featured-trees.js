@@ -2,8 +2,11 @@ import { useQuery } from '@tanstack/react-query';
 import axios from '@/utils/axios';
 import { useLanguage } from '@/context/lang-context';
 
-const fetchFeaturedTrees = async () => {
-  const response = await axios.get('/api/trees/featured');
+const fetchFeaturedTrees = async ({ queryKey }) => {
+  const [, locale] = queryKey;
+  const response = await axios.get('/api/trees/featured', {
+    params: { lang: locale },
+  });
   return response.data.featuredTrees;
 };
 

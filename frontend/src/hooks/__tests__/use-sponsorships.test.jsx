@@ -25,6 +25,9 @@ describe('useSponsorships', () => {
     });
 
     expect(result.current.sponsorships).toEqual([]);
+    expect(axios.get).toHaveBeenCalledWith('/api/sponsorships', {
+      params: { lang: 'de' },
+    });
   });
 
   it('returns sponsorships data from the server', async () => {
@@ -37,6 +40,8 @@ describe('useSponsorships', () => {
 
     await waitFor(() => expect(result.current.isLoading).toBe(false));
     expect(result.current.sponsorships).toEqual(sponsorships);
-    expect(axios.get).toHaveBeenCalledWith('/api/sponsorships');
+    expect(axios.get).toHaveBeenCalledWith('/api/sponsorships', {
+      params: { lang: 'de' },
+    });
   });
 });
