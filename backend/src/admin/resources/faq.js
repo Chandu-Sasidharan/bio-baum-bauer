@@ -4,11 +4,14 @@ const faqResource = {
   resource: Faq,
   options: {
     navigation: { name: 'Content', icon: 'HelpCircle' },
-    listProperties: ['question', 'createdAt'],
-    editProperties: ['question', 'answer'],
-    filterProperties: ['question', 'createdAt'],
+    listProperties: ['question.en', 'createdAt'],
+    editProperties: ['question.en', 'question.de', 'answer.en', 'answer.de'],
+    filterProperties: ['question.en', 'createdAt'],
     properties: {
-      answer: { type: 'richtext' },
+      'question.en': { label: 'Question (EN)' },
+      'question.de': { label: 'Question (DE)' },
+      'answer.en': { type: 'richtext', label: 'Answer (EN)' },
+      'answer.de': { type: 'richtext', label: 'Answer (DE)' },
     },
   },
   meta: {

@@ -1,23 +1,30 @@
 import { z } from 'zod';
+import { CATEGORY_LABELS, STATUS_LABELS } from '#src/constants/i18n.js';
+
+const allowedCategories = Object.keys(CATEGORY_LABELS);
+const allowedStatuses = Object.keys(STATUS_LABELS);
+
+const localizedStringSchema = (fieldName = 'Field') =>
+  z.object({
+    en: z
+      .string({ message: `${fieldName} (EN) must be a string` })
+      .trim()
+      .nonempty({ message: `${fieldName} (EN) is required` }),
+    de: z
+      .string({ message: `${fieldName} (DE) must be a string` })
+      .trim()
+      .optional(),
+  });
 
 // Zod validation schema for Tree
 const treeValidationSchema = z.object({
-  name: z.string().trim().nonempty({ message: 'Name is required' }),
+  name: localizedStringSchema('Name'),
   category: z
     .string()
     .nonempty({ message: 'Category is required' })
-    .refine(
-      val =>
-        [
-          'Fruit Tree',
-          'Nut Tree',
-          'Flowering Tree',
-          'Berry Shrubs',
-          'Deciduous Forest',
-          'Evergreen Forest',
-        ].includes(val),
-      { message: 'Invalid category' }
-    ),
+    .refine(val => allowedCategories.includes(val), {
+      message: 'Invalid category',
+    }),
   price: z
     .string()
     .nonempty({ message: 'Price is required' })
@@ -27,14 +34,8 @@ const treeValidationSchema = z.object({
   availableQuantity: z
     .number()
     .min(0, { message: 'Available quantity must be at least 0' }),
-  shortDescription: z
-    .string()
-    .trim()
-    .nonempty({ message: 'Short description is required' }),
-  description: z
-    .string()
-    .trim()
-    .nonempty({ message: 'Description is required' }),
+  shortDescription: localizedStringSchema('Short description'),
+  description: localizedStringSchema('Description'),
   imageUrl: z.string().trim().url({ message: 'Invalid URL format' }).optional(),
   imageKey: z.string().trim().optional(),
   imageBucket: z.string().trim().optional(),
@@ -44,7 +45,7 @@ const treeValidationSchema = z.object({
   status: z
     .string()
     .default('Available')
-    .refine(val => ['Available', 'Sold Out', 'Backorder'].includes(val), {
+    .refine(val => allowedStatuses.includes(val), {
       message: 'Invalid status',
     }),
   tags: z.array(z.string()).optional(),

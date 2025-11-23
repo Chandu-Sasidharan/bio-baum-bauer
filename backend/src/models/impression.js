@@ -1,9 +1,14 @@
 import { Schema, model } from 'mongoose';
 import validateImpression from '#src/validations/impression-validation.js';
 
+const localizedStringSchema = {
+  en: { type: String, required: true, trim: true },
+  de: { type: String, trim: true },
+};
+
 const impressionSchema = new Schema(
   {
-    title: { type: String, trim: true },
+    title: { type: localizedStringSchema, required: true },
     imageUrl: { type: String, trim: true },
     imageKey: { type: String, trim: true },
     imageBucket: { type: String, trim: true },

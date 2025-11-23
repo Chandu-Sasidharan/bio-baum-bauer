@@ -48,7 +48,15 @@ describe('tree controller', () => {
     };
 
     it('applies filters, sorting, and pagination before returning trees', async () => {
-      const trees = [{ name: 'Oak' }];
+      const trees = [
+        {
+          name: { en: 'Oak', de: 'Eiche' },
+          shortDescription: { en: 'Short', de: 'Kurz' },
+          description: { en: 'Desc', de: 'Beschreibung' },
+          category: 'fruit',
+          status: 'Available',
+        },
+      ];
       const chain = buildFindChain(trees);
       Tree.find.mockReturnValueOnce({ sort: chain.sort });
       Tree.countDocuments.mockResolvedValueOnce(12);
@@ -59,6 +67,7 @@ describe('tree controller', () => {
           page: '2',
           limit: '5',
         },
+        locale: 'de',
       };
       const res = createMockResponse();
 
@@ -70,15 +79,32 @@ describe('tree controller', () => {
       expect(chain.limit).toHaveBeenCalledWith(5);
       expect(Tree.countDocuments).toHaveBeenCalledWith({ category: 'fruit' });
       expect(res.status).toHaveBeenCalledWith(StatusCodes.OK);
-      expect(res.json).toHaveBeenCalledWith({ trees, total: 12 });
+      expect(res.json).toHaveBeenCalledWith({
+        trees: [
+          expect.objectContaining({
+            name: 'Eiche',
+            shortDescription: 'Kurz',
+            description: 'Beschreibung',
+          }),
+        ],
+        total: 12,
+      });
     });
 
     it('uses defaults when no filters or sorting are provided', async () => {
-      const trees = [{ name: 'Pine' }];
+      const trees = [
+        {
+          name: { en: 'Pine', de: 'Kiefer' },
+          shortDescription: { en: 'Short', de: 'Kurz' },
+          description: { en: 'Desc', de: 'Beschreibung' },
+          category: 'Evergreen Forest',
+          status: 'Available',
+        },
+      ];
       const chain = buildFindChain(trees);
       Tree.find.mockReturnValueOnce({ sort: chain.sort });
       Tree.countDocuments.mockResolvedValueOnce(1);
-      const req = { query: {} };
+      const req = { query: {}, locale: 'en' };
       const res = createMockResponse();
 
       await getAllTrees(req, res, vi.fn());
@@ -88,25 +114,55 @@ describe('tree controller', () => {
       expect(chain.skip).toHaveBeenCalledWith(0);
       expect(chain.limit).toHaveBeenCalledWith(10);
       expect(res.status).toHaveBeenCalledWith(StatusCodes.OK);
-      expect(res.json).toHaveBeenCalledWith({ trees, total: 1 });
+      expect(res.json).toHaveBeenCalledWith({
+        trees: [
+          expect.objectContaining({
+            name: 'Pine',
+            shortDescription: 'Short',
+            description: 'Desc',
+          }),
+        ],
+        total: 1,
+      });
     });
   });
 
   describe('getAllFeaturedTrees', () => {
     it('returns the featured trees limited to four entries', async () => {
-      const featuredTrees = [{ name: 'Birch' }, { name: 'Maple' }];
+      const featuredTrees = [
+        {
+          name: { en: 'Birch', de: 'Birke' },
+          shortDescription: { en: 'Short', de: 'Kurz' },
+          description: { en: 'Desc', de: 'Beschreibung' },
+          category: 'Fruit Tree',
+          status: 'Available',
+        },
+        {
+          name: { en: 'Maple', de: 'Ahorn' },
+          shortDescription: { en: 'Short', de: 'Kurz' },
+          description: { en: 'Desc', de: 'Beschreibung' },
+          category: 'Nut Tree',
+          status: 'Available',
+        },
+      ];
       const lean = vi.fn().mockResolvedValue(featuredTrees);
       const limit = vi.fn().mockReturnValue({ lean });
       Tree.find.mockReturnValueOnce({ limit });
       const res = createMockResponse();
+      const req = { locale: 'en' };
 
-      await getAllFeaturedTrees({}, res, vi.fn());
+      await getAllFeaturedTrees(req, res, vi.fn());
 
       expect(Tree.find).toHaveBeenCalledWith({ isFeatured: true });
       expect(limit).toHaveBeenCalledWith(4);
       expect(lean).toHaveBeenCalled();
       expect(res.status).toHaveBeenCalledWith(StatusCodes.OK);
-      expect(res.json).toHaveBeenCalledWith({ featuredTrees });
+      expect(res.json).toHaveBeenCalledWith({
+        featuredTrees: expect.arrayContaining([
+          expect.objectContaining({ name: 'Birch' }),
+          expect.objectContaining({ name: 'Maple' }),
+        ]),
+      });
     });
   });
 
@@ -124,7 +180,8 @@ describe('tree controller', () => {
     });
 
     it('returns not found when the tree does not exist', async () => {
-      Tree.findById.mockResolvedValueOnce(null);
+      const lean = vi.fn().mockResolvedValue(null);
+      Tree.findById.mockReturnValueOnce({ lean });
       const req = { params: { id: '655f1f77bcf86cd799439011' } };
       const res = createMockResponse();
       const next = vi.fn();
@@ -134,18 +191,33 @@ describe('tree controller', () => {
       expect(res.status).toHaveBeenCalledWith(StatusCodes.NOT_FOUND);
       expectJsonMessage(res, /Tree not found/i);
       expect(next).not.toHaveBeenCalled();
+      expect(lean).toHaveBeenCalled();
     });
 
     it('returns the tree when it is found', async () => {
-      const tree = { _id: '655f1f77bcf86cd799439011', name: 'Oak' };
-      Tree.findById.mockResolvedValueOnce(tree);
-      const req = { params: { id: tree._id } };
+      const tree = {
+        _id: '655f1f77bcf86cd799439011',
+        name: { en: 'Oak', de: 'Eiche' },
+        shortDescription: { en: 'Short', de: 'Kurz' },
+        description: { en: 'Desc', de: 'Beschreibung' },
+        category: 'Fruit Tree',
+        status: 'Available',
+      };
+      const lean = vi.fn().mockResolvedValue(tree);
+      Tree.findById.mockReturnValueOnce({ lean });
+      const req = { params: { id: tree._id }, locale: 'de' };
       const res = createMockResponse();
 
       await getTreeById(req, res, vi.fn());
 
       expect(res.status).toHaveBeenCalledWith(StatusCodes.OK);
-      expect(res.json).toHaveBeenCalledWith({ tree });
+      expect(res.json).toHaveBeenCalledWith({
+        tree: expect.objectContaining({
+          name: 'Eiche',
+          description: 'Beschreibung',
+        }),
+      });
+      expect(lean).toHaveBeenCalled();
     });
   });
 
@@ -163,9 +235,27 @@ describe('tree controller', () => {
 
     it('returns the requested trees when ids are valid', async () => {
       const ids = ['655f1f77bcf86cd799439011', '655f1f77bcf86cd799439012'];
-      const trees = [{ _id: ids[0] }, { _id: ids[1] }];
-      Tree.find.mockResolvedValueOnce(trees);
-      const req = { body: { ids } };
+      const trees = [
+        {
+          _id: ids[0],
+          name: { en: 'Oak', de: 'Eiche' },
+          shortDescription: { en: 'Short', de: 'Kurz' },
+          description: { en: 'Desc', de: 'Beschreibung' },
+          category: 'Fruit Tree',
+          status: 'Available',
+        },
+        {
+          _id: ids[1],
+          name: { en: 'Maple', de: 'Ahorn' },
+          shortDescription: { en: 'Short', de: 'Kurz' },
+          description: { en: 'Desc', de: 'Beschreibung' },
+          category: 'Nut Tree',
+          status: 'Available',
+        },
+      ];
+      const lean = vi.fn().mockResolvedValue(trees);
+      Tree.find.mockReturnValueOnce({ lean });
+      const req = { body: { ids }, locale: 'en' };
       const res = createMockResponse();
 
       await getTreesInCart(req, res, vi.fn());
@@ -174,7 +264,13 @@ describe('tree controller', () => {
         _id: { $in: ids },
       });
       expect(res.status).toHaveBeenCalledWith(StatusCodes.OK);
-      expect(res.json).toHaveBeenCalledWith({ trees });
+      expect(res.json).toHaveBeenCalledWith({
+        trees: expect.arrayContaining([
+          expect.objectContaining({ name: 'Oak' }),
+          expect.objectContaining({ name: 'Maple' }),
+        ]),
+      });
+      expect(lean).toHaveBeenCalled();
     });
   });
 });

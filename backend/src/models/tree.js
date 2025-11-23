@@ -1,12 +1,16 @@
 import { model, Schema } from 'mongoose';
 import validateTree from '#src/validations/tree-validation.js';
 
+const localizedStringSchema = {
+  en: { type: String, required: true, trim: true },
+  de: { type: String, trim: true },
+};
+
 const treeSchema = new Schema(
   {
     name: {
-      type: String,
+      type: localizedStringSchema,
       required: true,
-      trim: true,
     },
     category: {
       type: String,
@@ -31,14 +35,12 @@ const treeSchema = new Schema(
       min: 0,
     },
     shortDescription: {
-      type: String,
+      type: localizedStringSchema,
       required: true,
-      trim: true,
     },
     description: {
-      type: String,
+      type: localizedStringSchema,
       required: true,
-      trim: true,
     },
     imageUrl: { type: String, trim: true },
     imageKey: { type: String, trim: true },

@@ -57,9 +57,9 @@ describe('sponsorship controller', () => {
               quantity: 2,
               treeId: {
                 _id: 'tree-1',
-                name: 'Oak',
+                name: { en: 'Oak', de: 'Eiche' },
                 imageUrl: '/oak.jpg',
-                category: 'oak',
+                category: 'Fruit Tree',
                 price: 2500,
               },
             },
@@ -75,6 +75,7 @@ describe('sponsorship controller', () => {
       Sponsorship.find.mockReturnValueOnce({ populate });
       const req = {
         user: { _id: 'user-123' },
+        locale: 'de',
       };
       const res = createMockResponse();
 
@@ -103,9 +104,10 @@ describe('sponsorship controller', () => {
                 quantity: 2,
                 tree: {
                   id: 'tree-1',
-                  name: 'Oak',
+                  name: 'Eiche',
                   imageUrl: '/oak.jpg',
-                  category: 'oak',
+                  category: 'Fruit Tree',
+                  categoryLabel: 'Obstbäume',
                   price: 2500,
                 },
               },

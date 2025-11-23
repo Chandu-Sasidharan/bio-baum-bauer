@@ -5,6 +5,7 @@ import rateLimit from 'express-rate-limit';
 import cookieParser from 'cookie-parser';
 import { postPaymentWebhook } from '#src/controllers/webhook-controller.js';
 import allowCors from '#src/middlewares/allow-cors.js';
+import resolveLocale from '#src/middlewares/resolve-locale.js';
 import allRoutes from '#src/routes/all-routes.js';
 
 const app = express();
@@ -39,6 +40,7 @@ app.use(apiLimiter);
 app.use('/admin-assets', express.static('./src/admin/assets'));
 app.use(cookieParser());
 allowCors(app);
+app.use(resolveLocale);
 
 // Stripe webhook route, requires raw body
 app.post(

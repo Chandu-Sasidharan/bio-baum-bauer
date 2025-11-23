@@ -12,10 +12,12 @@ const impressionResource = {
   resource: Impression,
   options: {
     navigation: { name: 'Content', icon: 'Star' },
-    listProperties: ['title', 'imageUrl', 'createdAt'],
-    editProperties: ['title', 'imageFile'],
-    filterProperties: ['title', 'createdAt'],
+    listProperties: ['title.en', 'imageUrl', 'createdAt'],
+    editProperties: ['title.en', 'title.de', 'imageFile'],
+    filterProperties: ['title.en', 'createdAt'],
     properties: {
+      'title.en': { label: 'Title (EN)' },
+      'title.de': { label: 'Title (DE)' },
       imageUrl: {
         isVisible: { list: true, show: true, filter: false, edit: false },
       },

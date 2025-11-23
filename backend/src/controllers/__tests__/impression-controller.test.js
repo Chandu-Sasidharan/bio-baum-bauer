@@ -22,16 +22,24 @@ describe('impression controller', () => {
   });
 
   it('returns all impressions with a 200 response', async () => {
-    const impressions = [{ title: 'Great' }, { title: 'Even better' }];
+    const impressions = [
+      { title: { en: 'Great', de: 'Grossartig' } },
+      { title: { en: 'Even better', de: 'Noch besser' } },
+    ];
     const lean = vi.fn().mockResolvedValue(impressions);
     Impression.find.mockReturnValueOnce({ lean });
     const res = createMockResponse();
+    const req = { locale: 'de' };
 
-    await getAllImpressions({}, res, vi.fn());
+    await getAllImpressions(req, res, vi.fn());
 
     expect(Impression.find).toHaveBeenCalledWith();
     expect(lean).toHaveBeenCalled();
     expect(res.status).toHaveBeenCalledWith(StatusCodes.OK);
-    expect(res.json).toHaveBeenCalledWith({ impressions });
+    expect(res.json).toHaveBeenCalledWith({
+      impressions: expect.arrayContaining([
+        expect.objectContaining({ title: 'Grossartig' }),
+      ]),
+    });
   });
 });

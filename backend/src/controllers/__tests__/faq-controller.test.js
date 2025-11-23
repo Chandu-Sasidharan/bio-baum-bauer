@@ -23,18 +23,29 @@ describe('faq controller', () => {
 
   it('returns all faqs in a single response', async () => {
     const faqs = [
-      { question: 'A?', answer: 'B' },
-      { question: 'C?', answer: 'D' },
+      {
+        question: { en: 'A?', de: 'A (de)?' },
+        answer: { en: 'B', de: 'B (de)' },
+      },
+      {
+        question: { en: 'C?', de: 'C (de)?' },
+        answer: { en: 'D', de: 'D (de)' },
+      },
     ];
     const lean = vi.fn().mockResolvedValue(faqs);
     Faq.find.mockReturnValueOnce({ lean });
     const res = createMockResponse();
+    const req = { locale: 'de' };
 
-    await getAllFaqs({}, res, vi.fn());
+    await getAllFaqs(req, res, vi.fn());
 
     expect(Faq.find).toHaveBeenCalledWith();
     expect(lean).toHaveBeenCalled();
     expect(res.status).toHaveBeenCalledWith(StatusCodes.OK);
-    expect(res.json).toHaveBeenCalledWith({ faqs });
+    expect(res.json).toHaveBeenCalledWith({
+      faqs: expect.arrayContaining([
+        expect.objectContaining({ question: 'A (de)?', answer: 'B (de)' }),
+      ]),
+    });
   });
 });

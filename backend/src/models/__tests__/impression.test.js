@@ -6,7 +6,7 @@ describe('Impression model', () => {
   it('exposes the impression validator', () => {
     expect(Impression.validateImpression).toBe(validateImpression);
     const result = Impression.validateImpression({
-      title: 'Great experience',
+      title: { en: 'Great experience', de: 'Großartige Erfahrung' },
       imageUrl: 'https://example.com/image.png',
     });
     expect(result.success).toBe(true);

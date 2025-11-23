@@ -1,5 +1,7 @@
 import { StatusCodes } from 'http-status-codes';
 import Sponsorship from '#src/models/sponsorship.js';
+import { CATEGORY_LABELS } from '#src/constants/i18n.js';
+import pickLocalizedField from '#src/utils/pick-localized-field.js';
 
 export const getUserSponsorships = async (req, res, next) => {
   try {
@@ -32,9 +34,13 @@ export const getUserSponsorships = async (req, res, next) => {
         tree: item.treeId
           ? {
               id: item.treeId._id.toString(),
-              name: item.treeId.name,
+              name: pickLocalizedField(item.treeId.name, req.locale),
               imageUrl: item.treeId.imageUrl,
               category: item.treeId.category,
+              categoryLabel: pickLocalizedField(
+                CATEGORY_LABELS[item.treeId.category],
+                req.locale
+              ),
               price: item.treeId.price,
             }
           : null,
