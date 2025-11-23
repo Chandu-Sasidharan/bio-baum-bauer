@@ -1,0 +1,22 @@
+services:
+  frontend-prod:
+    image: ghcr.io/chandu-sasidharan/bio-baum-bauer-frontend:latest
+    expose:
+      - '80'
+    networks:
+      - edge_net
+    restart: unless-stopped
+
+  backend-prod:
+    image: ghcr.io/chandu-sasidharan/bio-baum-bauer-backend:latest
+    expose:
+      - '4000'
+    env_file:
+      - ./backend/.env.prod
+    networks:
+      - edge_net
+    restart: unless-stopped
+
+networks:
+  edge_net:
+    external: true
