@@ -3,8 +3,6 @@ services:
     image: ghcr.io/chandu-sasidharan/bio-baum-bauer-frontend:latest
     expose:
       - '80'
-    env_file:
-      - ./frontend/.env.prod
     networks:
       - edge_net
     restart: unless-stopped
@@ -23,8 +21,6 @@ services:
     image: ghcr.io/chandu-sasidharan/bio-baum-bauer-frontend:staging
     expose:
       - '80'
-    env_file:
-      - ./frontend/.env.staging
     networks:
       - edge_net
     restart: unless-stopped
@@ -34,7 +30,7 @@ services:
     expose:
       - '4000'
     env_file:
-      - ./backend/.env.staging
+      - ./backend/.env.stage
     networks:
       - edge_net
     restart: unless-stopped
