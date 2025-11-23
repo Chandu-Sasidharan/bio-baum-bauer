@@ -11,8 +11,10 @@ import useCopy from '@/hooks/use-copy';
 const copy = {
   de: {
     messages: {
-      succeeded: 'Vielen Dank für deine Patenschaft! Deine Zahlung ist eingegangen.',
-      processing: 'Die Zahlung wird verarbeitet. Wir informieren dich, sobald sie bestätigt ist.',
+      succeeded:
+        'Vielen Dank für deine Patenschaft! Deine Zahlung ist eingegangen.',
+      processing:
+        'Die Zahlung wird verarbeitet. Wir informieren dich, sobald sie bestätigt ist.',
       requiresPaymentMethod:
         'Die Zahlung ist fehlgeschlagen. Bitte versuche es mit einer anderen Zahlungsmethode.',
       default: 'Etwas ist schiefgelaufen.',
@@ -22,7 +24,8 @@ const copy = {
   en: {
     messages: {
       succeeded: 'Thank you for sponsoring! Your payment has been received.',
-      processing: "Payment processing. We'll update you when payment is received.",
+      processing:
+        "Payment processing. We'll update you when payment is received.",
       requiresPaymentMethod:
         'Payment failed. Please try another payment method.',
       default: 'Something went wrong!',
@@ -50,7 +53,6 @@ export default function Status({ clientSecret }) {
       // [0]: https://stripe.com/docs/payments/payment-methods#payment-notification
       switch (paymentIntent.status) {
         case 'succeeded':
-          console.log('PaymentIntent metadata:', paymentIntent.metadata);
           clearCartTrees();
           setMessage(text.messages.succeeded);
           break;

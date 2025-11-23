@@ -1,11 +1,12 @@
 import { useState } from 'react';
-import Button from '@/components/ui/button';
 import {
   PaymentElement,
   useStripe,
   useElements,
 } from '@stripe/react-stripe-js';
 import useCopy from '@/hooks/use-copy';
+import useLocalizedPath from '@/hooks/use-localized-path';
+import Button from '@/components/ui/button';
 
 const copy = {
   de: {
@@ -22,6 +23,7 @@ export default function StripeForm() {
   const [errorMessage, setErrorMessage] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
   const text = useCopy(copy);
+  const { buildPath } = useLocalizedPath();
 
   const handleSubmit = async event => {
     event.preventDefault();
@@ -37,7 +39,8 @@ export default function StripeForm() {
       //`Elements` instance that was used to create the Payment Element
       elements,
       confirmParams: {
-        return_url: `${import.meta.env.VITE_FRONTEND_URL}/payment-status`,
+        // Include locale so the payment status route matches the router
+        return_url: `${import.meta.env.VITE_FRONTEND_URL}${buildPath('paymentStatus')}`,
       },
     });
 
