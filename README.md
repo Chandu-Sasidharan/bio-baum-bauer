@@ -115,17 +115,24 @@ npm run dev            # starts Vite on :3000
 
 ## Tooling & Useful Scripts
 
-| Location | Script                              | Description                                                                  |
-| -------- | ----------------------------------- | ---------------------------------------------------------------------------- |
-| Root     | `npm run start` / `stop`            | Wrap `docker compose up/down` for local dev containers.                      |
-| Root     | `npm test`                          | Runs backend + frontend test suites.                                         |
-| Backend  | `npm run dev` / `start`             | Start Express in watch mode or production mode.                              |
-| Backend  | `npm run bundle:admin`              | Builds AdminJS assets (also run during Docker production builds).            |
-| Backend  | `npm run migrate`                   | Apply pending Migrate-Mongo migrations.                                      |
-| Frontend | `npm run dev` / `build` / `preview` | Standard Vite lifecycle commands.                                            |
-| Frontend | `npm run lint`                      | ESLint with React and React Hooks plugins.                                   |
+| Location | Script                              | Description                                                       |
+| -------- | ----------------------------------- | ----------------------------------------------------------------- |
+| Root     | `npm run start` / `stop`            | Wrap `docker compose up/down` for local dev containers.           |
+| Root     | `npm test`                          | Runs backend + frontend test suites.                              |
+| Backend  | `npm run dev` / `start`             | Start Express in watch mode or production mode.                   |
+| Backend  | `npm run bundle:admin`              | Builds AdminJS assets (also run during Docker production builds). |
+| Backend  | `npm run migrate`                   | Apply pending Migrate-Mongo migrations.                           |
+| Frontend | `npm run dev` / `build` / `preview` | Standard Vite lifecycle commands.                                 |
+| Frontend | `npm run lint`                      | ESLint with React and React Hooks plugins.                        |
 
 Linting is enforced through Husky’s pre-commit hook (`.husky/pre-commit`) which leverages `lint-staged` to format/lint backend sources. Frontend linting can be added to the config if desired.
+
+## Edge Reverse Proxy (Caddy)
+
+Production and staging traffic terminate on a dedicated Caddy edge proxy running on the DigitalOcean droplet (Docker Compose). TLS is handled via ACME with config/certs persisted in volumes, so ports 80/443 stay free for Caddy. The proxy expects an external Docker network `edge_net` where the staging/prod containers run.
+
+- Repo: https://github.com/Chandu-Sasidharan/caddy-edge-proxy
+- Current routing: `https://biobaumbauer.de` → `frontend-prod:80` and `backend-prod:4000` (for `/api/*` + `/admin*`); `https://staging.biobaumbauer.de` → `frontend-staging:80` and `backend-staging:4000`.
 
 ## Deployment Pipeline
 
