@@ -15,7 +15,7 @@ const copy = {
       'Schließe dich der Green-Legacy-Initiative von Bio Baum Bauer an und übernimm eine Baumpatenschaft in Süddeutschland.',
       'Bewahre die Biodiversität, stärke das ökologische Gleichgewicht und setze ein dauerhaftes Zeichen für eine grünere Zukunft.',
     ],
-    plant: 'Baum pflanzen',
+    plant: 'pflanzen',
     learnMore: 'Mehr erfahren',
   },
   en: {
