@@ -76,7 +76,7 @@ jobs:
           images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAMESPACE }}-frontend
           tags: |
             type=raw,value=staging
-            type=sha,prefix=staging-
+            type=sha
 
       - name: Backend metadata (staging)
         id: meta_backend_stage
@@ -85,7 +85,7 @@ jobs:
           images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAMESPACE }}-backend
           tags: |
             type=raw,value=staging
-            type=sha,prefix=staging-
+            type=sha
 
       - name: Build & push frontend (staging)
         uses: docker/build-push-action@v6
