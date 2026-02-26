@@ -1,6 +1,7 @@
 services:
   frontend-staging:
     image: ghcr.io/chandu-sasidharan/bio-baum-bauer-frontend:staging
+    container_name: bbb-frontend-staging
     expose:
       - '3000'
     networks:
@@ -9,6 +10,7 @@ services:
 
   backend-staging:
     image: ghcr.io/chandu-sasidharan/bio-baum-bauer-backend:staging
+    container_name: bbb-backend-staging
     expose:
       - '4000'
     env_file:

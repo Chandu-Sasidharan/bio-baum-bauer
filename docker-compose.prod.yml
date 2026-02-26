@@ -1,6 +1,7 @@
 services:
   frontend-prod:
     image: ghcr.io/chandu-sasidharan/bio-baum-bauer-frontend:latest
+    container_name: bbb-frontend-prod
     expose:
       - '3000'
     networks:
@@ -9,6 +10,7 @@ services:
 
   backend-prod:
     image: ghcr.io/chandu-sasidharan/bio-baum-bauer-backend:latest
+    container_name: bbb-backend-prod
     expose:
       - '4000'
     env_file:
