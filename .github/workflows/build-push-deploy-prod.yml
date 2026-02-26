@@ -9,7 +9,7 @@ on:
 
 env:
   REGISTRY: ghcr.io
-  IMAGE_NAMESPACE: ${{ github.repository_owner }}/bio-baum-bauer
+  IMAGE_NAMESPACE: ${{ github.repository_owner }}/bbb
 
 jobs:
   backend-tests:

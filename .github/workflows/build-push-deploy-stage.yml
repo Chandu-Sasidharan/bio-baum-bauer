@@ -9,7 +9,7 @@ on:
 
 env:
   REGISTRY: ghcr.io
-  IMAGE_NAMESPACE: ${{ github.repository_owner }}/bio-baum-bauer
+  IMAGE_NAMESPACE: ${{ github.repository_owner }}/bbb
 
 jobs:
   backend-tests:
@@ -75,7 +75,7 @@ jobs:
         with:
           images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAMESPACE }}-frontend
           tags: |
-            type=raw,value=staging
+            type=raw,value=stage
             type=sha
 
       - name: Backend metadata (staging)
@@ -84,7 +84,7 @@ jobs:
         with:
           images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAMESPACE }}-backend
           tags: |
-            type=raw,value=staging
+            type=raw,value=stage
             type=sha
 
       - name: Build & push frontend (staging)

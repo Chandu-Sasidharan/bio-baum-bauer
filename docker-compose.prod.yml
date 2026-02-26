@@ -1,6 +1,6 @@
 services:
   frontend-prod:
-    image: ghcr.io/chandu-sasidharan/bio-baum-bauer-frontend:latest
+    image: ghcr.io/chandu-sasidharan/bbb-frontend:prod
     container_name: bbb-frontend-prod
     expose:
       - '3000'
@@ -9,7 +9,7 @@ services:
     restart: unless-stopped
 
   backend-prod:
-    image: ghcr.io/chandu-sasidharan/bio-baum-bauer-backend:latest
+    image: ghcr.io/chandu-sasidharan/bbb-backend:prod
     container_name: bbb-backend-prod
     expose:
       - '4000'
