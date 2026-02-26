@@ -1,16 +1,16 @@
 services:
-  frontend-staging:
+  frontend-stage:
     image: ghcr.io/chandu-sasidharan/bbb-frontend:stage
-    container_name: bbb-frontend-staging
+    container_name: bbb-frontend-stage
     expose:
       - '3000'
     networks:
       - edge_net
     restart: unless-stopped
 
-  backend-staging:
+  backend-stage:
     image: ghcr.io/chandu-sasidharan/bbb-backend:stage
-    container_name: bbb-backend-staging
+    container_name: bbb-backend-stage
     expose:
       - '4000'
     env_file:
