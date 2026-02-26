@@ -75,7 +75,7 @@ jobs:
         with:
           images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAMESPACE }}-frontend
           tags: |
-            type=raw,value=latest
+            type=raw,value=prod
             type=sha
 
       - name: Backend metadata (prod)
@@ -84,7 +84,7 @@ jobs:
         with:
           images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAMESPACE }}-backend
           tags: |
-            type=raw,value=latest
+            type=raw,value=prod
             type=sha
 
       - name: Build & push frontend (prod)
