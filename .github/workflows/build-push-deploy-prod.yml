@@ -133,6 +133,8 @@ jobs:
             git checkout prod
             git pull --ff-only origin prod
             docker network create edge_net || true
+            docker container prune -f || true
+            docker image prune -af || true
+            docker builder prune -af || true
             docker compose -f docker-compose.prod.yml pull
             docker compose -f docker-compose.prod.yml up -d
-            docker image prune -f

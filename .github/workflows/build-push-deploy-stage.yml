@@ -133,6 +133,8 @@ jobs:
             git checkout stage
             git pull --ff-only origin stage
             docker network create edge_net || true
+            docker container prune -f || true
+            docker image prune -af || true
+            docker builder prune -af || true
             docker compose -f docker-compose.stage.yml pull
             docker compose -f docker-compose.stage.yml up -d
-            docker image prune -f
