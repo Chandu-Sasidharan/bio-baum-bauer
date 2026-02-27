@@ -128,7 +128,7 @@ jobs:
             export GHCR_USER=${{ github.actor }}
             export GHCR_TOKEN=${{ secrets.GHCR_PAT }}
             docker login ghcr.io -u "$GHCR_USER" -p "$GHCR_TOKEN"
-            cd /opt/bio-baum-bauer
+            cd /opt/bbb-prod
             git fetch origin
             git checkout prod
             git pull --ff-only origin prod
